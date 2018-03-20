@@ -1,0 +1,906 @@
+<!-- 样式表 -->
+<{include file="admin/checkstand/style.html"}>
+<div class="page-header navbar navbar-fixed-top">
+    <!-- BEGIN HEADER INNER -->
+    <div class="page-header-inner clearfix">
+        <form id="barcode_input_form" class="search-form search-form-expanded open" method="POST">
+            <div class="input-group">
+                <span class="input-group-btn">
+				    <span class="btn"><i class="glyphicon glyphicon-barcode font-grey-cararra"></i></span>
+				</span>
+                <input class="form-control" autocomplete="off" id="order_barcode" name="barcode" data-placeholder="扫描或输入交易单号" type="text" placeholder="扫描或输入交易单号">
+            </div>
+        </form>
+        <div class="now-selected-store-info now-order-info pull-left">
+            <strong>交易单号:</strong><span></span>
+        </div>
+        <div class="top-menu">
+            <ul class="nav navbar-nav pull-right">
+                <li class="dropdown dropdown-user visible-md visible-lg">
+					<a class="dropdown-toggle full-screen-handle" href="javascript:;">
+						<span class="username">全屏操作</span>
+						<i class="fa fa-expand"></i>
+						<i class="fa"></i>
+					</a>
+				</li>
+                <li id="admin-toggle" class="dropdown dropdown-user">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <i class="icon-user"></i><span class="username">&nbsp;<{$user.name}></span>
+                    </a>
+                </li>
+                <li class="dropdown dropdown-user">
+                    <a class="dropdown-toggle" id="current_count" href="javascript:;">
+                        <i class="fa fa-print"></i><span class="username">当班日报</span>
+                    </a>
+                </li>
+                <li class="dropdown dropdown-user">
+                    <a href="javascript:logout()" class="dropdown-toggle">
+                        <span class="username">注销</span><i class="fa fa-power-off"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+    <!-- END HEADER INNER -->
+</div>
+<div class="row pos-pane">
+    <div class="col-xs-9">
+        <div id="goods_list_panel">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr class="heading">
+                    <th>#</th>
+                    <th>名称</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>金额</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-5" id="goods_list_btns">
+                <div class="well well-sm">
+                    <button class="icon-btn" data-act='p-prev'>
+                        <i class="glyphicon glyphicon-arrow-up"></i>
+
+                        <div>上页</div>
+                    </button>
+                    <button class="icon-btn" data-act='p-next'>
+                        <i class="glyphicon glyphicon-arrow-down"></i>
+
+                        <div>下页</div>
+                    </button>
+
+                </div>
+
+            </div>
+            <div class="col-xs-2">
+                <div class="well hidden well-sm">
+                    <button id="show_order" class="icon-btn disabled">
+                        <i class="font-yellow glyphicon glyphicon-tags"></i>
+
+                        <div>订单明细</div>
+                        <span class="badge badge-danger"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-5">
+                <div id="total_panel">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td class="text-right bg-grey-steel h4">数量</td>
+                            <td class="text-left h4" data-bind="quantity">0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel">总额</td>
+                            <td class="text-left" data-bind="all_total">0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel">会员折扣</td>
+                            <td class="text-left font-red">- <strong data-bind="memberlv_discount">0</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel">促销优惠</td>
+                            <td class="text-left font-red">-
+                                <strong data-bind="pmt_total">0</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel">运费</td>
+                            <td class="text-left font-green">+ <strong data-bind="cost_freight">0</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel h4">订单金额</td>
+                            <td class="text-left h4">
+                                ¥ <strong data-bind="order_total"> 0 </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel h4">已收金额</td>
+                            <td class="text-left font-red h4">
+                                ¥<strong data-bind="payed"> 0
+                            </strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel h3">应收金额</td>
+                            <td class="text-left h3">
+                                ¥ <strong data-bind="need_pay"> 0
+                            </strong>
+                            </td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <div class="tiles" id="main_actions">
+            <div class="tile bg-yellow-gold" data-act='cash'>
+                <div class="tile-body">
+                    <i class="fa fa-money"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        现金支付
+                    </div>
+                </div>
+            </div>
+            <div class="tile bg-blue-steel" data-act='paybycard'>
+                <div class="tile-body">
+                    <i class="icon-credit-card"></i>
+                </div>
+                <div class="tile-object">
+
+                    <div class="number">
+                        银行卡支付
+                    </div>
+                </div>
+            </div>
+
+            <div class="tile bg-blue-hoki" data-act='wxqrcode'>
+                <div class="tile-body">
+                    <i class="fa fa-wechat"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        微信支付
+                    </div>
+                </div>
+            </div>
+            <div class="tile bg-red-sunglo" data-act='alipayqrcode'>
+                <div class="tile-body">
+                    <i class="fa fa-qrcode"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        支付宝支付
+                    </div>
+                </div>
+            </div>
+            <!--<div class="tile bg-purple-studio" data-act='card'>-->
+            <!--<div class="corner">-->
+            <!--</div>-->
+            <!--<div class="tile-body">-->
+            <!--<i class="glyphicon glyphicon-credit-card"></i>-->
+            <!--</div>-->
+            <!--<div class="tile-object">-->
+            <!--<div class="number">-->
+            <!--购物卡支付-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="tile bg-green-meadow" id="pickup_order" data-act='point'>-->
+            <!--<div class="tile-body">-->
+            <!--<i class="glyphicon glyphicon-gift"></i>-->
+            <!--</div>-->
+            <!--<div class="tile-object">-->
+            <!--<div class="number">-->
+            <!--积分抵扣-->
+            <!--</div>-->
+            <!--</div>-->
+            <!--</div>-->
+        </div>
+
+    </div>
+</div>
+
+<!--所有交互模态框-->
+
+<!--收银台显示结账信息模态框 start-->
+<div class="modal fade" id="show_payment_info_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+<!--当班报表-->
+<div class="modal fade" id="report_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">关闭</span></button>
+                <h3 class="modal-title">当班报表</h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <form action="index.php?app=store&ctl=admin_report&act=current_count&singlepage=1&p[0]=center" method="post" target="print_iframe" class="form">
+                        <div class="form-group">
+                            <label class="col-md-12 control-label">时间范围</label>
+                            <div class="col-md-12">
+                                从<{input type="time" name="report_from" value=$report.from}>
+                            </div>
+							<div class="col-md-12">
+								至<{input type="time" name="report_to" value=$report.to}>
+							</div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="row">
+                    <!-- <div class="col-xs-6">
+                        <button type="button"  class="btn btn-block button-cancel btn-lg red" data-dismiss="modal">取消</button>
+                    </div> -->
+                    <div class="col-xs-12">
+                        <button type="button" class="btn button-confirm btn-block btn-lg blue" data-dismiss="modal">打印</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!--隐藏域-->
+<form id="cart_form" class="hidden">
+    <input type="hidden" name="order_id" value="0" id="order_id">
+</form>
+<iframe src="about:blank" id="print_iframe" class="hidden" name="print_iframe"></iframe>
+<!-- begin chrome bridge -->
+<input type="hidden" id="mscreen_url" value="<{$base_full_url}><{link app=store ctl=admin_checkstand act=mscreen }>&singlepage=1&store_id=<{$now_selected_store}>">
+<textarea id="pointofsale_event_area" class="hidden"></textarea>
+<script type="text/javascript">
+    var customEvent = document.createEvent('Event');
+    customEvent.initEvent('pointOfSale', true, true);
+
+    function firePointOfSale(data) {
+        var pea = document.getElementById('pointofsale_event_area');
+        pea.innerText = data;
+        pea.dispatchEvent(customEvent);
+    }
+</script>
+<!-- end chrome bridge -->
+
+<script charset="utf-8">
+
+    !function () {
+        var auto_focus_timer = 0;
+        $(document).ready(function(){
+            clearTimeout(auto_focus_timer);
+            if(!$('input:visible:not(#order_barcode),select:visible,textarea:visible').length){
+                $("#order_barcode").trigger('focus').trigger('click').off('blur');
+            }
+            auto_focus_timer = setTimeout(arguments.callee,1000);
+        });
+        var obj_barcode_input_form = $('#barcode_input_form');
+        var obj_goods_list_panel = $('#goods_list_panel');
+        var obj_goods_list_btns = $('#goods_list_btns');
+        obj_barcode_input_form.on('keydown', '#order_barcode', function (e) {
+            var _this = $(this);
+            if (e.keyCode == 13) {
+                //根据订单条码查询订单
+                get_order_by_barcode();
+            }
+            function get_order_by_barcode() {
+                var barcode = _this.val();
+                var ajax_url = '<{link app=store ctl=admin_center act=get_order_by_barcode}>';
+                var data = {
+                    filter: {
+                        order_id: barcode
+                    }
+                };
+
+                _this.val('').prop('placeholder', '正在查询...');
+
+                $.post(ajax_url, data, function (re) {
+                    console.info(re);
+
+                    if ('error' in re) {
+
+                        Messagebox.error(re.error, '失败');
+                    } else if ('success' in re) {
+                        //查询出商品
+                        try {
+                            $('.now-order-info').find('span').text(re.success.order_id);
+                            $('#order_id').val(re.success.order_id);
+                            var goods_list = re.success.items;
+                            goods_list_render(goods_list);
+
+                        } catch (e) {
+                            console.error(e);
+                        }
+                        //界面数据绑定
+                        data_bind($('#total_panel'), re.success);
+                        var current_select_pid = obj_goods_list_panel.find('tr[data-productid]:first').attr('data-productid');
+                        //更新购物车
+                        if (current_select_pid) {
+                            select_row(current_select_pid);
+                        }
+                    }
+
+                    _this.prop('placeholder', _this.data('placeholder'));
+                }, 'json');
+            }
+        });
+
+        var goods_list_render = function (goods_list) {
+            //cleanup tbody
+            var goods_list_panel = obj_goods_list_panel;
+            var first_tbody = $(goods_list_panel.find('tbody:first'));
+            var first_tbody_trs = first_tbody.find('tr');
+            first_tbody.nextAll('tbody').remove();
+            first_tbody.find('td').empty();
+            first_tbody.find('td:first-child').html('&nbsp;');
+            first_tbody_trs.removeClass('bg-grey-cascade').removeAttr('data-productid');
+
+            if (!goods_list || !goods_list.length) {
+                return;
+            } else {
+                var list_page = Math.ceil(goods_list.length / first_tbody_trs.length);
+                while (--list_page) {
+                    var next_tbody = first_tbody.clone();
+                    $(goods_list_panel.find('table')).append(next_tbody);
+                    $(next_tbody).addClass('hidden').find('td:first-child').html('&nbsp;');
+                }
+            }
+
+            $.each(goods_list_panel.find('tbody tr'), function (index, item) {
+                var tr = $(item);
+                var product = goods_list[index];
+                var len=goods_list.length;
+                if(index+1>len){
+                    return;
+                }
+                console.log(product);
+                var row = [index + 1,
+                    product.name + '&nbsp' + (product.spec_info || '')+"("+product.bn+")" ,
+                    product.buy_price,
+                    product.nums,
+                    product.amount
+                ];
+
+                tr.attr('data-productid', product.product_id);
+                $(tr.find('td')).each(function (index, td) {
+                    $(td).html(row[index]);
+                });
+
+            });
+
+        };
+
+        var data_bind = function (scope, obj) {
+
+            $.each($(scope).find('[data-bind]'), function (i, el) {
+                var path = $(el).attr('data-bind'),
+                        handler = $(el).attr('data-bind-handler'),
+                        v = eval('obj["' + path.replace(/\//g, '"]["') + '"]');
+                $(el).text(v);
+            });
+        };
+
+
+        //实例化支付对象
+        var pay = new Pay();
+        var pay_method ='';
+
+        /**
+         * 支付类
+         */
+        function Pay() {
+            this.order_id = '0';//订单id
+            this.ajax_status = '0';//0->未请求,1->请求中
+            this.ajax_response = {};//ajax响应数据
+            this.callback_succ_fn = null;
+            this.callback_error_fn = null;
+            this.have_cash_pay_permission = '1';//是否拥有现金支付权限.0->没有;1->有
+        }
+
+        /**
+         * 生成支付单
+         */
+        Pay.prototype.create_pay_bill = function (callbackFnName) {
+            var _this = this;
+            var ajaxUrl = '<{link app=store ctl=admin_pay act=create_pay_bill}>';
+            var ajaxData = {
+                order_id: _this.order_id,
+                pay_app_id:pay_method
+            };
+
+            //ajax生成支付单
+            this.ajax(ajaxUrl, ajaxData, callbackFnName);
+        };
+
+        /**
+         * 获取订单结账信息并显示
+         */
+        Pay.prototype.show_payment_infos = function () {
+            this.bill_id = this.ajax_response.pay_bill_info.bill_id;
+            this.pay_method = this.ajax_response.pay_bill_info.pay_app_id;
+
+            var ajaxUrl = '<{link app=store ctl=admin_pay act=show_payment_infos}>';
+            var ajaxData = {
+                order_id: this.order_id,
+                pay_bill_id: this.bill_id
+            };
+
+            console.log('ajax_status: ' + this.ajax_status);
+
+            //关闭结账窗
+            $('#payment_modal').modal('hide');
+
+            //获取结账信息并且显示结账信息模态框
+            this.ajax(ajaxUrl, ajaxData, this.show_payment_info_modal);
+        };
+
+        /**
+         * 显示结账信息的模态框
+         */
+        Pay.prototype.show_payment_info_modal = function () {
+            var _this = this;
+            var show_payment_info_modal = $('#show_payment_info_modal');
+            show_payment_info_modal.find('.modal-content').html(this.ajax_response.pay_body);
+            show_payment_info_modal.modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
+
+            show_payment_info_modal.off('shown.bs.modal').on('shown.bs.modal', function () {
+                $("#collection_money,#auth_code,#out_trade_no").trigger('focus');
+                var themodal = $(this);
+                var num_ipt_panel = themodal.find('.screen-num-ipt'),
+                        sni = num_ipt_panel.find('input[type=text]:focus'),
+                        btns = num_ipt_panel.find('button[data-val]'), start_ipt = true;
+                if(btns){
+                    sni[0].select();
+                    btns.on('click', function () {
+                        var val = $(this).attr('data-val');
+                        switch (val) {
+                            case 'delete':
+                                sni.val(sni.val().slice(0, -1));
+                                break;
+                            default:
+                                if (sni.val() == '' && val == '0') {
+                                    return;
+                                }
+                                sni.val(start_ipt ? val : (sni.val() + val));
+                                start_ipt = false;
+                        }
+                        sni.trigger('focus');
+                        $("#collection_money").trigger('keyup');
+                    });
+                }
+
+            })
+
+
+            //为修改支付方式按钮绑定点击显示更改支付方式模态框方法
+            $('#change_pay_method_btn').off('click').on('click',function () {
+                $('#show_payment_info_modal').modal('hide');
+            });
+
+            //为二维码输入框绑定键盘事件, 点击回车就去支付
+            $("#collection_money,#auth_code,#out_trade_no").off('keydown').on('keydown', function (e) {
+                if (e.keyCode === 13) {
+                    _this.do_pay();
+                    return false;
+                }
+            });
+
+            //为现金支付的现金输入框绑定键盘时间,输入数字时自动计算
+            $('#collection_money').off('keyup').on('keyup', function () {
+
+                var collection_money = parseFloat($(this).val());
+                var pay_money = $(this).attr('data-pay_money');
+                var obj_show_change_money = $('#show_change_money');
+
+                if (/^\d+\.?\d*$/.test(collection_money) == false) {
+                    $(this).val('').attr('placeholder', '请输入正确的收款金额');
+                    obj_show_change_money.val('0');
+
+                    return false;
+                }
+
+                //计算找零金额, 保留两位小数不四舍五入
+                var change_money = floatSub(collection_money, pay_money);
+                change_money = change_money<0 ?0.00:change_money;
+                obj_show_change_money.val(change_money);
+            });
+
+            //为确认付款,打印小票按钮绑定点击事件,点击就去支付
+            $('#confirm_pay_btn').off('click').on('click', function () {
+                _this.do_pay();
+            });
+        };
+
+
+
+        /**
+         * 扫客户或者输入客户的二维码然后去支付
+         */
+        Pay.prototype.do_pay = function () {
+            var ajax_url = '<{link app=store ctl=admin_pay act=toPay}>';
+            var ajax_data = $('#payBodyForm').serializeArray();
+            BlockLoading({
+                target: $('#payBodyForm').closest('.modal-content'),
+                animate: true
+            });
+            $('#auth_code,#out_trade_no').trigger('blur');
+            //ajax去调起支付
+            this.ajax(ajax_url, ajax_data, this.handle_pay, this.handle_pay);
+        };
+
+
+        /**
+         * 去支付以后处理支付返回结果
+         */
+        Pay.prototype.handle_pay = function () {
+            console.log('支付完成返回数据');
+            var ajax_response = this.ajax_response;
+            UnblockLoading($('#payBodyForm').closest('.modal-content'));
+            $('#auth_code,#out_trade_no').trigger('focus');
+            if (ajax_response.success) {//支付成功了
+                //打印小票
+                this.print_receipt();
+            } else {
+                if (['wxqrcode','alipayqrcode'].indexOf(ajax_response.pay_response.pay_method)>-1) {
+                    if (['USERPAYING','10003'].indexOf(ajax_response.pay_response.err_code)>-1) {
+                        //扫码支付支付中，顾客确认中...
+                        console.log(ajax_response);
+                        this.check_pay_result();
+                    }else{
+                        $('#auth_code').val('');
+                        //Messagebox.warning('请重试','支付失败');
+                    }
+                } else {
+                    //Messagebox.warning('请重试','支付失败');
+                }
+            }
+        };
+
+        /**
+         * 延迟2秒检查支付结果
+         */
+        Pay.prototype.check_pay_result = function () {
+            var _this = this;
+            BlockLoading({
+                target: $('#payBodyForm').closest('.modal-body'),
+                animate: true
+            });
+            setTimeout(function () {
+                var ajax_url = '<{link app=store ctl=admin_pay act=check_pay_result}>';
+                var ajax_data = $('#payBodyForm').serializeArray();
+
+                _this.ajax(ajax_url, ajax_data, _this.handle_pay);
+            }, 2000);
+        };
+
+
+        /**
+         * 打印购物小票(收银小票)
+         */
+        Pay.prototype.print_receipt = function () {
+
+            //打印小票url
+            var print_receipt_url = '<{link app=store ctl=admin_pay act=print_receipt}>';
+            print_receipt_url += '&orderId=' + this.ajax_response.payment_info.order_id +
+            '&billId=' + this.ajax_response.payment_info.bill_id + '&direct_printing=1&singlepage=1';
+            //关闭支付信息modal
+            $('#show_payment_info_modal').modal('hide');
+            //加载打印
+            $('#print_iframe').attr('src',print_receipt_url);
+        };
+
+        /**
+         * 支付发送ajax请求
+         *
+         * @param ajaxUrl ajax请求地址
+         * @param ajaxData ajax请求参数
+         * @param callbackSuccFn 请求成功回调函数
+         * @param callbackErrFn 请求失败回调函数
+         */
+        Pay.prototype.ajax = function (ajaxUrl, ajaxData, callbackSuccFn, callbackErrFn) {
+            var _this = this;
+            if (this.ajax_status === '0') {
+                this.ajax_status = '1';
+
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'post',
+                    data: ajaxData,
+                    dataType: 'html',
+                    success: function (response) {
+                        console.log(response);
+
+
+                        _this.ajax_response = $.parseJSON(response);
+
+                        _this.ajax_status = '0';
+
+                        if (_this.ajax_response.success) {
+                            //console.log(callbackSuccFn);
+
+                            if (typeof callbackSuccFn === 'function') {
+                                callbackSuccFn.apply(_this);
+                            }
+                        } else {
+                            Messagebox.error(_this.ajax_response.error);
+
+                            if (typeof callbackErrFn === 'function') {
+                                callbackErrFn.apply(_this);
+                            }
+                        }
+                    }
+                });
+            }
+        };
+
+        //点击支付
+        $('#main_actions').on('click' ,'[data-act]',function(){
+            var order_id = $("#order_id").val();
+            if(/^[1-9]\d*$/.test(order_id) == false){
+                Messagebox.error('未知订单', '错误');
+                return ;
+            }
+            pay.order_id = order_id;
+            pay_method = $(this).attr('data-act');
+            pay.create_pay_bill(pay.show_payment_infos);
+        });
+
+
+        obj_goods_list_panel.on('click', 'tr[data-productid]', function (e) {
+            select_row($(this));
+        });
+
+        obj_goods_list_btns.on('click', '.icon-btn', function () {
+            var current_row = obj_goods_list_panel.find('tbody tr.bg-blue-chambray'),
+                    product_id = current_row.attr('data-productid'),
+                    current_tbody = current_row.closest('tbody'),
+                    prev_tbody = $(current_tbody).prev('tbody'),
+                    next_tbody = $(current_tbody).next('tbody');
+
+            switch ($(this).attr('data-act')) {
+                case 'p-prev':
+                    if (prev_tbody.length) {
+                        select_row(prev_tbody.find('tr:first'));
+                    }
+                    break;
+                case 'p-next':
+                    if (next_tbody.length) {
+                        select_row(next_tbody.find('tr:first'));
+                    }
+                    break;
+                case 'r-prev':
+                    if (current_row.prev('tr').length) {
+                        select_row(current_row.prev('tr'));
+                    } else if (prev_tbody.length) {
+                        select_row(prev_tbody.find('tr:last'));
+                    }
+                    break;
+                case 'r-next':
+                    if (current_row.next('tr').length && current_row.next('tr').attr('data-productid')) {
+                        select_row(current_row.next('tr'));
+                    } else if (next_tbody.length) {
+                        select_row(next_tbody.find('tr:first'));
+                    }
+                    break;
+
+            }
+        });
+
+
+        /**
+         * selectrow
+         */
+        var select_row = function (product_id) {
+            obj_goods_list_panel.find('tbody tr').removeClass('bg-blue-chambray');
+            if (typeof(product_id) == 'object') {
+                product_id = $(product_id).attr('data-productid');
+            }
+            if (product_id) {
+                obj_goods_list_panel.find('tbody tr[data-productid=' + product_id + ']').addClass('bg-blue-chambray');
+            }
+
+            goods_list_fix_page();
+        };
+
+        /**
+         * 翻页逻辑
+         */
+        var goods_list_fix_page = function () {
+            obj_goods_list_panel.find('tbody').addClass('hidden');
+            obj_goods_list_panel.find('tbody tr.bg-blue-chambray').closest('tbody').removeClass('hidden');
+        };
+
+
+        //当班报表
+        $('#current_count').on('click' ,function(){
+            $("#report_modal").modal('show');
+        });
+        $('#report_modal').on('click' , '.button-confirm' ,function(){
+            $('#report_modal').find('form').submit();
+        });
+    }();
+
+    /**
+     * js精确加法计算
+     *
+     * @param arg1
+     * @param arg2
+     * @returns {number}
+     */
+    function floatAdd(arg1, arg2) {
+        var r1, r2, m;
+        try {
+            r1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+            r1 = 0
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+            r2 = 0
+        }
+        m = Math.pow(10, Math.max(r1, r2));
+
+        return (arg1 * m + arg2 * m) / m;
+    }
+
+    /**
+     * js精确减法计算
+     *
+     * @param arg1
+     * @param arg2
+     * @returns {string}
+     */
+    function floatSub(arg1, arg2) {
+        var r1, r2, m, n;
+        try {
+            r1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+            r1 = 0
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+            r2 = 0
+        }
+        m = Math.pow(10, Math.max(r1, r2));
+        //动态控制精度长度
+        n = (r1 >= r2) ? r1 : r2;
+
+        return ((arg1 * m - arg2 * m) / m).toFixed(n);
+    }
+
+    /**
+     * js精确乘法计算
+     *
+     * @param arg1
+     * @param arg2
+     * @returns {number}
+     */
+    function floatMul(arg1, arg2) {
+        var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+        try {
+            m += s1.split(".")[1].length
+        } catch (e) {
+        }
+        try {
+            m += s2.split(".")[1].length
+        } catch (e) {
+        }
+
+        return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+    }
+
+
+    /**
+     * js精确除法计算
+     *
+     * @param arg1
+     * @param arg2
+     * @returns {number}
+     */
+    function floatDiv(arg1, arg2) {
+        var t1 = 0, t2 = 0, r1, r2;
+        try {
+            t1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+        }
+        try {
+            t2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+        }
+
+        r1 = Number(arg1.toString().replace(".", ""));
+
+        r2 = Number(arg2.toString().replace(".", ""));
+
+        return (r1 / r2) * Math.pow(10, t2 - t1);
+    }
+</script>
+<script>
+    function logout(){
+        $.get('index.php?ctl=passport&act=logout' ,function(re){
+            if(re.success){
+                window.location.href = re.redirect;
+            }
+        });
+    }
+</script>

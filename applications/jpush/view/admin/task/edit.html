@@ -1,0 +1,91 @@
+<h3 class="page-title clearfix">
+    新建推送任务
+</h3>
+<hr>
+<form action="index.php?app=jpush&ctl=admin_task&act=create" method="post" class="form" >
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">任务执行时间</label>
+                <div class="col-md-4">
+                    <{input type="time" name="send_time"}>
+                    <div class="help-info">
+                        不指定则立即执行推送,指定时间可做定时推送
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">推送平台</label>
+                <div class="col-md-3">
+                    <select class="form-control" name="platform">
+                        <option value="all">全部平台iOS、Android</option>
+                        <option value="ios">苹果iOS</option>
+                        <option value="android">安卓Android</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">推送消息个性化标题</label>
+                <div class="col-md-3">
+                    <{input type="text" name="title"}>
+                    <div class="help-info">
+                        Android平台可用
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">推送消息内容 <i class="font-red">*</i></label>
+                <div class="col-md-7">
+                    <{input type="textarea" name="content"}>
+                    <div class="help-info">
+                        推送消息内容。纯文本
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label class="col-md-3 control-label">消息点击后目标地址</label>
+                <div class="col-md-7">
+                    <{input type="url" name="event_params[url]"}>
+                    <div class="help-info">
+                        推送消息被点击后,打开app并跳转的地址。不填写将仅打开app
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">跳转界面打开方式</label>
+                <div class="col-md-2">
+                    <select class="form-control" name="event_params[present]">
+                        <option value="NO">新窗体</option>
+                        <option value="YES">当前窗体弹出</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">跳转界面是否隐藏顶部</label>
+                <div class="col-md-2">
+                    <select class="form-control" name="event_params[style]">
+                        <option value="style01">否</option>
+                        <option value="style02">是</option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label class="col-md-3 control-label">推送任务备注 <i class="font-red">*</i></label>
+                <div class="col-md-4">
+                    <{input type="textarea" required="true" name="task_mark"}>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                        <a href="index.php?app=jpush&ctl=admin_task&act=index" class="btn default">返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

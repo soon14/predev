@@ -1,0 +1,331 @@
+<h3 class="page-title">
+	<{if $purchases_receipts_info.purchases_receipts_id }>编辑进货单<{else}>添加进货单<{/if}>
+</h3>
+<div class="page-bar">
+	<ul class="page-breadcrumb">
+		<li>
+			<a href="index.php?app=store&ctl=admin_stock&act=purchases_manage">进货单列表</a>
+			<i class="fa fa-angle-right"></i>
+		</li>
+		<li>
+			<a href="javascript:void(0);">
+				<{if $purchases_receipts_info.purchases_receipts_id}>
+				编辑进货单
+				<{else}>
+				添加进货单
+				<{/if}>
+			</a>
+		</li>
+	</ul>
+</div>
+<h3 class="text-center" id="purchases_store_info" style="color: #f00">请选择进货店铺</h3>
+<form class="form row" action="index.php?app=store&ctl=admin_stock&act=edit_purchases_receipts_action" method="post" id='purchases_receipts_form'>
+	<input type="hidden" name="purchases_receipts[purchases_receipts_id]" value="<{$purchases_receipts_info.purchases_receipts_id}>">
+	<input type="hidden" name="purchases_receipts[purchaser_id]" value="<{$userId}>">
+	<input id="purchases_store_id" name="purchases_receipts[store_id]" type="hidden">
+
+	<div class="col-md-12">
+		<div class="col-md-6 form-horizontal">
+			<div class="form-group clearfix" style="margin-bottom: 10px;">
+				<label class="col-xs-3 control-label">
+					进货店铺
+					<span class="required">*</span>
+				</label>
+
+				<div class="col-xs-9">
+					<{input type="object" object="store@store" callback_func="select_store_callback_func"}>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-12">
+		<div class="col-md-6">
+			<div class="input-group">
+				<div class="input-group-btn">
+					<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						<span id="search_typeShow">条码</span>
+						<span class="caret"></span>
+						<input id="search_type_value" type="hidden" value="barcode">
+					</button>
+					<ul class="dropdown-menu dropdown-menu-right">
+						<li><a class="search-type" data-searchtype="barcode" href="javascript:void(0);">条码</a></li>
+						<li><a class="search-type" data-searchtype="goods_bn" href="javascript:void(0);">货号</a></li>
+						<li><a class="search-type" data-searchtype="goods_name" href="javascript:void(0);">商品名称</a></li>
+					</ul>
+				</div><!-- /btn-group -->
+				<input id="search_keyword" type="text" class="form-control" placeholder="请输入查询关键字">
+				<span class="input-group-btn">
+                    <button class="btn btn-default" id="search_goods_btn" type="button">查询</button>
+                </span>
+			</div><!-- /input-group -->
+
+			<div class="purchases_receipts-goods" id="purchases_receipts_goods" style="margin-top: 10px;padding-top: 5px;border-top: 1px solid #ccc;">
+				<h4 class="text-center">请查询进货商品</h4>
+			</div>
+		</div><!-- /.col-lg-6 -->
+		<div class="col-md-6">
+			<div class="form form-horizontal">
+				<div class="form-group">
+					<label class="col-md-3 control-label" for="purchaser_name">
+						进货人
+						<span class="required">*</span>
+					</label>
+
+					<div class="col-md-9">
+						<input class="form-control" id="purchaser_name" name="purchases_receipts[purchaser_name]" type="text" value="<{$purchases_receipts_info.purchaser_name}>">
+					</div>
+				</div>
+
+
+				<div class="form-group">
+					<label class="col-md-3 control-label" for="purchases_receipts_remark">
+						备注
+						<span class="required">*</span>
+					</label>
+
+					<div class="col-md-9">
+						<textarea class="form-control" id="purchases_receipts_remark" name="purchases_receipts[purchases_receipts_remark]" type="text" value="<{$purchases_receipts_info.purchases_receipts_remark}>"></textarea>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-12">
+		<table class="table">
+			<colgroup>
+				<!--<col width="20">-->
+				<col width="50">
+				<col width="100">
+				<col width="150">
+				<col width="150">
+				<col width="100">
+			</colgroup>
+			<tr>
+				<!--<th><input type="checkbox"></th>-->
+				<th>操作</th>
+				<th>商品名称</th>
+				<th>规格</th>
+				<th>货号</th>
+				<th>条码</th>
+				<th>数量</th>
+				<th>备注</th>
+			</tr>
+			<tbody id="purchases_receipts_goods_list"></tbody>
+		</table>
+	</div>
+
+	<div class="col-md-12 text-center">
+		<button class="btn btn-primary hide" id="add_purchases_receipts_btn" type="button" style="padding-left: 100px;padding-right: 100px;">保存</button>
+	</div>
+</form>
+
+<script>
+
+	var AJAX_TIMER = null;
+	var select_store_callback_func = function (select_store) {
+		var store_id = select_store['0'].value;
+		var obj_purchases_store_info = $('#purchases_store_info');
+		var obj_purchases_store_id_input = $('#purchases_store_id');
+		var obj_finder_modal = $('div[id^=object_select_modal]');
+		//根据店铺id获取店铺信息
+		var get_store_info_by_store_id = function () {
+			clearTimeout(AJAX_TIMER);
+			AJAX_TIMER = setTimeout(function () {
+				$.ajax({
+					url: '<{link app=store ctl=admin_controller act=ajax_get_store_info_by_store_id}>',
+					type: 'post',
+					data: {
+						store_id: store_id
+					},
+					dataType: 'html',
+					success: function (response) {
+						response = $.parseJSON(response);
+						if (response.success) {
+							obj_purchases_store_info.html('当前进货店铺: ' + response.store_info.store_name);
+						}
+					}
+				});
+			}, 500);
+		};
+
+		if (obj_finder_modal.length > 0) {
+			obj_finder_modal.modal('hide');
+		}
+
+		if (/[1-9]\d*/.test(store_id) == true) {
+			get_store_info_by_store_id();
+		}
+		obj_purchases_store_id_input.val(store_id);
+	};
+
+	$(function () {
+
+		//搜索定时器
+		var search_timer = null;
+
+		//添加进货单定时器
+		var add_durchases_bill_timer = null;
+
+		$('#purchases_receipts_form').on('click', '#search_goods_btn', function () {
+			var _this = $(this);
+			//进货店铺id
+			var store_id = $('#purchases_store_id').val();
+			console.log(store_id);
+			//搜索类型
+			var search_type = $('#search_type_value').val();
+			//搜索关键字
+			var search_keyword = $('#search_keyword').val();
+
+			if (/^[1-9]\d*$/.test(store_id) === false) {
+				Messagebox.error('请选择进货店铺');
+
+				return false;
+			}
+
+			if (!search_type) {
+				Messagebox.error('请选择搜索类型');
+
+				return false;
+			}
+
+			if (!search_keyword) {
+				Messagebox.error('请输入搜索关键字');
+
+				return false;
+			}
+
+			//连续点击搜索按钮的时候清空上一次的搜索
+			clearTimeout(search_timer);
+			_this.prop('disabled', true);
+
+			//延迟0.5秒执行搜索,防止重复点击
+			search_timer = setTimeout(function () {
+				//ajax提交搜索
+				$.ajax({
+					url: '<{link app=store ctl=admin_stock act=ajax_search_goods}>',
+					method: 'post',
+					dataType: 'html',
+					data: {
+						search_type: search_type,
+						search_keyword: search_keyword,
+						store_id: store_id
+					},
+					success: function (response) {
+						$('#purchases_receipts_goods').html(response);
+
+						_this.prop('disabled', false);
+					},
+					error: function () {
+						_this.prop('disabled', false);
+					}
+				});
+			}, 500);
+		}).on('click', '.search-type', function () {
+			var selectSearchTypeText = $(this).text();
+			var selectSearchTypeValue = $(this).attr('data-searchtype');
+			$('#search_typeShow').text(selectSearchTypeText);
+			$('#search_type_value').val(selectSearchTypeValue);
+		}).on('click', '.delete-goods', function () {
+			$(this).closest('tr').remove();
+		}).on('click', '.search-goods-list', function () {
+			var thisProductInfo = $.parseJSON($(this).attr('data-productinfo'));
+			var thisGoodsprice = $(this).attr('data-goodsprice');
+
+			var objGoods = $('#purchases_receipts_goodsTr-' + thisProductInfo.goods_id + '-' + thisProductInfo.product_id);
+			if (objGoods.length > 0) {
+				var objThisGoodsNum = objGoods.find('.goods_num');
+				var thisGoodsNum = objThisGoodsNum.val();
+				if (/^[1-9]\d*$/.test(thisGoodsNum) === false) {
+					thisGoodsNum = 1;
+				} else {
+					thisGoodsNum = parseInt(thisGoodsNum) + 1;
+				}
+
+				objThisGoodsNum.val(thisGoodsNum);
+			} else {
+				var purchases_receipts_goods_listString = '<tr id="purchases_receipts_goodsTr-' + thisProductInfo.goods_id + '-' + thisProductInfo.product_id + '">' +
+//						'<td>' +
+//							'<input name="purchases_receipts[item][product_id][]" type="hidden" value="' + thisProductId + '">' +
+//							'<input name="purchases_receipts[item][goods_id][]" type="hidden" value="' + thisGoodsId + '">' +
+//						'</td>' +
+					'<td class="text-center">' +
+					'<span class="delete-goods glyphicon glyphicon-minus-sign" aria-hidden="true" style="cursor: pointer;"></span>' +
+					'</td>' +
+					'<td>' +
+					thisProductInfo.name +
+					'<input class="form-control" name="purchases_receipts[item][goods_name][]" type="hidden" value="' + thisProductInfo.name + '">' +
+					'<input class="form-control" name="purchases_receipts[item][store_id][]" type="hidden" value="' + thisProductInfo.store_id + '">' +
+					'</td>' +
+					'<td>' +
+					thisProductInfo.spec_desc +
+					'<input class="form-control" name="purchases_receipts[item][goods_guige][]" type="hidden" value="' + thisProductInfo.spec_desc + '">' +
+					'</td>' +
+					'<td>' +
+					thisProductInfo.bn +
+					'<input class="form-control" name="purchases_receipts[item][goods_bn][]" type="hidden" value="' + thisProductInfo.bn + '">' +
+					'</td>' +
+					'<td>' +
+					thisProductInfo.barcode +
+					'<input class="form-control" name="purchases_receipts[item][goods_barcode][]" type="hidden" value="' + thisProductInfo.barcode + '">' +
+					'</td>' +
+					'<td><input class="form-control goods_num" name="purchases_receipts[item][goods_num][]" type="text" value="1"></td>' +
+					'<td>' +
+					'<input class="form-control" name="purchases_receipts[item][purchases_remark][]" type="text">' +
+					'<input name="purchases_receipts[item][purchases_goods_money][]" type="hidden" value="' + thisGoodsprice + '">' +
+					'<input name="purchases_receipts[item][product_id][]" type="hidden" value="' + thisProductInfo.product_id + '">' +
+					'<input name="purchases_receipts[item][goods_id][]" type="hidden" value="' + thisProductInfo.goods_id + '">' +
+					'</td>' +
+					'</tr>';
+
+				objGoods = $(purchases_receipts_goods_listString);
+				$('#purchases_receipts_goods_list').append(objGoods);
+			}
+
+			$('#add_purchases_receipts_btn:hidden').removeClass('hide disabled');
+		}).on('click', '#add_purchases_receipts_btn', function () {
+			var obj_purchases_receipts_form = $('#purchases_receipts_form');
+			var _this = $(this);
+
+			//禁用按钮
+			_this.addClass('disabled');
+
+			clearTimeout(add_durchases_bill_timer);
+
+			add_durchases_bill_timer = setTimeout(function () {
+				$.ajax({
+					url: obj_purchases_receipts_form.attr('action'),
+					type: 'post',
+					data: obj_purchases_receipts_form.serializeArray(),
+					dataType: 'html',
+					success: function (response) {
+						console.log(response);
+						response = $.parseJSON(response);
+						if (response.success) {
+							Messagebox.success(response.success);
+							clear();
+						} else if (response.error) {
+							Messagebox.error(response.error);
+						} else {
+							Messagebox.error('未知错误');
+						}
+
+						_this.removeClass('disabled');
+					},
+					error: function () {
+						Messagebox.error('未知错误');
+					}
+				});
+			}, 500);
+		});
+
+		/**
+		 * 添加完成以后清理
+		 */
+		function clear() {
+			$('#purchases_receipts_goods_list').html('');
+			$('#purchases_receipts_goods').html('<h4 class="text-center">添加成功</h4>');
+			$('#add_purchases_receipts_btn').addClass('disabled hide');
+		}
+	});
+</script>

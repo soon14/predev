@@ -1,0 +1,212 @@
+<{include file='site/supplier/layout/top.html' }>
+<div class="my-main supplier-main">
+    <div class="row">
+        <div class="col-xs-2">
+            <{include file='site/supplier/layout/menu.html' }>
+        </div>
+        <div class="col-xs-10 my-page">
+            <div class="page-header clearfix">
+              <h1 class="pull-left">库存管理 <small>Stock</small></h1>
+              <div class="btn-group pull-right">
+                  <a class="btn  btn-default" target="_blank" href="<{link app=supplier ctl=site_supplier act=export_stock}>">导出库存报表</a>
+                  <button class="btn btn-default" data-toggle="modal" data-target="#csv2stock_modal" type="button">批量导入库存</button>
+              </div>
+            </div>
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-inline" id="product_filter_form">
+                            <select class="form-control">
+                                <option value="bn|head">货号</option>
+                                <option value="barcode|head">条码</option>
+                                <option value="name|has">商品名称</option>
+                            </select>
+                            <{assign var=fv value='::'|explode:$env.get.filter}>
+                            <input type="text" value="<{$fv.1}>" class="form-control" id="product_filter" >
+                            <button type="button" class="btn btn-default" name="button"><i class="glyphicon glyphicon-filter"></i> 筛选</button>
+                            <{if $fv.1}>
+                            <a href="<{link app=supplier ctl=site_supplier act=stock args0=$page args1=$limit}>" class="btn btn-default">取消筛选</a>
+                            <{/if}>
+                            <script type="text/javascript">
+                                $('#product_filter_form select option[value="<{$fv.0}>"]').prop('selected','selected');
+                            </script>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <p class="form-control-static pull-right text-muted">
+                            共 <{$count}> 条记录
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                        </th>
+                        <th>
+                            货号
+                        </th>
+                        <th>
+                            条码
+                        </th>
+                        <th>
+                            名称
+                        </th>
+                        <th>
+                            规格
+                        </th>
+                        <th>
+                            上架
+                        </th>
+                        <th>
+                            库存
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="stock_list_tbody">
+
+                    <{foreach from=$product_list item=item name=fr_relproduct}>
+                            <tr>
+                                <td>
+                                    <a href="<{$item.image_id|storager:'l'}>" target="_blank">
+                                        <img src="<{$item.image_id|storager:'xs'}>" class="img-thumbnail" width=40 alt="<{$item.name}><{$item.spec_info}>" />
+                                    </a>
+                                </td>
+                                <td>
+                                    <{$item.bn}>
+                                </td>
+                                <td>
+                                    <{$item.barcode}>
+                                </td>
+                                <td>
+                                    <{$item.name}>
+                                </td>
+                                <td>
+                                    <{$item.spec_info}>
+                                </td>
+                                <td>
+                                    <{if $item.marketable == 'true'}>
+                                    <span class="text-success">是</span>
+                                    <{else}>
+                                    <span class="text-danger">否</span>
+                                    <{/if}>
+                                </td>
+                                <td>
+                                    <input class="form-control edit-col input-sm" type="text" name="quantity" data-skubn="<{$item.bn}>" data-stockid="<{$stock_list[$item.bn]['stock_id']}>" value="<{$stock_list[$item.bn]['quantity']}>">
+                                </td>
+                                <td>
+                                    <{if  $item.marketable == 'true'}>
+                                        <a class="btn btn-default btn-sm" href="<{link app=b2c ctl=site_product act=index args0=$item.product_id}>" target="_blank">浏览</a>
+                                    <{/if}>
+                                </td>
+                            </tr>
+                    <{/foreach}>
+
+
+                </tbody>
+                <{if $totalpage>1}>
+                <tfoot>
+                    <tr>
+                        <td colspan=6>
+                            <{pagers data=$pager}>
+                        </td>
+                        <td colspan=2>
+                            <div class="pagination pull-right">
+                                <select id="page_limit_sel" class="form-control">
+                                    <option value="20" data-action="<{link app=supplier ctl=site_supplier act=stock args0=$page args1=20}><{if $env.get.filter}>?filter=$env.get.filter<{/if}>">每页20条</option>
+                                    <option value="50" data-action="<{link app=supplier ctl=site_supplier act=stock args0=$page args1=50}><{if $env.get.filter}>?filter=$env.get.filter<{/if}>">每页50条</option>
+                                    <option value="100" data-action="<{link app=supplier ctl=site_supplier act=stock args0=$page args1=100}><{if $env.get.filter}>?filter=$env.get.filter<{/if}>">每页100条</option>
+                                    <option value="500" data-action="<{link app=supplier ctl=site_supplier act=stock args0=$page args1=500}><{if $env.get.filter}>?filter=$env.get.filter<{/if}>">每页500条</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+                <{/if}>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="csv2stock_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">从csv文件批量导入库存信息</h4>
+      </div>
+      <div class="modal-body">
+          <div class="alert alert-info">
+              <h5>csv格式说明</h5>
+              <pre>
+货号,库存数量
+货号,库存数量
+....
+              </pre>
+          </div>
+         <form  action="<{link app=supplier ctl=site_supplier act=import_stock}>" enctype="multipart/form-data" method="post" class="form-inline">
+             <div class="form-group">
+                 <input class="form-control" type="file" name="stockcsv" value="">
+             </div>
+             <button type="submit" class="btn btn-primary">确认导入</button>
+         </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    var page_limit_match = location.href.match(/-stock-([\d]+?)-([\d]+?).html/);
+    if(page_limit_match && page_limit_match[2]){
+        $('#page_limit_sel option[value="'+page_limit_match[2]+'"]').prop('selected','selected');
+    }
+    $('#page_limit_sel').on('change',function(){
+        location = $(this.options[this.selectedIndex]).attr('data-action');
+    });
+    $('#product_filter_form button').on('click',function(e){
+        var fv = $.trim($('#product_filter_form input').val()),fk = $('#product_filter_form select').val();
+        if(fv ==''){
+            return $('#product_filter_form input').eq(0).focus();
+        }
+        var redirect = "<{link app=supplier ctl=site_supplier act=stock args0=$page args1=$limit}>?filter="+[fk,fv].join('::');
+        location = redirect;
+    });
+
+    $('#stock_list_tbody').on('focus','input.edit-col',function(e){
+        $(this).data('v',$(this).val());
+        this.select();
+    });
+    $('#stock_list_tbody').on('blur','input.edit-col',function(e){
+        var edit_input = $(this),current_val = edit_input.val();
+        if(current_val == edit_input.data('v'))return;
+        if(isNaN(current_val))return;
+        var post_data = {
+            'sku_bn':edit_input.attr('data-skubn'),
+            'stock_id':edit_input.attr('data-stockid'),
+            'quantity':edit_input.val(),
+        };
+        $.post("<{link app=supplier ctl=site_supplier act=update_stock}>",post_data,function(re){
+            if(re && ('success' in re)){
+                edit_input.data('v',edit_input.val());
+                edit_input.val('已修改').removeClass('font-red').fadeOut(function(){
+                    edit_input.val(edit_input.data('v'));
+                }).fadeIn();
+            }else{
+                edit_input.val('失败').addClass('font-red').fadeOut(function(){
+                    edit_input.val(edit_input.data('v')).removeClass('font-red');
+                }).fadeIn();
+            }
+        },'json');
+    });
+    $('#stock_list_tbody').on('keyup','input.edit-col',function(e){
+        if(e.keyCode!=13)return true;
+        $(this).trigger('blur');
+    });
+</script>

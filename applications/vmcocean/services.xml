@@ -1,0 +1,36 @@
+<services>
+    <service id="openapi.vmcoceananlytics">
+        <class>vmcocean_openapi_anlytics</class>
+    </service>
+    <service id="site_view_helper">
+        <class orderby='999'>vmcocean_vhelper</class>
+    </service>
+    <service id="mobile_view_helper">
+        <class orderby='999'>vmcocean_vhelper</class>
+    </service>
+    <service id="member.create_after">
+        <class orderby='999'>vmcocean_member_create</class>
+    </service>
+    <service id="sensitive_information">
+        <class orderby='999'>vmcocean_datafilter</class>
+    </service>
+
+    <service id="b2c.order.create.finish" optname="订单创建完成时触发">
+        <class orderby="999">vmcocean_order_create</class>
+    </service>
+    <service id="ectools.bill.payment.b2c.order.succ" optname="订单支付完成处理">
+        <class orderby="999">vmcocean_order_pay</class>
+    </service>
+    <service id="b2c.order.delivery.send.finish" optname="发货操作完成触发">
+        <class orderby="999">vmcocean_order_delivery</class>
+    </service>
+    <service id="b2c.order.delivery.reship.finish" optname="退货单据操作完成触发">
+        <class orderby="999">vmcocean_order_reship</class>
+    </service>
+    <service id="mobile.controller.construct" optname="H5广告投放追踪cookie埋点">
+        <class>vmcocean_service_mobile_construct</class>
+    </service>
+    <service id="site.controller.construct" optname="PC广告投放追踪cookie埋点">
+        <class>vmcocean_service_site_construct</class>
+    </service>
+</services>

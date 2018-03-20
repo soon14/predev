@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <title>微信安全支付二维码</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link type="image/x-icon" href="<{$env.conf.mobile.mobile_icon|storager}>" rel="apple-touch-icon-precomposed">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <style media="screen">
+        body{
+            background:#e7e8eb;
+            font-size:14px;
+            font-family: "Helvetica Neue","Hiragino Sans GB","Microsoft YaHei","\9ED1\4F53",Arial,sans-serif;
+            color:#222;
+            padding:0;
+            margin:0;
+        }
+        .header{
+            background:#fff;
+            border-top:4px solid #44b549;
+            border-bottom:1px solid #d9dadc;
+        }
+        .container{
+            margin:20px auto;
+            width: 95%;
+        }
+        .c-h{
+            line-height: 38px;
+            height: 38px;
+            padding: 0 14px;
+            background-color: #f4f5f9;
+            border-bottom: 1px solid #e7e7eb;
+        }
+        .qrcode{
+            background: #fff;
+            text-align: center;
+            padding: 50px 0;
+        }
+        <{if $is_mobile!='true'}>
+        .qrcode p{
+            padding: 50px 0;
+        }
+        <{/if}>
+        .qrcode strong{
+            font-size: 32px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <div class="container">
+                <h1><img src="https://wx.gtimg.com/pay/img/common/logo.png" alt="微信扫码支付" /></h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="qrcode">
+
+                用微信"扫一扫"功能,扫码付款二维码完成支付操作.
+            <p>
+                <{$code_url|qrcode}>
+                <br><br>
+                <span class="qrcode-time-limit"><span class="day-show"></span><span class="hour-show"></span><span class="minute-show"></span><span class="second-show"></span></span></span>
+            </p>
+            <div class='info'>
+                应付金额：<small>￥</small><strong><{$total_fee|cur}></strong><br>
+                订单编号：<{$order_id}><br>
+            </div>
+        </div>
+    </div>
+    <{script src="jquery.min.js"}>
+    <script type="text/javascript">
+    /**
+     * 监测支付状态
+     */
+    var paystatus_check_timeout_arr =  [10,9,8,7,6,5,4,3,2,1.5];
+    setTimeout(function () {
+        var _fn = arguments.callee;
+        $.getJSON('<{link app=b2c ctl=site_checkout act=paystatus args0=$order_id}>',function(re){
+            try{
+                if(re.success){
+                    //支付成功时，自动刷新,如果支付成功,刷新本页会自动跳转
+                    alert('支付成功!');
+                    window.opener = null;
+                    window.close();
+                    return;
+                }
+            }catch(e){
+
+            }finally{
+                var timeout = paystatus_check_timeout_arr.shift();
+                setTimeout(_fn,timeout?timeout*1000:1500);
+            }
+        });
+    },paystatus_check_timeout_arr.shift()*1500);
+
+
+    //倒计时
+    !function (intDiff,show_scope){
+        if(!show_scope)return;
+        setInterval((function(){
+            var day=0,
+                hour=0,
+                minute=0,
+                second=0;//时间默认值
+            if(intDiff > 0){
+                day = Math.floor(intDiff / (60 * 60 * 24));
+                hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            }
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            show_scope.find('.day-show').html(""+day+"天");
+            show_scope.find('.hour-show').html('<s id="h"></s>'+hour+'时');
+            show_scope.find('.minute-show').html('<s></s>'+minute+'分');
+            show_scope.find('.second-show').html('<s></s>'+second+'秒 后二维码过期');
+            intDiff--;
+            return arguments.callee;
+        })(), 1000);
+    }(60*60*2,$('.qrcode-time-limit'));
+    </script>
+</body>
+</html>

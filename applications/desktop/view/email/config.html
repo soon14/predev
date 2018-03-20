@@ -1,0 +1,67 @@
+<h3 class="page-title">邮件发送配置</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?ctl=adminpanel">控制面板</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">邮件发送配置</a>
+        </li>
+    </ul>
+</div>
+<{if $vmc_socket}>
+<div class="alert alert-success">
+    您正在使用VMCShop邮件平台，无需配置
+</div>
+<{else}>
+<form action="index.php?app=desktop&ctl=email&act=save_conf" method="post" id='emailconfig_form' class="form" >
+
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <{foreach from=$inputs item=ipt key=k}>
+            <{if $ipt.type=='hidden'}>
+            <{input type=$ipt.type name=$k value=$ipt.value}>
+            <{else}>
+            <div class="form-group">
+                <label class="control-label col-md-2"><{$ipt.label}>
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-4">
+                    <{input required=true type=$ipt.type name=$k value=$ipt.value}>
+                </div>
+            </div>
+            <{/if}>
+            <{/foreach}>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-9">
+                    <button data-action="index.php?app=desktop&ctl=email&act=save_conf" type="submit" class="btn blue b-save">保存</button>
+                    <button data-action="index.php?app=desktop&ctl=email&act=test" type="button" class="btn btn-default b-test"><i class="fa fa-paper-plane-o"></i> 测试邮件发送</button>
+                </div>
+            </div>
+        </div>
+
+        <div>
+</form>
+
+<script charset="utf-8">
+    $('#emailconfig_form').on('click','button',function(e){
+        var the_form = this.form;
+        the_form.action = $(this).attr('data-action');
+        $(the_form).find('input[name="acceptor"]').remove();
+
+        if($(this).hasClass('b-test')){
+            bootbox.prompt('请输入收件邮箱地址：', function(result) {
+                if (result != null) {
+                    $('<input type="hidden" name="acceptor" value="'+result+'">').appendTo($(the_form));
+                    $(the_form).trigger('submit');
+                }
+            });
+        }
+    });
+</script>
+
+<{/if}>
+

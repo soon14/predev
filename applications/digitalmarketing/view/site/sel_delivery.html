@@ -1,0 +1,81 @@
+<div class="modal-header">
+    <h4 class="modal-title">选择收货地址</h4>
+</div>
+<div class="modal-body">
+    <{if $member_addr_infos}>
+    <div class="list-group" id="address_list">
+        <{foreach from=$member_addr_infos item=item}>
+        <a class="list-group-item" href="javascript:;" data-id="<{$item.addr_id}>">
+            <{$item.name}>/<{$item.mobile}>
+            <br>
+           <{$item.area|region}>&nbsp;<{$item.addr}>
+        </a>
+        <{/foreach}>
+    </div>
+    <{/if}>
+    <form id="edit_delivery_form" class="<{if $member_addr_infos}> hide<{/if}>">
+        <input name="maddr[addr_id]" type="hidden" value="<{$addr_info['addr_id']}>">
+        <div class="form-horizontal">
+            <div class="form-group">
+                <label class="col-xs-2 control-label" for="maddr_name">姓名<em class="text-danger">*</em></label>
+                <div class="col-xs-5">
+                    <input type="text" placeholder="收货人姓名" id="maddr_name" class="form-control" name="maddr[name]" value="<{$addr_info['name']}>" required="true">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-xs-2 control-label" for="maddr_mobile">手机<em class="text-danger">*</em></label>
+                <div class="col-xs-5">
+                    <input type="text" placeholder="手机号码" id="maddr_mobile" class="form-control" name="maddr[mobile]" value="<{$addr_info['mobile']}>" required="true">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label">收货地区<em class="text-danger">*</em></label>
+                <div class="col-xs-10">
+                    <div id="maddr_region" class="input-group region">
+                        <{input type=region name="maddr[area]" value=$addr_info['area']}>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label" for="maddr_addr">收货地址<em class="text-danger">*</em></label>
+                <div class="col-xs-10">
+                    <input type="text" placeholder="街道\门牌号码" id="maddr_addr" class="form-control" name="maddr[addr]" value="<{$addr_info['addr']}>" required="true">
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label class="col-xs-2 control-label" for="maddr_zip">邮编</label>
+                <div class="col-xs-3">
+                    <input type="text" placeholder="邮政编码" id="maddr_zip" class="form-control input-sm" name="maddr[zip]" value="<{$addr_info['zip']}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label" for="maddr_tel">固话</label>
+                <div class="col-xs-5">
+                    <input type="text" placeholder="固定电话" id="maddr_tel" class="form-control input-sm" name="maddr[tel]" value="<{$addr_info['tel']}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-2 control-label" for="maddr_email">Email</label>
+                <div class="col-xs-5">
+                    <input type="email" placeholder="填写此项可接收订单状态通知" id="maddr_email" class="form-control input-sm" name="maddr[email]" value="<{$addr_info['email']}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-5 col-xs-offset-2 control-label" id="is_default_label" for="is_default">
+                    <input id="is_default" type="checkbox" value="true" name="maddr[is_default]"<{if $addr_info['is_default'] == 'true'}> checked<{/if}>> 默认收货地址
+                </label>
+            </div>
+            <hr>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn-primary add-btn">新增地址</button>
+    <{if $member_addr_infos}>
+    <button type="button" class="btn btn-primary cancel-btn hide">取消</button>
+    <button type="button" class="btn btn-primary select-btn">确认</button>
+    <{/if}>
+
+</div>

@@ -1,0 +1,19 @@
+<!-- 智能橱窗 -->
+<template id="widget-imagetext">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-imagetext :widget="widget" :index="index"></widget-child-setting-imagetext>
+        <widget-child-imagetext :widget="widget" :index="index"></widget-child-imagetext>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_imagetext = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-imagetext',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-imagetext': widget_child_setting_imagetext,
+        'widget-child-imagetext': widget_child_imagetext
+    }
+});
+</script>

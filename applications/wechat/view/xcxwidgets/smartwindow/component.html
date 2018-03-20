@@ -1,0 +1,177 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 智能橱窗 - 子组件 -->
+<template id="widget-child-smartwindow">
+    <!--
+    cols 分列样式
+    has_gap 是否显示间距
+    item.url 网址
+    item.image.image.src 图片地址
+    item.image.mode 图片裁切模式 https://mp.weixin.qq.com/debug/wxadoc/dev/component/image.html
+    -->
+    <section class="widget-box widget-smartwindow " :class="widget.data.cols">
+    	<!--通栏,一分为二,一分为三-->
+        <ul :class="{'has_gap':widget.data.has_gap}" v-if="widget.data.items.length>0&&(widget.data.cols=='col-1'||widget.data.cols=='col-2'||widget.data.cols=='col-3')">
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}"  v-for="(item, item_key) in widget.data.items">
+        		<a href="javascript:;">
+                    <img :src="item.image.src"/>
+                    <span class="absoluteBg" v-if="item.text!=''&&item.text!=null">{{item.text}}</span>
+                </a>
+                
+        	</li>
+        </ul>
+        <ul :class="{'has_gap':widget.data.has_gap}" v-else-if="(widget.data.cols=='col-1'||widget.data.cols=='col-2'||widget.data.cols=='col-3')">
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;">
+                     <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" />
+                </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}" v-show="widget.data.cols=='col-2'||widget.data.cols=='col-3'">
+        		<a href="javascript:;">
+                     <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" />
+                </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}" v-show="widget.data.cols=='col-3'">
+        		<a href="javascript:;">
+                     <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" />
+                </a>
+        	</li>
+        </ul>
+        <!--一大两小-->
+        <ul :class="{'has_gap':widget.data.has_gap}" v-else-if="widget.data.cols=='col-4'">
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;"  v-if="widget.data.items[0]">
+                    <img :src="widget.data.items[0].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[0].text!=''&&widget.data.items[0].text!=null">{{widget.data.items[0].text}}</span>
+                </a>
+                
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[1]">
+                    <img :src="widget.data.items[1].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[1].text!=''&&widget.data.items[1].text!=null">{{widget.data.items[1].text}}</span>
+               </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[2]">
+                    <img :src="widget.data.items[2].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[2].text!=''&&widget.data.items[2].text!=null">{{widget.data.items[2].text}}</span>
+               </a>
+        	</li>
+        </ul>
+        <!--两大两小-->
+        <ul :class="{'has_gap':widget.data.has_gap}" v-else-if="(widget.data.cols=='col-5'||widget.data.cols=='col-6')">
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[0]">
+                    <img :src="widget.data.items[0].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[0].text!=''&&widget.data.items[0].text!=null">{{widget.data.items[0].text}}</span>
+               </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[1]">
+                    <img :src="widget.data.items[1].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[1].text!=''&&widget.data.items[1].text!=null">{{widget.data.items[1].text}}</span>
+               </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[2]">
+                    <img :src="widget.data.items[2].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[2].text!=''&&widget.data.items[2].text!=null">{{widget.data.items[2].text}}</span>
+               </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[3]">
+                    <img :src="widget.data.items[3].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[3].text!=''&&widget.data.items[3].text!=null">{{widget.data.items[3].text}}</span>
+               </a>
+        	</li>
+        </ul>
+        <!--一大四小-->
+        <ul :class="{'has_gap':widget.data.has_gap}" v-else-if="(widget.data.cols=='col-7')">
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[0]">
+                    <img :src="widget.data.items[0].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[0].text!=''&&widget.data.items[0].text!=null">{{widget.data.items[0].text}}</span>
+               </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[1]">
+                    <img :src="widget.data.items[1].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[1].text!=''&&widget.data.items[1].text!=null">{{widget.data.items[1].text}}</span>
+               </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[2]">
+                    <img :src="widget.data.items[2].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[2].text!=''&&widget.data.items[2].text!=null">{{widget.data.items[2].text}}</span>
+                </a>
+                
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[3]">
+                    <img :src="widget.data.items[3].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[3].text!=''&&widget.data.items[3].text!=null">{{widget.data.items[3].text}}</span>
+                </a>
+                
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[4]">
+                    <img :src="widget.data.items[4].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[4].text!=''&&widget.data.items[4].text!=null">{{widget.data.items[4].text}}</span>
+                </a>
+                
+        	</li>
+        </ul>
+        <ul :class="{'has_gap':widget.data.has_gap}" v-else-if="(widget.data.cols=='col-8')">
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[2]">
+                    <img :src="widget.data.items[2].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[2].text!=''&&widget.data.items[2].text!=null">{{widget.data.items[2].text}}</span>
+               </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[1]">
+                    <img :src="widget.data.items[1].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[1].text!=''&&widget.data.items[1].text!=null">{{widget.data.items[1].text}}</span>
+               </a>
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[0]">
+                    <img :src="widget.data.items[0].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[0].text!=''&&widget.data.items[0].text!=null">{{widget.data.items[0].text}}</span>
+                </a>
+                
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[4]">
+                    <img :src="widget.data.items[4].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[4].text!=''&&widget.data.items[4].text!=null">{{widget.data.items[4].text}}</span>
+                </a>
+                
+        	</li>
+        	<li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+        		<a href="javascript:;" v-if="widget.data.items[3]">
+                    <img :src="widget.data.items[3].image.src"/>
+                    <span class="absoluteBg" v-if="widget.data.items[3].text!=''&&widget.data.items[3].text!=null">{{widget.data.items[3].text}}</span>
+                </a>
+                
+        	</li>
+        </ul>
+        <!--<ul :class="{'has_gap':widget.data.has_gap}" v-else>
+            <li :class="{'has_gap':widget.data.has_gap,'has_radius':widget.data.has_radius}">
+                <a href="javascript:;">
+                    <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" />
+                </a>
+            </li>
+        </ul>-->
+    </section>
+</template>
+<script type="text/javascript">
+
+var widget_child_smartwindow = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-smartwindow',
+    created:function(){
+    	
+    }
+});
+</script>

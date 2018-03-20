@@ -1,0 +1,6 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="admin_clearexpdata">体验数据清除</permission>
+    </permissions>
+    <adminpanel action="clear" controller="admin_default" display="true" group="desktop_system" order='55' permission="admin_clearexpdata">体验数据清除</adminpanel>
+</desktop>

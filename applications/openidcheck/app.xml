@@ -1,0 +1,18 @@
+<app>
+    <name>信任登陆账户注册拦截器</name>
+
+    <description>当用户通过信任联合账户登陆自动系统,此应用可以提示用户用手机号注册</description>
+
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+
+    <version>1.0</version>
+    <license>http://www.vmcshop.com/license</license>
+    <depends>
+        <app>b2c</app>
+    </depends>
+
+</app>

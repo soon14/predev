@@ -1,0 +1,113 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link type="image/x-icon" href="<{$env.conf.mobile.mobile_icon|storager}>" rel="apple-touch-icon-precomposed">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>微信安全支付</title>
+    <style media="screen">
+        body {
+            background: #e7e8eb;
+            font-size: 14px;
+            font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+            color: #222;
+            padding: 0;
+            margin: 0;
+        }
+
+        .header {
+            background: #fff;
+            border-top: 4px solid #44b549;
+            border-bottom: 1px solid #d9dadc;
+        }
+
+        .container {
+            margin: 20px auto;
+            width: 95%;
+        }
+
+        .c-h {
+            line-height: 38px;
+            height: 38px;
+            padding: 0 14px;
+            background-color: #f4f5f9;
+            border-bottom: 1px solid #e7e7eb;
+        }
+
+        .info-box {
+            background: #fff;
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .info-box strong {
+            font-size: 32px;
+        }
+    </style>
+    <script type="text/javascript">
+        //调用微信JS api 支付
+        function jsApiCall() {
+            WeixinJSBridge.invoke(
+                'getBrandWCPayRequest', <{$jsapi_object}> ,
+                function(res) {
+                    var msg = res.err_msg;
+                    WeixinJSBridge.log(msg);
+                    switch (msg) {
+                        case 'get_brand_wcpay_request:ok': //支付成功时
+                            setTimeout(function(){
+                                <{if $return_url}>
+                                location = "<{$return_url}>";
+                                <{else}>
+                                location = "<{link app=b2c ctl=mobile_checkout act=payresult args0=$bill_id}>";
+                                <{/if}>
+                            },2000);
+                            break;
+                        default: //支付失败时
+                            WeixinJSBridge.log('支付失败!'+msg+',请返回重试.');
+                            break;
+                    }
+                }
+            );
+
+        }
+
+        function callpay() {
+            if (typeof WeixinJSBridge == "undefined") {
+                if (document.addEventListener) {
+                    document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+                } else if (document.attachEvent) {
+                    document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+                    document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+                }
+            } else {
+                jsApiCall();
+            }
+        }
+    </script>
+</head>
+
+<body onload="callpay();">
+    <div class="header">
+        <div class="container">
+            <h1>
+                <img src="https://wx.gtimg.com/pay/img/common/logo.png" alt="微信支付" />
+            </h1>
+        </div>
+    </div>
+    <div class="container">
+        <div class="info-box">
+            <p>正在进行微信支付操作</p>
+            <div class='info'>
+                应付金额：
+                <small>￥</small><strong><{$total_fee|cur}></strong>
+                <br> 订单编号：<{$order_id}>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

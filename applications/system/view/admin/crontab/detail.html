@@ -1,0 +1,99 @@
+<h3 class="page-title">编辑定时计划任务</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=system&ctl=admin_crontab&act=index">计划任务列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">编辑定时计划任务</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=system&ctl=admin_crontab&act=save" method="post" id='crontab_form' class="form" >
+    <input type="hidden" name="id" value="<{$cron['id']}>" />
+        <div class="form form-horizontal">
+            <div class="form-body">
+                <div class="form-group">
+                    <div class="well">
+                        <h2><{$cron['description']}><br><small><{$cron['id']}></small></h2>
+                        <ul class="list-unstyled">
+                            <li>最后执行时间：<{$cron['last']|cdate}></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">
+                        定时规则<i class="required">*</i>
+                    </label>
+                    <div class="col-md-7">
+                        <div class="input-icon right">
+                            <i class="fa  fa-question  tooltips" data-original-title="这是 UNIX crontab 定时语法" data-container="body"></i>
+                            <input class="form-control" name="schedule" type="text" require="true" value="<{$cron['schedule']}>" />
+                        </div>
+                            <pre>
+
+*   *   *   *   *
+1   2   3   4   5
+|   |   |   |   |
+|   |   |   |   +------ day of week (0 - 6) (Sunday=0)
+|   |   |   +------ month (1 - 12)
+|   |   +-------- day of month (1 - 31)
+|   +---------- hour (0 - 23)
++------------ min (0 - 59)
+<hr>
+第1列代表分钟1～59 （每分钟用*或者 */1表示，*/5 代表每5分钟）
+第2列代表小时1～23（0表示0点）
+第3列代表日期1～31
+第4列代表月份1～12
+第5列代表星期0～6（0表示星期天）
+
+                            </pre>
+                            <a target="_blank" href="https://www.baidu.com/s?wd=linux%20crontab%20%E6%97%B6%E9%97%B4">更多crontab定时规则帮助信息
+                                <i class="fa fa-paw"></i>
+                            </a>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">
+                        是否启用<i class="required">*</i>
+                    </label>
+                    <div class="col-md-5">
+                        <select name="enabled" class="form-control">
+                	      <option value="true">启用</option>
+                	      <option <{if $cron['enabled'] == 'false'}> selected <{/if}> value="false">禁用</option>
+                	    </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">
+                        单进程执行<i class="required">*</i>
+                    </label>
+                    <div class="col-md-5">
+                        <select name="is_unique" class="form-control">
+                            <option <{if $cron['is_unique']}> selected <{/if}> value="1">是</option>
+                            <option <{if !$cron['is_unique']}> selected <{/if}> value="0">否</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                        <a class="btn default" href="index.php?app=system&ctl=admin_crontab&act=index">返回</a>
+                    </div>
+            </div>
+        </div>
+
+    <div>
+</form>
+<script>
+$(function(){
+    var ipt_schedule = $('#crontab_form input[name="schedule"]');
+    $('#crontab_form .tooltips').tooltip();
+
+});
+
+</script>

@@ -1,0 +1,108 @@
+save && dump文档
+
+since   :   %%date(%Y-%m-%d)  $Rev$
+
+%!target:html
+%!postproc(tex): '\.gif' '.eps'
+%!preproc(html): '\.dot' '.gif'
+%!preproc(tex): '\.dot' '.pdf'
+%!encoding:utf-8
+
+== 配置 ==
+
+== $has_many,$has_one ==
+
+=== 说明 ===
+标明表的对外一对多($has_many)一对一关系($has_one)
+
+=== 语法 ===
+```
+var $has_many = array(
+    'sdfkey'=>'表名(@app名):操作:字段关联',
+    ....
+);
+```
+
+| 名称 | 说明 | 默认值 | 必须 |
+| sdfkey | 对应关系在sdf树中的挂载点名 | 无 | √ |
+| 表名 | 对应的表名 | 无 | √ |
+| 操作 | save的操作方式( append:只对导入数据做save保存 不对数据库原有数据做操作/replace:先删除数据库原有所有相关数据 再对导入数据做save/contrast:和数据数原有数据做比对 导入数据原有数据存在库中做update 不存在insert 数据库存在未导入数据delete) | append | 　 |
+| 字段关联 | 本表字段^关联表字段 2表之间 | 本表主键 与 对应表dbschema中"type=>table:本表名"字段 不能关联用此方法标识对应关系 | 　 |
+
++=save=+
+
+function save(&$data,$mustUpdate = null)
+
+==参数==
+| 名称 | 说明 | 结构 | 引用 | 必要 |
+| $data | 需保存数据的 | sdf | √ | √ |
+| $mustUpdate | 必须保存的结构说明 | sdf | 　 | 　 |
+
+==说明==
+将单条sdf数据通过has_many,has_one配置递归save入数据库，联合主键表不支持递归save，返回bool，主键返回$data
+
++=set_default=+
+function set_default( $parentId, $defaultDataId )
+
+==参数==
+| 名称 | 说明 |
+| $parentId | 父表id |
+| $defaultDataId | 本表默认值id |
+
+==说明==
+设定默认值方法，当默认值id由父表记录时 需要重载 返回bool
+
++=dump=+
+
+function dump($filter,$field = '*',$subSdf = null)
+
+==参数==
+| 名称 | 说明 | 类型 | 默认 | 必要 |
+| $filter | 搜索条件 | String(表示主键)或array | 　 | √ |
+| $field | 主表需要输出字段 | String | * | 　 |
+| $subSdf | 附加输出的子节点sdf | String或array | null | 　 |
+
+==$subSdf语法==
+```
+array(
+    'key'=>array('field' subsdf),
+    ':Foreign key'=>array(
+        'field',subsdf
+    ),
+)
+```
+
+| 名称 | 说明 | 
+| key | has_many/has_one定义键值 支持xpath语法 |
+| field | 子表所需输出字段 |
+| Foreign key | dbschema定义的外键表名 :前有string可以自定义外联表数据在sdf树中的键名 |
+| subsdf | 子表subsdf |
+
+标准sdf结构的subsdf定义在model中
+例:mdl.goods.php
+    var $subSdf = array(
+            'default' => subsdf ......
+        );
+未定义为has_many,has_one的集合 不dump外键
+
+使用方法:$goods = $oGoods->dump($goods_id,'*','default');
+可以自定义别的写法 basic,simple等等等
+
+==dump depend重载==
+没最终想好怎么弄
+暂时需要重载的参考mdl.products.php
+```
+function _dump_depends_goods_lv_price(&$data,&$redata,$filter,$subSdfKey,$subSdfVal)
+```
+
+==说明==
+返回单条sdf结构数据 一对多数据输出list 会以主键id做key 联合主键以父表主键外的主键做key
+
++=batch_dump=+
+```
+function batch_dump($filter,$field = '*',$subSdf = null,$start=0,$limit=20,$orderType = null )
+参数:$filter,$field,$subSdf 同dump ,$start=0,$limit=20,$orderType同getList
+返回多个sdf
+```
+
+

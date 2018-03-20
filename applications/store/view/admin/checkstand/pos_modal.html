@@ -1,0 +1,355 @@
+<!-- 商品查找加入 -->
+<div class="modal pos-modal" id="goods_filter_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <h3 class="modal-title">查询商品</h3>
+            </div>
+            <div class="modal-body">
+                <div class="panel object-filter" id="product_filter">
+                    <div class="panel-heading">
+                        <div class="input-group" id="change_filter_type">
+                            <div class="input-group-btn">
+                                <button id="change_filter_type_btn" type="button" class="btn btn-lg default dropdown-toggle" data-toggle="dropdown" tabindex="-1">
+                                    <span>商品名称</span>
+                                    <i class="fa fa-angle-down"></i>
+                                </button>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li class="filter_type active" data-name="name" data-placeholder="请输入商品名称搜索">
+                                        <a href="javascript:void(0);">商品名称</a>
+                                    </li>
+                                    <li class="filter_type" data-name="bn" data-placeholder="请输入货号定位货品">
+                                        <a href="javascript:void(0);">货号</a>
+                                    </li>
+                                    <li class="filter_type" data-name="barcode" data-placeholder="请输入条码定位货品">
+                                        <a href="javascript:void(0);">条码</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <input class="form-control input-lg" id="product_filter_input" name="filter[name|has]" type="text" style="font-size:18px;height:43px;" placeholder="请输入商品名称搜索">
+                        </div>
+                    </div>
+                    <div class="panel-body" style="cursor:pointer;">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<!-- 促销明细 -->
+<div class="modal pos-modal" id="promotions_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <h3 class="modal-title">优惠明细</h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 购物车条目编辑 -->
+<div class="modal pos-modal" id="item_edit_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<!-- 取单 -->
+<div class="modal pos-modal" id="pickup_order_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <h3 class="modal-title">取回挂起订单</h3>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li class="list-group-item hidden tpl">
+                        <div class="row">
+                            <div class="col-xs-10">
+                                <h4><i class="fa fa-list"></i> {handup_time}
+                                    <small>被挂起</small>
+                                    <span class="label label-default">数量：{goods_count}，应付 ¥{order_total}</span></h4>
+                                <table class="table">
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="col-xs-2">
+                                <button class="icon-btn" data-oid="{tmp_order_id}" data-act="delete">
+                                    <i class="font-red glyphicon glyphicon-trash"></i>
+
+                                    <div>删除</div>
+                                </button>
+                                <br><br>
+                                <button class="icon-btn" data-oid="{tmp_order_id}" data-act="pickup">
+                                    <i class="font-green glyphicon glyphicon-export"></i>
+
+                                    <div>取单</div>
+                                </button>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button type="button" class="btn btn-block btn-lg default" data-dismiss="modal">关闭</button>
+                    </div>
+                    <!-- <div class="col-xs-6">
+                         <button type="button" class="btn button-confirm btn-block btn-lg blue" data-dismiss="modal">确认</button>
+                    </div> -->
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 会员 -->
+<div class="modal pos-modal" id="member_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <h3 class="modal-title">会员查找</h3>
+            </div>
+            <div class="modal-body">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <div class="form-group">
+                            <div class="input-icon right ">
+                                <i class="fa  fa-spinner font-yellow  fa-spin hidden"></i>
+                                <input class="form-control ipt-member-fix input-lg" id="member_phone_or_card" type="text" placeholder="手机号/帐号">
+                                <span class="help-block error-msg font-red">&nbsp;</span>
+                            </div>
+                        </div>
+                    </li>
+
+                </ul>
+
+
+            </div>
+            <div class="modal-footer">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal pos-modal" id="member_show_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                <h3 class="modal-title">会员详情</h3>
+            </div>
+            <div class="modal-body">
+
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <button type="button" data-memberid="{m_memberid}" class="btn btn-block button-cancel btn-lg red" data-dismiss="modal">取消会员</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" class="btn button-confirm btn-block btn-lg blue" data-dismiss="modal">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 优惠券使用 -->
+<div class="modal pos-modal fade" id="coupon_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<!-- 配送设置 -->
+<div class="modal pos-modal fade" id="delivery_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<!--收银台显示结账信息模态框 start-->
+<div class="modal fade" id="show_payment_info_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-md">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+<!--收银台显示结账信息模态框 end-->
+
+<!--更改支付方式模态框 start-->
+<div class="modal fade" id="change_pay_method_modal" role="dialog" aria-hidden="true">
+    <input id="pay_order_id" type="hidden">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">关闭</span></button>
+                <h3 class="modal-title">修改支付方式</h3>
+            </div>
+            <div style="display: none;text-align: center;font-size: 1.5em" id="show_pay_info_item" ><span style="font-size: 0.7em">应付金额：￥</span></span><span id="pay_total_pay"  class="pay_info_item">176.50</span>      已付金额：￥<span id="pay_payed" class="pay_info_item"> 100.00</span>         差额：￥<span id="pay_need_pay" class="pay_info_item">76.50</span></div>
+            <div class="modal-body">
+
+                <div class="row cash-btn">
+                    <{if $have_cash_pay_permission}>
+                    <div class="col-sm-3">
+                        <button class="pay-method-btn icon-btn text-danger btn-block " type="button" data-payappid="cash">
+                            <i class="fa fa-money"></i>
+
+                            <div>现金</div>
+                            <i class="fa fa-check-circle-o" style="position:absolute;top:-5px;right:-5px;"></i>
+                        </button>
+                    </div>
+                    <{/if}>
+                    <div class="col-sm-3">
+                        <button class="pay-method-btn icon-btn btn-block" type="button" data-payappid="paybycard">
+                            <i class="fa fa-credit-card"></i>
+
+                            <div>刷卡</div>
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="pay-method-btn icon-btn btn-block" type="button" data-payappid="alipayqrcode">
+                            <i class="fa fa-qrcode"></i>
+
+                            <div>支付宝扫码付</div>
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="pay-method-btn icon-btn btn-block" type="button" data-payappid="wxqrcode">
+                            <i class="fa fa-weixin"></i>
+
+                            <div>微信扫码付</div>
+                        </button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<!--更改支付方式模态框 end-->
+
+<div class="modal" id="payment_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">关闭</span></button>
+                <h3 class="modal-title">结账</h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="row cash-btn">
+                    <{if $have_cash_pay_permission}>
+                    <div class="col-sm-3 ">
+                        <button type="button" data-payappid="cash" class="icon-btn btn-block">
+                            <i class="fa fa-money"></i>
+                            <div>现金</div>
+                        </button>
+                    </div>
+                    <{/if}>
+                    <div class="col-sm-3">
+                        <button type="button" data-payappid="paybycard" class="icon-btn btn-block">
+                            <i class="fa fa-credit-card"></i>
+
+                            <div>刷卡</div>
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" data-payappid="alipayqrcode" class="icon-btn btn-block ">
+                            <i class="fa fa-qrcode"></i>
+
+                            <div>支付宝扫码付</div>
+                        </button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button type="button" data-payappid="wxqrcode" class="icon-btn btn-block">
+                            <i class="fa fa-weixin"></i>
+
+                            <div>微信扫码付</div>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<!--当班报表-->
+<div class="modal fade" id="report_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">关闭</span></button>
+                <h3 class="modal-title">当班报表</h3>
+            </div>
+
+            <div class="modal-body">
+                <div class="row">
+                    <form action="" method="post" target="print_iframe" class="form">
+                        <div class="form-group">
+                            <label class="col-md-12 control-label">时间范围</label>
+                            <div class="col-md-12">
+                                从<{input type="time" name="report_from" value=$report.from}>
+                            </div>
+                            <div class="col-md-12">
+                                至<{input type="time" name="report_to" value=$report.to}>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <div class="row">
+
+                    <!-- <div class="col-xs-6">
+                        <button type="button"  class="btn btn-block button-cancel btn-lg red" data-dismiss="modal">取消</button>
+                    </div> -->
+                    <{if $have_print_store_report_permission}>
+                    <div class="col-xs-6">
+                        <button type="button" class="btn button-confirm btn-block btn-lg blue" data-dismiss="modal" data-url="index.php?app=store&ctl=admin_report&act=current_count&singlepage=1&p[0]=store">打印收银员报表</button>
+                    </div>
+                    <div class="col-xs-6">
+                        <button type="button" class="btn button-confirm btn-block btn-lg blue" data-dismiss="modal" data-url="index.php?app=store&ctl=admin_report&act=print_store_report&singlepage=1&p[0]=store">打印店铺报表</button>
+                    </div>
+                    <{else}>
+                    <div class="col-xs-12">
+                        <button type="button" class="btn button-confirm btn-block btn-lg blue " data-dismiss="modal" data-url="index.php?app=store&ctl=admin_report&act=current_count&singlepage=1&p[0]=store">打印</button>
+                    </div>
+                    <{/if}>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>

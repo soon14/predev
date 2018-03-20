@@ -1,0 +1,15 @@
+<app version="1.0">
+    <name>售后服务模块</name>
+    <description>订单售后服务相关功能</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.2</version>
+    <license>http://www.vmcshop.com/license</license>
+    <parent_model_class>dbeav_model</parent_model_class>
+    <depends>
+        <app>b2c</app>
+    </depends>
+</app>

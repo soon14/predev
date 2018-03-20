@@ -1,0 +1,383 @@
+<!-- 设计面板 - 选择商品多选 -->
+<template id="design-column-multi-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-12">
+            <div class="column-multi-select-box" :id="widget.name + '_select_column_multi_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectColumn($event)">
+                        <i class="fa fa-list-alt"></i> 选择栏目
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_column_multi_selected_' + index">
+                            <tr v-for="(column, column_key) in columns">
+                                <td><a href="javascript:;" @click.stop="removeColumn(column_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{column.node_name}}</td>
+                                <td>{{column.node_id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" :id="widget.name + '_select_column_multi_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!-- 设计面板 - 选择分类 -->
+<template id="design-content-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-12">
+            <div class="content-select-box" :id="widget.name + '_select_content_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectContent($event)">
+                        <i class="fa fa-list-alt"></i> 选择内容
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_content_selected_' + index">
+                            <tr v-for="(content, content_key) in contents">
+                                <td><a href="javascript:;" @click.stop="removeContent(content_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{content.title}}</td>
+                                <td>{{content.article_id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal fade" :id="widget.name + '_select_content_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/javascript">
+// 设置产品筛选
+// 
+designStore.methods.setFilterColumnId = function(vnode, column_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.column_id = column_id;
+};
+designStore.methods.removeFilterColumnId = function(vnode, column_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.column_id.splice(column_key, 1);
+};
+// 
+designStore.methods.setFilterContentId = function(vnode, content_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.content_id = content_id;
+};
+designStore.methods.removeFilterContentId = function(vnode, content_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.content_id.splice(content_key, 1);
+};
+// 设计面板 - 选择商品多选
+var design_column_multi_selector = Vue.extend({
+    props: ['widget', 'index', 'column_id'],
+    data: function() {
+        return {
+            columns: {}
+        };
+    },
+    template: '#design-column-multi-selector',
+    methods: {
+        //
+        listColumns: function(column_id) {
+            this.columns = {};
+            if (!column_id) return;
+            if(column_id.length==0) return;
+            var t = this;
+            //请求
+            console.log(column_id);
+            axios.post('/index.php/openapi/content_node/tree', {
+                    node_id: column_id[0]
+                })
+                .then(function(response) {
+                    if (!response.data)
+                        return false;
+                        t.columns=[];
+                    t.columns.push(response.data.data[0]);
+                });
+        },
+//      // 选择栏目
+        onSelectColumn: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.column-multi-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_column_multi_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onColumnsSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+// 更改         'http://develop.vmcshop.com/index.php/console/index.php?app=desktop&ctl=finder&act=object_select&finder_mdl=content_mdl_article_nodes&multiple=false'
+            modalBox.find('.modal-body').load('/index.php/console/index.php?app=desktop&ctl=finder&act=object_select&finder_mdl=content_mdl_article_nodes&multiple=false', function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeColumn: function(column_key) {
+            this.columns.splice(column_key, 1);
+            this.$parent.removeColumn(column_key);
+        },
+        // 已改变
+        onColumnsSelected: function(selected) {
+            var column_id = this.column_id ? designStore.clone(this.column_id) : [];
+            if(!(column_id instanceof Array)){
+                var tmp = column_id;
+                column_id = [tmp];
+            }
+            this.columns = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!column_id || column_id.indexOf(selected[n].value) < 0) {
+                    	column_id = [];
+                        column_id.push(selected[n].value);
+                    }
+                }
+            }
+            this.listColumns(column_id);
+            this.$parent.columnsChange(column_id);
+        },
+        // 初始化
+        onInit: function() {
+        	console.log(this.column_id);
+            if (this.column_id) this.listColumns(this.column_id);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-column-multi-selector', design_column_multi_selector);
+
+// 设计面板 - 选择分类
+var design_content_selector = Vue.extend({
+    props: ['widget', 'index', 'content_id'],
+    data: function() {
+        return {
+            contents: {}
+        };
+    },
+    template: '#design-content-selector',
+    methods: {
+        //
+        listContents: function(content_id) {
+            this.contents = {};
+            if (!content_id) return;
+            if(content_id.length==0) return;
+            var t = this;
+            console.log(content_id);
+				$.post('/index.php/console/index.php?app=desktop&ctl=finder&act=object_row',{
+		            'app':'content',
+		            'model':'article_indexs',
+		            'cols':'article_id,title',
+		            'name':"article_id",
+		            'pkey':'article_id',
+		            filter: {
+		            	article_id:content_id
+		            },
+		            'json': true
+		       },function(response){
+		                  if (!response)
+		                      return false;
+		                  t.contents = response;
+		        }, 'json');
+        },
+        // 选择分类
+        onSelectContent: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.content-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_content_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onContentSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load('/index.php/console/index.php?app=desktop&ctl=finder&act=object_select&finder_mdl=content_mdl_article_indexs&multiple=true', function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeContent: function(content_key) {
+            this.contents.splice(content_key, 1);
+            this.$parent.removeContent(content_key);
+        },
+        // 已改变
+        onContentSelected: function(selected) {
+            var content_id = this.content_id ? designStore.clone(this.content_id) : [];
+            if(!(content_id instanceof Array)){
+                var tmp = content_id;
+                content_id = [tmp];
+            }
+            this.contents = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!content_id || content_id.indexOf(selected[n].value) < 0) {
+                        content_id.push(selected[n].value);
+                    }
+                }
+            }
+            this.listContents(content_id);
+            this.$parent.contentChange(content_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.content_id) this.listContents(this.content_id);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-content-selector', design_content_selector);
+
+</script>

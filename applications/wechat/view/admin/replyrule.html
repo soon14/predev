@@ -1,0 +1,321 @@
+<style media="screen">
+    .media-form-part{
+        border:2px #fff solid;
+        cursor: pointer;
+    }
+    .media-form-part.active{
+        border-color:#35aa47;
+    }
+    <{if $rule}>
+        .list-group .list-group-item.active{
+            background:#fff;
+            color:#222;
+            border:none;
+        }
+    <{/if}>
+</style>
+<h3 class="page-title">
+    <{if $rule}>编辑<{else}>
+    新建<{/if}>自动回复规则
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=wechat&ctl=admin_autoreply&act=index">自动回复规则列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">新建自动回复规则</a>
+        </li>
+    </ul>
+</div>
+<div class="row">
+    <div class="col-md-<{if $rule}>1<{/if}>2">
+        <div class="list-group bind-list">
+            <{foreach from=$wx_paccounts item=item}>
+                <{if $rule.bind_id && $rule.bind_id!=$item.id}>
+                    <{continue;}>
+                <{/if}>
+                <a href="javascript:;" class="list-group-item" data-bindid="<{$item.id}>">
+                    <img src="<{$item.avatar|storager}>" class="img-circle" width="50" alt="" />
+                    <strong><{$item.name}></strong>
+                </a>
+            <{/foreach}>
+        </div>
+    </div>
+    <div class="col-md-10">
+        <form id="replyrule_form" method="post" action="index.php?app=wechat&ctl=admin_autoreply&act=save" class="form-horizontal">
+            <{if $rule}>
+            <input type="hidden" name="replyrule_id" value="<{$rule.replyrule_id}>">
+            <{/if}>
+            <input type="hidden" name="bind_id" value="<{$rule.bind_id}>">
+            <input type="hidden" name="media[bind_id]" value="<{$rule.bind_id}>">
+            <div class="form form-body">
+                <div class="form-group">
+                    <label class="col-md-2 control-label">当用户</label>
+                    <div class="col-md-4">
+                        <select class="form-control" name="reply_type" id="sel_reply_type">
+                            <option value='keywords'>对公众号发微信时</option>
+                            <option value='subscribe'>关注公众号时</option>
+                            <!-- <option value='unsubscribe'>取消关注时</option> -->
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group" id="keywords_formgroup">
+                    <label class="col-md-2 control-label">并且关键词是</label>
+                    <div class="col-md-10">
+                        <input type="text" id="keywords_input" name="keywords" value="<{$rule.keywords}>" class="form-control" />
+                    </div>
+
+                </div>
+                <{if $rule}>
+                <{assign var=current_media value=$rule.media}>
+                <div class="form-group">
+                    <div class="col-md-10 col-md-offset-2">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <h3 class="panel-title">当前回复</h3>
+                            </div>
+                            <div class="panel-body">
+                        <{switch from=$current_media.wtype}>
+                            <{case value='text'}>
+                            <p>
+                                <{$current_media.wcontent.text}>
+                            </p>
+                            <{case value='image'}>
+                            <div class="media">
+                              <div class="media-left">
+                                <a href="<{$current_media.wcontent.PicUrl}>" target="_blank">
+                                  <img width="100" class="media-object"  src="<{$current_media.wcontent.PicUrl}>">
+                                </a>
+                              </div>
+                              <div class="media-body">
+                                <h4 class="media-heading">纯图片回复</h4>
+                              </div>
+                            </div>
+                            <{case value='news'}>
+                            <div class="media">
+                              <div class="media-left">
+                                <a href="<{$current_media.wcontent.Articles.item.Url}>" target="_blank">
+                                  <img width="100"class="media-object"  src="<{$current_media.wcontent.Articles.item.PicUrl}>">
+                                </a>
+                              </div>
+                              <div class="media-body">
+                                <h4 class="media-heading"><a href="<{$current_media.wcontent.Articles.item.Url}>"><{$current_media.wcontent.Articles.item.Title}></a></h4>
+                                <{$current_media.wcontent.Articles.item.Description}>
+                              </div>
+                            </div>
+                            <{case value='voice'}>
+                            <div class="thumbnail">
+                                <div class="well well-xs text-center" style="margin:0;">
+                                    <i class="icon-volume-2" style="font-size:32px"></i>
+                                </div>
+                                <div class="caption">
+                                    <h5><{$current_media.wtitle}></h5>
+                                    <small class="text-muted"><{$current_media.wcontent.update_time|cdate}></small>
+                                </div>
+                            </div>
+                            <{case value='video'}>
+                            <div class="thumbnail">
+                                <div class="well well-xs text-center" style="margin:0;">
+                                    <i class="icon-social-youtube" style="font-size:32px"></i>
+                                </div>
+                                <div class="caption">
+                                    <h5><{$current_media.wcontent.Title}></h5>
+                                    <small class="text-muted"><{$current_media.wcontent.update_time|cdate}></small>
+                                    <p>
+                                        <{$current_media.wcontent.Description}>
+                                    </p>
+                                </div>
+                            </div>
+                        <{/switch}>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <{/if}>
+                <div class="form-group">
+                    <label class="col-md-2 control-label"><{if $rule}><span class="text-danger">修改为</span><{/if}>回复用户：
+                    <span class="font-green" id="media_use_icon"></span>
+                    </label>
+                    <div class="col-md-10">
+                        <ul class="nav nav-tabs wechat-reply-tabs" id="media_tab_nav">
+                            <li class="active"><a href="#media_text" data-toggle="tab" >
+                                <i class="fa  fa-file-word-o "></i>
+                                纯文本</a></li>
+                            <li><a href="#media_news" data-remotetype="news" data-toggle="tab">
+                                <i class="fa fa-list-alt"></i>
+                                 图文消息</a></li>
+                            <li><a href="#media_image"  data-toggle="tab" data-remotetype="image">
+                                <i class="fa fa-image "></i>
+                                 图片库</a></li>
+                            <li><a href="#media_voice" data-toggle="tab" data-remotetype="voice">
+                                <i class="fa fa-file-audio-o "></i>
+                                语音</a></li>
+                            <li><a href="#media_video" data-toggle="tab" data-remotetype="video">
+                                <i class="fa  fa-video-camera "></i>
+                                视频</a></li>
+
+                        </ul>
+                        <div class="tab-content" id="media_tab_content">
+                            <div class="tab-pane active" id="media_text">
+                                <div class="media-form-part">
+                                <input type="hidden" name="media[wtitle]" value="纯文本">
+                                <input type="hidden" name="media[wtype]" value="text">
+                                <textarea class="form-control" name="media[wcontent][text]" rows="8" cols="40" required="true" placeholder="请输入自动回复内容"><{$current_media.wcontent.text}></textarea>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="media_news">
+                                <div class="media-form-part">
+                                    <input type="hidden" name="media[wtitle]" value="图文">
+                                    <input type="hidden" name="media[wtype]" value="news">
+                                    <table class="table table-hover">
+                                        <tr>
+                                            <td rowspan="4" style="width:200px">
+                                                <{input name="media[wcontent][Articles][item][PicUrl_image_id]" type=image width=180 height=100 value=$current_media.wcontent.Articles.item.PicUrl_image_id}>
+                                                <span class="help-block">图片宽高比例9:5最佳</span>
+                                            </td>
+                                        </tr>
+                                        <tr><td class="text-right" style="width:70px;">标题</td>
+                                            <td>
+                                                <input class="form-control" type="text" name="media[wcontent][Articles][item][Title]" required="true" value="<{$current_media.wcontent.Articles.item.Title}>">
+                                            </td>
+                                        </tr>
+                                        <tr><td class="text-right">简介</td>
+                                            <td>
+                                                <textarea class="form-control" name="media[wcontent][Articles][item][Description]" required="true" rows="2" ><{$current_media.wcontent.Articles.item.Description}></textarea>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td class="text-right">超链接</td>
+                                            <td><input class="form-control" type="url" name="media[wcontent][Articles][item][Url]" value="<{$current_media.wcontent.Articles.item.Url}>" placeholder="http://开头" required="true"></td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div data-updatecontainer="true">
+                                    <div class="alert alert-info">
+                                        正在加载...
+                                    </div>
+                                </div>
+                            </div>
+                            <div  class="tab-pane" id="media_image" >
+                                <div data-updatecontainer="true">
+                                <div class="alert alert-info">
+                                    正在加载...
+                                </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="media_voice" >
+                                <div data-updatecontainer="true">
+                                <div class="alert alert-info">
+                                    正在加载...
+                                </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane" id="media_video" >
+                                <div data-updatecontainer="true">
+                                <div class="alert alert-info">
+                                    正在加载...
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                <div class="form-group">
+                    <label class="col-md-2 control-label"></label>
+                    <div class="col-md-4">
+                        <a href="index.php?app=wechat&ctl=admin_autoreply&act=index" class="btn default" >返回</a>
+                        <button type="submit" class="btn blue" id="save_replyrule">保存规则</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(function(){
+        //加载公众号素材
+        var _load = function(bind_id,type,upcontainer){
+            if(upcontainer.data('last_load') == (bind_id+type))return;
+            $(upcontainer).load('index.php?app=wechat&ctl=admin_autoreply&act=get_media&p[0]='+bind_id+'&p[1]='+type+'&p[2]=1');
+            upcontainer.data('last_load',(bind_id+type));
+
+        };
+        //tabs 切换事件监听
+        $('.wechat-reply-tabs a[data-toggle="tab"]').on('shown.bs.tab',function(e){
+            var at = $(e.target),type = at.attr('data-remotetype');
+            if(!type)return;
+            var current_pane = $('#media_'+type);
+            _load($('.bind-list .active').attr('data-bindid'),type,current_pane.find('div[data-updatecontainer]'));
+        });
+        //关键词输入
+        $('#keywords_input').tagsInput({
+            width: 'auto',
+            'defaultText':'输入新词',
+        });
+        //回复类型切换时隐藏显示相关
+        $('#sel_reply_type').on('change',function(e){
+            if($(this).val()!='keywords'){
+                $('#keywords_formgroup').hide();
+                $('#keywords_formgroup').find('select,input').prop('disabled',true);
+            }else{
+                $('#keywords_formgroup').show();
+                $('#keywords_formgroup').find('select,input').removeProp('disabled');
+            }
+        });
+        <{if $rule && $rule.reply_type}>
+            $('#sel_reply_type').val('<{$rule.reply_type}>').trigger('change');
+        <{/if}>
+        /**
+         * 图文消息素材使用
+         */
+
+         $('#media_news').on('click','.list-group-item li button',function(e){
+             var title = $(this).next().text(),description = $(this).next().next().val(),url = $(this).next().prop('href')
+             $('#media_news input[name="media[wcontent][Articles][item][Title]"]').val(title);
+             $('#media_news textarea[name="media[wcontent][Articles][item][Description]"]').val(description);
+             $('#media_news input[name="media[wcontent][Articles][item][Url]"]').val(url);
+
+
+         });
+         //锁定回复内容
+         $('#media_tab_content').on('click','.media-form-part',function(e){
+             $('#media_tab_content .media-form-part.active').removeClass('active');
+             $(this).addClass('active').find('input,textarea').removeProp('disabled');
+             $('#media_tab_content .media-form-part:not(".active")').find('input[type="hidden"],input[type="text"],input[type="url"],input[type="email"],input[type="number"],textarea,button').prop('disabled',true);
+             var pane_id = $(this).closest('.tab-pane').prop('id');
+             $('#media_use_icon').empty().append($('#media_tab_nav a[href$="#'+pane_id+'"] i').clone());
+         });
+         $('#media_tab_nav a[data-toggle="tab"]').on('shown.bs.tab',function(e){
+             $('#media_tab_content .tab-pane.active .media-form-part').click();
+         });
+
+         //公众号切换
+         $('.bind-list').on('click','.list-group-item',function(e){
+             if($(this).hasClass('active'))return;
+             $('.bind-list .active').removeClass('active');
+             $(this).addClass('active');
+             $('#replyrule_form input[name="bind_id"],#replyrule_form input[name="media[bind_id]"]').val($(this).attr("data-bindid"));
+             $('#media_tab_content .media-form-part').eq(0).click();
+             $('#media_tab_nav li a').eq(0).tab('show');
+         });
+         //初始化
+         if($('.bind-list .list-group-item').length){
+             if(!$('.bind-list .list-group-item.active').length){
+                 $('.bind-list .list-group-item').eq(0).click();
+             }
+         }else{
+             bootbox.alert('请先绑定微信公众号！',function(e){
+                 load_page('index.php?app=wechat&ctl=admin_bind&act=bind_view');
+             });
+         }
+
+    });
+
+
+</script>

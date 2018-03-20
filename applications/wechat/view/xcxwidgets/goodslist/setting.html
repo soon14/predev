@@ -1,0 +1,228 @@
+<!-- ############### 编辑区域 ############### -->
+<!-- 产品列表 -->
+<template id="widget-child-setting-goodslist">
+    <div class="view-item-setting" :id="widget.name + '_setting_' + index">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{widget.title}}
+                <a type="button" class="icon icon-close pull-right" href="javascript:;" @click="closeEv"></a>
+            </div>
+            <div class="panel-body form-horizontal">
+                <ul class="nav nav-tabs">
+                    <li @click="viewStyle" :class="{'active': (active_tab == 'style')}">
+                        <a :href="'#' + widget.name + '_style_' + index" data-toggle="tab">样式设置</a>
+                    </li>
+                    <li @click="viewFilter" :class="{'active': (active_tab == 'filter')}">
+                        <a :href="'#' + widget.name + '_filter_' + index" data-toggle="tab">筛选设置</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" :class="{'active': (active_tab == 'style')}" :id="widget.name + '_style_' + index">
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <div class="checkbox">
+                                    <label :for="'show_title_' + index">
+                                        <input type="checkbox" :id="'show_title_' + index" v-model="widget.data.show_title" :checked="widget.data.show_title"> 是否显示标题
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label :for="'with_panel_' + index">
+                                        <input type="checkbox" :id="'with_panel_' + index" v-model="widget.data.with_panel" :checked="widget.data.with_panel"> 是否显示面板
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label :for="'card_style_' + index">
+                                        <input type="checkbox" :id="'card_style_' + index" v-model="widget.data.card_style" :checked="widget.data.card_style"> 卡片模式
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label :for="'show_product_title_' + index">
+                                        <input type="checkbox" :id="'show_product_title_' + index" v-model="widget.data.show_product_title" :checked="widget.data.show_product_title"> 显示产品标题
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label :for="'show_product_price_' + index">
+                                        <input type="checkbox" :id="'show_product_price_' + index" v-model="widget.data.show_product_price" :checked="widget.data.show_product_price"> 显示产品价格
+                                    </label>
+                                </div>
+                                <div class="checkbox">
+                                    <label :for="'show_product_brief_' + index">
+                                        <input type="checkbox" :id="'show_product_brief_' + index" v-model="widget.data.show_product_brief" :checked="widget.data.show_product_brief"> 显示产品介绍
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'title_' + index" class="col-sm-4 control-label">标题</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" :id="'title_' + index" placeholder="标题" v-model="widget.data.title" :value="widget.data.title">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'type_' + index" class="col-sm-4 control-label">显示类型</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" :id="widget.name + '_type_' + index" v-model="widget.data.type">
+                                    <option v-for="(type, type_key) in type_lists" v-bind:value="type_key">
+                                        {{type}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm" v-if="widget.data.type == 'swiper'">
+                            <label :for="'swiper_height_' + index" class="col-sm-4 control-label">滚动图片宽度</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="0" class="form-control" :id="'swiper_height_' + index" placeholder="滚动图片高度" v-model="widget.data.swiper_height" :value="widget.data.swiper_height">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm" v-if="widget.data.type == 'swiper'">
+                            <label :for="'swiper_item_margin_' + index" class="col-sm-4 control-label">滚动图片间距</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="0" class="form-control" :id="'swiper_item_margin_' + index" placeholder="滚动图片间距" v-model="widget.data.swiper_item_margin" :value="widget.data.swiper_item_margin">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" :class="{'active': (active_tab == 'filter')}" :id="widget.name + '_filter_' + index">
+                        <div class="text-right" style="margin-bottom: 5px;">
+                            <button type="button" class="btn btn-success btn-xs" @click="onGoodsUpdate">刷新产品</button>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'limit_' + index" class="col-sm-4 control-label">获取数量</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="0" class="form-control" :id="'limit_' + index" placeholder="获取数量" v-model="widget.data.limit" :value="widget.data.limit">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'tag_name_' + index" class="col-sm-4 control-label">筛选方式</label>
+                            <div class="col-sm-8">
+                                <div style="padding-left: 5px;">
+                                    <label :for="widget.name + '_filter_type_goods_' + index" class="radio-inline">
+                                        <input type="radio" :id="widget.name + '_filter_type_goods_' + index" value="goods_id" @click="changeFilterType" v-model="widget.data.filter_type">商品</label>
+                                    <label :for="widget.name + '_filter_type_cat_' + index" class="radio-inline">
+                                        <input type="radio" :id="widget.name + '_filter_type_cat_' + index" value="cat_id" @click="changeFilterType" v-model="widget.data.filter_type">分类</label>
+                                    <label :for="widget.name + '_filter_type_brand_' + index" class="radio-inline">
+                                        <input type="radio" :id="widget.name + '_filter_type_brand_' + index" value="brand_id" @click="changeFilterType" v-model="widget.data.filter_type">品牌</label>
+                                    <label :for="widget.name + '_filter_type_tag_' + index" class="radio-inline">
+                                        <input type="radio" :id="widget.name + '_filter_type_tag_' + index" value="tag_name" @click="changeFilterType" accept="" v-model="widget.data.filter_type">标签</label>
+                                    <label :for="widget.name + '_filter_type_collect_' + index" class="radio-inline">
+                                        <input type="radio" :id="widget.name + '_filter_type_collect_' + index" value="collection_id" @click="changeFilterType" v-model="widget.data.filter_type">集合</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-show="widget.data.filter_type == 'goods_id'">
+                            <design-goods-multi-selector :widget="widget" :index="index" :goods_id="widget.data.filter.goods_id"></design-goods-multi-selector>
+                        </div>
+                        <div v-show="widget.data.filter_type == 'cat_id'">
+                            <design-cat-selector :widget="widget" :index="index" :cat_id="widget.data.filter.cat_id"></design-cat-selector>
+                        </div>
+                        <div v-show="widget.data.filter_type == 'brand_id'">
+                            <design-brand-selector :widget="widget" :index="index" :brand_id="widget.data.filter.brand_id"></design-brand-selector>
+                        </div>
+                        <div v-show="widget.data.filter_type == 'tag_name'">
+                            <design-tag-selector :widget="widget" :index="index" :tag_name="widget.data.filter.tag_name"></design-tag-selector>
+                        </div>
+                        <div v-show="widget.data.filter_type == 'collection_id'">
+                            <design-collect-selector :widget="widget" :index="index" :collection_id="widget.data.filter.collection_id"></design-collect-selector>
+                        </div>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-success btn-xs" @click="onGoodsUpdate">刷新产品</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <button type="button" class="btn btn-primary btn-xs" @click="closeEv">关闭</button>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_child_setting_goodslist = Vue.extend({
+    props: ['widget', 'index'],
+    data: function() {
+        return {
+            active_tab: 'style',
+            edit_item: false,
+            edit: {
+                url: null,
+                image: {
+                    src: null,
+                    mode: 'widthFix'
+                }
+            },
+            create: {
+                disabled: false,
+                url: null,
+                image: {
+                    src: null,
+                    mode: 'widthFix'
+                }
+            },
+            type_lists: {
+                'swiper': '图片滚动方式',
+                'gallery': '图册方式',
+                'grid': '表格方式',
+                'tower': '塔式',
+                'list': '列表方式'
+            },
+        };
+    },
+    template: '#widget-child-setting-goodslist',
+    methods: {
+        closeEv: function() {
+            return designStore.methods.closeEv(this);
+        },
+        onGoodsUpdate: function() {
+            return designStore.methods.onGoodsUpdate(this);
+        },
+        // 查看样式设置
+        viewStyle: function() {
+            this.active_tab = 'style';
+        },
+        // 查看筛选
+        viewFilter: function() {
+            this.active_tab = 'filter';
+        },
+        changeFilterType: function () {
+            console.log(this.widget.data.filter_type);
+        },
+        // 
+        goodsChange: function(goods_id) {
+            designStore.methods.setFilterGoodsId(this, goods_id);
+        },
+        removeGood: function(good_key) {
+            designStore.methods.removeFilterGoodsId(this, good_key);
+        },
+        // 
+        catChange: function(cat_id) {
+            designStore.methods.setFilterCatId(this, cat_id);
+        },
+        removeCat: function(cat_key) {
+            designStore.methods.removeFilterCatId(this, cat_key);
+        },
+        // 
+        brandChange: function(brand_id) {
+            designStore.methods.setFilterBrandId(this, brand_id);
+        },
+        removeBrand: function(brand_key) {
+            designStore.methods.removeFilterBrandId(this, brand_key);
+        },
+        // 
+        tagChange: function(tag_name) {
+            designStore.methods.setFilterTagName(this, tag_name);
+        },
+        removeTag: function(tag_key) {
+            designStore.methods.removeFilterTagId(this, tag_key);
+        },
+        // 
+        collectChange: function(collect_id) {
+            designStore.methods.setFilterCollectId(this, collect_id);
+        },
+        removeCollect: function(collect_key) {
+            designStore.methods.removeFilterCollectId(this, collect_key);
+        }
+    },
+    mounted: function() {
+        //console.log(this.widget);
+    }
+});
+</script>

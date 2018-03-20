@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link type="image/x-icon" href="<{$env.conf.mobile.mobile_icon|storager}>" rel="apple-touch-icon-precomposed">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>微信扫码登录</title>
+    <style media="screen">
+        body {
+            background: #e7e8eb;
+            font-size: 14px;
+            font-family: "Helvetica Neue", "Hiragino Sans GB", "Microsoft YaHei", "\9ED1\4F53", Arial, sans-serif;
+            color: #222;
+            padding: 0;
+            margin: 0;
+            border-top:3px #ff0 solid;
+        }
+
+        .container {
+            margin: 20px auto;
+            width: 95%;
+        }
+
+        .c-h {
+            line-height: 38px;
+            height: 38px;
+            padding: 0 14px;
+            background-color: #f4f5f9;
+            border-bottom: 1px solid #e7e7eb;
+        }
+
+        .info-box {
+            background: #fff;
+            text-align: center;
+            padding: 50px 0;
+        }
+
+        .info-box strong {
+            font-size: 32px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="c-h">
+            微信扫码登录失败
+        </div>
+        <div class="info-box">
+            <p>登录失败!请重新尝试</p>
+        </div>
+    </div>
+</body>
+
+</html>

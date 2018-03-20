@@ -1,0 +1,99 @@
+<h3 class="page-title">
+    VMCC基本配置
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?ctl=adminpanel">控制面板</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">VMCC基本配置</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row" id="pconfs_list">
+
+    <div class="col-md-4">
+
+        <div class="portlet light bg-inverse">
+            <div class="portlet-title">
+                <div class="caption">
+                    API设置
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="clearfix">
+                    <div class="btn-group">
+                        <a href="index.php?app=vmcconnect&ctl=admin_setting&act=setting&p[0]=api" data-target="#pconf_setting" data-toggle="modal" class="btn btn-default <{if $api_conf && $api_conf.api_enable == 'true'}>green-stripe<{else}>red-stripe<{/if}>">
+                            <i class="fa fa-cog"></i> 配置
+                        </a>
+                        <a style="margin-left: 5px;" href="index.php?app=vmcconnect&ctl=admin_setting&act=logs&p[0]=apis" class="btn btn-default <{if $api_conf && $api_conf.api_enable == 'true'}>green-stripe<{else}>red-stripe<{/if}>">
+                            <i class="fa fa-list"></i> 查看设置日志
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="portlet light bg-inverse">
+            <div class="portlet-title">
+                <div class="caption">
+                    HOOK设置
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="clearfix">
+                    <div class="btn-group">
+                        <a href="index.php?app=vmcconnect&ctl=admin_setting&act=setting&p[0]=hook" data-target="#pconf_setting" data-toggle="modal" class="btn btn-default <{if $hook_conf && $hook_conf.hook_enable == 'true'}>green-stripe<{else}>red-stripe<{/if}>">
+                            <i class="fa fa-cog"></i> 配置
+                        </a>
+                        <a style="margin-left: 5px;" href="index.php?app=vmcconnect&ctl=admin_setting&act=logs&p[0]=hooks" class="btn btn-default <{if $hook_conf && $hook_conf.hook_enable == 'true'}>green-stripe<{else}>red-stripe<{/if}>">
+                            <i class="fa fa-list"></i> 查看设置日志
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="col-md-4">
+
+        <div class="portlet light bg-inverse">
+            <div class="portlet-title">
+                <div class="caption">
+                    警报设置
+                </div>
+            </div>
+            <div class="portlet-body">
+                <div class="clearfix">
+                    <div class="btn-group">
+                        <a href="index.php?app=vmcconnect&ctl=admin_setting&act=setting&p[0]=warning" data-target="#pconf_setting" data-toggle="modal" class="btn btn-default <{if $hook_conf && $hook_conf.hook_enable == 'true'}>green-stripe<{else}>red-stripe<{/if}>">
+                            <i class="fa fa-cog"></i> 配置
+                        </a>
+                        <a style="margin-left: 5px;" href="index.php?app=vmcconnect&ctl=admin_setting&act=logs&p[0]=warnings" class="btn btn-default <{if $hook_conf && $hook_conf.hook_enable == 'true'}>green-stripe<{else}>red-stripe<{/if}>">
+                            <i class="fa fa-list"></i> 查看警报日志
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<div class="modal fade" id="pconf_setting" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>

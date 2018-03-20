@@ -1,0 +1,9 @@
+<services>
+    <service id="b2c.order.create.before" optname="订单创建前触发">
+        <class orderby="35">gift_order_createbefore</class>
+    </service>
+    <service id="b2c_promotion_solution_tpl_apps">
+        <class orderby="101">gift_promotion_solutions_givegift</class>
+    </service>
+
+</services>

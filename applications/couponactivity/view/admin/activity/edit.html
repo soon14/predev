@@ -1,0 +1,148 @@
+<h3 class="page-title">
+    领券活动领券
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=couponactivity&ctl=admin_activity&act=index">领券活动列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">领券活动编辑</a>
+        </li>
+    </ul>
+</div>
+
+<form action="index.php?app=couponactivity&ctl=admin_activity&act=edit" method="post" class="form">
+    <{input type="hidden" name="activity_id" value=$data.activity_id}>
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group ">
+                <label class="col-md-2 control-label">活动名称
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-5">
+                    <{input type="text" name="name" value=$data.name required=true}>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-md-2 control-label">活动图片
+                </label>
+                <div class="col-md-8">
+                    <{input type="image" name="image_id" width="400" value=$data.image_id}>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-md-2 control-label">是否开启
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-2">
+                    <select  class="form-control" name="status">
+                        <option value="false">否</option>
+                        <option value="true" <{if $data.status=='true'}>selected<{/if}>>是</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-md-2 control-label">开始时间
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-4">
+                    <{input type="time" name="from_time" value=$data.from_time}>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-md-2 control-label">结束时间
+                </label>
+                <div class="col-md-4">
+                    <{input type="time" name="to_time" value=$data.to_time}><!-- <span class="help-block">为空时不限制结束时间</span> -->
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-md-2 control-label">活动简介
+                </label>
+                <div class="col-md-5">
+                    <{input type="textarea" name="brief" value=$data.brief}>
+                </div>
+            </div>
+            <div class="form-group ">
+                <label class="col-md-2 control-label">活动优惠券
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-8">
+                    <{input type="object" callback_func="coupon_select_callback_func_{$sid}" base_filter="cpns_type=1" object="coupons@b2c"  multiple="true" required=true}>
+                    <table class="object-coupon-rows table">
+                        <tbody id="objcoupon_rows_<{$sid}>">
+                            <{foreach from=$data.cpns_list item=c}>
+                            <tr class="object-row" data-id="<{$c.cpns_id}>">
+                                <td>
+                                    <button onclick="$(this).closest('.object-row').fadeOut(function(){$(this).remove();});" type="button" class="btn btn-xs default">
+                                        <i class="fa fa-trash-o"></i>
+                                    </button>
+                                    <input type="hidden" name="cpns[cpns_id][]" value="<{$c.cpns_id}>">
+                                    <input type="hidden" name="cpns[num][<{$c.cpns_id}>][id]" value="<{$c.id}>">
+                                </td>
+                                <td>
+                                    <{$data.cpns[$c.cpns_id].cpns_name}>
+                                </td>
+                                <td>
+                                    <{$data.cpns[$c.cpns_id].cpns_prefix}>
+                                </td>
+                                <td class="input-small"><div>每人 <input type="text" placeholder="人/张" name="cpns[num][<{$c.cpns_id}>][num]" value="<{$c.num}>" style="width:80px;"> 张<br>总共 <input type="text" placeholder="总/张" name="cpns[num][<{$c.cpns_id}>][num_sum]" value="<{$c.num_sum}>" style="width:80px;"> 张</div>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-6">
+                    <button type="submit" class="btn blue">确定</button>
+                    <a href="index.php?app=couponactivity&ctl=admin_activity&act=index" class="btn default">返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $(function(){
+
+        coupon_select_callback_func_<{$sid}> = function(selected){
+            var cpns_ids = [];
+            $.each(selected,function(k,v){
+                cpns_ids.push(v.value);
+            });
+            _render(cpns_ids);
+        };
+        var _render = function(cpns_ids,nums_map){
+            $.post('<{link app=desktop ctl=finder act=object_row}>',{
+                'app':'b2c',
+                'model':'coupons',
+                'cols':'cpns_id,cpns_name,cpns_prefix',
+                'name':"cpns[cpns_id][]",
+                'pkey':'cpns_id',
+                'filter':{cpns_id:cpns_ids}
+            },function(re){
+                $('#objcoupon_rows_<{$sid}>').append(re);
+                var tmp = [];
+                $($.grep($('#objcoupon_rows_<{$sid}> tr'),function(tr,i){
+                    var cpns_id = $(tr).attr('data-id');
+                    var num = (nums_map&&nums_map[cpns_id])?nums_map[cpns_id]:1;
+                    if(!$(tr).find('input:text[name^="cpns"]').length){
+                        $(tr).append($('<td class="input-small"><div>每人 <input type="text" placeholder="人/张" name="cpns[num]['+cpns_id+'][num]" value="0" style="width:80px;"/> 张<br/>总共 <input type="text" placeholder="总/张" name="cpns[num]['+cpns_id+'][num_sum]" value="0" style="width:80px;"/> 张</div></td>'));
+                    }
+                    if($.inArray(cpns_id,tmp)>-1){
+                        return true;
+                    }else{
+                        tmp.push(cpns_id);
+                    }
+                })).remove();
+            });
+        }
+
+    });
+</script>

@@ -1,0 +1,89 @@
+<h3 class="page-title">
+    余额宝配置
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?ctl=adminpanel">控制面板</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">余额宝配置</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=ubalance&ctl=admin_set&act=balance_set" method="post" class="form">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <{foreach from=$setting item=item key=key}>
+            <div class="form-group <{$item.class}> ">
+                <label class="col-md-3 control-label"><{$item.desc}></label>
+
+                <div class="col-md-4">
+                    <{if $item.type =='between'}>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <{foreach from=$item.from item=from_item key=from_key}>
+                                <input class="form-control" type="text" name="<{$key}>[<{$from_key}>]" value="<{$item.value[$from_key]}>">
+                            <{/foreach}>
+                        </div>
+                        <div class="col-md-6">
+                            <{foreach from=$item.to item=to_item key=to_key}>
+                                <input class="form-control"  type="text" name="<{$key}>[<{$to_key}>]" value="<{$item.value[$to_key]}>">
+                            <{/foreach}>
+                        </div>
+                    </div>
+
+                    <{elseif $item.type =='checkbox'}>
+                        <{foreach from=$item.options item=checkbox_item key=checkbox_key}>
+                            <label class="label-control"><{$checkbox_item}>
+                                <input type="checkbox" name="<{$key}>[]" value="<{$checkbox_key}>" <{if in_array($checkbox_key ,$item.value)}>checked<{/if}> >
+                            </label>
+                        <{/foreach}>
+                    <{else}>
+                        <{if $item.required}>
+                        <{input  required=true type=$item.type name=$key value=$item.value|default:$item.default
+                        options=$item.options }>
+                        <{else}>
+                        <{input  type=$item.type name=$key value=$item.value|default:$item.default options=$item.options }>
+                        <{/if}>
+                    <{/if}>
+
+
+                </div>
+                <{if $item.helpinfo}>
+                <span class="help-block"><{$item.helpinfo}></span>
+                <{/if}>
+            </div>
+            <{/foreach}>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+    $(function(){
+        var larger_type = $('select[name="larger_type"]'),
+            earnings_type = $('select[name="earnings_type"]'),
+                larger_sum = $('input[name="larger_sum"]').parents('.form-group'),
+                year_ratio = $('input[name="year_ratio"]').parents('.form-group');
+
+        if(larger_type.val() == '0'){
+            larger_sum.hide();
+        }
+        if(earnings_type.val() == '0'){
+            year_ratio.hide();
+        }
+        larger_type.change(function(){
+            larger_sum.toggle();
+        });
+        earnings_type.change(function(){
+            year_ratio.toggle();
+        });
+    });
+</script>

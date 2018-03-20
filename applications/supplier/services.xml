@@ -1,0 +1,28 @@
+<services>
+
+    <service id="desktop_finder.supplier_mdl_supplier">
+        <class>supplier_finder_supplier</class>
+    </service>
+    <service id="desktop_finder.supplier_mdl_notice">
+        <class>supplier_finder_notice</class>
+    </service>
+    <service id="desktop_finder.supplier_mdl_voucher">
+        <class>supplier_finder_voucher</class>
+    </service>
+    <service id="desktop_finder.supplier_mdl_statement">
+        <class>supplier_finder_statement</class>
+    </service>
+    <service id="ectools.bill.payment.b2c.order.succ" optname="订单支付完成处理">
+        <class orderby="55">supplier_service_order_payfinish</class>
+    </service>
+    <service id="b2c.order.delivery.send.finish" optname="发货操作完成触发">
+        <class orderby="55">supplier_service_delivery_finish</class>
+    </service>
+
+    <service id="b2c.member_menu_extends" opt="会员中心菜单扩展">
+        <class>supplier_service_membermenu</class>
+    </service>
+    <service id="b2c.goods.recycle">
+        <class>supplier_goods_recycle</class>
+    </service>
+</services>

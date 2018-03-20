@@ -1,0 +1,120 @@
+<h3 class="page-title">
+			地区管理
+</h3>
+
+<div class="table-toolbar">
+    <div class="btn-group">
+        <a class="btn green" data-target="#area_edit" data-toggle="modal" label="添加新地区" icon="fa-plus" href="index.php?app=ectools&ctl=regions&act=edit">
+                添加新地区&nbsp;<i class="fa fa-plus"></i>
+        </a>
+    </div>
+</div>
+<form  action="index.php?app=ectools&ctl=regions&act=updateOrderNum" method="post">
+<div class="table-scrollable">
+    <table class="table  table-striped table-hover">
+        <thead>
+            <tr>
+                <th>地区</th>
+                <th width="5%">同级排名<button class="btn btn-xs grey-cascade" type="submit"><i class="fa fa-save"></i> 保存排名</button></th>
+                <th>操作</th>
+            </tr>
+        </thead>
+    <tbody id="area_list">
+<{if $area}>
+        <{foreach from=$area item=item key=iLoop name="item"}>
+        <tr data-path="<{$item.region_path}>">
+          <td class="area-name point" data-regionid="<{$item.region_id}>">
+              <{if $item.child_count>0}>
+              <i class="fa fa-plus-square-o" id="<{$item.region_id}>"></i>
+              <{else}>
+              <i class="fa fa-minus-square-o" id="<{$item.region_id}>"></i>
+              <{/if}>
+              <strong><{$item.local_name}></strong>
+         </td>
+          <td>
+              <input class="form-control input-sm" type="number" size="5"  name="p_order[<{$item.region_id}>]" value="<{$item.ordernum|default:0}>"  >
+          </td>
+          <td>
+              <a data-target="#area_edit" data-toggle="modal" href="index.php?app=ectools&ctl=regions&act=edit&p[0]=<{$item.region_id}>&p[1]=<{$item.p_region_id}>" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> 编辑</a>
+              <button type="button" data-areaname="<{$item.local_name}>"  data-action="index.php?app=ectools&ctl=regions&act=toRemoveArea&p[0]=<{$item.region_id}>" class="btn btn-xs btn-default area-del"><i class="fa fa-trash-o"></i> 删除</button>
+              <a data-target="#area_edit" data-toggle="modal" href="index.php?app=ectools&ctl=regions&act=edit&p[0]=false&p[1]=<{$item.region_id}>" class="btn btn-xs btn-default"><i class="fa fa-plus"></i> 添加子地区</a>
+
+          </td>
+        </tr>
+        <{/foreach}>
+<{/if}>
+
+    </tbody>
+    </table>
+</div>
+</form>
+<script charset="utf-8">
+    // $.each($('#area_list tr'),function(index,item){
+    //         item = $(item);
+    //         if(item.attr('data-catpid')!='0'){
+    //             var cat_name_col = item.find('td:first');
+    //             var cat_parent_col = $('#cat_list tr[data-catid="'+item.attr('data-catpid')+'"] td:first');
+    //             cat_name_col.html('<span style="color:#cecece;">'+cat_parent_col.text()+"&nbsp;&raquo;&nbsp;</span>"+cat_name_col.text());
+    //         }
+    // });
+	$('#area_list').on('click','button.area-del',function(e){
+		e.stopPropagation();
+		var btn = $(this);
+		bootbox.confirm('确定删除地区<span class="badge">'+btn.attr('data-areaname')+"</span>?",function(flag){
+				if(flag){
+					$.getJSON(btn.attr('data-action'),function(re){
+						if(re && re.success){
+							btn.closest('tr').remove();
+							toastr['success'](re.success,'成功');
+                            location.reload();
+						}else if(re.error){
+							toastr['error'](re.error,'错误');
+						}else{
+							toastr['error']('删除失败','错误');
+						}
+					});
+				}
+		});
+	});
+</script>
+
+<div class="modal fade" id="area_edit" role="basic" aria-hidden="true">
+              <div class="modal-dialog">
+                      <div class="modal-content">
+
+                      </div>
+              </div>
+</div>
+<script charset="utf-8">
+!function(){
+    $('#area_list').on('click','.area-name',function(){
+        var _this = $(this);
+        var regionid = _this.attr('data-regionid');
+        var children = _this.closest('tr').next('tr[data-pregionid="'+regionid+'"]');
+        if(children.length){
+            return;
+        }
+        $.ajax({
+            url: 'index.php?app=ectools&ctl=regions&act=getChildNode',
+            type: 'post',
+            data: {regionId:regionid},
+            success:function(re){
+                $(re).insertAfter(_this.closest('tr'));
+                _this.find('.fa').removeClass('fa-plus-square-o').addClass('fa-minus-square-o');
+            }
+        })
+
+
+
+    });
+}();
+
+</script>
+
+<script>
+    $(document).ajaxComplete( function(event, jqXHR, options){
+        if(options.url.indexOf("index.php?app=ectools&ctl=regions&act=save")>0){
+            location.reload();
+        }
+    } );
+</script>

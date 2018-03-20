@@ -1,0 +1,19 @@
+<app>
+  <name>操作日志</name>
+
+  <description>管理员操作日志管理</description>
+
+  <author>
+      <name>辰商软件</name>
+      <email>dev@vmcshop.com</email>
+      <url>http://www.vmcshop.com</url>
+  </author>
+
+  <version>1.0</version>
+  <license>http://www.vmcshop.com/license</license>
+
+  <depends>
+      <app>desktop</app>
+  </depends>
+
+</app>

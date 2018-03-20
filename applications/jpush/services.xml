@@ -1,0 +1,9 @@
+<services>
+    <service id="desktop_finder.jpush_mdl_task">
+        <class>jpush_finder_task</class>
+    </service>
+
+    <service id="openapi.jpush">
+        <class>jpush_openapi</class>
+    </service>
+</services>

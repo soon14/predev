@@ -1,0 +1,100 @@
+<div class="pos-pane" id="store_select_pane">
+    <{include file="admin/pos/select_store_content.html"}>
+</div>
+
+<script>
+    $(function () {
+        $('#store_select_pane').on('keydown', 'input' ,function(e){
+            if(e.keyCode == 13){
+                $("#searchStoreBtn").trigger('click');
+            }
+        })
+        var ajax_timer = null;
+        $('#').on('click', function () {
+            var nowStoreSearchKeywordTypeValue = $(this).attr('data-keywordtype');
+            var nowStoreSearchKeywordTypeShowText = $(this).text();
+            $('#nowStoreSearchKeywordTypeShow').text(nowStoreSearchKeywordTypeShowText);
+            $('#nowStoreSearchKeywordType').val(nowStoreSearchKeywordTypeValue);
+        })
+
+
+
+        $('#search_store_btn').on('click', function () {
+            var _this = $(this);
+            //搜索关键字
+            var Keyword = $('#storeKeyword').val();
+            if (/^.+$/i.test(searchKeyword) === false) {
+                Messagebox.error('请输入搜索关键字');
+
+                return false;
+            }
+
+            //搜索类型
+            var nowStoreSearchKeywordTypeValue = $('#nowStoreSearchKeywordType').val();
+            if (nowStoreSearchKeywordTypeValue !== 'store-name' && nowStoreSearchKeywordTypeValue !== 'store-bn') {
+                Messagebox.error('请选择正确的搜索类型');
+
+                return false;
+            }
+
+            _this.prop('disabled', true);
+            clearTimeout(ajax_timer);
+
+            ajax_timer = setTimeout(function () {
+                $.ajax({
+                    url: '<{link app="store" ctl="admin_controller" act="select_store"}>',
+                    type:'get',
+                    data:{
+                        searchType:nowStoreSearchKeywordTypeValue,
+                        searchKeyword:searchKeyword,
+                        isAjax:true
+                    },
+                    dataType:'html',
+                    success: function (response) {
+                        $('#store_select_pane').html(response);
+                        _this.prop('disabled', false);
+                    },
+                    error: function () {
+                        _this.prop('disabled', false);
+                    }
+                });
+            }, 500);
+        }).on('click', '.select-store', function(e){
+            //点击一个店铺,把店铺信息写入session然后跳转到收银台
+            e.stopPropagation();
+
+            var store_id = $(this).attr('data-store_id');
+            if(/^[1-9]\d*$/.test(store_id) == false){
+                Messagebox.error('店铺信息错误');
+
+                return false;
+            }
+
+            clearTimeout(ajax_timer);
+
+            ajax_timer = setTimeout(function () {
+                $.ajax({
+                    url:'<{link app=store ctl=admin_controller act=save_selected_store}>',
+                    type:'post',
+                    data:{
+                        store_id:store_id
+                    },
+                    dataType:'html',
+                    success:function(response){
+                        response = $.parseJSON(response);
+                        if(response.success){
+                            //window.location.href = response.redirect;
+                            window.open(response.redirect);
+                        }else if(response.error){
+                            Messagebox.error(response.error);
+                        }else{
+                            Messagebox.error('未知错误');
+                        }
+                    }
+                });
+            }, 500);
+
+            return false;
+        });
+    });
+</script>

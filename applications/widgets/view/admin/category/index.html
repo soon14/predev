@@ -1,0 +1,129 @@
+<h3 class="page-title">
+    板块分类管理
+</h3>
+
+<div class="table-toolbar">
+    <div class="btn-group">
+        <{permission perm_id='widgets_type_edit' noshow=1}>
+        <a class="btn green" data-target="#cat_edit" data-toggle="modal" label="添加分类" icon="fa-plus" href="index.php?app=widgets&ctl=admin_category&act=edit">
+            添加分类&nbsp;<i class="fa fa-plus"></i>
+        </a>
+        <{/permission}>
+    </div>
+</div>
+<form  action="" method="post">
+    <div class="table-scrollable">
+        <table class="table  table-striped table-hover">
+            <thead>
+            <tr>
+                <th>
+                    <{if $path}>
+                    <div class="btn-group">
+                        <a href="index.php?app=widgets&ctl=admin_category&act=index" class="btn btn-xs btn-default">分类</a>
+                        <span class="btn btn-xs"><i class="fa fa-angle-double-right"></i></span>
+                    </div>
+                    <{foreach from=$path item=item name=fpath}>
+                    <{if !$env.foreach.fpath.last}>
+                    <div class="btn-group">
+                        <a href="index.php?app=widgets&ctl=admin_category&act=index&p[0]=<{$item.ident}>" class="btn btn-xs btn-default"><{$item.title}></a>
+                        <span class="btn btn-xs"><i class="fa fa-angle-double-right"></i></span>
+                    </div>
+                    <{else}>
+                    <span class="btn btn-xs"><{$item.title}> <i class="fa fa-angle-double-down"></i></span>
+                    <{/if}>
+                    <{/foreach}>
+                    <{else}>
+                    <span class="btn btn-xs">分类 <i class="fa fa-angle-double-down"></i></span>
+                    <{/if}>
+
+                </th>
+                <th>分类ID</th>
+                <th>英文标识</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="node_list">
+            <{foreach from=$list item=item name="item"}>
+            <{assign var="cid" value=$item.cid}>
+            <tr data-cid="<{$item.cid}>"  data-pid="<{$item.parent_id}>">
+                <td>
+                    <{if $item.has_children == 'true'}>
+                    <a href="index.php?app=widgets&ctl=admin_category&act=index&p[0]=<{$item.cid}>">
+                        <{$item.title}>
+                    </a>
+                    <span class="text-muted"><i class="fa  fa-angle-double-right"></i></span>
+                    <{else}>
+                    <{$item.title}>
+                    <{/if}>
+                </td>
+                <td>
+                    <{$item.cid}>
+                </td>
+                <td>
+                    <{$item.category_key}>
+                </td>
+                <td>
+                    <{permission perm_id='widgets_type_edit' noshow=1}>
+                    <a data-target="#cat_edit" data-toggle="modal" class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_category&act=edit&parent_id=<{$item.cid}>">
+                        <i class="fa fa-sitemap"></i> 添加子分类</a>
+                    <{/permission}>
+                    <{permission perm_id='widgets' noshow=1}>
+                    <a class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_index&act=index&filter[cid]=<{$item.cid}>&action=view&page=1" target="_blank">
+                        <i class="fa fa-list"></i> 管理分类下板块</a>
+                    <{/permission}>
+                    <{permission perm_id='widgets_type_edit' noshow=1}>
+                    <a data-target="#cat_edit" data-toggle="modal" class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_category&act=edit&cid=<{$item.cid}>">
+                        <i class="fa fa-edit"></i> 编辑分类</a>
+                    <{/permission}>
+                    <{permission perm_id='widgets_type_deletw' noshow=1}>
+                    <a target="_command" data-confirm="确定删除 <{$item.title|t:'content'}>？" class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_category&act=remove&cid=<{$item.cid}>">
+                        <i class="fa fa-trash"></i> 删除</a>
+                    <{/permission}>
+                </td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+</form>
+
+
+<div class="modal fade" id="cat_edit" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+
+<script charset="utf-8">
+    $('#node_edit').on('hidden.bs.modal',function(){
+        $('#node_edit .modal-content').empty();
+    })
+    // $.each($('#node_list tr'),function(index,item){
+    //         item = $(item);
+    //         if(item.attr('data-pid')!='0'){
+    //             var node_name_col = item.find('td:eq(1)');
+    //             var node_parent_col = $('#node_list tr[data-nodeid="'+item.attr('data-pid')+'"] td:eq(1)');
+    //             node_name_col.html('<span style="color:#cecece;">'+node_parent_col.text()+"&nbsp;&raquo;&nbsp;</span>"+node_name_col.text());
+    //         }
+    // });
+
+    $('#node_list tr input[type=checkbox]').on('change',function(){
+        var _this = $(this);
+        var current_checked = $(this).is(':checked');
+        var action_url = current_checked?$(this).attr('data-pub-action'):$(this).attr('data-unpub-action');
+
+        $.getJSON(action_url,function(re){
+            if(re.success){
+                Messagebox.success(re.success,'成功');
+                if(!current_checked){
+                    $('#node_list tr[data-pid="'+_this.closest('tr').attr('data-nodeid')+'"] input[type=checkbox]').attr('checked',false);
+                }
+            }else{
+                Messagebox.error(re.error||'操作失败','失败');
+                _this.attr('checked',!current_checked);
+            }
+        });
+    });
+</script>

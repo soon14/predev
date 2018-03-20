@@ -1,0 +1,130 @@
+<div class="portlet box green app-update-tips hidden">
+						<div class="portlet-title">
+							<div class="caption">
+								<i class="fa fa-dropbox"></i>系统有更新可用
+							</div>
+							<div class="tools">
+								<a href="javascript:;" class="remove" data-original-title="" title="">
+								</a>
+							</div>
+						</div>
+						<div class="portlet-body">
+							<table class="table table-striped">
+							<thead>
+							<tr>
+								<th>
+									 应用名称
+								</th>
+                                <th>
+									 应用描述
+								</th>
+								<th>
+									 当前运行版本
+								</th>
+								<th>
+									 最新版本
+								</th>
+								<th>
+									 操作
+								</th>
+							</tr>
+							</thead>
+							<tbody>
+                                <tr class="hidden">
+    								<td>
+    									 {app_name}
+    								</td>
+                                    <td>
+    									 {app_description}
+    								</td>
+    								<td>
+    									 <label class="label label-default">{version}</label>
+    								</td>
+    								<td>
+    									 <label class="label label-danger">{current_version}</label>
+    								</td>
+    								<td>
+    									 <button data-appid="{app_id}" type="button" class="btn green btn-xs doupdate-btn"><i class="fa fa-refresh fa-spin hidden"></i> <span>立即更新</span></button>
+    								</td>
+    							</tr>
+							</tbody>
+							</table>
+						</div>
+</div>
+<div class="row" id="adminpanel">
+    <div class="col-md-6 col-lg-4">
+    </div>
+    <div class="col-md-6 col-lg-4">
+    </div>
+    <div class="col-md-6 col-lg-4">
+    </div>
+<div>
+
+<div id="tmp_items">
+    <{foreach from=$groups name=groups item=group}>
+    <{if $group.items}>
+	<div class="portlet light bg-inverse">
+					<div class="portlet-title">
+						<div class="caption">
+							<i class="<{$group.icon}>"></i><{$group.title}>
+						</div>
+					</div>
+					<div class="portlet-body">
+						<div class="row">
+							<{foreach from=$group.items item=item}>
+							<div class="col-md-6">
+								<a class="btn btn-link" href="index.php?<{$item.menu_path}>">
+									<i class="fa  fa-angle-right"></i>&nbsp;&nbsp;<{$item.menu_title}>
+								</a>
+							</div>
+							<{/foreach}>
+						</div>
+					</div>
+	</div>
+    <{/if}>
+    <{/foreach}>
+</div>
+<script charset="utf-8">
+    !function(){
+        var adminpanel_cols = $('#adminpanel > [class^="col-md"]');
+        var loop_arr = [0,1,2];
+        $.each($('#tmp_items > .portlet'),function(i,n){
+            var loop = loop_arr.shift();
+            $(adminpanel_cols[loop]).append(n);
+            loop_arr.push(loop);
+        });
+    }();
+
+    $(function(){
+        if('app_check_update_list' in window && app_check_update_list.length){
+            $('.app-update-tips').removeClass('hidden');
+            var tbody = $('.app-update-tips table tbody'),tr_tpl = tbody.html();
+            tbody.empty();
+            $.each(app_check_update_list,function(i,item){
+                tbody.append($(substitute(tr_tpl,item)).removeClass('hidden'));
+            });
+            tbody.on('click','.doupdate-btn',function(e){
+                e.stopPropagation();
+                var btn = $(this);
+                btn.addClass('disabled').find('.fa-refresh').removeClass('hidden');
+                btn.find('span').text('正在更新');
+                $.getJSON('index.php?ctl=appcenter&act=doupdate&p[0]='+btn.attr('data-appid'),function(obj){
+                    if(obj && obj.error){
+                        Messagebox.error(obj.error?obj.error:'更新出现异常');
+                        btn.removeClass('disabled').find('.fa-refresh').addClass('hidden');
+                        btn.find('span').text('重试更新');
+
+                    }else{
+                        Messagebox.success(obj&&obj.success?obj.success:'更新成功');
+                        btn.closest('tr').fadeOut(function(){
+                            btn.closest('tr').remove();
+                            if(!$('.app-update-tips table tbody tr').length){
+                                location.reload();
+                            }
+                        });
+                    }
+                });
+            });
+        }
+    });
+</script>

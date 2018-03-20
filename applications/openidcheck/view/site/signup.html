@@ -1,0 +1,84 @@
+<div class="page-header">
+        <h1>绑定正式账号<small>Bind official account</small></h1>
+</div>
+<{foreach from=$pam_data key=key item=item}>
+<div class="alert alert-success">
+    您当前已成功使用 <span class="label label-success"><{$pam_type.{$key}}></span> 信任联合登陆系统成功,请绑定正式账号,已便为您提供更优质的服务,绑定后依然可通过 <span class="label label-success"><{$pam_type.{$key}}></span> 信任联合登陆系统。
+    <a href="<{link app=openidcheck ctl=site_openidcheck act=ignore args0=$forward}>" class="btn btn-default btn-sm"><i class="glyphicon glyphicon-log-in"></i> 暂不绑定,继续购物</a>
+</div>
+<{/foreach}>
+<form class="form-horizontal" action="<{link app=openidcheck ctl=site_openidcheck act=dosign}>" method="post" id="bind_mobile_form">
+    <input type="hidden" name="forward" value="<{$forward}>">
+    <div class="form-group">
+        <label  class="col-xs-2 control-label">手机号<span class="text-danger">*</span></label>
+        <div class="col-xs-4">
+            <input type="text" required="true" id="mobile_input" class="form-control" name="mobile"  value="">
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="input_vcode" class="col-xs-2 control-label">验证码<span class="text-danger">*</span></label>
+        <div class="col-xs-4">
+          <div class="input-group">
+              <input type="text" name="vcode" value="" class="hidden" disabled="disabled">
+              <input type="text" required="true" name="vcode" class="form-control" id="input_vcode" placeholder="验证码">
+              <span class="input-group-btn"><button type="button" class="btn btn-getvcode btn-default">获取短信验证码</button></span>
+          </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-xs-2 control-label">登陆密码<span class="text-danger">*</span></label>
+        <div class="col-xs-4">
+            <input type="text" name="password" value="" class="hidden" disabled="disabled">
+            <input type="password" required="true" id="password" class="form-control" name="password"  value="">
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-xs-7 col-xs-offset-2">
+          <button type="submit" class="btn btn-primary">立即绑定</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+
+var alert_timer = 0;
+var _alert_error = function(msg){
+    $('#bind_mobile_form .alert-error').remove();
+    $('#bind_mobile_form').append($('<div class="alert alert-danger">'+msg+'</div>'));
+    alert_timer = setTimeout(function(){
+        clearTimeout(alert_timer);
+        $('#bind_mobile_form').find('.alert-danger').fadeOut('fast',function(){
+            $(this).remove();
+        });
+    },3000);
+}
+//获得短信验证码
+var _cutdown_sms = function(btn){
+
+    var cutdown = 120,btn_o_text = btn.text(),timer =
+    setInterval((function(){
+        btn.text((cutdown--)+'秒后可重试');
+        if(cutdown<1){
+            clearInterval(timer);
+            btn.text(btn_o_text).removeClass('disabled');
+        }
+        return arguments.callee;
+    })(),1000);
+};
+$('#bind_mobile_form .btn-getvcode').on('click',function(e){
+    var btn = $(this);
+    if(btn.hasClass('disabled'))return;
+    btn.addClass('disabled');
+    $.post('<{link app=b2c ctl=site_passport act=send_vcode_sms}>',{mobile:$('#mobile_input').val()},function(re){
+        if(re && re.error){
+            btn.removeClass('disabled');
+            _alert_error(re.error);
+        }
+        if(re && re.success){
+            _cutdown_sms(btn);
+        }
+    },'json');
+});
+
+
+</script>

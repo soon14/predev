@@ -1,0 +1,55 @@
+<{if !$reserve}>
+<div class="modal-header">
+<h4 class="modal-title">
+请输入手机号码
+</h4>
+</div>
+<div class="modal-body">
+    <form action="<{link app=sale ctl=site_sale act=save_reserve}>" class="form-horizontal" id="J_reserve_form">
+        <input type="hidden" name="goods_id" value="<{$goods_id}>"/>
+        <input type="hidden" name="sale_id" value="<{$sale_id}>"/>
+        <div class="form-group">
+            <label for="tel" class="col-md-2 control-label">电话</label>
+            <div class="col-md-6">
+                <input id="J_tel" type="text" class="form-control" required="true" autocomplete="off" name="tel" placeholder="请输入手机号码"/>
+            </div>
+            <div class="col-md-4">
+                <span class="help-block" id="J_help"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-9 col-md-offset-2">
+                <button type="submit" class="btn btn-primary ">确定</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+(function(e){
+    var form = $('#J_reserve_form');
+    form.on('submit',function(e){
+        e.preventDefault();
+        $.post(form.attr('action'),form.serialize(),function(re){
+                if(re.redirect){
+                    location=re.redirect;
+                }
+                if(re.error){
+                    $('#J_help').html(re.error);
+                }
+                if(re.success){
+                    $('#J_reserve_modal').modal('hide');
+                }
+        });
+    });
+})();
+</script>
+<{else}>
+<div class="modal-header">
+<h4 class="modal-title">
+您已经预约过
+</h4>
+</div>
+<div class="modal-body">
+您已经预约过，请等待短信通知开抢时间
+</div>
+<{/if}>

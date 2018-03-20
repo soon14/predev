@@ -1,0 +1,100 @@
+<form  action="<{link app=widgets ctl=admin_template act=save}>" method="post" id="J_page_save_form">
+    <input type="hidden" name="type" value="<{$type}>"/>
+    <input type="hidden" name="file_path" value="<{$file_path}>"/>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="J_code">
+                <{input type='code' value=$contents height=700 name=content}>
+            </div>
+        </div>
+        <!--
+        <div class="col-md-6">
+            <div class="table-scrollable hide" id="J_list">
+                <input type="hidden" value="" id="J_line"/>
+                <input type="hidden" value="" id="J_line_number"/>
+                <table class="table  table-striped table-hover">
+                    <thead>
+                        <th>模块代码</th>
+                        <th>操作</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        -->
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">保存</button>
+</form>
+<script type="text/template" id="J_widgets_template">
+    <tr>
+        <td>{name}</td>
+        <td>
+        <a class="J_edit_widget" data-toggle="modal" data-target="#J_edit_modal" href="<{link app=widgets ctl=admin_template act=edit_widget}>&p[0]={index}&p[1]={code}&p[2]={id}">
+        编辑
+        </a>
+        </td>
+    </tr>
+</script>
+<script>
+/*
+    var $iframe = $('#J_code').find('iframe'),
+        widget_list = $('#J_list'),
+        widget_list_body = widget_list.find('tbody'),
+        code_line = $('#J_line'),
+        code_line_number = $('#J_line_number'),
+        template = $('#J_widgets_template').text(),
+        timer,
+        length = 0,
+        html = '',
+        list_data = {},
+        tmp = [],
+        key = '',
+        value = '';
+    var checkEditor = function(){
+        if($iframe[0].contentWindow.code_editor){
+            clearInterval(timer);
+            widget_list.removeClass('hide');
+            $iframe[0].contentWindow.code_editor.on('cursorActivity',function(editor,l,g){
+                var cursor = editor.getCursor(),
+                    line = editor.getLine(cursor.line),
+                    widgets = line.match(/\<\{widgets\s+code=[^\}\>]*\}\>/g);
+                //预先定义变量节省内存开销，这里重新赋值
+                length = 0;
+                html = '';
+                list_data = {};
+                tmp = [];
+                key = '';
+                value = '';
+                if(widgets){
+                    code_line.val(line);
+                    code_line_number.val(cursor.line);
+                    length = widgets.length;
+                    for(var i = 0;i<length;i++){
+                        tmp = widgets[i].replace(/\<\{(.*)\}\>/,'$1').split(' ');
+                        for(var k = 0;k<tmp.length;k++){
+                            if(/.+=.+/.test(tmp[k])){
+                                key = tmp[k].split('=')[0];
+                                value = tmp[k].split('=')[1];
+                                list_data[key] = value;
+                            }
+                        }
+                        list_data.name = widgets[i];
+                        list_data.index = i;
+                        html += Tool.templateEngine(template,list_data);
+                        list_data = [];
+                    }
+                }
+                widget_list_body.html(html);
+            });
+        }
+    };
+    //结束监听
+    timer = setInterval(checkEditor,500);
+    $('#J_page_save_form').data('ajax:success',function(e){
+        if(re.success){
+            location.reload();
+        }
+    });
+    */
+</script>

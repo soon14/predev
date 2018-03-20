@@ -1,0 +1,17 @@
+<app>
+  <name>线下活动预约</name>
+  <description>用于展示线下地点活动,接待地点活动及预约</description>
+  <author>
+      <name>辰商软件</name>
+      <email>dev@vmcshop.com</email>
+      <url>http://www.vmcshop.com</url>
+  </author>
+
+  <version>1.1</version>
+  <license>http://www.vmcshop.com/license</license>
+
+  <depends>
+      <app>desktop</app>
+  </depends>
+
+</app>

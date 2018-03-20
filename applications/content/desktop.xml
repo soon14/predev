@@ -1,0 +1,34 @@
+<desktop>
+
+    <permissions>
+        <permission id="cms_content" display='true' workground='content.workground'>内容管理</permission>
+        <permission id="cms_content_cat" display='true' workground='content.workground'>栏目管理</permission>
+        <permission id="cms_content_edit" display='true' workground='content.workground'>添加/编辑栏目</permission>
+        <permission id="cms_content_del" display='true' workground='content.workground'>删除栏目</permission>
+        <permission id="cms_content_issue" display='true' workground='content.workground'>发布</permission>
+        <permission id="cms_article_edit" display='true' workground='content.workground'>添加/编辑文章页</permission>
+        <permission id="cms_article_custom_edit" display='true' workground='content.workground'>添加/编辑自定义页</permission>
+        <permission id="cms_article_batch" display='true' workground='content.workground'>批量编辑</permission>
+        <permission id="cms_article_tag" display='true' workground='content.workground'>标签</permission>
+        <permission id="cms_article_del" display='true' workground='content.workground'>删除</permission>
+        <permission id="cms_article_view" display='true' workground='content.workground'>查看内容</permission>
+    </permissions>
+    <workground name="内容" icon="icon-docs" id="content.workground" order="60">
+        <menugroup name="内容管理">
+            <menu controller='admin_node' action='index' permission='cms_content_cat' display='true' order="60">栏目管理</menu>
+            <menu controller='admin_node' action='add' permission='cms_content_edit' display='false' order="60">添加栏目</menu>
+            <menu controller='admin_node' action='edit' permission='cms_content_edit' display='false' order="60">编辑栏目</menu>
+            <menu permission='cms_content_issue' display='false' order="110">发布</menu>
+
+			<menu controller='admin_article' action='index' permission='cms_content' display='true' order="70">内容管理</menu>
+            <menu order="70" controller='admin_article' action='add' permission='cms_article_edit' display='false'>内容添加</menu>
+            <menu order="70" controller='admin_article' action='edit' permission='cms_article_edit' display='false'>内容编辑</menu>
+            <menu order="70" permission='cms_article_custom_edit' display='false'>添加/编辑自定义页</menu>
+            <menu order="70" permission='cms_article_batch' display='false'>批量编辑</menu>
+            <menu order="70" permission='cms_article_tag' display='false'>标签</menu>
+            <menu order="70" permission='cms_article_del' display='false'>删除</menu>
+            <menu order="70" permission='cms_article_view' display='false'>查看内容</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

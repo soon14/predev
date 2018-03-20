@@ -1,0 +1,359 @@
+<h3 class="page-title">编辑货品</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=productplus&ctl=admin_products&act=index">货品列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">编辑货品 <{$product.name}></a>
+        </li>
+        <li>
+            <select class="form-control" id="spec_select">
+                <{foreach from=$goods.product item=item}>
+                <option value="<{$item.product_id}>" <{if $product.product_id == $item.product_id}>selected<{/if}>><{$item.spec_info}></option>
+                <{/foreach}>
+            </select>
+        </li>
+    </ul>
+</div>
+    <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#tab_edit_normal" data-toggle="tab">基本信息</a>
+            </li>
+            <li>
+                <a href="#tab_edit_extend" data-toggle="tab">个性化信息</a>
+            </li>
+    </ul>
+    <div class="tab-content">
+        <div id="tab_edit_normal" class="tab-pane active">
+            <form action="index.php?app=productplus&ctl=admin_products&act=save" method="post" class="form" id="product_edit_form">
+                <input type="hidden" name="product[product_id]" value="<{$product.product_id}>">
+                <input type="hidden" name="product[goods_id]" value="<{$product.goods_id}>">
+                <div class="form form-horizontal">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">图片
+                            </label>
+                            <div class="col-md-10">
+                                <p class="form-control-static">
+                                    <{if $extend && $extend.enabled == 'true'}>
+                                    <img src="<{$extend.image_default|default:$product.image_id|storager:'xs'}>" class="img-thumbnail"/>
+                                    <{else}>
+                                    <img src="<{$product.image_id|storager:'xs'}>" class="img-thumbnail"/>
+                                    <{/if}>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">名称
+                            </label>
+                            <div class="col-md-10">
+                                <p class="form-control-static">
+                                    <{$product.name}>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">规格
+                            </label>
+                            <div class="col-md-10">
+                                <p class="form-control-static">
+                                    <{$product.spec_info}>
+                                </p>
+                            </div>
+                        </div>
+                         <div class="form-group">
+                             <div class="form-group">
+                                 <label class="col-md-2 control-label">货品SKU编号
+                                     <span class="required" aria-required="true">*</span>
+                                 </label>
+                                 <div class="col-md-4">
+                                     <input type="text" required="true" name="product[bn]" class="form-control" value="<{$product.bn}>">
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="form-group">
+                                 <label class="col-md-2 control-label">条码
+                                     <span class="required" aria-required="true">*</span>
+                                 </label>
+                                 <div class="col-md-4">
+                                     <input type="text" required="true" name="product[barcode]" class="form-control" value="<{$product.barcode}>">
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="form-group">
+                                 <label class="col-md-2 control-label">销售价
+                                     <span class="required" aria-required="true">*</span>
+                                 </label>
+                                 <div class="col-md-3">
+                                     <input type="text" required="true" name="product[price]" class="form-control" value="<{$product.price|cur}>">
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="form-group">
+                                 <label class="col-md-2 control-label">市场价</label>
+                                 <div class="col-md-3">
+                                     <input type="text"  name="product[mktprice]" class="form-control" value="<{if $product.mktprice>0}><{$product.mktprice|cur}><{/if}>">
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="form-group">
+                                 <label class="col-md-2 control-label">单位</label>
+                                 <div class="col-md-2">
+                                     <input type="text"  name="product[unit]" class="form-control" value="<{$product.unit}>">
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="form-group">
+                                 <label class="col-md-2 control-label">重量</label>
+                                 <div class="col-md-2">
+                                     <input type="text"  name="product[weight]" class="form-control" value="<{$product.weight}>">
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <div class="form-group">
+                                 <label class="col-md-2 control-label">是否上架</label>
+                                 <div class="col-md-2">
+                                     <{input type=bool name="product[marketable]" value=$product.marketable}>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-9">
+                            <button type="submit" class="btn blue">保存基本信息</button>
+                            <a href="<{link app=productplus ctl=admin_products act=index}>" class="btn default">返回货品列表</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="tab_edit_extend" class="tab-pane">
+            <div class="alert alert-info alert-dismissible" role="alert">
+  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+  <i class="fa fa-info"></i> 启用该货品个性化信息后,前端将优先展示货品个性化信息。
+</div>
+            <form action="index.php?app=productplus&ctl=admin_products&act=save" method="post" class="form form-horizontal" id="product_edit_form">
+                <input type="hidden" name="extend[product_id]" value="<{$product.product_id}>">
+                <{if $extend && $extend.extend_id}>
+                <input type="hidden" name="extend[extend_id]" value="<{$extend.extend_id}>">
+                <{/if}>
+                <div class="form-body">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">是否启用个性化信息
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-4">
+                            <{input type=bool name="extend[enabled]" value=$extend.enabled|default:'false'}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">名称
+                        </label>
+                        <div class="col-md-10">
+                            <{input type=text name="extend[title]" value=$extend.title|default:$goods.name}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">简介
+                        </label>
+                        <div class="col-md-10">
+                            <{input type=textarea name="extend[brief]" value=$extend.brief|default:$goods.brief}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">相册
+                            <input type="hidden" name="extend[image_default]" value="<{$extend.image_default}>">
+                        </label>
+                        <div class="col-md-10">
+                            <div class="tiles product-images-pane">
+                                <{foreach from=$extend.images item=gimage}>
+                                    <div class="tile image bg-grey <{if $extend.image_default==$gimage.image_id}>selected<{/if}>">
+                                        <input type="hidden" name="extend[images][]" value="<{$gimage.image_id}>">
+                                        <div class="tile-body">
+                                            <figure style="width:100%;height:100%;background-image:url(<{$gimage.image_id|storager:'s'}>);background-position:center;background-repeat:no-repeat;background-size:auto 127px;"></figure>
+                                        </div>
+                                        <div class="tile-object">
+                                            <div class="number">
+                                                <i class="fa fa-trash-o text-danger delete-image" data-image-id="<{$gimage.image_id}>"></i>
+                                            </div>
+                                        </div>
+                                        <{if $extend.image_default==$gimage.image_id}>
+                                        <span class="badge badge-roundless badge-danger" style="position:absolute;top:0px;left:0px;">默认图</span>
+                                        <{/if}>
+                                    </div>
+                                <{/foreach}>
+                                <div class="tile bg-grey product-images-upload-pane fileinput-button">
+                                    <div class="tile-body">
+                                        <i class="glyphicon glyphicon-plus"></i>
+                                    </div>
+                                    <input id="product_images_fileupload" type="file"  multiple data-url="index.php?app=image&ctl=admin_manage&act=gimages_upload" accept="image/*">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">图文介绍
+                        </label>
+                        <div class="col-md-10">
+                            <{input type="html" height=600  name="extend[description]" value=$extend.description|default:$goods.description}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">是否启用个性化图文介绍
+                        </label>
+                        <div class="col-md-10">
+                            <{input type="bool"  name="extend[has_desc]" value=$extend.has_desc|default:'true'}>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <div class="row">
+                        <div class="col-md-offset-2 col-md-9">
+                            <button type="submit" class="btn blue">保存个性化信息</button>
+                            <a href="<{link app=productplus ctl=admin_products act=index}>" class="btn default">返回货品列表</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <textarea class="hide gimage-box-process-tpl">
+        <div class="tile bg-grey-gallery">
+            <div class="tile-body">
+                <i class="fa fa-cloud-upload">
+                </i>
+            </div>
+            <div class="tile-object">
+                <div class="name">
+                    <img src="<{$env.STATICS_HOST_URL}>/desktop/stylesheets/img/ajax-modal-loading.gif"/>
+                </div>
+                <div class="number">
+                </div>
+            </div>
+        </div>
+    </textarea>
+    <textarea class="hide gimage-box-done-tpl">
+        <div class="tile image bg-grey">
+            <input type="hidden" name="extend[images][]" value="{image_id}">
+            <div class="tile-body">
+                <figure style="width:100%;height:100%;background-image:url({url});background-position:center;background-repeat:no-repeat;background-size:auto 127px;"></figure>
+            </div>
+            <div class="tile-object">
+                <div class="number">
+                    <i class="fa fa-trash-o delete-image" data-image-id="{image_id}"></i>
+                </div>
+            </div>
+        </div>
+    </textarea>
+
+<script type="text/javascript">
+    $('#spec_select').on('change',function(e){
+        var sel_val = $(this).val();
+        load_page('index.php?app=productplus&ctl=admin_products&act=edit&p[0]='+sel_val);
+        // bootbox.confirm('是否保持当前修改？',function(flag){
+        //     if(flag){
+        //
+        //         load_page('index.php?app=productplus&ctl=admin_products&act=edit&p[0]='+sel_val);
+        //     }else{
+        //         load_page('index.php?app=productplus&ctl=admin_products&act=edit&p[0]='+sel_val);
+        //     }
+        //
+        // });
+
+    });
+
+    !function(){
+        $('.form-group [data-toggle="tooltip"]').tooltip();
+        /*商品相册上传选择逻辑*/
+        var substitute = function(str,obj){
+               return str.replace(/\\?\{([^{}]+)\}/g, function(match, name){
+                   if (match.charAt(0) == '\\') return match.slice(1);
+                   return (obj[name] != undefined) ? obj[name] : '';
+               });
+       }
+       /*相册拖动排序*/
+       $('.product-images-pane').sortable({
+           cursor: "move",
+           items:'> .image'
+       });
+
+        var set_default = function(el_box){
+            $('.product-images-pane .selected').removeClass('selected');
+            $(el_box).addClass('selected');
+            if($('.product-images-pane .badge-danger').length){
+                $(el_box).append($('.product-images-pane .badge-danger'));
+            }else{
+                $(el_box).append('<span class="badge badge-roundless badge-danger" style="position:absolute;top:0px;left:0px;">默认图</span>');
+            }
+            $('input[name="extend[image_default]"]').val($(el_box).find('input[name="extend[images][]"]').val());
+        }
+        //var tmp_doc_title = document.title,timer = 0;
+        $('#product_images_fileupload').fileupload({
+            add:function(e,data){
+                var file_obj = data.files[0];
+                if(!file_obj['type'].match(/^image/)){
+                    return toastr.warning(data.files[0]['name']+'不是允许的图片类型','类型错误');
+                }
+                data.context = $($('.gimage-box-process-tpl').val());
+                data.context.find('.number')
+                .html("<small>"+Math.round(parseFloat(file_obj.size/1024/1024)*100)/100+'MB</small>');
+                data.context.insertBefore($('.product-images-upload-pane'));
+                data.submit();
+            },
+            progress:function(e){
+                // (function(){
+                //     document.title = (document.title=='正在上传......')?'正在上传...':'正在上传......';
+                //     timer = setTimeout(arguments.callee,500);
+                // })();
+            },
+            progressall:function(e){
+
+            },
+            done:function(e,data){
+                // clearTimeout(timer);
+                // document.title = tmp_doc_title;
+                try{
+                    var re = $.parseJSON(data.result);
+                    data.context.replaceWith(substitute($('.gimage-box-done-tpl').val(),re));
+                    if(!$('.product-images-pane .selected').length){
+                        set_default($('.product-images-pane .image:first'));
+                    }
+                }catch(e){
+                    $(data.context).fadeOut(function(){
+                        $(this).remove();
+                    });
+                }
+
+            }
+        });
+
+        $('.product-images-pane').on('click','.image',function(e){
+                set_default(this);
+                return;
+        });
+        $('.product-images-pane').on('click','.delete-image',function(e){
+            e.stopPropagation();
+            if(!confirm('确认移除？'))return;
+            $(this).closest('.image').remove();
+            if(!$('.product-images-pane .selected').length){
+                if($('.product-images-pane .image:first')){
+                        set_default($('.product-images-pane .image:first'));
+                }else{
+                        $('input[name="image_default"]').val('');
+                }
+            }
+
+        });
+    }();
+</script>

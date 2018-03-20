@@ -1,0 +1,19 @@
+<!-- 智能橱窗 -->
+<template id="widget-smartwindow">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-smartwindow :widget="widget" :index="index"></widget-child-setting-smartwindow>
+        <widget-child-smartwindow :widget="widget" :index="index"></widget-child-smartwindow>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_smartwindow = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-smartwindow',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-smartwindow': widget_child_setting_smartwindow,
+        'widget-child-smartwindow': widget_child_smartwindow
+    }
+});
+</script>

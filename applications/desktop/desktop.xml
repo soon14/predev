@@ -1,0 +1,35 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="admin_system">系统</permission>
+        <permission display='true' id="admin_user">操作员管理</permission>
+        <permission display='true' id="admin_user_edit">操作员管理添加/编辑</permission>
+        <permission display='true' id="admin_user_delete">操作员管理删除</permission>
+
+        <permission display='true' id="admin_user_roles">角色及权限</permission>
+        <permission display='true' id="admin_user_roles_edit">角色及权限添加/编辑</permission>
+        <permission display='true' id="admin_user_roles_delete">角色及权限删除</permission>
+
+
+        <permission display='true' id="admin_system_email">邮件发送配置</permission>
+        <permission display='true' id="admin_system_sms">短信平台配置</permission>
+        <permission display='true' id="admin_system_cache">缓存</permission>
+
+        <permission display='true' id="admin_system_setting">系统设置</permission>
+
+    </permissions>
+    <panelgroup icon="icon-users" id="user" order="50">操作者</panelgroup>
+    <panelgroup icon="icon-settings" id="system" order="60">系统</panelgroup>
+
+    <adminpanel display='false' permission="admin_system_setting">系统设置</adminpanel>
+
+    <adminpanel controller="users" display='true' group="desktop_user" permission="admin_user">操作员管理</adminpanel>
+    <adminpanel display='false' group="desktop_user" permission="admin_user_edit">操作员添加/编辑</adminpanel>
+    <adminpanel display='false' group="desktop_user" permission="admin_user_delete">操作员删除</adminpanel>
+    <adminpanel controller="roles" display='true' group="desktop_user" permission="admin_user_roles">角色及权限</adminpanel>
+    <adminpanel display='false' group="desktop_user" permission="admin_user_roles_edit">角色及权限添加/编辑</adminpanel>
+    <adminpanel display='false' group="desktop_user" permission="admin_user_roles_delete">角色及权限删除</adminpanel>
+    <adminpanel action='setting' controller='email' display='true' group="desktop_system" order="30" permission="admin_system_email">邮件发送配置</adminpanel>
+    <adminpanel action='setting' controller='sms' display='true' group="desktop_system" order="30" permission="admin_system_sms">短信平台配置</adminpanel>
+    <adminpanel controller="cachestage" display='true' group="desktop_system" permission="admin_system_cache">缓存</adminpanel>
+
+</desktop>

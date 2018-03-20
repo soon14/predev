@@ -1,0 +1,233 @@
+<div class="alert alert-danger" role="alert" id="error_msg"></div>
+<div class="order-processing-title">
+    <div class="page-header">
+        <h1>提现账户</h1>
+    </div>
+    <{if $member_info.bank_account}>
+        <div class="have-account-block">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <span class="word-part">现有提现账户：</span>
+                    <span class="word-part"><{$member_info.bank_type}></span>
+                    <span class="word-part">尾号：<{$member_info.bank_account}></span>
+                    <span class="word-part">持卡人：<{$member_info.account_name}></span>
+                </div>
+            </div>
+        </div>
+    <{/if}>
+    <form class="form-horizontal">
+        <input type="hidden" id="card_type">       
+        <div class="form-group">
+            <label class="col-md-2 control-label" style="line-height:46px;">选择提现方式</label>
+            <div class="col-md-6 card-type-choice">
+                <div class="checkbox">
+                    <label>
+                        <input type="radio" data-value="union" name="card_type"><img src="../themes/pc/default/images/unionpay.png">
+                    </label>
+                </div>
+                <div class="checkbox">
+                    <label>
+                        <input type="radio" data-value="alipay" name="card_type"><img src="../themes/pc/default/images/paypal.png">
+                    </label>
+                </div>
+            </div>
+        </div>
+
+        <div class="card-paypal paypal-choice">
+            <div class="form-group">
+                <label for="bank_type" class="col-md-2 control-label">开户行</label>
+                <div class="col-md-2">
+                    <select name="bank_type" id="bank_type" class="form-control">
+                        <{foreach from=$bank['bank_list'] item=bank}>
+                            <option value="<{$bank.bank_code}>"><{$bank.bank_name}></option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="card_account" class="col-md-2 control-label">银行卡号</label>
+                <div class="col-md-3">
+                    <div class="popover-tip">
+                        <input type="text" class="form-control" id="card_account">
+                        <div class="popover top">
+                            <div class="arrow" style="left: 50%;"></div>
+                            <div class="popover-content"></div>
+                        </div>
+                    </div>                    
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="card_name" class="col-md-2 control-label">持卡人</label>
+                <div class="col-md-3">
+                    <div class="popover-tip">
+                        <input type="text" class="form-control" id="card_name">
+                        <div class="popover top">
+                            <div class="arrow" style="left: 50%;"></div>
+                            <div class="popover-content"></div>
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="cash-paypal paypal-choice">
+            <div class="form-group">
+                <label for="alipay_name" class="col-md-2 control-label">账号姓名</label>
+                <div class="col-md-3">
+                    <div class="popover-tip">
+                        <input type="text" class="form-control" id="alipay_name">
+                        <div class="popover top">
+                            <div class="arrow" style="left: 50%;"></div>
+                            <div class="popover-content"></div>
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="alipay_account" class="col-md-2 control-label">支付宝账号</label>
+                <div class="col-md-3">
+                    <div class="popover-tip">
+                        <input type="text" class="form-control" id="alipay_account">
+                        <div class="popover top">
+                            <div class="arrow" style="left: 50%;"></div>
+                            <div class="popover-content"></div>
+                        </div>
+                    </div>    
+                    
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="vcode" class="col-md-2 control-label">手机验证码</label>
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="vcode">
+            </div>
+            <div class="col-md-2">
+                <input type="button" class="btn btn-default" id="btn" value="获取验证码">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-2">
+                <button type="button" class="btn btn-primary" id="save_card">保存</button>
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    //提现方式js
+
+    $('.card-type-choice').on('click','label',function(){         
+        var idx=$(this).parent().index();
+        $('.paypal-choice').hide().eq(idx).show();
+        $('#card_type').val($(this).find('input').data('value'));
+    });
+
+    $('.card-type-choice').find('label').eq(0).trigger('click');
+
+	$(document.body).addClass('binding-body');
+
+    //至少获取一次验证码
+    var get_vcode=false;
+    //个别提示信息
+    function popoverShow(pop,txt){
+        pop.next().stop(true,true).fadeIn(100).delay(2000).fadeOut(1000).find('.popover-content').text(txt);
+    }
+	//全局提示信息
+    function global_err_msg(txt){
+        $('#error_msg').stop(true,true).fadeIn(600).delay(2000).fadeOut(400).text(txt);
+    }
+
+    //获得短信验证码
+    var _cutdown_sms = function(btn){
+        var cutdown = 120,
+            btn_o_text = btn.val();
+        var timer =setInterval(function(){
+            btn.val('再次发送'+(cutdown--)+'秒');
+            if(cutdown<1){
+                clearInterval(timer);
+                btn.val(btn_o_text).removeAttr('disabled');
+            }
+        },1000);
+    };
+
+    $('#btn').on('click',function(e){
+        var btn = $(this);
+        btn.attr('disabled','true');
+        $('#save_card').attr('disabled','true');
+        $.post('<{link app=commission ctl=site_member act=send_vcode_sms}>',function(re){
+            if(re && re.error){
+                btn.removeAttr('disabled');
+                global_err_msg(re.error);
+            }
+            if(re && re.success){
+                if(!get_vcode){
+                    get_vcode=true;
+                }
+                _cutdown_sms(btn);
+            }
+            $('#save_card').removeAttr('disabled','true');
+        },'json');
+    });
+
+    $('#save_card').on('click',function(){
+        checkForm();
+    });
+
+    function checkForm(){
+        if(!get_vcode){
+            global_err_msg('您未获取验证码')
+            return;
+        }
+        var card_type =$('#card_type').val();
+        if(card_type==='union'){
+            var bank_type = $("#bank_type").val();
+            if($("#card_account").val()){
+                var bank_account = $("#card_account").val();
+            }else{
+                popoverShow($("#card_account"),"请填写卡号");
+                return;
+            }
+            if($("#card_name").val()){
+                var account_name = $("#card_name").val();
+            }else{
+                popoverShow($("#card_name"),"请填写账户姓名");
+                return;
+            }
+        }
+        if(card_type==='alipay'){
+            var bank_type = 'alipay';
+            if($("#alipay_name").val()){
+                var account_name = $("#alipay_name").val();
+            }else{
+                popoverShow($("#alipay_name"),"请填写账户姓名");
+                return;
+            }
+            if($("#alipay_account").val()){
+                var bank_account = $("#alipay_account").val();
+            }else{
+                popoverShow($("#alipay_account"),"请填写卡号");
+                return;
+            }
+        }
+        $('#save_card').attr('disabled','true');
+        $.post('<{link app=commission ctl=site_member act=bank}>',
+                {bank_type:bank_type ,bank_account :bank_account ,account_name :account_name ,vcode:$('#vcode').val()},
+                function(re){
+                    if(re && re.error){
+                        global_err_msg(re.error);
+                    }
+                    if(re && re.success){
+                        window.location.href="<{link app=commission ctl=site_member act=cash}>";
+                    }
+                    $('#save_card').removeAttr('disabled','true');
+        } ,'json');
+    }
+	
+</script>

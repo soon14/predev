@@ -1,0 +1,84 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title><{$title}></title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <{SYSTEM_HEADER}>
+    <link rel="stylesheet" href="statics/theme.css">
+    <{script src='jquery.lazyload.min.js'}>
+</head>
+<body>
+    <{require file="public/header.html" }>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <{WIDGET_B2C_GOODS_CAT}> 
+            </div>
+            <div class="col-md-9 glist-container">
+                <div class="row goods-list" id="product_goods">
+
+                </div>
+                <script>
+                    (function ($) {
+                        function prod_tpl(data){
+                            return '<div class="col-md-4">'
+                                +'<div class="thumbnail goods-item">'
+                                    +'<div class="gi-image-wrapper">'
+                                        +'<a href="'+data.product.item_url+'">'
+                                            +'<img alt="'+data.product.name+'" data-original="'+data.product.image+'">'
+                                        +'</a>'
+                                    +'</div>'
+                                    +'<div class="caption">'
+                                        +'<h3 class="g-name">'
+                                            +'<a href="'+data.product.item_url+'">'+data.product.name+'</a>'
+                                        +'</h3>'
+                                        +'<p class="avg-mark">'
+                                            +'<span class="text-warning star-rating"></span>'
+                                            +'<small>'+Number(data.mark_star).toFixed(1)+'</small>'
+                                        +'</p>'
+                                        +'<ul class="list-inline">'
+                                            +'<li class="price-1 text-danger">'+data.product.price+'</li>'
+                                        +'</ul>'
+                                    +'</div>'
+                                +'</div>'
+                            +'</div>'
+                        };
+
+                        $.ajax({
+                            url:'<{$base_url}>/openapi/goods/gallery',
+                            dataType:'json'
+                        })
+                        .done(function(data){
+                            $.each(data.data.goods_list,function(k,v){
+                                $('#product_goods').append(prod_tpl(v));
+                            });
+
+                            $('#product_goods').find('.star-rating').html(function(){
+                                var total_star=5;
+                                var product_star='';
+                                var product_star_num=Math.ceil($(this).next().text());
+                                for(var i=0;i<total_star;i++){
+                                    if(i<product_star_num){
+                                        product_star+= '★';
+                                    }else{
+                                        product_star+= '☆';
+                                    }
+                                }
+                                return product_star;
+                            });
+
+                            $('#product_goods').find('img[data-original]').lazyload({
+                                'effect' : "fadeIn",
+                                'placeholder':'data:image/gif;base64,R0lGODlhAQABAIAAAO/v7////yH5BAAHAP8ALAAAAAABAAEAAAICRAEAOw=='
+                            });
+                        });
+                    })(jQuery);
+                </script>
+            </div>
+        </div>
+    </div>
+    <{require file="public/footer.html" }>
+    <{SYSTEM_FOOTER}>
+</body>
+</html>

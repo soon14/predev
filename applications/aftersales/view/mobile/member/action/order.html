@@ -1,0 +1,33 @@
+<{if $order_list}>
+    <{foreach from=$order_list item=order}>
+        <ul class="table-view">
+            <li class="table-view-divider">订单：<{$order.order_id}></li>
+            <{foreach from=$order_items_group[$order.order_id] item=item name=oig}>
+            <{if $request_items[$order.order_id][$item.product_id]>=$item.nums}>
+            <{continue}>
+            <{/if}>
+            <li class="table-view-cell media">
+                <a href="<{link app=aftersales ctl=mobile_member act=newrequest args0=$order.order_id args1=$item.product_id}>" class="navigate-right">
+                <img width=50 class="img-thumbnail media-object pull-left" src="<{$item.image_id|storager:'xs'}>" alt="<{$item.name}>" />
+                <div class="media-body">
+                    <{$item.name}><{if $item.spec_info}><p><{$item.spec_info}></p><{/if}>
+
+                </div>
+                <p class="pull-right"><{$order.createtime|cdate}></p>
+                </a>
+            </li>
+            <{/foreach}>
+        </ul>
+
+    <{/foreach}>
+<div class="content-padded">
+    <{morepage data=$pager}>
+</div>
+<{else}>
+<div class="content-splash">
+    <i class="fa fa-inbox fa-5x"></i>
+    <p>
+        暂无可申请售后商品
+    </p>
+</div>
+<{/if}>

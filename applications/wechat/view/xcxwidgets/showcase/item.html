@@ -1,0 +1,15 @@
+<!-- 智能橱窗 -->
+<template id="widget-showcase">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-showcase :widget="widget" :index="index"></widget-child-showcase>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_showcase = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-showcase',
+    components: {
+        'widget-child-showcase': widget_child_showcase
+    }
+});
+</script>

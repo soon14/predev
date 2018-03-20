@@ -1,0 +1,94 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 智能橱窗 - 子组件 -->
+<template id="widget-child-showcase">
+    <!--
+    cols 分列样式
+    has_gap 是否显示间距
+    item.url 网址
+    item.image.src 图片地址
+    item.image.mode 图片裁切模式 https://mp.weixin.qq.com/debug/wxadoc/dev/component/image.html
+    -->
+    <section class="widget-box widget-showcase " :class="widget.data.cols">
+        <ul v-if="widget.data.items.length == 1&&widget.data.cols!='col-1'">
+            <li v-for="(item, item_key) in widget.data.items" :item_key="item_key" :class="{'has-gap':widget.data.has_gap}">
+                <a :href="item.url" :class="item.image.mode || 'aspectFit'">
+                    <!--<img :src="item.image.src" />-->
+                    <div v-if="item.image.mode=='aspectFill'" :class="item.image.mode || 'aspectFit'" :style="{'backgroundSize':(item.image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':'url('+item.image.src+')'}"></div>
+                    <div v-else :class="item.image.mode || 'widthFix'" :style="'backgroundImage:url('+item.image.src+')'"></div>
+                </a>
+            </li>
+            <li :class="{'has-gap':widget.data.has_gap}">
+                <a></a>
+            </li>
+            <li :class="{'has-gap':widget.data.has_gap}">
+                <a></a>
+            </li>
+        </ul>
+        <ul v-else-if="widget.data.items.length == 2&&widget.data.cols!='col-1'">
+            <li v-for="(item, item_key) in widget.data.items" :item_key="item_key" :class="{'has-gap':widget.data.has_gap}">
+                <a :href="item.url" :class="item.image.mode || 'aspectFit'">
+                    <!--<img :src="item.image.src" />-->
+                    <div v-if="item.image.mode=='aspectFill'" :class="item.image.mode || 'aspectFit'" :style="{'backgroundSize':(item.image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':'url('+item.image.src+')'}"></div>
+                    <div v-else :class="item.image.mode || 'widthFix'" :style="'backgroundImage:url('+item.image.src+')'"></div>
+                </a>
+            </li>
+            <li :class="{'has-gap':widget.data.has_gap}">
+                <a></a>
+            </li>
+            
+        </ul>
+        <ul v-else-if="widget.data.items.length>0">
+            <li v-for="(item, item_key) in widget.data.items" :item_key="item_key" :class="{'has-gap':widget.data.has_gap}">
+                <a :href="item.url" :class="item.image.mode || 'aspectFit'">
+                    <!--<img :src="item.image.src" />-->
+                    <div v-if="item.image.mode=='aspectFill'" :class="item.image.mode || 'aspectFit'" :style="{'backgroundSize':(item.image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':'url('+item.image.src+')'}"></div>
+                    <div v-else :class="item.image.mode || 'widthFix'" :style="'backgroundImage:url('+item.image.src+')'"></div>
+                </a>
+            </li>
+        </ul>
+        <ul v-else>
+            <li :class="{'has-gap':widget.data.has_gap}">
+                <a href="javascript:;" class="aspectFit">
+                    <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" />
+                </a>
+            </li>
+        </ul>
+    </section>
+</template>
+<script type="text/javascript">
+var arr = [];
+designStore.methods.updateData = function(vnode) {
+    this.root.page.currWidgets[vnode.index].data.items = arr;
+    console.log(this.root.page.currWidgets[vnode.index].data.items); 
+};
+var widget_child_showcase = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-showcase',
+    created:function(){
+    	var _t = this;
+    	if(this.widget.data.items.length!=0){
+    		for(var i=0;i<this.widget.data.items.length;i++){
+    			imgCompare(this.widget.data.items[i].image);
+    		}
+    	}
+    	arr = this.widget.data.items;
+    	designStore.methods.updateData(this);
+    }
+});
+function imgCompare(image){
+	var img = new Image();
+	img.onload = function(){
+		if(image.mode == 'aspectFill'){
+			if(this.width>this.height){
+		    	image['percent'] = 'width';
+		    }else{
+		    	image['percent'] = 'height';
+		    }
+		}else{
+			image['percent'] = 'normal';
+		}
+	    this.onload = null;
+	};
+	img.src = image.src;
+}
+</script>

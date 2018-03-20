@@ -1,0 +1,30 @@
+<a class="btn btn-danger btn-lg btn-buy" href="javascript:;" id="J_show_reserve">马上预约</a>
+<span class="J-countdown" href="javascript:;">
+<i class="glyphicon glyphicon-time"></i>
+<span class="day-show">0</span>
+<span class="hour-show">0</span>
+<span class="minute-show">0</span>
+<span class="second-show">0</span>
+后预约结束
+</span>
+<div class="modal fade" tabindex="-1" role="dialog" id="J_reserve_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+    $('#J_show_reserve').on('click',function(e){
+        $.post('<{link app=sale ctl=site_sale act=reserve}>',{'sale_id':<{$sale.id}>,'goods_id':<{$sale.goods_id}>},function(re){
+            if(re.redirect){
+                location=re.redirect;
+            }
+            $('#J_reserve_modal').modal().find('.modal-content').html(re);
+        });
+    });
+    var notStart = new Sale.countdown(<{$sale.reserve_end - $now}>,$('.J-countdown'),function(){
+        $('#J_sale_buy').load('<{link app=sale ctl=site_sale act=get_status arg0=$product_id}>',{'goods_id':<{$sale.goods_id}>});
+    });
+})();
+</script>

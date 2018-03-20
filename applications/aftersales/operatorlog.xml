@@ -1,0 +1,8 @@
+<root>
+    <!-- 售后服务管理 -->
+    <register module="order" ctl="admin_request" act="save" param="status">
+        <operate_type>售后申请状态修改</operate_type>
+        <template>售后申请表状态修改为 %s</template>
+    </register>
+    
+</root>

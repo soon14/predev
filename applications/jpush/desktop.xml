@@ -1,0 +1,19 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="jpushtask">极光推送任务管理</permission>
+        <permission display='true' id="jpushregistration">极光推送客户端管理</permission>
+        <permission display='true' id="jpushsetting">极光推送配置</permission>
+    </permissions>
+    <panelgroup icon="fa fa-paper-plane" id="jpush" order="99">极光推送</panelgroup>
+    <adminpanel action="index" controller="admin_setting" display="true" group="jpush_jpush" order='1' permission="jpushsetting">基本配置</adminpanel>
+
+    <workground icon="fa fa-paper-plane" id="jpush.wrokground" name="极光推送" order="199">
+        <menugroup name="极光推送">
+            <menu action='index' controller='admin_task' display='true' order='1' permission='jpushtask'>任务列表</menu>
+            <menu action='edit' controller='admin_task' display='false' order='1' permission='jpushtask'>新建推送</menu>
+        </menugroup>
+        <menugroup name="客户端管理">
+            <menu action='index' controller='admin_registration' display='true' order='1' permission='jpushregistration'>客户端列表</menu>
+        </menugroup>
+    </workground>
+</desktop>

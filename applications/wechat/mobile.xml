@@ -1,0 +1,12 @@
+<site>
+    <module controller='mobile_wxqrlogin' >
+        <name>wxqrlogin</name>
+        <title>微信二维码登录</title>
+        <disable>false</disable>
+    </module>
+    <module controller='mobile_xcxpage' >
+        <name>xcxpage</name>
+        <title>小程序页面</title>
+        <disable>false</disable>
+    </module>
+</site>

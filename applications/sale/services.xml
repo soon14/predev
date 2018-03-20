@@ -1,0 +1,31 @@
+<services>
+    <service id="desktop_finder.sale_mdl_sales">
+        <class>sale_finder_sales</class>
+    </service>
+    <!--替换商品详情页购物按钮-->
+    <service id="b2c.buy_area">
+        <class>sale_service_buy_area</class>
+    </service>
+    <service id="b2c.mobile_buy_area">
+        <class>sale_service_mobile_buy_area</class>
+    </service>
+    <!--替换商品详情页购物按钮end-->
+    <service id="b2c.check_cart_goods">
+        <class>sale_service_cart_check</class>
+    </service>
+    <service id="ectools.bill.payment.order.succ" optname="订单支付完成处理">
+        <class>sale_service_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.payment.order.progress" optname="订单支付到担保方完成处理">
+        <class>sale_service__order_payfinish</class>
+    </service>
+    <service id="b2c.messenger.actions">
+        <class>sale_service_messenger_actions</class>
+    </service>
+    <service id="b2c.member_menu_extends">
+        <class>sale_service_mmenuextend</class>
+    </service>
+    <service id="b2c.member_menu_m_extends">
+        <class>sale_service_mmenuextendm</class>
+    </service>
+</services>

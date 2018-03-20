@@ -1,0 +1,40 @@
+<services>
+    <service id="desktop_finder.groupbooking_mdl_activity" >
+        <class>groupbooking_finder_activity</class>
+    </service>
+    <service id="desktop_finder.groupbooking_mdl_orders"  >
+        <class>groupbooking_finder_orders</class>
+    </service>
+    <service id="desktop_finder.groupbooking_mdl_participate_member">
+        <class>groupbooking_finder_participate_member</class>
+    </service>
+    <service id="groupbooking_activity_stage">
+        <class>groupbooking_activity_stage</class>
+    </service>
+    <service id="groupbooking.order.create.finish">
+        <class>groupbooking_order_createfinish</class>
+    </service>
+    <service id="groupbooking.order.create.before">
+        <class>groupbooking_order_beforefinish</class>
+    </service>
+    <service id="b2c.member_menu_m_extends" opt="会员中心移动端菜单扩展">
+        <class>groupbooking_member_m_menuextends</class>
+    </service>
+    <service id="extend_filter_groupbooking_mdl_activity" optname="活动表筛选扩展">
+        <class>groupbooking_finder_extend_activity</class>
+    </service>
+    <!--订单付款流程-->
+    <service id="ectools.bill.payment.groupbooking.gborder.succ" optname="订单支付完成处理">
+        <class orderby="30">groupbooking_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.payment.groupbooking.gborder.progress" optname="订单支付到担保方完成处理">
+        <class orderby="30">groupbooking_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.refund.groupbooking.gborder.succ" optname="订单退款完成处理">
+        <class orderby="30">groupbooking_order_refundfinish</class>
+    </service>
+    <service id="ectools.bill.refund.groupbooking.gborder.progress" optname="订单退款到担保方完成处理">
+        <class orderby="30">groupbooking_order_refundfinish</class>
+    </service>
+
+</services>

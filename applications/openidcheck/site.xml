@@ -1,0 +1,6 @@
+<site>
+    <module controller='site_openidcheck'>
+        <name>openidcheck</name>
+        <title>信任登陆账户检测</title>
+    </module>
+</site>

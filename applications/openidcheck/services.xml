@@ -1,0 +1,8 @@
+<services>
+    <service id="loginlimit.check" optname="信任登陆注册拦截">
+        <class orderby="20">openidcheck_openidcheck</class>
+    </service>
+    <service id="member.logout_after" optname="信任登陆拦截器,会员登出时任务">
+        <class orderby="20">openidcheck_openidcheck</class>
+    </service>
+</services>

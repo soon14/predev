@@ -1,0 +1,16 @@
+<div class="content">
+    <form action="<{link app=codebuy ctl=mobile_activity act=use_code}>" class="form-horizontal content-padded content-form" method="post" id="J_code_form">
+        <input type="hidden" value="<{$product_id}>" name="product_id"/>
+        <input type="hidden" value="<{$goods_id}>" name="goods_id"/>
+        <input type="hidden" value="<{$activity_id}>" name="activity_id"/>
+        <input type="text" name="code" class="form-control" placeholder="请输入优购码"/>
+        <span class="help-block" id="J_codebuy_help"></span>
+        <input type="text" name="vcode" class="form-control" placeholder="请输入验证码"/>
+        <div class="form-control">
+            <a href="javascript:;" onclick="$(this).find('img').prop('src',$(this).attr('data-src')+'?'+new Date().getTime())" data-src="<{link app=mobile ctl=vcode act=index args0='codebuy'}>">
+                <img src="<{link app=mobile ctl=vcode act=index args0='codebuy'}>" alt="验证码" />
+            </a>
+        </div>
+        <button type="submit" class="btn btn-block btn-primary ">确定</button>
+    </form>
+</div>

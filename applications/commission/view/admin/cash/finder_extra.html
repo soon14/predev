@@ -1,0 +1,11 @@
+<script>
+    function cash(cash_id ,status){
+        $.getJSON('index.php?app=commission&ctl=admin_cash&act=do_cash' ,{cash_id : cash_id ,status :status} ,function(re){
+            if (re && ('success' in re)) {
+                $('#cash_control_'+cash_id).html('<span class="label label-success">' + '已处理'+ '</span>');
+            } else {
+                Messagebox.error(re.error);
+            }
+        });
+    }
+</script>

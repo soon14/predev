@@ -1,0 +1,66 @@
+<form action="" method="post" id="material_form">
+    <div class="ml-wrap" id="ml-wrap">
+        <div class="ml-tag-list" data-save-url="<{link app=$appid ctl=$ctrl act='save_tag'}>" data-delete-url="<{link app=$appid ctl=$ctrl act='delete_tag'}>">
+            <div class="ml-tag-wrap">
+                <div class="list-group ml-tag-list-box">
+                    <a href="javasripct:;" data-media-url="<{link app=$appid ctl=$ctrl act='image_main'}>" class="list-group-item ml-tag-item active">
+                        <span class="ml-tag-name">我的素材库</span>
+                    </a>
+                    <{foreach from=$tags item=tag}>
+                    <a href="javasripct:;" data-media-url="<{link app=$appid ctl=$ctrl act='image_main' p=array($tag.tag_id)}>" class="list-group-item ml-tag-item" data-tag-id="<{$tag.tag_id}>" data-tag-name="<{$tag.tag_name}>">
+                        <span class="ml-tag-name"><{$tag.tag_name}></span>
+                        <i class="ml-tag-trash fa fa-trash-o"></i>
+                    </a>
+                    <{/foreach}>
+                </div>
+                <div class="ml-tag-set-box">
+                    <div class="form-group">
+                        <div class="input-group">
+                            <span class="input-group-addon hide"><i class="fa fa-ban"></i></span>
+                            <input type="text" class="form-control" id="tag-name" data-tag-id="" placeholder="标签名">
+                            <div id="tag-act-btn" class="input-group-addon"><i class="fa fa-plus"></i></div>
+                        </div>
+                    </div>
+                    <input class="form-control hide" id="media-up-media-file" type="file" multiple accept="image/*">
+                    <button id="media-up-media-btn" data-up-media-url="<{link app=$appid ctl=$ctrl act='media_upload'}>" data-save-media-url="<{link app=$appid ctl=$ctrl act='save_image'}>" type="button" class="btn btn-primary btn-block"><i class="fa fa-upload"></i>上传</button>
+                </div>
+            </div>
+        </div>
+        <div class="ml-main" id="ml-main" data-use-material="<{$use_material}>" data-media-ids="" data-media-paths="" data-is-multiple="<{($is_multiple ? 'true' : 'false')}>">
+            <{if !$use_material}>
+            <div class="clearfix ml-main-set-box hide" id="ml-main-set-box">
+                <div class="pull-left tag-items">
+                    <ul class="list-inline hide" id="checkbox_tags">
+                        <{foreach from=$tags item=tag}>
+                        <li data-tag-id="<{$tag.tag_id}>">
+                            <label class="control-label">
+                                <input type="checkbox" value="<{$tag.tag_id}>" name="tag_ids[]">
+                                <{$tag.tag_name}>
+                            </label>
+                        </li>
+                        <{/foreach}>
+                    </ul>
+                    <a id="set-tag-media" href="javasripct:;" class="btn btn-success hide" label="设置标签" icon="fa-trash-o" data-set-tag-url="<{link app=$appid ctl=$ctrl act='save_tag_image'}>">
+                        设置素材标签&nbsp;<i class="fa fa-tags"></i>
+                    </a>
+                    <a id="delete-tag-media" href="javasripct:;" class="btn btn-warning hide" label="移除标签" icon="fa-trash-o" data-del-tag-url="<{link app=$appid ctl=$ctrl act='delete_tags_images'}>">
+                        移除素材标签&nbsp;<i class="fa fa-remove"></i>
+                    </a>
+                </div>
+                <div class="pull-right set-btns">
+                    <a id="delete-media" href="javasripct:;" class="btn btn-danger" icon="fa-trash-o" data-del-media-url="<{link app=$appid ctl=$ctrl act='delete_image'}>">
+                        删除所选素材&nbsp;<i class="fa fa-trash-o"></i>
+                    </a>
+                </div>
+            </div>
+            <{/if}>
+            <div class="clearfix ml-medias-list">
+                <div class="ml-medias-main" id="ml-medias-main" data-page="1" data-list-url="<{link app=$appid ctl=$ctrl act='image_main'}>">
+                    <{include file='admin/material/image_main.html'}>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+<{css src='materiallib.css?t5'}>
+<{script src='materiallib.js'}>

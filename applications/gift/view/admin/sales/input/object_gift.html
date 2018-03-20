@@ -1,0 +1,106 @@
+<{if $type=='goods'}>每满<input class="input-sm input-xsmall" name="<{$input_object_name_prefix}>[quantity]" required=true value="<{$data.quantity|default:1}>" />件,<{/if}>赠送:
+<br><br>
+<div class="well well-sm">
+    <{input type="object" callback_func="product_select_callback_func_{$sid}" base_filter=$input_object_basefilter object="products@b2c" placeholder="请选择具体商品做为赠品..." multiple="true" }>
+    <table class="object-product-rows table table-striped table-hover">
+        <thead class="hidden">
+            <th>
+            </th>
+            <th>
+                名称
+            </th>
+            <th>
+                规格
+            </th>
+            <th>
+                货号
+            </th>
+            <th>
+                条码
+            </th>
+            <th>
+                价格
+            </th>
+            <th>
+                单位
+            </th>
+            <th>
+                库存
+            </th>
+            <th>
+                数量
+            </th>
+            <{if $type=='goods'}>
+            <th>
+                最多赠送 <i class="fa font-grey-gallery fa-question-circle" data-toggle="tooltip" data-placement="left" data-container="body" data-original-title="赠送数量默认翻倍。可通过该参数限定最多赠送量。留空则不限"></i>
+            </th>
+            <{/if}>
+        </thead>
+        <tbody id="objproduct_rows_<{$sid}>">
+        </tbody>
+    </table>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#objproduct_rows_<{$sid}>').prev('thead').find('i[data-toggle="tooltip"]').tooltip();
+    product_select_callback_func_<{$sid}> = function(selected){
+        var p_ids = [];
+        $.each(selected,function(k,v){
+            p_ids.push(v.value);
+        });
+        _render(p_ids);
+    };
+    var _render = function(p_ids,nums_map,nums_max_map){
+        $.post('<{link app=desktop ctl=finder act=object_row}>',{
+            'app':'b2c',
+            'model':'products',
+            'cols':'product_id,name,spec_info,bn,barcode,price,unit',
+            'name':"<{$input_object_name_prefix}>[product_id][]",
+            'pkey':'product_id',
+            'filter':{product_id:p_ids}
+        },function(re){
+            $('#objproduct_rows_<{$sid}>').prev('thead').removeClass('hidden');
+            $('#objproduct_rows_<{$sid}>').append(re);
+            var tmp = [];
+            $($.grep($('#objproduct_rows_<{$sid}> tr'),function(tr,i){
+                var product_id = $(tr).attr('data-id');
+                var num = (nums_map&&nums_map[product_id])?nums_map[product_id]:1;
+                var num_max = (nums_max_map&&nums_max_map[product_id])?nums_max_map[product_id]:'';
+                if(!$(tr).find('input:text[name^="<{$input_object_name_prefix}>"]').length){
+                    $(tr).append('<td><span class="stock-num" data-skubn="'+$.trim($(tr).find('td').eq(3).text())+'"></span></td>');
+                    $(tr).append($('<td class="input-xsmall"><input type="text" name="<{$input_object_name_prefix}>[gift_num]['+product_id+']" value="'+num+'" class="form-control"/></td>'));
+                    <{if $type=='goods'}>
+                    $(tr).append($('<td class="input-xsmall"><input type="checked" name="<{$input_object_name_prefix}>[gift_num_max]['+product_id+']" value="'+num_max+'" class="form-control"/></td>'));
+                    <{/if}>
+                }
+                if($.inArray(product_id,tmp)>-1){
+                    return true;
+                }else{
+                    tmp.push(product_id);
+                }
+            })).remove();
+            if($('#objproduct_rows_<{$sid}> .stock-num').length){
+                var sku_bn_param = [];
+                $('#objproduct_rows_<{$sid}> .stock-num').each(function(idx,item){
+                    sku_bn_param.push($(item).attr('data-skubn'));
+                });
+                $.post('<{$base_url}>/openapi/stock/confirm/',{sku:sku_bn_param.join(',')},function(re){
+                    if(re && re.data){
+                        $.each(re.data,function(key,obj){
+                            $('#objproduct_rows_<{$sid}> .stock-num[data-skubn="'+key+'"]').text(obj.num);
+                        });
+                    }
+                },'json');
+            }
+        });
+    }
+
+    <{if $data.product_id}>
+    var p_ids = [];
+    <{foreach from=$data.product_id item=product_id}>
+    p_ids.push(<{$product_id}>);
+    <{/foreach}>
+    _render(p_ids,<{$data.gift_num|json_encode}>,<{$data.gift_num_max|json_encode}>);
+    <{/if}>
+});
+</script>

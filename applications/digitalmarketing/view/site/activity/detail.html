@@ -1,0 +1,193 @@
+<div class="jumbotron">
+    <h2><{$data.title}></h2>
+    <p><{$data.description}></p>
+    <p><a id="get_prize" class="btn btn-primary btn-lg" href="/index.php/openapi/prize/win">点击抽奖</a></p>
+    <br>
+    <p>
+    <div class="prize-rule">
+        <div class="activity-desc">
+            <h4>活动说明:</h4>
+            <{$data.desc}>
+        </div>
+
+        每用户每天<{if $data.frequency_limit>0}>可以参加<{$data.frequency_limit}>次<{else}>参加次数不限<{/if}>，
+        你已经参加了<{$chance.today_nums}>次，
+        今天还有<{if $data.frequency_limit>0}>
+        <{$data.frequency_limit-$chance.today_nums}>
+        <{else}>多
+        <{/if}>
+        次参加机会
+        <br>
+        截止日期：<{$data.end_time|cdate}>
+    </div>
+    </p>
+</div>
+<input type="hidden" value="" name="addr_id">
+
+
+<div class="modal fade" tabindex="-1" role="dialog" id="myModal">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script>;
+    $(function(){
+        var act_id = '<{$data.activity_id}>';
+        var data={activity_id:act_id};
+        var status = '<{$data.status}>';
+        var time = (Date.parse(new Date()))/1000;
+        if(time<<{$data.from_time}>){
+            status = 2;
+        }
+        if(time><{$data.to_time}>){
+            status = 0;
+        }
+        isActive();
+        //var ids = '1,2';
+        //get_activity(ids);
+        $('#get_prize').on('click',function(e){
+            e.preventDefault();
+            if(status==0){
+                alert('活动已结束');
+                return false;
+            }
+            if(status==2){
+                alert('活动未开始');
+                return false;
+            }
+            $.post($(this).attr('href'),data,function(re){
+                //console.log(re);
+
+                if(re.result =='success'){
+                    var prize = re.data.prize;
+                    if(prize.prize_id >1){
+                        if(prize.prize_type=='score'){
+                            alert('恭喜你抽中了:'+prize.addon.score+'积分');
+                            award( re.data.partin.partin_id ,prize.prize_type);
+                        }
+                        if(prize.prize_type=='coupon'){
+                            alert('恭喜你抽中了:'+prize.item.cpns_name+'优惠券');
+                            award( re.data.partin.partin_id ,prize.prize_type);
+                        }
+                        if(prize.prize_type=='product'){
+                            alert('恭喜你抽中了:'+prize.item.name);
+                            //TODO 选择收货地址
+                            select_address( re.data.partin.partin_id ,prize.prize_type);
+                        }
+
+                    }else{
+                        alert('很遗憾您没有抽中');
+                    }
+                }else{
+                    var error_code = re.code;
+                    if(error_code =='01'){
+                        $('.wrap-change-btn').html('请先登录');
+                        /*alert('请先登录');*/
+                        location.href='<{link app=b2c ctl=site_passport}>';
+                    }
+                    if(error_code =='02'){
+                        alert('缺少参数');
+                    }
+                    if(error_code =='03'){
+                        alert(re.msg);
+                    }
+                    if(error_code =='04'){
+                        alert('系统错误');
+                    }
+                    return false;
+                }
+            },'json');
+        });
+        function select_address(partin_id ,prize_type){
+            var remote_url ='<{link app=digitalmarketing ctl=site_activity act=sel_delivery}>';
+            $('#myModal').modal({
+                show: true,
+                remote:remote_url
+            });
+            $('#myModal').on('click' ,'#address_list a',function(){
+                $(this).siblings().removeClass('active');
+                $(this).addClass('active');
+            }).on('click' ,'button.add-btn',function(){
+                $('#address_list').addClass('hide');
+                $('button.cancel-btn').removeClass('hide');
+                $('button.add-btn').addClass('hide');
+                $('#edit_delivery_form').removeClass('hide');
+            }).on('click', 'button.select-btn' ,function(){
+                if($('#edit_delivery_form').is(':visible')){
+                    $.post('<{link app=b2c ctl=site_member act=receiver arg0=save}>' ,$('#edit_delivery_form').serialize(),function(res){
+                        if(res.success){
+                            var addr_id =res.data.addr_id;
+                            $('input[name="addr_id"]').val(addr_id);
+                            award(partin_id ,prize_type);
+                            $('#myModal').modal('hide');
+                        }
+                    });
+                }else{
+                    var addr_id =0;
+                    $('#address_list a').each(function(){
+                        if($(this).hasClass('active')){
+                            addr_id = $(this).attr('data-id');
+                        }
+                    });
+                    if(addr_id>0){
+                        $('input[name="addr_id"]').val(addr_id);
+                        award(partin_id ,prize_type);
+                        $('#myModal').modal('hide');
+                    }else{
+                        alert('请选选择收货地址');
+                    }
+                }
+
+            }).on('click','button.cancel-btn',function(){
+                $('#edit_delivery_form').addClass('hide');
+                $('button.cancel-btn').addClass('hide');
+                $('button.add-btn').removeClass('hide');
+                $('#address_list').removeClass('hide');
+            });
+
+
+        }
+
+        function award(partin_id ,type){
+            var data = {partin_id:partin_id};
+            if(type=='product'){
+                data['addr_id'] = $('input[name="addr_id"]').val();
+            }
+            var url = '/index.php/openapi/prize/award';
+            $.post(url ,data ,function(re){
+                //console.log(re);
+                if(re.result =='success'){
+                    alert(type=='score'?'积分已发放':(type=='coupon'?'优惠券已发放':'奖品订单已生成'));
+                }else{
+                    alert('奖品发放失败：'+re.data.msg);
+                }
+            },'json');
+        }
+
+        function isActive(){
+            //alert(status);
+            if(status==0 || status==2){
+                alert((status==0?'活动已结束':'活动未开始'));
+            }
+        }
+
+
+    });
+
+    function get_activity(ids){
+        var data={ids:ids};
+        var url = '/index.php/openapi/prize/activity';
+        $.post(url ,data ,function(re){
+            console.log(re);
+            if(re.result =='success'){
+
+            }else{
+
+            }
+        },'json');
+    }
+
+</script>

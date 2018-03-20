@@ -1,0 +1,93 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">配置 VMCC<small>API</small></h3>
+</div>
+<form method="post" action="index.php?app=vmcconnect&ctl=admin_setting&act=setting&p[0]=api" id='pconf_form' calss="form">
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-horizontal">
+                    <div class="form-body">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">启用状态<span class="required" aria-required="true">*</span></label>
+                            <div class="col-md-8">
+                                <{input type=bool name='api_enable' value=$api_conf.api_enable|default:'true'}>
+                            </div>
+                        </div>
+                        <div class="form-group" data-box="view" style="display: <{if $api_conf.api_enable == 'false'}>none<{/if}>;">
+                            <label class="col-md-2 control-label">默认命令模版<span class="required" aria-required="true">*</span></label>
+                            <div class="col-md-8">
+                                <{if $api_tpls}>
+                                <{foreach from=$api_tpls item=tpl key=key}>
+                                <label for="api_def_tpl_<{$key}>" class="control-label">
+                                    <input id="api_def_tpl_<{$key}>" name="api_def_tpl" value="<{$key}>" data-rel="<{$key}>" type="radio"<{if $api_conf.api_def_tpl == $key}> checked<{/if}>>
+                                           <{$tpl}>
+                                </label>
+                                <{/foreach}>
+                                <{/if}>
+                            </div>
+                        </div>
+                        <div class="form-group" data-box="view" style="display: <{if $api_conf.api_enable == 'false'}>none<{/if}>;">
+                            <label class="col-md-2 control-label">可用API<span class="required" aria-required="true">*</span></label>
+                            <div class="col-md-8">
+                                <{if $all_apis}>
+                                
+                                <label for="select_all" class="control-label">
+                                    <input name="select_all" id="select_all" type="checkbox">
+                                    <span class="text-danger">全选</span>
+                                </label>
+
+                                <{foreach from=$all_apis item=api key=key}>
+                                <div>
+                                    <label for="api_cat_<{$key}>" class="control-label">
+                                        <input name="api_cat_<{$key}>" id="api_cat_<{$key}>" value="<{$key}>" type="checkbox">
+                                        <{$api.name}><span class="text-success">点击全选子项目</span>
+                                    </label>
+                                    <br />
+                                    <{if $api.items}>
+                                    <{foreach from=$api.items item=item key=item_key}>
+                                    <label for="api_items_<{$item_key}>" class="control-label">
+                                        <input id="api_items_<{$item_key}>" name="api_items[<{$item_key}>]" value="<{$item_key}>" data-rel="<{$key}>" type="checkbox"<{if $api_conf.api_items && in_array($item_key,$api_conf.api_items)}> checked<{/if}>>
+                                               <{$item}><code>&lt;<{$item_key}>&gt;</code>
+                                    </label>
+                                    <{/foreach}>
+                                    <{/if}>
+                                    <hr />
+                                </div>
+                                <{/foreach}>
+                                <{/if}>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">保存</button>
+    </div>
+
+</form>
+<script type="text/javascript">
+    $(function () {
+        $("input[name='api_enable']").click(function () {
+            var _val = $(this).val();
+            var _box = $("div[data-box='view']");
+            if (_val == 'true') {
+                _box.fadeIn('slow');
+            } else {
+                _box.fadeOut('slow');
+            }
+        });
+        $("input[name^='api_cat_']").click(function () {
+            $("input[name^='api_items'][data-rel='" + $(this).val() + "']").prop('checked', $(this).prop('checked'));
+        });
+        
+        $("input#select_all").click(function () {
+            $("input[name^='api_items']").prop('checked', $(this).prop('checked'));
+        });
+    });
+</script>

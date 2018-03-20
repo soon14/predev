@@ -1,0 +1,106 @@
+<h3 class="page-title pull-left">选择店铺<small class="hidden-xs">&nbsp;您有权限对<{$storeCount}>家商铺收银</small></h3>
+
+<div class="input-group col-md-offset-8">
+    <div class="input-group-btn">
+        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <span id="current_select">商铺名称</span>
+            <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-right">
+            <li><a class="type_select" data-type="store_name" href="javascript:void(0);">商铺名称</a></li>
+            <li><a class="type_select" data-type="store_bn" href="javascript:void(0);">商铺编号</a></li>
+        </ul>
+    </div><!-- /btn-group -->
+    <input class="form-control" id="keyword" type="text" aria-label="storeKeyword" value="<{$searchKeyword}>" placeholder="请输入搜索关键字">
+<span class="input-group-btn">
+    <button class="btn btn-default" id="search_store_btn" type="submit">搜索</button>
+</span>
+</div><!-- /input-group -->
+
+<div class="clearfix"></div>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="javascript:;">门店</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="index.php?app=store&ctl=admin_checkstand&act=index">选择门店</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row" id="pconfs_list">
+    <div class="col-md-4 col-lg-4">
+    </div>
+    <div class="col-md-4 col-lg-4">
+    </div>
+    <div class="col-md-4 col-lg-4">
+    </div>
+    <div class="col-md-12 text-right">
+        <{pagers data=$pager}>
+    </div>
+</div>
+
+<div id="tmp_items">
+    <{foreach from=$store_list item=store}>
+    <div class="portlet light bg-inverse">
+        <div class="portlet-title">
+            <div class="caption">
+                <{$store['store_name']}><small>[<{$store['store_bn']}>]</small>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <p>
+                <{$store['addrDetail']}>
+            </p>
+            <div class="clearfix">
+                <a href="javascript:;" class="btn green btn-block select-store" data-store_id="<{$store['store_id']}>">
+                    <i class="fa fa-external-link"></i> 打开收银台
+                </a>
+            </div>
+
+        </div>
+    </div>
+    <{/foreach}>
+</div>
+
+
+<script charset="utf-8">
+    ! function() {
+        var adminpanel_cols = $('#pconfs_list > [class^="col-md"]');
+        var loop_arr = [0, 1, 2];
+        $.each($('#tmp_items > .portlet'), function(i, n) {
+            var loop = loop_arr.shift();
+            $(adminpanel_cols[loop]).append(n);
+            loop_arr.push(loop);
+        });
+    }();
+    $(function(){
+        var type ='store_name';
+        $('.page-content').on('keydown', 'input' ,function(e){
+            if(e.keyCode == 13){
+                $("#search_store_btn").trigger('click');
+            }
+        }).on('click', '.type_select',function () {
+            $('#current_select').text($(this).text());
+            type = $(this).attr('data-type');
+        }).off().on('click','#search_store_btn', function () {
+            //搜索关键字
+            var keyword = $('#keyword').val();
+            if (!keyword) {
+                Messagebox.error('请输入搜索关键字');
+                return false;
+            }
+            var data = {};
+            data[type] = keyword;
+            $.get("<{link app=store ctl=admin_controller act=select_store}>" ,data ,function(re){
+                $(".page-content").html(re);
+            });
+        }).on('click','.select-store', function(){
+            var link = "<{link app=store ctl=admin_checkstand act=single_index}>&store_id="+$(this).attr('data-store_id')+"&singlepage=1";
+            window.open(link);
+        });
+
+    });
+</script>

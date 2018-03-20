@@ -1,0 +1,366 @@
+<div class="content">
+    <form action="<{link app=groupbooking ctl=mobile_checkout act=create}>" method="post" class="checkout-container">
+        <!--<input type="hidden" name="activity_id" value="<{$activity.activity_id}>">
+        <input type="hidden" name="main_id" value="<{$main_id}>">
+        <input type="hidden" name="product_id" value="<{$activity.product_id}>">-->
+        <input type="hidden" name="cart_md5" value="<{$activity_result.cart_md5}>">
+        <!-- checkout-container begin -->
+    <ul class=table-view>
+        <li class="table-view-divider">收货人信息</li>
+        <li class="table-view-cell media checkout-maddr active" data-flowindex=0>
+            <{if $member_addrs}>
+                <{foreach from=$member_addrs key=k item=addr}>
+                <{if $addr.selected}>
+                    <{assign var=maddr value=$addr}>
+                    <{break;}>
+                <{/if}>
+                <{/foreach}>
+            <{/if}>
+            <a class="navigate-right" data-push-style="1" href="<{link app=b2c ctl=mobile_member act=sel_maddr args0='list' args1=$maddr.addr_id|default:_NULL_ args2=$sel_maddr_callback}>">
+              <{if $maddr}>
+              <span class="media-object pull-left fa fa-location-arrow"></span>
+              <{/if}>
+              <div class="media-body">
+                  <{if $maddr}>
+                      <input type="hidden" name="addr_id" value="<{$maddr.addr_id}>">
+                      <{$maddr.name}><span class="pull-right"><{$maddr.mobile}></span>
+                      <p>
+                          <{$maddr.area|region}><span class="shipping-addr"><{$maddr.addr}></span>
+                          <{if $maddr.zip}>,邮编:<{$maddr.zip}><{/if}>
+                      </p>
+                  <{else}>
+                    新增收货人信息
+                  <{/if}>
+              </div>
+            </a>
+        </li>
+        <li class="table-view-divider">配送方式</li>
+        <{foreach from=$dlytypes key=k item=dlytype}>
+        <li class="table-view-cell checkout-dlytype <{if $dlytype.selected}> active<{/if}>" data-flowindex=1>
+            <input class='i-radio' id="rd_dlytype_id_<{$dlytype.dt_id}>" type="radio" <{if $dlytype.selected}>checked<{/if}> name="dlytype_id" value="<{$dlytype.dt_id}>">
+            <label for="rd_dlytype_id_<{$dlytype.dt_id}>" class="fa"></label>
+            <span class="dlytype-name"><{$dlytype.dt_name}></span>
+            <{if $dlytype.detail}>
+            <p>
+                <{$dlytype.detail}>
+            </p>
+            <{/if}>
+        </li>
+        <{/foreach}>
+        <li class="table-view-divider">送货清单</li>
+        
+        <li class="table-view-cell media checkout-item">
+            <img class="media-object pull-left" width=50  src="<{$activity_result.product.image_id|storager:'s'}>" alt="<{$activity_result.product.name}>-<{$activity_result.product.spec_info}>" />
+            <div class="media-body">
+                <p><strong><{$activity_result.product.name}></strong><br><{$activity_result.product.spec_info}></p>
+                <div class="product-quantity"   data-minibuy="<{$data_detail.minibuy}>">
+                    <button type="button" class="btn btn-outlined pull-left"><span class="fa fa-minus"></span></button>
+                    <input type="number" name="quantity" <{if $activity.restrict_status}>max=<{$activity.restrict_number}><{/if}> data-productid="<{$activity_result.product.product_id}>"  data-activityid="<{$activity.activity_id}>"  class="spinner-input pull-left"  value="<{$activity_result.quantity}>" data-now="<{$activity_result.quantity}>" pattern="[0-9]*">
+                    <button type="button" class="btn btn-outlined"><span class="fa fa-plus"></span></button>
+                </div>
+          </div>
+          <div class="table-view-cell-right">
+              <small>￥</small><{$activity_result.price|cur}><br>
+              x <{$activity_result.quantity}>
+          </div>
+
+         </li>
+        
+        <li class="table-view-divider">支付方式</li>
+        <{foreach from=$paymentapps key=k item=papp}>
+            <li  class="table-view-cell checkout-payment <{if $papp.selected}> active<{/if}>" data-flowindex=2>
+                <input class='i-radio' id="rd_payapp_id_<{$papp.app_id}>" type="radio" <{if $papp.selected}>checked<{/if}> name="payapp_id" value="<{$papp.app_id}>">
+                <label for="rd_payapp_id_<{$papp.app_id}>" class="fa"></label>
+                <span class="payapp-name"><{$papp.display_name|default:$papp.name}></span>
+                <{if $papp.description}>
+                    <p>
+                        <{$papp.description}>
+                    </p>
+                <{/if}>
+            </li>
+        <{/foreach}>
+    </ul>
+
+    <ul class="table-view checkout-total">
+        <li class="table-view-cell">
+            <p class="pull-right">
+                运费：
+                ￥<span data-bind="total/cost_freight"><{$activity_result.freight|cur}></span>
+            </p>
+        </li>
+        <li class="table-view-cell">
+            <p class="pull-right">
+                应付总额：
+                ￥<strong data-bind="total/order_total"><{$activity_result.order_total|cur}></strong>
+            </p>
+        </li>
+    </ul>
+
+    <!-- checkout-container end -->
+    <ul class="table-view">
+        <li  class="table-view-cell invoice-cell">
+            <input class="<{if $my_invoce_history}>hidden<{/if}>" type="text" name="invoice_title" value="" placeholder="请输入发票抬头">
+            <label for="need_invoice_checkbox" class="fa right-center"></label>
+        </li>
+        <li class="table-view-divider">订单备注</li>
+        <li class="table-view-cell tvc-reset-padding">
+            <textarea name="memo" rows="2"  placeholder="订单备注"></textarea>
+        </li>
+    </ul>
+    </form>
+</div>
+
+<div class="bar bar-tab  checkout-bar-footer">
+  <div class="tab-item tab-total">
+      <span class="order-total">应付总额：
+          <span class="text-danger"><small>￥</small><strong data-bind="total/order_total"><{$activity_result.order_total|cur}></strong></span>
+      <span>
+  </div>
+  <div class="tab-item tab-submit">
+       <button type="button" onclick="$('form.checkout-container').trigger('submit');" class="btn btn-block btn-submit btn-link">提交订单</button>
+  </div>
+</div>
+
+
+<script charset="utf-8">
+/**
+ * 订单确认页操作JS闭包
+ * 以下脚本用于订单确认页,收货地址、配送、及支付方式的确认操作
+ * @author vmcshop.com
+ * @version 1.150809
+ */
+$(function () {
+    //快速购买可修改数量
+
+    //数量修改
+    $('.checkout-container .product-quantity input').on('_change',function(e){
+        var ipt = $(this);
+        var cur_val = ipt.val();
+        var add_id = $("input[name=addr_id]").val();
+        var payapp_id = $("input[name=payapp_id]:checked").val();
+        var dlytype_id = $("input[name=dlytype_id]:checked").val();
+        var params = '?add_id='+add_id+'&payapp_id='+payapp_id+'&dlytype_id='+dlytype_id;
+        location = "<{link app=groupbooking ctl=mobile_checkout act=index args0='_activityid_' args1='_product_id_' args2='_quantity_' args3='_main_id_'}>".replace('_activityid_',$(this).attr('data-activityid')).replace('_quantity_',cur_val).replace('_product_id_',$(this).attr('data-productid')).replace('_main_id_',"<{$main_id}>")+params;
+    });
+
+    //在备注框做提交前提示
+    var _memo_tip = (function(){
+        var label_map = ['配送至:','配送方式:','支付方式:'],
+        txt_el_map = ['.shipping-addr','.dlytype-name','.payapp-name'],
+        tip=new Array(),
+        memo = $('textarea[name=memo]');
+        //if($.trim(memo.val()))return;
+        $.each($('[data-flowindex]'),function(i,cell){
+            cell = $(cell);
+            if(!cell.hasClass('active'))return;
+            idx = parseInt(cell.attr('data-flowindex'));
+            var txt_el= $(cell).find(txt_el_map[idx]);
+            if(txt_el.length)
+            tip.push(label_map[idx]+txt_el.text().replace(/\s/ig,''));
+        });tip = tip.join('、');
+        tip="【订单备注】"+tip;
+        memo.prop('placeholder',tip);//利用备注框placeholder 做友情提示.
+        return arguments.callee;
+    })();
+    $('.invoice-cell input[type=text]').on('keyup',function(e){
+        var chkbox = $(this).closest('.table-view-cell').find('input[type=checkbox]');
+        chkbox.prop('checked',$(this).val()!='');
+    });
+    //发票历史选择TODO
+    $('.invoice-cell select').on('select',function(e){
+
+    });
+
+    //显示依赖
+    $.each($('[data-showextends]'),function(i,el){
+        var extend = $(el).attr('data-showextends'),extend = extend.split('|');
+        $(extend[0]).on(extend[1],function(e){
+            $(el)[$(extend[0]).is(':'+extend[2])?'show':'hide']();
+        });
+    });
+    $('input[name=invoce_title]').on('keydown',function(e){
+        return e.keyCode!=13;
+    });
+
+    //最新价格填充
+    var _fill_price = function(scope,obj){
+            $.each($(scope).find('[data-bind]'),function(i,el){
+                var path = $(el).attr('data-bind'),v=eval('obj["'+path.replace(/\//g,'"]["')+'"]');
+                $(el).text(v);
+            });
+    }
+
+    //订单确认流程对应面板
+    var flow_path = ['.checkout-maddr','.checkout-dlytype','.checkout-payment'];
+    var _check = function(flowindex){
+        $.post("<{link app=b2c ctl=mobile_checkout act=check args0=$is_fastbuy}>",$('form.checkout-container').serialize(),function(re){
+            if(!re||!re.data)return;
+            _fill_price($('.checkout-total,.checkout-bar-footer'),re.data);
+            if(!flowindex)return;//仅总价价格更新操作
+
+            $.each(flow_path.slice(parseInt(flowindex)+1),function(idx,flow){
+                var cells = $(flow),last_cell = $(cells.toArray().pop()),new_cells = [];
+                if(last_cell.hasClass('checkout-dlytype')){
+                    cells.addClass('hidden');
+                    $.each(re.data.dlytypes,function(i,d){
+                        var checked_html = '',active_html = '';
+                        if(d.selected == 'true'){
+                            checked_html = 'checked';
+                            active_html = 'active';
+                        }
+                        var item = '<li class="table-view-cell checkout-dlytype '+active_html+'" data-flowindex=1>';
+                            item+= '<input type="radio" '+checked_html+' name="dlytype_id" class="i-radio" id="rd_dlytype_'+d.dt_id+'" value="'+d.dt_id+'"><label class="fa" for="rd_dlytype_'+d.dt_id+'"></label>';
+                            item+= '<span class="dlytype-name">'+d.dt_name+'</span><p>'+d.detail+'</p></li>';
+                        new_cells.push(item);
+                    });
+                    $(new_cells.join('')).insertAfter(last_cell);
+                    cells.remove();
+                }
+                if(last_cell.hasClass('checkout-payment')){
+                    cells.addClass('hidden');
+                    $.each(re.data.paymentapps,function(i,d){
+                        var checked_html = '',active_html = '';
+                        if(d.selected == 'true'){
+                            checked_html = 'checked';
+                            active_html = 'active';
+                        }
+                        var item = '<li class="table-view-cell checkout-payment '+active_html+'" data-flowindex=2>';
+                            item+= '<input type="radio" '+checked_html+' name="payapp_id" class="i-radio" id="rd_payapp_'+d.app_id+'" value="'+d.app_id+'"><label class="fa" for="rd_payapp_'+d.app_id+'"></label>';
+                            item+= '<span class="payapp-name">'+d.display_name+'</span><p>'+d.description+'</p></li>';
+                        new_cells.push(item);
+                    });
+                    $(new_cells.join('')).insertAfter(last_cell);
+                    cells.remove();
+                }
+            });
+             _memo_tip();
+        },'json');
+    }
+
+
+    $('.table-view').on('click','.checkout-dlytype,.checkout-payment',function(e){
+        $(this).find('input:radio').prop('checked',true);
+        $(this).closest('ul').find('[data-flowindex="'+$(this).attr('data-flowindex')+'"]').removeClass('active');
+        $(this).addClass('active');
+        _check($(this).attr('data-flowindex'));
+    });
+
+
+    //使用优惠券
+    if('localStorage' in window){
+        //滚动条记忆
+        if(localStorage.scrollTopCache){
+            $('.content')[0].scrollTop = localStorage.scrollTopCache;
+            delete(localStorage.scrollTopCache);
+        }
+    }
+    $('#coupon_form').on('submit',function(e){
+        if('localStorage' in window){
+            localStorage.scrollTopCache = $('.content')[0].scrollTop;
+        }
+        e.stopPropagation();
+        var coupon_input =$(this).find('input[name=coupon]'),
+            coupon_code = $.trim(coupon_input.val()),
+            sub_btn = $(this).find('button[type=submit]');
+        if(!!!coupon_code)return false;
+        sub_btn.text('正在尝试使用...').prop('disabled',true);
+        $.post($(this).prop('action'),$(this).serialize(),function(re){
+            sub_btn.prop('disabled',false).text(sub_btn.attr('data-otext'));
+            if(!re){
+                re = {error:'优惠券使用失败'};
+            }
+            if(re.error){
+                Messagebox('error',re.error);
+                return;
+            }
+            //成功
+            coupon_input.val('');
+            $('#my_coupons_modal').removeClass('active');
+            $('.checkout-container input[name="cart_md5"]').val(re.data.new_cart_md5);//重新赋值购物车认证串
+            $('.my-coupon-used').empty();
+            var plist_order = re.data['promotions']&&re.data['promotions']['order']?re.data['promotions']['order']:false,
+            lis = '';
+            if(plist_order){
+                check_order_pmts(re.data);
+                $.each(plist_order,function(i,p){
+                    if(p.rule_type!='coupon')return;
+                    //优惠券触发提示
+                    lis+='<li class="table-view-cell media" data-ruleid="'+p.rule_id+'"><span class="label label-danger media-object pull-left">券</span><button type="button" class="btn btn-outlined btn-rm-coupon" data-couponident="'+p.coupon_obj_ident+'" data-coupon="'+p.coupon_code+'"><span class="fa fa-times"></button><p>'+p.solution+(p.save>0?(",已省 "+p.save):"")+'<br>'+p.desc+'</p></li>';
+                    $('li.my-coupon[data-coupon="'+p.coupon_code+'"]').addClass('disabled');//如果可选优惠券存在，则进行禁用
+                });
+                $('.my-coupon-used').append(lis);
+                _check();//重新check订单,仅影响价格
+            };
+            Messagebox('success','优惠券使用成功');
+        },'json');
+        return false;
+    });
+    $('#coupon_form input[name=coupon]').on('keydown',function(e){
+        if(e.keyCode == 13){
+            $('#coupon_form').trigger('submit');
+            return false;
+        }
+    });
+    //选择优惠券
+    $('li.my-coupon[data-coupon]').on('click',function(e){
+        if($(this).hasClass('disabled'))return;
+        $('#coupon_form input[name=coupon]').val($(this).attr('data-coupon'));
+        $('#coupon_form').trigger('submit',[e]);
+    });
+    //删除优惠券
+    $('.my-coupon-used').on('click','.btn-rm-coupon',function(e){
+        var obj_ident = $(this).attr('data-couponident'),coupon_code = $(this).attr('data-coupon'),li = $(this).closest('li');
+        if(!obj_ident)return;
+        $.post("<{link app=b2c ctl=mobile_cart act=remove_coupon args0=$is_fastbuy}>",{'obj_ident':obj_ident},function(re){
+            if(!re||!re.data||!re.data.new_cart_md5)return;
+            $('.checkout-container input[name="cart_md5"]').val(re.data.new_cart_md5);//重新赋值购物车认证串
+            _check();//重新check订单,仅影响价格
+            li.fadeOut('fast',function(){
+                $(this).remove();
+            });//从界面删除优惠券
+            $('li.my-coupon[data-coupon="'+coupon_code+'"]').removeClass('disabled');//如果可选优惠券存在，则解除禁用
+            check_order_pmts(re.data);
+            Messagebox('success','优惠券取消成功!');
+        },'json');
+    });
+    //提交订单动作
+    $('form.checkout-container').on('submit',function(e){
+        e.stopPropagation();
+        var form = $(this),submit_btn = $(form.find('.btn-submit'));
+        submit_btn.text('正在提交').prop('disabled','disabled');
+        $.post(form.prop('action'),form.serialize(),function(re){
+            setTimeout(function(){
+                try{
+                    submit_btn.text('确认订单').removeProp('disabled');
+                }catch(e){}
+            },800);
+            if(re.error){
+                Messagebox('error',re.error);
+            }
+            if(re.success){
+                if(re.redirect){
+                    location = re.redirect;
+                }else{
+                    alert(re.success);
+                }
+            }
+        },'json');
+        return false;
+    });
+
+    var check_order_pmts = function(cart_result){
+        var order_pmts = cart_result.promotions.order;
+        var lis='';
+        if(order_pmts){
+            $.each(order_pmts,function(i,p){
+                if(p.rule_type!='normal')return;
+                //优惠券触发提示
+                lis+='<li><span class="label label-danger">'+p.tag+'</span>'+p.solution+(p.save>0?('<em>,已省 '+p.save+'</em>'):'')+'</li>';
+            });
+
+            $('.order-pmts-list').html(lis);
+        }
+    }
+
+});
+</script>

@@ -1,0 +1,109 @@
+<div class="content">
+    <h1>预约成功,恭候光临！</h1>
+    <ul class="list-unstyled">
+        <li><{$subject.title}></li>
+        <li><{$schedule.from_time|date_format:'%Y年%m月%d日，星期%w，%p %R '}></li>
+        <li><{$store.name}></li>
+        <li><{$store.region|regionpart:'city'}>,<{$store.address}></li>
+        <li><{$store.phone}></li>
+    </ul>
+    <{if $order.need_ticket == 'true' && $need_pay_money>0}>
+    <h2 class="text-center">此活动需要票券才可入场，请选择支付方式！</h2>
+    <dl class="ticket">
+        <dt><{$order.ticket_name}> <br><small><{$order.ticket_batch_no}></small></dt>
+        <!-- <dd><{$order.ticket_price|cur}></dd> -->
+        <dd>应付金额：<{$need_pay_money|cur}></dd>
+    </dl>
+
+    <div class="row payapps">
+        <input type="hidden" name="order_id" value="<{$order.id}>">
+        <{foreach from=$payapps item=payapp}>
+        <div class="col-md-4">
+            <label data-payappid="<{$payapp.app_id}>" class="payapp-select-label btn btn-lg btn-block btn-default <{$payapp.app_id}> <{if $order.pay_app_id == $payapp.app_id}> active<{/if}>">
+                <strong><{$payapp.display_name}></strong>
+            </label>
+        </div>
+        <{/foreach}>
+    </div>
+
+    <div class="bar bar-standard bar-footer-secondary activity-order-actions">
+      <table width="100%">
+          <col width="48%"></col>
+          <col width="4%"></col>
+          <col width="48%"></col>
+          <tbody>
+              <tr>
+                  <td>
+                      <a href="<{link app=experiencestore ctl=mobile_customer act=schedule_order}>" class="btn btn-block btn-outlined btn-primary">暂不支付</a>
+                  </td>
+                  <td>
+                      &nbsp;
+                  </td>
+                  <td>
+                      <a target="_blank" id="btn_goto_pay"  href="<{link app=experiencestore ctl=mobile_activity act=order_payment args0=$order.id}>" class="btn btn-primary btn-block btn-pay <{if !$order.pay_app_id}>disabled<{/if}>">立即支付</a>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+    <div class="bar bar-standard bar-footer-secondary activity-order-actions hide" id="goto_pay_modal">
+      <table width="100%">
+          <col width="48%"></col>
+          <col width="4%"></col>
+          <col width="48%"></col>
+          <tbody>
+              <tr>
+                  <td>
+                      <a target="_blank" href="<{link app=experiencestore ctl=mobile_activity act=order_payment args0=$order.id}>" class="btn btn-block btn-outlined btn-primary">重新支付</a>
+                  </td>
+                  <td>
+                      &nbsp;
+                  </td>
+                  <td>
+                      <a target="_blank" id="btn_goto_pay"  href="javascript:;" onclick="location.reload();" class="btn btn-positive btn-block btn-pay <{if !$order.pay_app_id}>disabled<{/if}>">已完成支付</a>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+
+    <{else}>
+    <div class="bar bar-standard bar-footer-secondary activity-order-actions">
+      <table width="100%">
+          <col width="48%"></col>
+          <col width="4%"></col>
+          <col width="48%"></col>
+          <tbody>
+              <tr>
+                  <td>
+                      <a href="<{link app=experiencestore ctl=mobile_index act=index}>" class="btn btn-block btn-outlined btn-primary">返回首页</a>
+                  </td>
+                  <td>
+                      &nbsp;
+                  </td>
+                  <td>
+                      <a class="btn btn-block  btn-primary" href="<{link app=experiencestore ctl=mobile_customer act=schedule_order}>">管理我的预约</a>
+                  </td>
+              </tr>
+          </tbody>
+      </table>
+    </div>
+    <{/if}>
+</div>
+
+<script type="text/javascript">
+$('#btn_goto_pay').on('click',function(){
+    $(this).closest('.activity-order-actions').addClass('hide');
+    $('#goto_pay_modal').removeClass('hide');
+});
+    $('.payapps .payapp-select-label').on('click',function(){
+        $('.activity-order-actions .btn-pay').removeClass('disabled');
+        $('.payapps .payapp-select-label').removeClass('active');
+        if($(this).find('input[type=radio]:checked')){
+            $(this).addClass('active');
+            $.post('<{link app=experiencestore ctl=mobile_activity act=change_payment args0=$order.id}>',{
+                'pay_app_id':$(this).attr('data-payappid')
+            });
+        }
+    });
+</script>

@@ -1,0 +1,15 @@
+<!-- 产品列表 -->
+<template id="widget-goodslist">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-goodslist :widget="widget" :index="index"></widget-child-goodslist>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_goodslist = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-goodslist',
+    components: {
+        'widget-child-goodslist': widget_child_goodslist
+    }
+});
+</script>

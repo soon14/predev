@@ -1,0 +1,13 @@
+<app>
+    <name>百度统计-电商分析</name>
+
+    <description>快速集成百度分析,并支持电商分析功能</description>
+
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.0</version>
+    <license>http://www.vmcshop.com/license</license>
+</app>

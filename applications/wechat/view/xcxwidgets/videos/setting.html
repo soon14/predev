@@ -1,0 +1,60 @@
+<!-- ############### 编辑区域 ############### -->
+<!-- 视频编辑 -->
+<template id="widget-child-setting-videos">
+    <div class="view-item-setting" :id="widget.name + '_setting_' + index">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{widget.title}}
+                <a type="button" class="icon icon-close pull-right" href="javascript:;" @click="closeEv"></a>
+            </div>
+            <div class="panel-body form-horizontal">
+                <div class="form-group form-group-sm">
+                    <label :for="widget.name + '_height_' + index" class="col-sm-4 control-label">高度</label>
+                    <div class="col-sm-8">
+                        <input type="number" min="225" class="form-control" :id="widget.name + '_height_' + index" placeholder="高度" v-model="widget.data.height" :value="widget.data.height">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label :for="widget.name + '_video_url_' + index" class="col-sm-4 control-label">视频地址</label>
+                    <div class="col-sm-8">
+                        <input type="url" class="form-control" :id="widget.name + '_video_url_' + index" placeholder="视频地址" v-model="widget.data.video_url" :value="widget.data.video_url">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label :for="widget.name + '_poster_url_' + index" class="col-sm-4 control-label">封面图</label>
+                    <div class="col-sm-8">
+                        <input type="url" class="form-control" :id="widget.name + '_poster_url_' + index" placeholder="封面图地址" v-model="widget.data.poster_url" :value="widget.data.poster_url">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <div class="checkbox">
+                            <label for="show_controls">
+                                <input type="checkbox" id="show_controls" v-model="widget.data.show_controls" :checked="widget.data.show_controls"> 是否显示控件
+                            </label>
+                        </div>
+                        <div class="checkbox">
+                            <label for="is_autoplay">
+                                <input type="checkbox" id="is_autoplay" v-model="widget.data.is_autoplay" :checked="widget.data.is_autoplay"> 是否自动播放
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <button type="button" class="btn btn-primary btn-xs" @click="closeEv">关闭</button>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_child_setting_videos = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-setting-videos',
+    methods: {
+        closeEv: function() {
+            return designStore.methods.closeEv(this);
+        }
+    }
+});
+</script>

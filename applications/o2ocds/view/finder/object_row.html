@@ -1,0 +1,16 @@
+<{foreach from=$rows key=k item=row}>
+<tr class="object-row" data-id="<{$row.{$pkey}}>">
+    <td>
+        <button onclick="$(this).closest('.object-row').fadeOut(function(){$(this).remove();});" type="button" class="btn btn-xs default">
+            <i class="fa fa-trash-o"></i>
+        </button>
+        <input type="hidden" name="<{$name}>" value="<{$row.{$pkey}}>">
+    </td>
+    <{foreach from=$row key=j item=item}>
+    <{if $j == $pkey}><{continue;}><{/if}>
+        <td>
+            <{$item}>
+        </td>
+    <{/foreach}>
+</tr>
+<{/foreach}>

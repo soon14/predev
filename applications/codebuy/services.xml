@@ -1,0 +1,20 @@
+<services>
+    <service id="desktop_finder.codebuy_mdl_activity">
+        <class>codebuy_finder_activity</class>
+    </service>
+    <service id="b2c.buy_area">
+        <class>codebuy_service_buy_area</class>
+    </service>
+    <service id="b2c.mobile_buy_area">
+        <class>codebuy_service_mobile_buy_area</class>
+    </service>
+    <service id="b2c.check_cart_goods">
+        <class>codebuy_service_cart_check</class>
+    </service>
+    <service id="ectools.bill.payment.b2c.order.succ" optname="订单支付完成处理">
+        <class>codebuy_service_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.payment.b2c.order.progress" optname="订单支付到担保方完成处理">
+        <class>codebuy_service__order_payfinish</class>
+    </service>
+</services>

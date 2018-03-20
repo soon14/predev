@@ -1,0 +1,42 @@
+<div class="modal fade" id="codebuy_modal" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">发行优购码</h4>
+			</div>
+            <form action="<{link app=codebuy ctl=admin_activity act=create_code}>" method="post">
+			<div class="modal-body">
+                 <input type="hidden" name="activity_id" value="">
+				 <div class="form-horizontal">
+                     <div class="form-group">
+						<label class="control-label col-md-2">发行数量
+                        <span class="required">*</span>
+                        </label>
+						<div class="col-md-4">
+                            <input class="form-control" required=true type="number" name="nums" value="100">
+						</div>
+					</div>
+				 </div>
+                 <div class="form-horizontal">
+                     <div class="form-group">
+                        <label class="control-label col-md-2">发行备注
+                        <span class="required">*</span>
+                        </label>
+                        <div class="col-md-8">
+                            <{input required=true type=textarea name=remark class="form-control" rows=1}>
+                        </div>
+                    </div>
+                 </div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn default" data-dismiss="modal">关闭</button>
+				<button type="submit" class="btn blue">立即发行</button>
+			</div>
+            </form>
+		</div>
+		<!-- /.modal-content -->
+	</div>
+	<!-- /.modal-dialog -->
+</div>

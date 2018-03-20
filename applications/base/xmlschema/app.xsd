@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="version" type="xs:float"/>
+    <xs:element name="url" type="xs:anyURI"/>
+    <xs:element name="name" type="xs:string"/>
+    <xs:element name="main_app">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="exclusion" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="license" type="xs:string"/>
+    <xs:element name="email" type="xs:string"/>
+    <xs:element name="description" type="xs:string"/>
+    <xs:element name="author">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element ref="email"/>
+                <xs:element ref="url"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="check">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="extension_library"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="list">
+        <xs:complexType>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="value" type="xs:string"/>
+            <xs:attribute name="description" type="xs:string"/>
+            <xs:attribute name="sign" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="extension_library">
+        <xs:complexType>
+            <xs:element maxOccurs="unbounded" ref="list"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="app">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element ref="main_app"/>
+                <xs:element ref="node_id"/>
+                <xs:element ref="description"/>
+                <xs:element ref="author"/>
+                <xs:element ref="version"/>
+                <xs:element ref="api_ver"/>
+                <xs:element ref="license"/>
+                <xs:element minOccurs="0" ref="parent_model_class"/>
+                <xs:element minOccurs="0" ref="depends"/>
+                <xs:element minOccurs="0" ref="conflicts"/>
+                <xs:element maxOccurs="unbounded" ref="setting"/>
+                <xs:element ref="check"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="depends">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="app"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="function"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="class"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="conflicts">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="app"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="function"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="class"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="app_db">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="version"/>
+                <xs:element maxOccurs="unbounded" ref="app"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="parent_model_class" type="xs:string"/>
+    <xs:element name="class" type="xs:string">
+        <xs:complexType>
+            <xs:attribute name="orderby" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="services">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="service"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="service">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element maxOccurs="unbounded" ref="class"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string"/>
+            <xs:attribute name="optname" type="xs:string"/>
+            <xs:attribute name="opttype" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="setting">
+        <xs:complexType>
+            <xs:attribute name="ctl" type="xs:string" use="required"/>
+            <xs:attribute name="act" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

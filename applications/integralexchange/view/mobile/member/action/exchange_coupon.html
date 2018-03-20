@@ -1,0 +1,41 @@
+<ul class="table-view">
+    <li class="table-view-divider">
+        积分兑换优惠券
+    </li>
+    <li class="table-view-cell media">
+        <a href="<{link app=b2c ctl=mobile_member act=integral}>">
+            <span class="pull-left media-object">积分余额:</span>
+            <div class="media-body">
+                <h2 class="pull-right text-danger"><{$member.integral|number_format}></h2>
+            </div>
+        </a>
+    </li>
+</ul>
+<ul class="table-view tv-integral-log">
+    <{foreach from=$coupon_list item=item}>
+    <li class="table-view-cell media">
+
+        <a href="<{link app=integralexchange ctl=mobile_exchange act=exchange_coupon args0=$item.cpns_id}>" class="navigate-right">
+            <div class="media-body">
+                <{$item.cpns_name}>
+                <p>
+                    <{$item.rule_description}>
+                </p>
+                <p>
+                    优惠券有效期:<br><{$item.from_time|cdate}>~<{$item.to_time|cdate}>
+                </p>
+                <p>
+                    兑换所需积分：<span class="text-danger"><{$item.cpns_point|number_format}></span>
+                </p>
+                <{if $item['warning']}>
+
+                    <{foreach from=$item.warning item=warning}>
+                        <p class="text-warning"><i class="fa fa-warning"></i> <{$warning}></p>
+                    <{/foreach}>
+
+                <{/if}>
+            </div>
+            </a>
+    </li>
+    <{/foreach}>
+</ul>

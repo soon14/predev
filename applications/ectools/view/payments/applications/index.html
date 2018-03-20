@@ -1,0 +1,98 @@
+<h3 class="page-title">支付方式管理</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?ctl=adminpanel">控制面板</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">支付方式管理</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row" id="pconfs_list">
+    <div class="col-md-6 col-lg-4">
+    </div>
+    <div class="col-md-6 col-lg-4">
+    </div>
+    <div class="col-md-6 col-lg-4">
+    </div>
+</div>
+
+        <div id="tmp_items">
+            <{foreach from=$list item=app}>
+                <div class="portlet light bg-inverse">
+                    <div class="portlet-title">
+                        <div class="caption">
+                            <{$app.name}>
+                                <small>
+                                    <{$app.version}>
+                                </small>
+                        </div>
+                    </div>
+                    <div class="portlet-body">
+                        <p>
+                            [<{$app.display_name}>]
+                            <!-- <{$app.description}> -->
+                        </p>
+                        <div class="clearfix">
+                            <div class="btn-group">
+                                <!-- <{if $app.status=='true' }>
+                                    <a href="javascript:;" class="btn green-stripe btn-default">
+                                        <i class="fa fa-pause"></i> 停用
+                                    </a>
+                                    <{else}>
+                                        <a href="javascript:;" class="btn red-stripe  btn-default">
+                                            <i class="fa fa-play"></i> 启用
+                                        </a>
+                                        <{/if}> -->
+                                            <a href="index.php?app=ectools&ctl=payment_apps&act=setting&p[0]=<{$app.app_class}>" data-target="#pconf_setting" data-toggle="modal" class="btn btn-default <{if $app.status=='true'}>green-stripe<{else}>red-stripe<{/if}>">
+                                                <i class="fa fa-cog"></i> 配置
+                                            </a>
+                            </div>
+                            <div class="pull-right">
+                                适用于
+                                <br>
+                                <{foreach from=$app.platform_allow item=item}>
+                                    <{if $item=='pc' }>
+                                        <i class=icon-screen-desktop></i>
+                                    <{elseif $item=='mobile'}>
+                                        <i class="fa fa-html5"></i>
+                                    <{elseif $item=='app'}>
+                                        <i class="fa fa-dropbox"></i>
+                                    <{elseif $item=='store'}>
+                                        <i class="icon-home"></i>
+                                    <{elseif $item=='wxapp'}>
+                                        <i class="fa fa-wechat"></i>
+                                    <{/if}>
+                                <{/foreach}>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <{/foreach}>
+        </div>
+
+
+<div class="modal fade" id="pconf_setting" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+              <div class="modal-content">
+
+              </div>
+      </div>
+</div>
+
+
+<script charset="utf-8">
+    ! function() {
+        var adminpanel_cols = $('#pconfs_list > [class^="col-md"]');
+        var loop_arr = [0, 1, 2];
+        $.each($('#tmp_items > .portlet'), function(i, n) {
+            var loop = loop_arr.shift();
+            $(adminpanel_cols[loop]).append(n);
+            loop_arr.push(loop);
+        });
+    }();
+</script>

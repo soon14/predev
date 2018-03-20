@@ -1,0 +1,10 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="integralmall_setting">积分商城配置</permission>
+    </permissions>
+    <workground icon="icon-present" id="b2c.wrokground.sale" name="营销" order="40">
+        <menugroup name="积分商城">
+            <menu controller='admin_setting' action='edit_goods' permission='integralmall_setting' display='true' order='280'>积分商城配置</menu>
+        </menugroup>
+    </workground>
+</desktop>

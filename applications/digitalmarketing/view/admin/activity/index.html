@@ -1,0 +1,72 @@
+<h3 class="page-title">互动营销</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="javascript:;">营销</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">互动营销</a>
+        </li>
+    </ul>
+</div>
+
+<div class="row" id="pconfs_list">
+    <div class="col-md-6 col-lg-4">
+    </div>
+    <div class="col-md-6 col-lg-4">
+    </div>
+    <div class="col-md-6 col-lg-4">
+    </div>
+</div>
+
+<div id="tmp_items">
+    <{foreach from=$marketing key=key item=item}>
+    <div class="portlet light bg-inverse">
+        <div class="portlet-title">
+            <div class="caption">
+                <{$item.name}>
+                <small>[<{$item.desc}>]</small>
+            </div>
+        </div>
+        <div class="portlet-body">
+            <p>
+                
+            </p>
+            <div class="clearfix">
+                <div class="btn-group">
+                    <a href="index.php?app=digitalmarketing&ctl=admin_activity&act=activity&p[0]=<{$key}>" class="btn btn-default green-stripe">
+                        <i class="fa fa-cog"></i> 配置
+                    </a>
+                </div>
+                <div class="pull-right">
+                    <{$item.activity_num|default:0}>个活动进行中
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <{/foreach}>
+</div>
+
+
+<div class="modal fade" id="pconf_setting" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+
+<script charset="utf-8">
+ ! function() {
+     var adminpanel_cols = $('#pconfs_list > [class^="col-md"]');
+     var loop_arr = [0, 1, 2];
+     $.each($('#tmp_items > .portlet'), function(i, n) {
+         var loop = loop_arr.shift();
+         $(adminpanel_cols[loop]).append(n);
+         loop_arr.push(loop);
+     });
+ }();
+</script>

@@ -1,0 +1,329 @@
+<h3 class="page-title">
+        企业详情
+        <{if $enterprise.name}>
+        <span class="label label-default"><{$enterprise.name}>[<{$enterprise.eno}>]</span>
+        <{/if}>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=o2ocds&amp;ctl=admin_enterprise&amp;act=index">企业列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $enterprise.enterprise_id}>编辑<{else}>新建<{/if}>企业详情</a>
+        </li>
+    </ul>
+</div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">基本信息</a></li>
+        <li role="presentation" <{if !$enterprise.enterprise_id}>class="hidden"<{/if}>><a href="#store" aria-controls="store" role="tab" data-toggle="tab">已发展店铺</a></li>
+        <li role="presentation" <{if !$enterprise.enterprise_id}>class="hidden"<{/if}>><a href="#salesman" aria-controls="salesman" role="tab" data-toggle="tab">员工账号</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <form class="form" id="enterprise_info" action="<{link app=o2ocds ctl=admin_enterprise act=save}>" method="post">
+        <input type="hidden" name="info[enterprise_id]" value="<{$enterprise.enterprise_id}>">
+        <div class="form-horizontal">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div class="first">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">企业状态</label>
+                            <div class="col-sm-4">
+                                <select name="info[status]" class="form-control">
+                                    <option value="0" <{if $enterprise.status == '0'}>selected<{/if}>>待审核</option>
+                                    <option value="1" <{if $enterprise.status == '1'}>selected<{/if}>>审核通过  </option>
+                                    <option value="2" <{if $enterprise.status == '2'}>selected<{/if}>>审核未通过  </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >企业编号 </label>
+                            <div class="col-sm-4">
+                                <input type="text" value="<{$enterprise.eno}>" disabled  class="form-control" placeholder="系统自动生成">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">企业名称 <span class="required" aria-required="true">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" value="<{$enterprise.name}>" name="info[name]" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">所在地区<span class="required" aria-required="true">*</span></label>
+                            <div class="region col-sm-9 s_area" >
+                                <{input type=region app=ectools name="info[area]" required  value=$enterprise.area}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">负责人姓名 <span class="required" aria-required="true">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[director_name]" value="<{$enterprise.director_name}>" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">负责人手机号码 <span class="required" aria-required="true">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[mobile]" value="<{$enterprise.mobile}>" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">负责人地址</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[addr]" value="<{$enterprise.addr}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">负责人身份证</label>
+                            <div class="col-sm-5">
+                                <{input type="image" width="300" name="info[director_front]" value=$enterprise.director_front}>
+                                <span class="help-block">正面</span>
+                            </div>
+                            <div class="col-sm-5">
+                                <{input type="image" width="300" name="info[director_reverse]" value=$enterprise.director_reverse}>
+                                <span class="help-block">反面</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">企业LOGO</label>
+                            <div class="col-sm-4">
+                                <{input type='image' name='info[logo]' value=$enterprise.logo}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">营业执照注册号</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[business_license]" value="<{$enterprise.business_license}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">营业执照照片</label>
+                            <div class="col-sm-10">
+                                <{input type='image' width="300" height="200" name='info[business_image]' value=$enterprise.business_image}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">组织机构代码</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[organization_code]" value="<{$enterprise.organization_code}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">组织机构代码照片</label>
+                            <div class="col-sm-4">
+                                <{input type='image' width="300" height="200" name='info[organization_image]' value=$enterprise.organization_image}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">法人姓名</label>
+                            <div class="col-sm-3">
+                                <input type="text" name="info[legal_person_name]" value="<{$enterprise.legal_person_name}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">法人身份证号码</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[legal_person_id]" value="<{$enterprise.legal_person_id}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">法人身份证照片</label>
+                            <div class="col-sm-5">
+                                <{input type="image" width="300" name="info[legal_front]" value=$enterprise.legal_front}>
+                            </div>
+                            <div class="col-sm-5">
+                                <{input type="image" width="300" name="info[legal_reverse]" value=$enterprise.legal_reverse}>
+                            </div>
+                        </div>
+                        <hr>
+                        <h4>结算信息</h4>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">账号类型</label>
+                            <div class="col-sm-4">
+                                <select name="info[account_type]" class="form-control">
+                                    <option value="0" <{if $enterprise.account_type == '0'}>selected<{/if}>>对公</option>
+                                    <option value="1" <{if $enterprise.account_type == '1'}>selected<{/if}>>对私  </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开户名</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[account_name]" value="<{$enterprise.account_name}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开户行支行名称</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[bank]" value="<{$enterprise.bank}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">银行账号</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[account]" value="<{$enterprise.account}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开户行支行联行号</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[line_number]" value="<{$enterprise.line_number}>" class="form-control" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-9">
+                                <a href="/index.php/console/index.php?app=o2ocds&ctl=admin_enterprise&act=index" class="btn default"><i class="fa fa-angle-left"></i> 返回</a>
+                                <button id="next1" data-redirect="/index.php/console/index.php?app=o2ocds&ctl=admin_enterprise&act=edit&p[0]={enterprise_id}" type="submit" class="btn blue"><i class="fa fa-check"></i> 保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="store" class="tab-pane " id="store">
+                    <div class="table-scrollable">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>店铺名称</th>
+                                <th>负责人姓名</th>
+                                <th>手机</th>
+                                <th>累计利润</th>
+                                <th>累计营业额</th>
+                                <th>累计订单数</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <{foreach from=$store_list item=store}>
+                            <tr>
+                                <td><{$store.name}></td>
+                                <td><{$store.director_name}></td>
+                                <td><{$store.mobile}></td>
+                                <td><{$store.total}></td>
+                                <td><{$store.order_sum}></td>
+                                <td><{$store.order_count}></td>
+                            </tr>
+                            <{/foreach}>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div role="salesman" class="tab-pane " id="salesman">
+                    <{if $enterprise.enterprise_id}>
+                    <div class="table-scrollable">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <th>绑定时间</th>
+                                <th>登录账号</th>
+                                <th>姓名</th>
+                                <th>手机号</th>
+                                <th>成功邀请店铺数</th>
+                                <th>角色</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <{foreach from=$sales_list item=item}>
+                            <tr>
+                                <td><{$item.bind_time|cdate}></td>
+                                <td><{$item.login_account}></td>
+                                <td><img src="<{$item.avatar|storager}>" width="30" height="30" class="img-circle"/><{$item.name}></td>
+                                <td><{$item.mobile}></td>
+                                <td><{$item.invitation_count}></td>
+                                <td>
+                                    <{if $item.relation == 'admin'}>
+                                    <label class="label label-danger">管理员</label>
+                                    <{/if}>
+                                    <{if $item.relation == 'salesman'}>
+                                        业务员
+                                    <{/if}>
+                                </td>
+                                <td>
+                                    <a target="_command" data-confirm="解除关系后,该账号将无法查看任何‘<{$enterprise.name}>’的信息." class="btn btn-xs btn-default" href="<{link app=o2ocds ctl=admin_enterprise act=delete_relation}>&p[0]=<{$enterprise.enterprise_id}>&p[1]=<{$item.member_id}>">解除关系</a>
+                                    <{if $item.relation != 'admin'}>
+                                        <a target="_command" class="btn btn-xs btn-default" href="<{link app=o2ocds ctl=admin_enterprise act=update_relation}>&p[0]=<{$enterprise.enterprise_id}>&p[1]=<{$item.member_id}>&p[2]=admin">设为管理</a>
+                                    <{else}>
+                                        <a target="_command" class="btn btn-xs btn-default"
+                                    href="<{link app=o2ocds ctl=admin_enterprise act=update_relation}>&p[0]=<{$enterprise.enterprise_id}>&p[1]=<{$item.member_id}>&p[2]=salesman">取消管理权限</a>
+                                    <{/if}>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="6">
+
+                                    </td>
+                                    <td>
+                                        <{input type="object" object="members@b2c" name="member_id"  callback_func="sel_member2em" placeholder="选择会员成为企业员工"}>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <{else}>
+                        <!-- todo -->
+                    <{/if}>
+                </div>
+            </div>
+
+        </div>
+    </form>
+
+
+<script>
+
+    $('.submit').on('click',function() {
+        $.post($(this).attr('data-url'),'',function(data) {
+            if(data.success){
+                Messagebox.success(data.success);
+                window.location.reload();
+            }else{
+                return Messagebox.error(data.error);
+            }
+        });
+    });
+
+    $('#enterprise_info button[data-redirect]').on('click',function(e){
+        var find_required = false;
+        //定位到必填项,防止浏览器内部错误无提示
+        $.each($('#enterprise_info input[required]'),function(i,ipt){
+            if(find_required)return;
+            if($.trim($(ipt).val()) == ''){
+                var tab = $('#enterprise_info .nav-tabs li a[href$="#'+$(ipt).closest('.tab-pane').prop('id')+'"]');
+                tab.tab('show');
+                find_required = true;
+            }
+        });
+        var redirect = $(this).attr('data-redirect');
+        if(redirect.match(/enterprise_id/)){
+            $('#enterprise_info').data('ajax:success',function(re){
+                re = jsonDecode(re);
+                if(re.enterprise_id){
+                    load_page(substitute(redirect,re));
+                }
+            });
+        }else{
+            $('<input type="hidden" name="redirect">').val(redirect).appendTo($(this.form));
+        }
+    });
+    var sel_member2em = function(sel){
+        var member_id = sel[0].value;
+        $.ajax({
+            url:'<{link app=o2ocds ctl=admin_enterprise act=add_relation}>&p[0]=<{$enterprise.enterprise_id}>&p[1]='+member_id,
+            method:'post',
+            success:function(res){
+                jsonCommond(res);//解读执行 php end
+                // console.info(res);
+            }
+        });
+    }
+    <{if $env.get.tab}>
+        $('.nav-tabs a')[<{$env.get.tab}>].click();
+    <{/if}>
+
+</script>

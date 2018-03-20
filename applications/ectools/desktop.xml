@@ -1,0 +1,36 @@
+<desktop>
+    <permissions>
+        <permission display="true" id="admin_ectools">支付方式管理</permission>
+        <permission display="true" id="admin_ectools_setting">价格精度设置</permission>
+
+        <permission display="true" id="admin_logistics">物流</permission>
+        <permission display="true" id="bills_payment">查看应收款</permission>
+        <permission display="true" id="bills_refund">查看应付款</permission>
+        <permission display="true" id="bills_payment_do">应收款确认</permission>
+        <permission display="true" id="bills_refund_do">应付款确认</permission>
+        <permission display='true' id="bill_export_payment">收款单导出</permission>
+        <permission display='true' id="bill_export_refund">付款单导出</permission>
+
+        <permission display="true" id="admin_logistics_regions">地区管理</permission>
+    </permissions>
+
+    <panelgroup icon="icon-credit-card" id="currency" order="20">支付</panelgroup>
+    <panelgroup icon="icon-plane" id="logistics" order='30'>物流</panelgroup>
+
+    <adminpanel action="index" controller="setting" display='true' group="ectools_currency" order="30" permission='admin_ectools_setting'>价格精度设置</adminpanel>
+    <adminpanel action="index" controller="payment_apps" display='true' group="ectools_currency" order="10" permission='admin_ectools'>支付方式管理</adminpanel>
+
+    <adminpanel action="index" controller="regions" display='true' group="ectools_logistics" order="10" permission='admin_logistics_regions'>地区管理</adminpanel>
+
+    <workground icon="icon-wallet" id="ectools.wrokground.bills" name="财务" order="21">
+        <menugroup name="应收应付账单">
+            <menu action='index' controller='admin_payment' display='true' order='30' permission='bills_payment'>应收款</menu>
+            <menu action='index' controller='admin_refund' display='true' order='31' permission='bills_refund'>应付款</menu>
+            <menu display='false' order='32' permission='bills_payment_do'>应收款确认</menu>
+            <menu display='false' order='32' permission='bill_export_payment'>收款单导出</menu>
+            <menu display='false' order='33' permission='bills_refund_do'>应付款确认</menu>
+            <menu display='false' order='33' permission='bill_export_refund'>付款单导出</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

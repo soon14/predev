@@ -1,0 +1,6 @@
+<site>
+    <module controller='mobile_package'>
+        <name>package</name>
+        <title>优购码</title>
+    </module>
+</site>

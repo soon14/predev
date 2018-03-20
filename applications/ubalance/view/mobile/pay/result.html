@@ -1,0 +1,35 @@
+<div class="content">
+    <div class="table-view">
+    <{if $bill.status == 'succ' || $bill.status == 'progress'}>
+
+        <div class="table-view-cell">
+            <h1 class="text-success">支付成功</h1>
+        </div>
+        <div class="table-view-cell">
+            <p>
+                成功支付金额
+            </p>
+            <{$bill.money|cur}>
+        </div>
+        <div class="table-view-cell">
+            <p>
+                <{$env.conf.ubalance.name}>额度增加
+            </p>
+            <{$bill.money*$env.conf.ubalance.exchange_ratio|number_format:'3'}>
+        </div>
+
+    <{else}>
+
+        <div class="table-view-cell">
+            <h1 class="text-danger">支付失败</h1>
+        </div>
+
+    <{/if}>
+    <div class="table-view-cell table-view-divider">
+        注意：我们不会以任何方式，包括但不限于电话、短信、QQ、微信、邮件 等形式以支付相关问题为由与您主动取得联系。
+    </div>
+    </div>
+    <div class="content-padded">
+        <a class="btn btn-primary btn-block btn-outlined" href="<{link app=ubalance ctl=mobile_member}>">确认</a>
+    </div>
+</div>

@@ -1,0 +1,23 @@
+<services>
+    <service id="desktop_finder.marketing_mdl_group">
+        <class>marketing_finder_group</class>
+    </service>
+
+    <service id="desktop_finder.marketing_mdl_message_tmpl">
+        <class>marketing_finder_message_tmpl</class>
+    </service>
+
+    <service id="desktop_finder.marketing_mdl_message_tasks">
+        <class>marketing_finder_message_tasks</class>
+    </service>
+    <service id="base_render_pre_display">
+        <class orderby="10000">marketing_view_prender</class>
+    </service>
+
+    <service id="ectools.bill.payment.b2c.order.succ" optname="订单支付完成处理">
+        <class orderby="55">marketing_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.payment.b2c.order.progress" optname="订单支付到担保方完成处理">
+        <class orderby="55">marketing_order_payfinish</class>
+    </service>
+</services>

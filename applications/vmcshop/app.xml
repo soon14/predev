@@ -1,0 +1,23 @@
+<app>
+    <name>VMCSHOP</name>
+    <description>VMCSHOP电子商务系统</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.2</version>
+    <license>http://www.vmcshop.com/license</license>
+    <depends>
+        <app>b2c</app>
+        <app>site</app>
+        <app>mobile</app>
+        <app>toauth</app>
+        <app>content</app>
+        <app>logisticstrack</app>
+        <app>operatorlog</app>
+        <app>ruleplus</app>
+        <app>system</app>
+        <app>serveradm</app>
+    </depends>
+</app>

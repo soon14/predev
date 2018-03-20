@@ -1,0 +1,76 @@
+<services>
+    <service id="desktop_finder.store_mdl_store">
+        <class>store_finder_store</class>
+    </service>
+
+    <!--店铺订单finder扩展-->
+    <service id="desktop_finder.store_mdl_storeorder">
+        <class>store_finder_storeorder</class>
+    </service>
+
+    <!--店铺商品finder扩展-->
+    <service id="desktop_finder.store_mdl_storegoods">
+        <class>store_finder_store_goods</class>
+    </service>
+
+    <!--进货单finder扩展-->
+    <service id="desktop_finder.store_mdl_purchases_receipts">
+        <class>store_finder_purchases_receipts</class>
+    </service>
+
+    <!--损益单finder扩展-->
+    <service id="desktop_finder.store_mdl_income_receipts">
+        <class>store_finder_income_receipts</class>
+    </service>
+
+    <!--中台列表finder-->
+    <service id="desktop_finder.store_mdl_center">
+        <class>store_finder_center</class>
+    </service>
+
+
+    <!--店铺input smarty标签扩展-->
+    <service id="html_input">
+        <class>store_view_input</class>
+    </service>
+
+    <service id="view_helper">
+        <class>store_view_helper</class>
+    </service>
+
+    <!--店铺支付方式-->
+    <service id="ectools_payment.applications">
+        <class>store_pay_payments_cash</class>
+        <class>store_pay_payments_wxqrcode</class>
+        <class>store_pay_payments_alipayqrcode</class>
+        <class>store_pay_payments_paybycard</class>
+    </service>
+
+
+    <!--门店仪表盘service-->
+    <service id="store.dashboard.widgets" optname="门店仪表盘service">
+        <!-- <class>store_dashboard_widgets_workcount</class> -->
+        <class>store_dashboard_widgets_stats</class>
+        <!--<class>store_dashboard_widgets_revenue</class>-->
+        <!--<class>store_dashboard_widgets_overview</class>-->
+        <!--<class>store_dashboard_widgets_pie</class>-->
+    </service>
+
+    <!--goods group 扩展做操-->
+    <service id="b2c.goods_finder_edit_group">
+        <class>store_goods_group</class>
+    </service>
+
+    <service id="ectools.bill.payment.b2c.order.succ" optname="订单支付完成处理">
+        <class orderby="50">store_order_payfinish</class>
+    </service>
+
+    <!--商品编辑扩展-->
+    <service id="b2c.goods_editor_extend" optname="商品编辑扩展">
+        <class>store_goods_editor</class>
+    </service>
+
+    <service id="b2c.goods.save" optname="商品保存成功时">
+        <class>store_goods_save</class>
+    </service>
+</services>

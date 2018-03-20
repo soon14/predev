@@ -1,0 +1,21 @@
+<services>
+    <!--构造方法处理-->
+    <service id="site.router.dispatch">
+        <class orderby="30">ssoclient_router_site</class>
+    </service>
+    <!--构造方法处理-->
+    <service id="mobile.router.dispatch">
+        <class orderby="30">ssoclient_router_mobile</class>
+    </service>
+    <service id="openapi.ssoclient" optname="openapi@sso client">
+        <class>ssoclient_openapi_member</class>
+    </service>
+
+
+    <service id="site_view_helper">
+        <class orderby='100'>ssoclient_view_prender</class>
+    </service>
+    <service id="mobile_view_helper">
+        <class orderby='100'>ssoclient_view_prender</class>
+    </service>
+</services>

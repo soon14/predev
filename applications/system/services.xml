@@ -1,0 +1,8 @@
+<services>
+    <service id="desktop_finder.base_mdl_crontab">
+      <class>system_finder_crontab</class>
+    </service>
+    <service id="desktop_finder.system_mdl_queue_mysql">
+      <class>system_finder_queue</class>
+    </service>
+</services>

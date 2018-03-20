@@ -1,0 +1,32 @@
+<h3 class="page-title">
+        售后服务设置
+</h3>
+<hr>
+<form action="index.php?app=aftersales&ctl=admin_setting&act=index" method="post" class="form" >
+    <div class="form-horizontal">
+        <div class="form-body">
+            <{foreach from=$setting item=item key=key}>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><{$item.desc}></label>
+                    <div class="<{if $item.type=='html'||$item.type=='textarea'}>col-md-9<{else}>col-md-4<{/if}>">
+                        <{if $item.required}>
+                        <{input required=true type=$item.type name=$key value=$item.value|default:$item.default options=$item.options }>
+                        <{else}>
+                        <{input type=$item.type name=$key value=$item.value|default:$item.default options=$item.options }>
+                        <{/if}>
+                        <{if $item.helpinfo}>
+                            <span class="help-block"><{$item.helpinfo}></span>
+                        <{/if}>
+                    </div>
+                </div>
+            <{/foreach}>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,21 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="productplus">查看货品列表</permission>
+        <permission display='true' id="productplus_edit">货品编辑</permission>
+        <permission display='true' id="productplus_export">货品列表导出</permission>
+        <permission display='true' id="productplus_delete">货品删除</permission>
+        <permission display='true' id="product_batch_edit">货品批量上下架</permission>
+        <permission display='true' id="productplus_buildin_set_tag">货品标签</permission>
+    </permissions>
+
+    <workground icon="icon-diamond" id="b2c.wrokground.goods" name="商品" order="10">
+        <menugroup name="商品管理">
+            <menu action='index' controller='admin_products' display='true' order='21' permission='productplus'>货品列表</menu>
+            <menu action='edit' controller='admin_products' display='false' permission='productplus_edit'>货品编辑</menu>
+            <menu display='false' permission='productplus_export'>货品列表导出</menu>
+            <menu display='false' permission='productplus_delete'>货品删除</menu>
+            <menu display='false' permission='product_batch_edit'>货品批量上下架</menu>
+            <menu display='false' order='4' permission='productplus_buildin_set_tag'>货品标签</menu>
+        </menugroup>
+    </workground>
+</desktop>

@@ -1,0 +1,6 @@
+if(!function_exists('json_encode')){
+    function json_encode($value) 
+    {
+        return vmc::singleton('base_compat_json')->encode($value);
+    }//End Function
+}

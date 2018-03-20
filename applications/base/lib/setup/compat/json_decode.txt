@@ -1,0 +1,6 @@
+if(!function_exists('json_decode')){
+    function json_decode($value, $bool=false) 
+    {
+        return vmc::singleton('base_compat_json')->decode($value, $bool);
+    }//End Function
+}

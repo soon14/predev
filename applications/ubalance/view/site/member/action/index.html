@@ -1,0 +1,65 @@
+<ol class="breadcrumb">
+    <li><a href="<{link app=site ctl=index}>">首页</a></li>
+    <li><a href="<{link app=b2c ctl=site_member}>">会员中心</a></li>
+    <li class="active"><{$env.conf.ubalance.name}></li>
+</ol>
+<div class="page-header">
+    <div class="container">
+        <h1 class="clearfix">我的<{$env.conf.ubalance.name}></h1>
+    </div>
+</div>
+<div class="well">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>当前可用<{$env.conf.ubalance.name}></h4>
+            <h2 class="text-danger"><{$data.user_balance|number_format:'3'}> <small><{$env.conf.ubalance.unit}></small></h2>
+            <a href="<{link app=ubalance ctl=site_member act=recharge}>" class="btn btn-danger">立即充值</a>
+        </div>
+        <div class="col-md-3">
+            <{if $env.conf.ubalance.earnings_type=='1'}>
+            <h4>账户累计收益 <small class="text-muted">年化收益率 <em class="text-info"><{$env.conf.ubalance.year_ratio*100}>%</em></small></h4>
+            <h2 class="text-danger"><{$data.income|number_format:'3'}> <small><{$env.conf.ubalance.unit}></small></h2>
+            <{/if}>
+        </div>
+        <div class="col-md-3">
+            <{if $env.conf.ubalance.earnings_type=='1'}>
+            <h4>昨日收益</h4>
+            <h2 class="text-danger">+<{$data.yesterday_income|number_format:'3'}></h2>
+            <{/if}>
+        </div>
+    </div>
+</div>
+<ul class="nav nav-tabs nav-justified">
+    <li class="<{if $type=='all'}>active<{/if}>"><a href="<{link app=ubalance ctl=site_member act=index}>">全部记录</a></li>
+    <li class="<{if $type=='0'}>active<{/if}>"><a href="<{link app=ubalance ctl=site_member act=index arg0=0}>">收入记录</a></li>
+    <li class="<{if $type=='1'}>active<{/if}>"><a href="<{link app=ubalance ctl=site_member act=index arg0=1}>">支出记录</a></li>
+    <li class="<{if $type=='2'}>active<{/if}>"><a href="<{link app=ubalance ctl=site_member act=index arg0=2}>">收益记录</a></li>
+</ul>
+<br>
+<{if !$record_list}>
+<div class="well">
+    暂无
+</div>
+<{else}>
+<table class="table table-hover table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>时间</th>
+            <th>交易金额</th>
+            <th>交易类型</th>
+            <th>备注</th>
+        </tr>
+    </thead>
+    <tbody>
+        <{foreach from=$record_list item=record}>
+        <tr>
+            <td><{$record.opt_time|cdate:'FDATE_FTIME'}></td>
+            <td><{$record.change_fund|number_format:'3'}></td>
+            <td><{$type_list[$record.type]}></td>
+            <td><{$record.mark}></td>
+        </tr>
+        <{/foreach}>
+    </tbody>
+</table>
+<{pagers data=$pager}>
+<{/if}>

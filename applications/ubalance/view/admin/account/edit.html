@@ -1,0 +1,42 @@
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <h3 class="modal-title">账户列表编辑</h3>
+</div>
+<form action="index.php?app=ubalance&ctl=admin_account&act=save" method="post">
+<div class="form-horizontal">
+    <input type="hidden" name="member_id" value="<{$account.member_id}>">
+    <div class="form-body form">
+        <div class="form-group">
+            <label class="col-md-3 control-label">余额账户状态：
+            </label>
+            <div class="col-md-5">
+                <ul class="list-inline">
+                    <li>
+                    <label class="control-label"><input type="radio" value="1" name="status" <{if $account.status==1}>checked<{/if}>/>有效</label>
+                    </li>
+                    <li>
+                    <label class="control-label"><input type="radio" value="0" name="status" <{if $account.status==0}>checked<{/if}>/>冻结</label>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">备注：
+                <span class="required" aria-required="true"></span>
+            </label>
+            <div class="col-md-8">
+                <{input type=textarea rows=2 name="remarks" required="true" value=$account.remarks}>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-9">
+                    <button type="submit" class="btn blue">保存</button>
+                    <a href="index.php?app=ubalance&ctl=admin_account&act=index" class="btn default">取消</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</form>

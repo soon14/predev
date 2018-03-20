@@ -1,0 +1,6 @@
+<site>
+    <module controller='site_package' id='package'>
+        <name>package</name>
+        <title>组合销售</title>
+    </module>
+</site>

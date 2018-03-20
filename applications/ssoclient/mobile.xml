@@ -1,0 +1,5 @@
+<site>
+    <module controller='mobile_passport' id='client'>
+        <name>client</name>
+    </module>
+</site>

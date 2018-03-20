@@ -1,0 +1,17 @@
+<p>
+<{$activity.intro}>
+</p>
+<{if !$is_login}>
+<div class="alert alert-warning">
+    <i class="glyphicon glyphicon-warning-sign"></i>
+    您还未登陆，登陆后可使用优购码优先购买。
+    <a href="/passport-login.html" class="btn btn-xs btn-danger">立即登录</a>
+</div>
+<{/if}>
+<div id="J_codebuy">
+</div>
+<script>
+(function(){
+    $('#J_codebuy').load('<{link app=codebuy ctl=site_activity act=check_code}>',{'product_id':<{$data_detail.product.product_id}>,'activity_id':<{$activity.id}>,'goods_id':<{$data_detail.goods_id}>});
+})();
+</script>

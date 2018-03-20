@@ -1,0 +1,98 @@
+<{if !$rel_items}>
+<div class="alert alert-info margin-top-10">
+    <i class="fa fa-info"></i> 无记录
+</div>
+<{else}>
+<div data-updatecontainer="true">
+    <input type="hidden" name="products_count" value="<{$items_count}>">
+    <input type="hidden" name="page" value="<{$page}>">
+    <div class="table-scrollable">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" class="sel-handle">
+                    </th>
+                    <th>
+                        名称
+                    </th>
+                    <th>
+                        货号
+                    </th>
+                    <th>
+                        条码
+                    </th>
+                    <th>
+                        单位
+                    </th>
+                    <th>
+                        销售价
+                    </th>
+                    <th>
+                        分润设置
+                    </th>
+                    <th>
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <{foreach from=$rel_items item=itemgrp name=frc_ji}>
+                <{if $itemgrp.1}>
+                    <tr class="bg-grey-cararra">
+                        <td>
+                            <!-- <input type="checkbox"  value="<{$item.goods_id}>"> -->
+                        </td>
+                        <td colspan="2">
+                            <{$products[$itemgrp.0.product_id].name}>
+                        </td>
+                        <td colspan="10"></td>
+                    </tr>
+                <{/if}>
+                    <{foreach from=$itemgrp item=item name=frc_itemgrp}>
+                        <tr>
+                            <td>
+                                <input type="checkbox" data-goodsid="<{$item.goods_id}>" name="product_id[]" value="<{$item.product_id}>">
+                            </td>
+                            <td>
+                                <a href="<{link app=b2c router=site ctl=site_product act=index args0=$item.product_id}>" target="_blank">
+                                    <img class='img-thumbnail' src="<{$products[$item.product_id].image_id|storager:'xs'}>" width=30 />&nbsp;
+                                    <{if !$itemgrp.1}>
+                                        <{$products[$item.product_id].name}>
+                                    <{/if}>
+                                    <{$products[$item.product_id].spec_info}>
+                                </a>
+                            </td>
+                            <td>
+                                <{$products[$item.product_id].bn}>
+                            </td>
+                            <td>
+                                <{$products[$item.product_id].barcode}>
+                            </td>
+                            <td>
+                                <{$products[$item.product_id].unit}>
+                            </td>
+                            <td>
+                                <{$products[$item.product_id].price|cur}>
+                            </td>
+                            <td>
+                                <input class='form-control edit-col input-sm input-xsmall <{if $env.foreach.frc_itemgrp.first&&$itemgrp.1}>edit-col-first<{/if}>' name="share" type='text'  data-itemid='<{$item.id}>' data-goodsid='<{$item.goods_id}>' data-productid='<{$item.product_id}>' value='<{$item.share|number_format:"2":".":""}>'>
+                            </td>
+                            <td>
+                                <button class="btn btn-xs default btn-remove" type="button"><i class="fa fa-times"></i> 移除</button>
+                            </td>
+                        </tr>
+                        <{if !$env.foreach.frc_ji.last && $itemgrp.1 && $env.foreach.frc_itemgrp.last}>
+                        <tr class="bg-grey-cararra">
+                            <td colspan="12" style="height:5px;padding:0;">
+                            </td>
+                        </tr>
+                        <{/if}>
+                    <{/foreach}>
+                <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+    <{pagers data=$pager}>
+</div>
+<{/if}>

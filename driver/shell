@@ -1,0 +1,67 @@
+#!/usr/bin/env php
+<?php
+function _check_dir($dir)
+{
+    $dir = realpath($dir);
+    $file = $dir.'/wrieable_touch.test';
+    if ($handle = @fopen($file, 'a+')) {
+        if (@fwrite($handle, 'test version')) {
+            fclose($handle);
+            unlink($file);
+
+            return true;
+        } else {
+            echo '无权操作目录:'.$dir."\n";
+
+            return false;
+        }
+    } else {
+        echo '无权操作目录:'.$dir."\n";
+
+        return false;
+    }
+}
+function get_cmd_gate_path()
+{
+    $self = $_SERVER['argv'][0];
+    $cwd = getcwd();
+    $realpath = realpath($self);
+    chdir('/');
+    if (realpath($self) != $realpath) {
+        $self = $cwd.'/'.$self;
+    }
+    chdir($cwd);
+
+    while (is_link($self)) {
+        $link = readlink($self);
+        if ($link{0} == '/') {
+            $self = $link;
+        } else {
+            $self = dirname($self).'/'.$link;
+        }
+    }
+
+    $path_arr = explode('/', $self);
+
+    for ($i = count($path_arr) - 1;$i > -1;$i--) {
+        if ($path_arr[$i] == '.') {
+            unset($path_arr[$i]);
+        } elseif ($path_arr[$i] == '..') {
+            unset($path_arr[$i--], $path_arr[$i]);
+        }
+    }
+    $self = implode('/', $path_arr);
+
+    return $self;
+}
+$self = get_cmd_gate_path();
+require realpath(dirname(dirname($self))).'/driver/vmcshop.php';
+vmc::register_autoload();
+cachemgr::init(false);
+cacheobject::init(false);
+set_time_limit(0);
+if (!_check_dir(TMP_DIR) || !_check_dir(DATA_DIR)) {
+    exit;
+}
+$shell = new base_shell_loader();
+$shell->run();

@@ -1,0 +1,11 @@
+<app>
+    <name>体验数据清空</name>
+    <description>该应用用于清空站点初始化体验数据,方便站点进入正式运营</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.0</version>
+    <license>http://www.vmcshop.com/license</license>
+</app>

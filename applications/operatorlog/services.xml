@@ -1,0 +1,42 @@
+<services>
+    <service id="desktop_finder.operatorlog_mdl_normallogs">
+        <class>operatorlog_finder_normallogs</class>
+    </service>
+
+    <service id="desktop_controller_destruct">
+        <class>operatorlog_service_desktop_controller</class>
+    </service>
+
+    <service id="app_content_detector">
+        <class>operatorlog_application_register</class>
+    </service>
+
+
+    <service id="operatorlog">
+        <class>operatorlog_logs</class>
+    </service>
+    <!-- 商品管理 -->
+    <service id="operatorlog.goods">
+        <class>operatorlog_goods</class>
+    </service>
+    <!-- 会员管理 -->
+    <service id="operatorlog.members">
+        <class>operatorlog_members</class>
+    </service>
+    <!-- 营销管理 -->
+    <service id="operatorlog.sales">
+        <class>operatorlog_sales</class>
+    </service>
+    <!-- 站点管理 -->
+    <service id="operatorlog.site">
+        <class>operatorlog_site</class>
+    </service>
+    <!-- 系统管理 -->
+    <service id="operatorlog.system">
+        <class>operatorlog_system</class>
+    </service>
+    <!-- 订单管理 -->
+    <service id="operatorlog.order">
+        <class>operatorlog_order</class>
+    </service>
+</services>

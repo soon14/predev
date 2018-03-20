@@ -1,0 +1,15 @@
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <h3 class="modal-title">批量设置会员直属上级</h3>
+</div>
+<form action="index.php?app=o2ocds&ctl=admin_member&act=batch_save" method="post"  >
+    <div class="modal-body">
+            <textarea name="filter" style="display:none"><{$filter}></textarea>
+            <input type="hidden" name="type" value="parent"/>
+            <input type="text" class="form-control" name="member_account" value="" placeholder="输入上级会员帐号">
+    </div>
+    <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+            <button type="submit" class="btn blue">确定</button>
+    </div>
+</form>

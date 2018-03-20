@@ -1,0 +1,9 @@
+<select <{$ext}> >
+<optgroup label="<{$theme_info.name}>(<{$theme_info.theme_dir}>)">
+<option value='default.html'>[默认]&nbsp;default.html</option>
+<{foreach from=$list item=item name=tf}>
+<option value="<{$item.value}>" <{if $selected==$item.value || ($selected==''&& $env.foreach.tf.first)}>selected<{/if}> ><{if $item.use}>[<{$item.use}>]&nbsp;<{/if}><{$item.value}>
+</option>
+<{/foreach}>
+</optgroup>
+</select>

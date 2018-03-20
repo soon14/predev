@@ -1,0 +1,28 @@
+{
+    "name": "VMCPOS-ChromeExtension",
+    "version": "1.0",
+    "manifest_version": 2,
+    "description": "用于实现POS客显体验",
+    "background": {
+        "scripts": ["background.js"]
+    },
+    "content_scripts": [{
+        "matches": ["http://*/*/*admin_checkstand&act=single_index*", "http://*/*/*admin_checkstand&act=single_index*"],
+        "js": ["content_script1.js"]
+    }, {
+        "matches": ["http://*/*/*admin_checkstand&act=mscreen*", "http://*/*/*admin_pos&act=mscreen*"],
+        "js": ["content_script2.js"]
+    }],
+    "icons": {
+        "16": "icon16.png",
+        "48": "icon48.png",
+        "128": "icon128.png"
+    },
+    "permissions": [
+        "tabs",
+        "http://*/*/*admin_checkstand&act=mscreen*",
+        "http://*/*/*admin_checkstand&act=single_index*",
+        "https://*/*/*admin_checkstand&act=mscreen*",
+        "https://*/*/*admin_checkstand&act=single_index*"
+    ]
+}

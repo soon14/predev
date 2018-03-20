@@ -1,0 +1,31 @@
+<root>
+<!-- 模块：站点管理(site) -->
+    <!-- 页面管理-->
+    <register module="site" ctl="admin_article" act="save" param="article.indexs.title" prk="article_id">
+        <operate_type>文章</operate_type>
+        <template>文章 %s</template>
+    </register>
+
+<!--     <register module="site" ctl="admin_article" act="dorecycle" param="article_id">
+        <operate_type>批量删除 文章</operate_type>
+        <template>>批量删除 文章 %s</template>
+    </register> -->
+
+
+<!-- 模块：站点管理(site) -->
+    <!-- 文章栏目管理 -->
+    <register module="site" ctl="admin_node" act="save" param="node.node_name" prk="node_id">
+        <operate_type>文章栏目</operate_type>
+        <template>文章栏目 %s</template>
+    </register>
+
+    <register module="site" ctl="admin_node" act="remove" param="node_id" method="get">
+        <operate_type>删除 文章栏目</operate_type>
+        <template>批量删除 文章栏目 %s</template>
+    </register>
+
+    <register module="site" ctl="admin_node" act="update" param="ordernum">
+        <operate_type>批量排序 文章栏目</operate_type>
+        <template>批量排序文章栏目 %s</template>
+    </register>
+</root>

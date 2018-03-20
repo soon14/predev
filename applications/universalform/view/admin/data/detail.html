@@ -1,0 +1,22 @@
+
+<form class="form-horizontal"  method="post" id="receiver_form">
+    <{foreach from=$modules item=module}>
+    <div class="form-group">
+        <label  class="col-xs-2 control-label"><{$module.module_name}>
+            <{if $module.required == 'true'}><span class="text-danger">*</span><{/if}>
+        </label>
+        <div class="col-xs-7">
+            <{formmodule data=$module value=$data[data][$module[name]]}>
+        </div>
+    </div>
+    <{/foreach}>
+    <{if $data.data.mobile}>
+        <div class="form-group">
+            <label class="col-xs-2 control-label">手机号码<span class="text-danger">*</span>        </label>
+            <div class="col-xs-7">
+                <input name="njesugpy" type="text" required="true" value="<{$data.data.mobile}>" class=" form-control">        </div>
+        </div>
+    <{/if}>
+</form>
+
+

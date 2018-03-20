@@ -1,0 +1,19 @@
+<!-- 智能橱窗 -->
+<template id="widget-activecard">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-activecard :widget="widget" :index="index"></widget-child-setting-activecard>
+        <widget-child-activecard :widget="widget" :index="index"></widget-child-activecard>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_activecard = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-activecard',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-activecard': widget_child_setting_activecard,
+        'widget-child-activecard': widget_child_activecard
+    }
+});
+</script>

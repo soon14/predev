@@ -1,0 +1,41 @@
+<div data-updatecontainer="true"> <!-- data-updatecontainer 标记 内部 A标签 优先加载到容器内 -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                订单号
+            </th>
+            <th>
+                订单状态
+            </th>
+            <th>
+                订单金额
+            </th>
+            <th>
+                下单日期
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        <{foreach from=$orders item=item key=key}>
+        <tr>
+            <th>
+                <a target='_blank' href="index.php?app=b2c&ctl=admin_order&act=detail&p[0]=<{$item.order_id}>" target="_blank">
+                    <{$item.order_id}>
+                </a>
+            </td>
+            <td>
+                <{$item.order_status_label}>
+            </td>
+            <td>
+                <{$item.order_total|cur}>
+            </td>
+            <td>
+                <{$item.createtime|cdate: 'FDATE_FTIME'}>
+            </td>
+        </tr>
+        <{/foreach}>
+        </tbody>
+    </table>
+    <{pagers data=$pager}>
+</div>

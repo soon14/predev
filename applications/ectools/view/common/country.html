@@ -1,0 +1,20 @@
+<div class="input-group <{$params.class}>" id="<{$params.id}>">
+    <select class="form-control" name="<{$params.name}>">
+        <option value=''>请选择</option>
+        <{foreach from=$country_list item=country}>
+            <option data-flag="<{$country.flag}>" value='<{$country.ct_abbreviation}>' <{if $country.ct_abbreviation == $params.value}>selected<{/if}>>
+                <{$country.ct_abbreviation}>&nbsp;<{$country.ct_name}>&nbsp;<{$country.ct_name_en}>
+            </option>
+        <{/foreach}>
+    </select>
+    <span class="input-group-addon">
+        <img src="data:image/gif;base64,R0lGODlhAQABAIAAAO/v7////yH5BAAHAP8ALAAAAAABAAEAAAICRAEAOw==" alt="旗帜" />
+    </span>
+</div>
+<script type="text/javascript">
+    $('#<{$params.id}> select').on('change',function(e){
+        var flag = $(this.options[this.selectedIndex]).attr('data-flag');
+        if(!flag)return;
+        $('#<{$params.id}> img').attr('src',flag);
+    }).trigger('change');
+</script>

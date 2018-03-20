@@ -1,0 +1,71 @@
+<desktop>
+    <permissions>
+        <permission id="vshop" display='true'>店铺管理</permission>
+        <permission display="true" id="vshop_edit">编辑店铺信息</permission>
+        <permission display='true' id="vshoplv">查看店铺等级</permission>
+        <permission display='true' id="vshoplv_edit">添加/编辑店铺等级</permission>
+        <permission display='true' id="vshoplv_del">删除店铺等级</permission>
+        <permission display='true' id="vshop_profit">分润配置</permission>
+        <permission display='true' id="vshop_setting">基础配置</permission>
+        <permission display='true' id="vshop_relorder">店铺订单</permission>
+
+        <permission display="true" id="vshop_notice">查看公告列表</permission>
+        <permission display="true" id="vshop_notice_edit">添加/编辑公告</permission>
+        <permission display="true" id="vshop_notice_delete">删除公告</permission>
+        <permission display="true" id="vshop_notice_tag">公告标签</permission>
+
+        <permission display="true" id="vshop_voucher">查看结算凭证</permission>
+        <permission display="true" id="vshop_voucher_tag">结算凭证标签</permission>
+        <permission display="true" id="vshop_voucher_statement">生成财务结算单</permission>
+        <permission display="true" id="vshop_voucher_delete">结算凭证删除</permission>
+
+        <permission display="true" id="vshop_statement">查看财务结算单</permission>
+        <permission display="true" id="vshop_statement_tag">财务结算单标签</permission>
+        <permission display="true" id="vshop_statement_delete">删除财务结算单</permission>
+        <permission display="true" id="vshop_statement_edit">财务结算单编辑</permission>
+    </permissions>
+    <workground name="微店" icon="glyphicon glyphicon-thumbs-up" id="workground.vshop" order='66'>
+        <menugroup name="微店铺管理">
+            <menu controller='admin_shop' action='index' permission='vshop' display='true' order='1'>店铺列表</menu>
+            <menu controller='admin_shop' action='edit' permission='vshop_edit' display='false' order='1'>新增\编辑店铺</menu>
+            <menu controller='admin_shop' action='save' permission='vshop_edit' display='false' order='1'>店铺保存
+            </menu>
+            <menu controller='admin_relorder' action='index' permission='vshop_relorder' display='true' order='1'>店铺订单</menu>
+        </menugroup>
+
+        <menugroup name="公告管理">
+            <menu action='index' controller='admin_notice' display='true' order='10' permission='vshop_notice'>公告管理</menu>
+            <menu action='edit' controller='admin_notice' display='false' permission='vshop_notice_edit'>公告编辑</menu>
+            <menu display='false' permission='vshop_notice_delete'>公告删除</menu>
+            <menu display='false' permission='vshop_notice_tag'>公告标签</menu>
+        </menugroup>
+        <menugroup name="结算凭证">
+            <menu action='index' controller='admin_voucher' display='true' order='11' permission='vshop_voucher'>结算凭证</menu>
+            <menu action='docreate' controller='admin_voucher' display='false' permission='vshop_voucher_statement'>生成财务结算单</menu>
+            <menu action='docreate_multiple' controller='admin_voucher' display='false' permission='vshop_voucher_statement'>批量生成财务结算单</menu>
+            <menu display='false' permission='vshop_voucher_delete'>结算凭证删除</menu>
+            <menu display='false' permission='vshop_voucher_tag'>结算凭证标签</menu>
+        </menugroup>
+        <menugroup name="财务结算单">
+            <menu action='index' controller='admin_statement' display='true' order='12' permission='vshop_statement'>财务结算单</menu>
+            <menu action='edit' controller='admin_statement' display='false' permission='vshop_statement_edit'>编辑财务结算单</menu>
+            <menu display='false' permission='vshop_voucher_delete'>财务结算单标签</menu>
+            <menu display='false' permission='vshop_voucher_delete'>财务结算单删除</menu>
+        </menugroup>
+        <menugroup name="报表">
+            <menu action='index' controller='admin_report' display='true' order='12' permission='vshop_report'>报表导出</menu>
+            <menu action='export' controller='admin_report' display='false' order='12' permission='vshop_report'>报表导出</menu>
+        </menugroup>
+
+    </workground>
+
+    <panelgroup icon="glyphicon glyphicon-thumbs-up" id="vshop" order="111">微店配置</panelgroup>
+    <adminpanel action="index" controller="admin_setting" display="true" group="vshop_vshop" permission="vshop_setting" order='888'>基础配置
+    </adminpanel>
+    <adminpanel action="index" controller="admin_profit" display="true" group="vshop_vshop" order='999' permission="vshop_profit">单品分润配置
+    </adminpanel>
+    <adminpanel action="index" controller="admin_lv" display="true" group="vshop_vshop" order='999' permission="vshoplv">店铺等级
+    </adminpanel>
+
+
+</desktop>

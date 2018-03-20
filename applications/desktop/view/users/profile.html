@@ -1,0 +1,93 @@
+<h3 class="page-title">
+    个人信息编辑
+</h3>
+<{if $profile.super=='1'}><span class="label label-danger">超级管理员</span><{/if}>
+<hr>
+<ul class="list-inline">
+    <li>最后登陆时间：<{$profile.lastlogin|cdate}></li>
+</ul>
+<hr>
+<form class="form" action="<{link app=desktop ctl=profile act=save_profile}>" method="post">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">头像</label>
+
+                <div class="col-md-4 avatar">
+                    <{input type=image width=100 height=100 name=avatar value=$profile.avatar|default: ''}>
+                        <span class="help-block">建议上传正方形图片</span>
+                        <script charset="utf-8">
+                            $('.avatar .fileinput-new.thumbnail').removeAttr('style').css({border:'none'});
+                            $('.avatar .fileinput-new.thumbnail img').addClass('img-circle');
+                            $('.avatar .fileinput-new.thumbnail img').css({'width':'10rem',height:'10rem'});
+                        </script>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">姓名</label>
+                <div class="col-md-4">
+                    <{input type=text name=name value=$profile.name}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">工号</label>
+                <div class="col-md-4">
+                    <{input type=text name=op_no value=$profile.op_no}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">登陆用户名</label>
+                <div class="col-md-4">
+                    <{input type=text readonly=true name='account[login_name]' value=$profile.account.login_name}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">登陆密码</label>
+                <div class="col-md-4">
+                    <label class="control-label">
+                        <input type="radio" name="reset_password" value="0" checked> 保持不变</label>
+                    <label class="control-label">
+                        <input type="radio" name="reset_password" value="1"> 修改密码</label>
+                </div>
+            </div>
+            <div class="form-group rp-pane hide">
+                <label class="col-md-2 control-label">当前登陆密码
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-4">
+                    <{input class="form-control" type=password  name='rp[old_login_password]' placeholder="请输入您当前的登陆密码"}>
+                </div>
+            </div>
+            <div class="form-group rp-pane hide">
+                <label class="col-md-2 control-label">新密码
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-4">
+                    <{input class="form-control" type=password  name='rp[new_login_password]' placeholder="新密码"}>
+                    <{input class="form-control" type=password  name='rp[:account@pam][login_password]' placeholder="确认新密码"}>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-9">
+                    <button type="submit" class="btn blue">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script charset="utf-8">
+    $('input[name=reset_password]').on('click',function(){
+
+        if($(this).val()=='1'){
+            $('.rp-pane').removeClass('hide');
+            $('.rp-pane').find('input').removeAttr('disabled');
+        }else{
+            $('.rp-pane').addClass('hide');
+            $('.rp-pane').find('input').attr('disabled','disabled');
+        }
+    });
+    $('input[name=reset_password]:checked').click();
+</script>

@@ -1,0 +1,15 @@
+<!-- 图片导航 -->
+<template id="widget-imgnav">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-imgnav :widget="widget" :index="index"></widget-child-imgnav>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_imgnav = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-imgnav',
+    components: {
+        'widget-child-imgnav': widget_child_imgnav
+    }
+});
+</script>

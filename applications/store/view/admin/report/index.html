@@ -1,0 +1,146 @@
+<h3 class="page-title">
+    报表导出
+</h3>
+
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="javascript;">门店</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">报表导出</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=store&ctl=admin_report&act=export" method="post" class="form" target="_blank">
+    <div class="form-horizontal">
+        <div class="form-body">
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">选择报表</label>
+
+                <div class="col-md-4">
+                    <select class=" form-control" name="report_type">
+                        <option value="order">交易概要报表</option>
+                        <option value="order_items">商品发货退货报表</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">交易时间</label>
+                <div class="col-md-4">
+                    <{input type="time" name="from" value=$from}>
+                    <{input type="time" name="to" value=$to}>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">交易类型</label>
+                <div class="col-md-4">
+                    <select class=" form-control" name="bill_type">
+                        <option value="-1">全部</option>
+                        <option value="payment">收款</option>
+                        <option value="refund">退款</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">交易状态</label>
+                <div class="col-md-4">
+                    <select class=" form-control" name="status">
+                        <option value="-1">全部</option>
+                        <option value="succ">成功</option>
+                        <option value="ready">准备中</option>
+                    </select>
+                </div>
+            </div>
+
+            <!--<div class="form-group">-->
+            <!--<label class="col-md-3 control-label">支付状态</label>-->
+            <!--<div class="col-md-4">-->
+            <!--<select class=" form-control" name="pay_status">-->
+            <!--<option value="-1">全部</option>-->
+            <!--<option value="0">收款</option>-->
+            <!--<option value="1">退款</option>-->
+            <!--<option value="2">已付款至担保方</option>-->
+            <!--<option value="3">部分付款</option>-->
+            <!--<option value="4">部分退款</option>-->
+            <!--<option value="5">全额退款</option>-->
+            <!--</select>-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <!--<div class="form-group">-->
+            <!--<label class="col-md-3 control-label">发货状态</label>-->
+            <!--<div class="col-md-4">-->
+            <!--<select class=" form-control" name="ship_status">-->
+            <!--<option value="-1">全部</option>-->
+            <!--<option value="0">未发货</option>-->
+            <!--<option value="1">已发货</option>-->
+            <!--<option value="2">部分发货</option>-->
+            <!--<option value="3">部分退货</option>-->
+            <!--<option value="4">已退货</option>-->
+            <!--</select>-->
+            <!--</div>-->
+            <!--</div>-->
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">优惠状态</label>
+                <div class="col-md-4">
+                    <select class=" form-control" name="pmt">
+                        <option value="-1">全部</option>
+                        <option value="0">无优惠</option>
+                        <option value="1">有优惠</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">支付方式</label>
+                <div class="col-md-6">
+                    <{foreach from=$pay_app item=pay_app_list key=k}>
+                    <label class="label-control">
+                        <input type="checkbox" name="pay_app[]" value="<{$k}>"><{$pay_app_list}>
+                    </label>
+                    <{/foreach}>
+                </div>
+
+            </div>
+
+            <!--<div class="form-group">-->
+            <!--<label class="col-md-3 control-label">是否保税</label>-->
+            <!--<div class="col-md-4">-->
+            <!--<select class=" form-control" name="is_across">-->
+            <!--<option value="-1">全部</option>-->
+            <!--<option value="1">是</option>-->
+            <!--<option value="0">否</option>-->
+            <!--</select>-->
+            <!--</div>-->
+
+            <!--</div>-->
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">选择门店</label>
+                <div class="col-md-6">
+                    <{foreach from=$store_list item=store key=k}>
+                    <label class="label-control">
+                        <input type="checkbox" name="store_id[]" value="<{$store.store_id}>"><{$store.store_name}>
+                    </label>
+                    <{/foreach}>
+                </div>
+
+            </div>
+
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">生成报表</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

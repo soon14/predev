@@ -1,0 +1,5 @@
+<services>
+    <service id="openapi.sso" optname="openapi@货品库存">
+        <class>sso_openapi</class>
+    </service>
+</services>

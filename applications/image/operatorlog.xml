@@ -1,0 +1,8 @@
+<root>
+<!-- 模块：系统管理(system) -->
+    <!-- 图片管理 -->
+    <register module="system" ctl="admin_manage" act="dorecycle" param="image_id">
+        <operate_type>批量删除图片</operate_type>
+        <template>批量删除图片%s</template>
+    </register>
+</root>

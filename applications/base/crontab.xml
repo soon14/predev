@@ -1,0 +1,7 @@
+<cronentries>
+  <cron id="base_tasks_cleankvstore">
+    <description>删除过期kvstore数据</description>
+    <schedule>0 */3 * * *</schedule>
+    <enabled>true</enabled>
+  </cron>
+</cronentries>

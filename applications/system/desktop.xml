@@ -1,0 +1,10 @@
+<desktop>
+    <permissions>
+        <permission display="true" id="admin_system_crontab">计划任务</permission>
+        <permission display="true" id="admin_system_queue">执行队列</permission>
+    </permissions>
+    <adminpanel action="index" controller="admin_crontab" display='true'
+        group="desktop_system" permission="admin_system_crontab">计划任务</adminpanel>
+    <adminpanel action="index" controller="admin_queue" display='true'
+        group="desktop_system" permission="admin_system_queue">执行队列</adminpanel>
+</desktop>

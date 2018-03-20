@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title><{$data.title}></title>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        <{include file='mobile/xcxpage/css.html'}>
+    </head>
+    <body>
+        <div class="xcxpage-design" id="preview">
+            <div class="xcxpage-window">
+                <div class="xcxpage-header">
+                    <nav>
+                        <ul>
+                            <li>
+                                <a href="javascript:;" style="display: none;"><i class="ico fa fa-angle-left"></i></a>
+                            </li>
+                            <li>
+                                <a href="javascript:;">{{title}}</a>
+                            </li>
+                            <li>
+                                <a href="javascript:;" style="display: none;"><i class="ico fa fa-ellipsis-h"></i></a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <xcxpage-preview :widgets="currWidgets"></xcxpage-preview>
+                <div class="xcxpage-footer">
+                    <div class="weui-tabbar">
+                        <a href="javascript:;" class="weui-tabbar__item weui-bar__item_on">
+                            <span style="display: inline-block;position: relative;">
+                                <img src="/public/stylesheets/wechat/images/home_fill.png" alt="" class="weui-tabbar__icon">
+                            </span>
+                            <p class="weui-tabbar__label">首页</p>
+                        </a>
+                        <a href="javascript:;" class="weui-tabbar__item">
+                            <img src="/public/stylesheets/wechat/images/cat.png" alt="" class="weui-tabbar__icon">
+                            <p class="weui-tabbar__label">分类</p>
+                        </a>
+                        <a href="javascript:;" class="weui-tabbar__item">
+                            <img src="/public/stylesheets/wechat/images/cart.png" alt="" class="weui-tabbar__icon">
+                            <p class="weui-tabbar__label">购物车</p>
+                        </a>
+                        <a href="javascript:;" class="weui-tabbar__item">
+                            <img src="/public/stylesheets/wechat/images/my.png" alt="" class="weui-tabbar__icon">
+                            <p class="weui-tabbar__label">我的</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+    <{include file='mobile/xcxpage/bases.html'}>
+</html>

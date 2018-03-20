@@ -1,0 +1,10 @@
+<h3 class="page-title">
+        Solr搜索引擎运行状态
+        <{if $ping_error}>
+        <span class="label label-danger"><{$ping_error}></span>
+        <{else}>
+        <span class="label label-success"><i class="fa fa-wifi"></i> 连接正常</span>
+        <{/if}>
+</h3>
+<hr>
+<{dump var=$ping_data}>

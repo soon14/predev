@@ -1,0 +1,41 @@
+<!-- ############### 设计区域 ############### -->
+<!-- 设计区域 -->
+<template id="page-design">
+    <div class="xcxpage-main" v-sortable="{group: {name: 'page-design',pull: false,put: ['widgets-list'], revertClone: false}, filter: '.view-item-setting', preventOnFilter: false, animation: 0, events: {onAdd: 'onDragAdd', onEnd: 'onDragEnd'}}">
+        <div :is="widget.name" :widget="widget" :index="index" v-for="(widget, index) in widgets"></div>
+    </div>
+</template>
+<script type="text/javascript">
+// 设计区域
+var page_design = Vue.extend({
+    template: '#page-design',
+    props: ['widgets'],
+    components: {
+        'searchbar': widget_searchbar,
+        'slider': widget_slider,
+        'imgnav': widget_imgnav,
+        'textnav': widget_textnav,
+        'goodslist': widget_goodslist,
+        'goodslist*': widget_goodslist,
+        'showcase': widget_showcase,
+        'blankhelper': widget_blankhelper,
+        'linehelper': widget_linehelper,
+        'videos': widget_videos,
+        'omnipotentform': widget_omnipotentform,
+        'imagetext':widget_imagetext,
+        'articlelist':widget_articlelist,
+        'activecard':widget_activecard,
+        'smartwindow':widget_smartwindow,
+        'grouppresale':widget_grouppresale
+    },
+    methods: {
+        onDragAdd: function(dragStore, evt, el, binding, vnode) {
+            return designStore.methods.onDesignDragAdd(this);
+        },
+        onDragEnd: function(dragStore, evt, el, binding, vnode) {
+            return designStore.methods.onDesignDragEnd(this);
+        }
+    }
+});
+Vue.component('page-design', page_design);
+</script>

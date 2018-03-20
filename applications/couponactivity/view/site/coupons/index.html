@@ -1,0 +1,74 @@
+<{if $data_list.activity}>
+<div class="glist-container">
+	<div class="goods-list">
+		<div class="row goods-list gl-default">
+			<{foreach from=$data_list.cpns_list item=c}>
+			<div class="col-xs-3">
+				<div class="thumbnail goods-item">
+					<div class="gi-image-wrapper">
+							<img src="<{$c.image_id|storager:'s'}>" alt="<{$c.name}>">
+					</div>
+					<div class="caption">
+							<h3 class="g-name"><{$c.cpns_name}>
+							</h3>
+							<p class="avg-mark">
+								<span class="text-warning"><{$c.description}></small>
+							</p>
+							<{if $c.is_buy=='true'}>
+            					<button class="btn btn-primary coupons-achieve"  data-url="a/<{$data_list.activity.activity_id}>/c/<{$c.cpns_id}>/k/<{$c.cpns_key}>">领取</button>
+            				<{else}>
+            					<button class="btn btn-default">已领完</button>
+            				<{/if}>
+					</div>
+				</div>
+			</div>
+			<{/foreach}>
+		</div>
+	</div>
+	<{pagers data=$pager}>
+</div>
+<{else}>
+	<section class="subject-list">
+		<{foreach from=$data_list item=item}>
+		<div class="subject-item">
+			<div class="row">
+				<a href="<{link app=couponactivity ctl=site_coupons args0=$item.activity_id}>">
+					<div class="col-md-3 schedule-handle schedule-image">
+						<img class="img-responsive" src="<{$item.image_id|storager:'s'}>" alt="<{$item.name}>">
+					</div>
+					<div class="col-md-9 schedule-handle">
+						<h3 class="subject-title"><{$item.name}></h3>
+						<ul class="list-unstyled keywords">
+							<li><{$item.brief}></li>
+						</ul>
+					</div>
+				</a>
+			</div>
+		</div>
+		<{/foreach}>
+	</section>
+<{/if}>
+<script type="text/javascript">
+    $(function(){
+        $('.coupons-achieve').on('click',function(e){
+    		if(!$.cookie('UNAME') || !$.cookie('MEMBER_IDENT')){
+        	   location.href = "<{link app=b2c ctl=site_passport act=login}>";
+			   return;
+        	}
+            var url = $(this).attr('data-url');
+            if( url ){
+                var url = '<{$base_url}>/openapi/acpns/achieve/' + url;
+                $.getJSON(url,function(re){
+                    if( re.result == 'success' ){
+                        alert('领取成功');
+						location.reload();
+                    }else if(re.msg){
+                        alert("领取失败\n"+re.msg);
+                    }else{
+                        alert('请稍后重试');
+                    }
+                });
+            }
+        });
+    });
+</script>

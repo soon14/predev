@@ -1,0 +1,8 @@
+<desktop>
+    <permissions>
+        <!--物流-->
+        <permission display='true' id="admin_log">操作员日志</permission>
+    </permissions>
+    <adminpanel group="desktop_user" permission="admin_log" controller="normallogs" display='true' order="55">操作日志</adminpanel>
+
+</desktop>

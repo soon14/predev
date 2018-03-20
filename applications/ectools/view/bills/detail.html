@@ -1,0 +1,151 @@
+<div class="row">
+    <div class="col-md-4">
+        <ul class="list-group">
+            <{if $bill.bill_type=='payment'}>
+            <li class="list-group-item">
+                应收款金额：<span class="text-danger">￥<{$bill.money|cur}></span>
+            </li>
+            <{else}>
+            <li class="list-group-item">
+                应付款金额：<span class="text-success">￥<{$bill.money|cur}></span>
+            </li>
+            <{/if}>
+            <{if $bill.order_id && $bill.app_id == 'b2c'}>
+            <{permission perm_id='order_detail' noshow=1}>
+            <li class="list-group-item">相关订单：<a href="index.php?app=b2c&ctl=admin_order&act=detail&p[0]=<{$bill.order_id}>" target="_blank"><{$bill.order_id}></a></li>
+            <{/permission}>
+            <{else}>
+            <li class="list-group-item">相关订单：<{$bill.order_id}></li>
+            <{/if}>
+            <li class="list-group-item">
+                相关会员：<a target="_blank" class="btn btn-xs btn-default" href="index.php?app=b2c&ctl=admin_member&act=detail&p[0]=<{$bill.member_id}>">查看</a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-md-8">
+        <form class="form-horizontal" id="bill_update_form_<{$env.get.id}>" action="index.php?app=ectools&ctl=admin_<{$bill.bill_type}>&act=save" method="post">
+            <{if $bill.bill_type=='payment'}>
+            <{permission perm_id='bills_payment_do' }>
+            <div class="form-body">
+                <input type="hidden" value="<{$bill.bill_id}>" name="bill_id" />
+                <{if $bill.status=='ready'}>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">付款方式</label>
+                    <div class="col-md-9">
+                        <{input type="select"  required=true name="pay_app_id" options=$payapps value=$bill.pay_app_id}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">支付处理状态</label>
+                    <div class="col-md-9">
+                        <select class="form-control" id="bill_select_<{$bill.bill_id}>" name="status">
+                            <option value="ready">准备中</option>
+                            <option value="succ">支付成功</option>
+                            <option value="dead">作废</option>
+                        </select>
+                    </div>
+                </div>
+                <{/if}>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">付款账户</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="payer_account" value="<{$bill.payer_account}>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">付款银行</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="payer_bank" value="<{$bill.payer_bank}>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">支付平台\银行 流水号</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="out_trade_no" value="<{$bill.out_trade_no}>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注</label>
+                    <div class="col-md-9">
+                        <textarea name="memo" rows="2" class="form-control" placeholder="备注"><{$bill.memo}></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-9 col-md-offset-3">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </div>
+            </div>
+            <{/permission}>
+            <{else}>
+            <{permission perm_id='bills_refund_do' }>
+            <div class="form-body">
+                <input type="hidden" value="<{$bill.bill_id}>" name="bill_id" />
+                <{if $bill.status=='ready'}>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">付款方式</label>
+                    <div class="col-md-9">
+                        <{input type="select"  required=true name="pay_app_id" options=$payapps value=$bill.pay_app_id}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">支付处理状态</label>
+                    <div class="col-md-9">
+                        <select class="form-control" id="bill_select_<{$bill.bill_id}>" name="status">
+                            <option value="ready">准备中</option>
+                            <option value="succ">支付成功</option>
+                            <option value="dead">作废</option>
+                        </select>
+                    </div>
+                </div>
+                <{/if}>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">付款账户</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="payer_account" value="<{$bill.payer_account}>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">付款银行</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="payer_bank" value="<{$bill.payer_bank}>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">支付平台\银行 流水号</label>
+                    <div class="col-md-9">
+                        <input type="text" class="form-control" name="out_trade_no" value="<{$bill.out_trade_no}>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">相关 支付平台\银行 流水号</label>
+                    <div class="col-md-9">
+                        <input type="text" disabled class="form-control" name="transaction_id" value="<{$bill.transaction_id}>">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注</label>
+                    <div class="col-md-9">
+                        <textarea name="memo" rows="2" class="form-control" placeholder="备注"><{$bill.memo}></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-9 col-md-offset-3">
+                        <button type="submit" class="btn btn-primary">保存</button>
+                        <{if !$bill.out_trade_no && $bill.transaction_id}>
+                        <button type="submit" <{if $bill.status == 'process'}>disabled<{/if}> class="btn green" onclick="$('#bill_update_form_<{$env.get.id}>').attr('action','index.php?app=ectools&ctl=admin_<{$bill.bill_type}>&act=auto_refund')">自动退款并保存</button>
+                        <{/if}>
+                    </div>
+                </div>
+            </div>
+            <{/permission}>
+            <{/if}>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#bill_select_<{$bill.bill_id}>').val('<{$bill.status}>');
+    $('#bill_update_form_<{$env.get.id}>').data('ajax:success',function(){
+        window['update_finder_<{$env.get.finder_name}>']();
+    });
+</script>

@@ -1,0 +1,123 @@
+<div class="well well-sm">
+    <div class="panel panel-success">
+      <div class="panel-body">
+        <i class="fa  fa-check-circle font-green"></i> 以下素材与<a href="https://mp.weixin.qq.com" target="_blank">微信公众平台&raquo;素材管理&raquo;<strong>
+            <{switch from=$type}>
+                <{case value='news'}>
+                图文消息
+                <{case value='image'}>
+                图片库
+                <{case value='voice'}>
+                语音
+                <{case value='video'}>
+                视频
+            <{/switch}></strong>
+        </a>保持同步（https://mp.weixin.qq.com）
+      </div>
+    </div>
+
+    <{switch from=$type}>
+        <{case value='news'}>
+            <h5>图文素材：</h5>
+            <div class="list-group">
+             <{foreach from=$medialist item=item}>
+                 <div class="list-group-item">
+                     <ul class="list-unstyled" style="margin:0;">
+                         <{foreach from=$item.content.news_item item=news}>
+                         <li>
+                           <button type="button" class="btn btn-xs btn-default margin-bottom-5">使用</button>
+                           <a href="<{$news.url}>" target="_blank"><{$news.title}></a>
+                           <textarea class="hide info"><{if $news.digest}><{$news.digest}><{else}><{$news.content|strip_tags|cut:150:'...'}><{/if}></textarea>
+                         </li>
+                         <{/foreach}>
+                         <li><small class="text-muted text-right">更新于：<{$item.update_time|cdate}></small></li>
+                     </ul>
+                 </div>
+             <{/foreach}>
+            </div>
+            <{pagers data=$pager}>
+
+        <{case value='image'}>
+        <div id="media_image_list">
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+                <div class="col-md-3"></div>
+            </div>
+            <div class="row-tmp hide">
+                <{foreach from=$medialist item=item}>
+                <div class="thumbnail media-form-part">
+                    <input type="hidden" name="media[wtype]" value="image">
+                    <input type="hidden" name="media[wtitle]" value="<{$item.name}>">
+                    <input type="hidden" name="media[wmedia_id]" value="<{$item.media_id}>">
+                    <input type="hidden" name="media[update_time]" value="<{$item.update_time}>">
+                    <input type="hidden" name="media[wcontent][MediaId]" value="<{$item.media_id}>">
+                    <input type="hidden" name="media[wcontent][PicUrl]" value="<{$item.url}>">
+                    <img src="<{$item.url}>" alt="<{$item.name}>">
+                    <div class="caption">
+                        <small class="text-muted"><{$item.update_time|cdate}></small>
+                    </div>
+                </div>
+                <{/foreach}>
+            </div>
+        </div>
+        <script type="text/javascript">
+        $(function(){
+            var cols = $('#media_image_list .row .col-md-3'),index = [0,1,2,3];
+            $('#media_image_list .thumbnail').each(function(i,el){
+                var j = index.shift();
+                cols.eq(j).append(el);
+                index.push(j);
+            });
+        });
+        </script>
+        <{case value='video'}>
+            <div class="row">
+                <{foreach from=$medialist item=item}>
+                <div class="col-md-4">
+                    <div class="thumbnail media-form-part">
+                        <input type="hidden" name="media[wtype]" value="video">
+                        <input type="hidden" name="media[wtitle]" value="<{$item.name}>">
+                        <input type="hidden" name="media[wmedia_id]" value="<{$item.media_id}>">
+                        <input type="hidden" name="media[update_time]" value="<{$item.update_time}>">
+                        <input type="hidden" name="media[wcontent][MediaId]" value="<{$item.media_id}>">
+                        <input type="hidden" name="media[wcontent][Title]" value="<{$item.name}>">
+                        <div class="well well-xs text-center" style="margin:0;">
+                            <i class="icon-social-youtube" style="font-size:32px"></i>
+                        </div>
+                        <div class="caption">
+                            <h5><{$item.name}></h5>
+                            <small class="text-muted"><{$item.update_time|cdate}></small>
+                        </div>
+                        <textarea class="form-control" name="media[wcontent][Description]" rows="1" placeholder="视频描述"></textarea>
+                    </div>
+                </div>
+                <{/foreach}>
+            </div>
+        <{case value='voice'}>
+
+            <div class="row">
+                <{foreach from=$medialist item=item}>
+                <div class="col-md-3">
+                    <div class="thumbnail media-form-part">
+                        <input type="hidden" name="media[wtype]" value="voice">
+                        <input type="hidden" name="media[wtitle]" value="<{$item.name}>">
+                        <input type="hidden" name="media[wmedia_id]" value="<{$item.media_id}>">
+                        <input type="hidden" name="media[update_time]" value="<{$item.update_time}>">
+                        <input type="hidden" name="media[wcontent][MediaId]" value="<{$item.media_id}>">
+                        <div class="well well-xs text-center" style="margin:0;">
+                            <i class="icon-volume-2" style="font-size:32px"></i>
+                        </div>
+                        <div class="caption">
+                            <h5><{$item.name}></h5>
+                            <small class="text-muted"><{$item.update_time|cdate}></small>
+                        </div>
+                    </div>
+                </div>
+                <{/foreach}>
+            </div>
+
+    <{/switch}>
+    <{pagers data=$pager}>
+</div>

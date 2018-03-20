@@ -1,0 +1,139 @@
+<h3 class="page-title">
+    <{if $node.node_id}>编辑<{else}>添加<{/if}>栏目
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=content&ctl=admin_node&act=index&p[0]=<{$node.parent_id}>">栏目列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $node.node_id}>编辑<{else}>添加<{/if}>栏目</a>
+        </li>
+    </ul>
+</div>
+<form method="post" action="index.php?app=content&ctl=admin_node&act=save" id='node_edit_form' class="form">
+    <input type="hidden" name="node_id" value="<{$node.node_id}>">
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-horizontal">
+                    <div class="form-body">
+                        <div class="form-group ">
+                            <label class="col-md-4 control-label">栏目名称
+                                <span class="required">*</span>
+                           </label>
+                            <div class="col-md-8">
+                                <{input required='true' type='text' name='node[node_name]' value=$node.node_name }>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-md-4 control-label">父级栏目
+                                <span class="required">*</span>
+                           </label>
+                            <div class="col-md-8">
+                                <{input type='select' name='node[parent_id]' value=$node.parent_id required='true'  rows=$selectmaps valueColumn="node_id" labelColumn="node_name"}>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-md-4 control-label">是否发布
+                           </label>
+                            <div class="col-md-8">
+                                <select class="form-control" name="node[ifpub]">
+                                    <option value='1'>是</option>
+                                    <option value="0" <{if $node.ifpub != 'true'}>selected<{/if}>>否</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-md-4 control-label">同级排名
+                           </label>
+                            <div class="col-md-8">
+                                <{input type='number' name='node[ordernum]' value=$node.ordernum|default:0 }>
+                            </div>
+                        </div>
+                        <hr>
+
+                        <div class="form-group ">
+                            <label class="col-md-4 control-label">栏目页PC模板
+                           </label>
+                            <div class="col-md-8">
+                                <{template_filter type='node' name='node[setting][site_template]' selected=$node.setting.site_template class='form-control' }>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-md-4 control-label">栏目页HTML5模板
+                           </label>
+                            <div class="col-md-8">
+                                <{template_filter_m type='node' name='node[setting][mobile_template]' selected=$node.setting.mobile_template class='form-control' }>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-md-4 control-label">SEO-title
+                           </label>
+                            <div class="col-md-8">
+                                <{input type='text' name='node[seo_title]' placeholder="默认为栏目名称" value=$node.seo_title }>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-md-4 control-label">SEO-keywords
+                           </label>
+                            <div class="col-md-8">
+                                <{input type='text' name='node[seo_keywords]' value=$node.seo_keywords }>
+                            </div>
+                        </div>
+                        <div class="form-group ">
+                            <label class="col-md-4 control-label">SEO-description
+                           </label>
+                            <div class="col-md-8">
+                                <{input type='textarea'  rows='2'  name='node[seo_description]'  value=$node.seo_description }>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h4>栏目页面内容</h4>
+                <div class="well well-sm">
+                    <select  class="form-control node-type-control" name="node[homepage]">
+                        <option value="true">该栏目是一个站点栏目单独页</option>
+                        <option value="false" <{if $node.homepage=='false'}>selected<{/if}>>该栏目是一个文章内容列表页</option>
+                    </select>
+                </div>
+                <div class="node-content">
+                    <div class="html-input">
+                        <{input type="html" name="node[content]" value=$node.content}>
+                    </div>
+                    <div class="article-list-tip hidden">
+                        <div class="well text-center">
+                            <i class="fa fa-list fa-5x fa-border"></i>
+                            <br>
+                            <p>
+                                该栏目页内容将呈现所属该栏目的文章列表
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-4 col-md-8">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+</form>
+<script type="text/javascript">
+    $('#node_edit_form .node-type-control').on('change',function(){
+
+        if(this.options[this.selectedIndex].value == 'true'){
+            $('#node_edit_form .node-content .html-input').removeClass('hidden');
+            $('#node_edit_form .node-content .article-list-tip').addClass('hidden');
+        }else{
+            $('#node_edit_form .node-content .html-input').addClass('hidden');
+            $('#node_edit_form .node-content .article-list-tip').removeClass('hidden');
+        }
+    });
+    $('#node_edit_form .node-type-control').trigger('change');
+</script>

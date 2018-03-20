@@ -1,0 +1,49 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 搜索框 - 子组件 -->
+<template id="widget-child-searchbar">
+    <!--
+    show_scan 是否显示扫码图标
+    background 背景颜色
+    fixed 是否固定 并且为第一个控件时
+    ipt_background 文本框背景色
+    input_val 默认搜索文字
+    placeholder 占位文字
+    -->
+    <section class="widget-view-box widget-searchbar" :class="{'widget-searchbar-fixed-box': (widget.data.fixed && index == 0)}" :style="{ 'background-color': widget.data.background }">
+        <dl>
+            <dd>
+                <div class="weui-search-bar" :id="widget.name + '_search_bar_' + index">
+                    <form class="weui-search-bar__form" :style="{'background-color': widget.data.background}">
+                        <div class="weui-search-bar__box" :style="{ 'background-color': widget.data.ipt_background}">
+                            <i class="weui-icon-search"></i>
+                            <input type="search" class="weui-search-bar__input" :id="widget.name + '_search_input_' + index" :placeholder="widget.data.placeholder" :value="widget.data.input_val" :style="{ 'background-color': widget.data.ipt_background}" />
+                            <a href="javascript:" class="weui-icon-clear" id="search_clear"></a>
+                        </div>
+                        <label :for="widget.name + '_search_input_' + index" class="weui-search-bar__label" :id="widget.name + '_search_text_' + index" :style="{'background-color': widget.data.ipt_background}">
+                            <i class="weui-icon-search"></i>
+                            <span>{{widget.data.placeholder}}</span>
+                        </label>
+                    </form>
+                    <a href="javascript:" class="weui-search-bar__cancel-btn" id="widget.name + '_search_cancel_' + index">取消</a>
+                </div>
+            </dd>
+            <dd v-if="widget.data.show_scan">
+                <i class="scancode"></i><!--&nbsp;-->
+            </dd>
+        </dl>
+    </section>
+</template>
+<script type="text/javascript">
+var widget_child_searchbar = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-searchbar',
+    created: function() {
+        this.widget.data.placeholder = this.widget.data.placeholder != '' ? this.widget.data.placeholder : '搜索...';
+        this.widget.data.background = this.widget.data.background ? this.widget.data.background : '';
+        this.widget.data.ipt_background = this.widget.data.ipt_background ? this.widget.data.ipt_background : '';
+    },
+    mounted: function() {
+        weui.searchBar('#' + this.widget.name + '_search_bar_' + this.index);
+    }
+});
+</script>

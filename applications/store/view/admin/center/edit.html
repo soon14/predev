@@ -1,0 +1,109 @@
+<h3 class="page-title"><{if $center.center_id }>编辑收银台<{else}>添加收银台<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=store&ctl=admin_center&act=index">中央收银台列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $center.center_id }>编辑收银台<{else}>添加收银台<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=store&ctl=admin_center&act=edit" method="post" id='center_form' class="form" >
+    <{if $center.center_id }><input type="hidden" name="center_id" value="<{$center.center_id}>"><{/if}>
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">收银台名称
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="center_name" class="form-control" value="<{$center.center_name}>">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">门店编号
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="center_bn" class="form-control" value="<{$center.center_bn}>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">所在地区
+                </label>
+                <div class="col-md-5">
+                    <{input type=region name=center_area value=$center.center_area}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">详细地址\门牌
+                </label>
+                <div class="col-md-5">
+                    <{input type=textarea rows=2 name=center_address value=$center.center_address}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">联系方式
+                </label>
+                <div class="col-md-5">
+                    <{input type=text  name=center_contact value=$center.center_contact}>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">下辖店铺配置<span class="required">*</span></label>
+
+                <div class="col-md-9">
+                    <{input type="object" object="store" base_filter=$goodslink_filter multiple="false" callback_func="center_store_callback_func"}>
+                    <div class="table-scrollable">
+                        <table class="table" id="centerStoreTable">
+                            <tbody id="centerStoreBody">
+                            <{include file="admin/center/ajax_store_item.html"}>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">操作员配置<span class="required">*</span></label>
+
+                <div class="col-md-9">
+                    <{input type="object" object="users@desktop" base_filter=$goodslink_filter multiple="false" callback_func="center_user_callback_func"}>
+                    <div class="table-scrollable">
+                        <table class="table" id="centerUserTable">
+                            <tbody id="centerUserBody">
+                            <{include file="admin/center/ajax_user_item.html"}>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <script charset="utf-8">
+                var center_store_callback_func = function(storeIds){
+                    $('<table></table>').load('<{link app=store ctl=admin_center act=ajax_center_store}>',storeIds,function(){
+                        $(this).find('tr').appendTo($('#centerStoreBody'));
+                    });
+                };
+                var center_user_callback_func = function(userIds){
+                    $('<table></table>').load('<{link app=store ctl=admin_center act=ajax_center_users}>',userIds,function(){
+                        $(this).find('tr').appendTo($('#centerUserBody'));
+                    });
+                };
+            </script>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-9">
+                    <button type="submit" class="btn blue">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

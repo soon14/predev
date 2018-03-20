@@ -1,0 +1,21 @@
+<services>
+    <service id="b2c_cart_prefilter_apps">
+        <class orderby="99">integraldeduction_cart_prefilter_deduction</class>
+    </service>
+    <service id="b2c_cart_postfilter_apps">
+        <class orderby="99">integraldeduction_cart_postfilter_deduction</class>
+    </service>
+    <service id="openapi.integraldeduction">
+        <class>integraldeduction_openapi_deduction</class>
+    </service>
+    <service id="b2c.order.create.before" optname="订单创建前触发">
+        <class orderby="20">integraldeduction_order_beforecreate</class>
+    </service>
+    <service id="b2c.order.cancel.finish" optname="订单作废后触发">
+        <class orderby="20">integraldeduction_order_cancelfinish</class>
+    </service>
+    <service id="b2c.order.delivery.reship.finish" optname="订单退货单据完成时">
+        <class orderby="31">integraldeduction_order_reshipfinish</class>
+    </service>
+
+</services>

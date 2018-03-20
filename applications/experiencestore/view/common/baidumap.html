@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>BAIDU MAP</title>
+    <style type="text/css" media="screen">
+    body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+	#allmap {width: 100%; height:500px; overflow: hidden;}
+	#result {width:100%;font-size:12px;}
+	dl,dt,dd,ul,li{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	p{font-size:12px;}
+	dt{
+		font-size:14px;
+		font-family:"微软雅黑";
+		font-weight:bold;
+		border-bottom:1px dotted #000;
+		padding:5px 0 5px 5px;
+		margin:5px 0;
+	}
+	dd{
+		padding:5px 0 0 5px;
+	}
+	li{
+		line-height:28px;
+	}
+    .anchorBL,.BMap_cpyCtrl{
+        display: none;
+    }
+    </style>
+    <script type="text/javascript">
+        /**
+         *  http://lbsyun.baidu.com/apiconsole/key @1ve 8018024
+         *  0GQUY516KkCfp4fFBT3i5ykHih5C2ag5
+         */
+        var baidumap_ak = '0GQUY516KkCfp4fFBT3i5ykHih5C2ag5';
+    </script>
+    <script type="text/javascript" src="//api.map.baidu.com/api?v=2.0&ak=0GQUY516KkCfp4fFBT3i5ykHih5C2ag5"></script>
+</head>
+<body id="baidumap_body">
+    <div id="allmap" style="overflow:hidden;zoom:1;position:relative;height:<{$params.height|default:400}>px;width:<{$params.width|default:400}>px">
+		<div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
+	</div>
+    <script type="text/javascript">
+
+        /**
+         * 地图渲染
+         */
+         var map = new BMap.Map("map");
+         <{if !$params.disabled_navcontrol}>
+         var navigationControl = new BMap.NavigationControl({
+             anchor: BMAP_ANCHOR_TOP_LEFT,
+             type: BMAP_NAVIGATION_CONTROL_LARGE,
+             enableGeolocation: true
+         });
+         map.addControl(navigationControl);
+         <{/if}>
+
+        <{if $params.region && $params.address}>
+        	var myGeo = new BMap.Geocoder();
+        	myGeo.getPoint("<{$params.address}>", function(point){
+        		if (point) {
+                    map.clearOverlays();
+        			map.addOverlay(new BMap.Marker(point));
+                    map.centerAndZoom(point, 16);
+        		}else{
+                    map.centerAndZoom("北京",13);
+                }
+        	},"<{$params.region}>");
+        <{elseif $params.lat+$params.lng>$params.lat}>
+        /**
+         * @param lng 纬度
+         * @param lat 经度
+         * @param 缩放比
+         */
+            var point = new BMap.Point(<{$params.lng}>,<{$params.lat}> );
+            map.centerAndZoom(point,16);
+            map.clearOverlays();
+            map.addOverlay(new BMap.Marker(point));
+        <{else}>
+            map.centerAndZoom("北京",13);
+        <{/if}>
+
+        map.enableScrollWheelZoom();
+        map.enableInertialDragging();
+        map.enableContinuousZoom();
+        map.addEventListener("click",function(e){
+            map.clearOverlays();
+            map.addOverlay(new BMap.Marker(new BMap.Point(e.point.lng,e.point.lat)));
+            <{if $params.click_callback}>
+                if(typeof <{$params.click_callback}> =='function'){
+                    <{$params.click_callback}>(e);
+                }
+            <{/if}>
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,6 @@
+<site>
+    <module controller='mobile_form' >
+        <name>universalform</name>
+    </module>
+
+</site>

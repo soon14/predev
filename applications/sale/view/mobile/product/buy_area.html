@@ -1,0 +1,39 @@
+<span id="J_sale_buy">
+</span>
+<script>
+(function(win){
+    win.Sale = {};
+    //倒计时
+    win.Sale.countdown = function (intDiff,show_scope,callback){
+        if(!show_scope)return;
+        var self = this;
+        self.timer = setInterval((function(){
+            var day=0,
+                hour=0,
+                minute=0,
+                second=0;//时间默认值
+            if(intDiff > 0){
+                day = Math.floor(intDiff / (60 * 60 * 24));
+                hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            }
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            show_scope.find('.day-show').html(""+day+"天");
+            show_scope.find('.hour-show').html('<s id="h"></s>'+hour+'时');
+            show_scope.find('.minute-show').html('<s></s>'+minute+'分');
+            show_scope.find('.second-show').html('<s></s>'+second+'秒');
+            if(day == 0 && hour == 0 && minute == 0 && second == 0){
+               clearInterval(self.timer);
+               if( typeof(callback) == 'function'){
+                   callback();
+               }
+            }
+            intDiff--;
+            return arguments.callee;
+        })(), 1000);
+    };
+    $('#J_sale_buy').load('<{link app=sale ctl=mobile_sale act=get_status arg0=$data_detail.product.product_id}>',{'goods_id':<{$data_detail.goods_id}>});
+})(window);
+</script>

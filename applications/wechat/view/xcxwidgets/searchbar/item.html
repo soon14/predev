@@ -1,0 +1,15 @@
+<!-- 搜索框 -->
+<template id="widget-searchbar">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-searchbar :widget="widget" :index="index"></widget-child-searchbar>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_searchbar = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-searchbar',
+    components: {
+        'widget-child-searchbar': widget_child_searchbar
+    }
+});
+</script>

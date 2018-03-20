@@ -1,0 +1,135 @@
+<h3 class="page-title">
+			栏目管理
+</h3>
+
+<div class="table-toolbar">
+    <div class="btn-group">
+        <{permission perm_id='cms_content_edit' noshow=1}>
+        <a class="btn green"  icon="fa-plus" href="index.php?app=content&ctl=admin_node&act=add&parent_id=<{$env.get.p.0}>">
+            添加栏目&nbsp;<i class="fa fa-plus"></i>
+        </a>
+        <{/permission}>
+    </div>
+</div>
+<form  action="index.php?app=content&ctl=admin_node&act=update&p[0]=<{$env.get.p.0}>" method="post">
+<div class="table-scrollable">
+    <table class="table  table-striped table-hover">
+        <thead>
+            <tr>
+                <th>
+					<{if $path}>
+						<div class="btn-group">
+								<a href="index.php?app=content&ctl=admin_node&act=index" class="btn btn-xs btn-default">栏目</a>
+								<span class="btn btn-xs"><i class="fa fa-angle-double-right"></i></span>
+						</div>
+						<{foreach from=$path item=item name=fpath}>
+							<{if !$env.foreach.fpath.last}>
+							<div class="btn-group">
+								<a href="index.php?app=content&ctl=admin_node&act=index&p[0]=<{$item.ident}>" class="btn btn-xs btn-default"><{$item.title}></a>
+								<span class="btn btn-xs"><i class="fa fa-angle-double-right"></i></span>
+							</div>
+							<{else}>
+								<span class="btn btn-xs"><{$item.title}> <i class="fa fa-angle-double-down"></i></span>
+							<{/if}>
+						<{/foreach}>
+					<{else}>
+						<span class="btn btn-xs">栏目 <i class="fa fa-angle-double-down"></i></span>
+					<{/if}>
+
+				</th>
+				<th>栏目ID</th>
+				<th width="5%">同级排名
+                    <{permission perm_id='cms_content_edit' noshow=1}>
+                    <button class="btn btn-xs grey-cascade" type="submit"><i class="fa fa-save"></i> 保存排名</button>
+                    <{/permission}>
+                </th>
+                <th>操作</th>
+            </tr>
+        </thead>
+    <tbody id="node_list">
+        <{foreach from=$list item=item name="item"}>
+        <{assign var="node_id" value=$item.node_id}>
+        <tr data-nodeid="<{$item.node_id}>" data-dpath="<{$item.node_depth}>" data-pid="<{$item.parent_id}>">
+			<td>
+				<{if $item.has_children == 'true'}>
+				<a href="index.php?app=content&ctl=admin_node&act=index&p[0]=<{$item.node_id}>">
+					<{$item.node_name}>
+				</a>
+				<span class="text-muted"><i class="fa  fa-angle-double-right"></i></span>
+				<{else}>
+					<{$item.node_name}>
+				<{/if}>
+            </td>
+			<td>
+            	<{$item.node_id}>
+            </td>
+            <{permission perm_id='cms_content_edit'}>
+            <td>
+                <input class="form-control input-xsmall input-sm" type="number"  name="ordernum[<{$item.node_id}>]" value="<{$item.ordernum|default:0}>" />
+            </td>
+            <{/permission}>
+            <td>
+                <{permission perm_id='cms_content_edit' noshow=1}>
+            <a  class="btn btn-xs btn-default" href="index.php?app=content&ctl=admin_node&act=add&parent_id=<{$item.node_id}>">
+            <i class="fa fa-sitemap"></i> 添加子栏目</a>
+                <{/permission}>
+
+            <!-- <a data-target="#node_edit" data-toggle="modal" class="btn btn-xs btn-default" href="index.php?app=content&ctl=admin_article_detail&act=add&node_id=<{$item.node_id}>&type=1">
+            <i class="fa fa-pencil"></i> 添加文章</a> -->
+                <{permission perm_id='cms_content' noshow=1}>
+            <a class="btn btn-xs btn-default" href="index.php?app=content&ctl=admin_article&act=index&filter[node_id]=<{$item.node_id}>&action=view&page=1" target="_blank">
+            <i class="fa fa-list"></i> 管理栏目下文章</a>
+                <{/permission}>
+                <{permission perm_id='cms_content_edit' noshow=1}>
+            <a  class="btn btn-xs btn-default" href="index.php?app=content&ctl=admin_node&act=edit&node_id=<{$item.node_id}>">
+                <i class="fa fa-edit"></i> 编辑栏目</a>
+                <{/permission}>
+                <{permission perm_id='cms_content_del' noshow=1}>
+            <a target="_command" data-confirm="确定删除 <{$item.node_name|t:'content'}>？" class="btn btn-xs btn-default" href="index.php?app=content&ctl=admin_node&act=remove&node_id=<{$item.node_id}>&p[0]=<{$env.get.p.0}>">
+                <i class="fa fa-trash"></i> 删除栏目</a>
+                <{/permission}>
+            <a target="_blank" class="btn btn-xs btn-default" href="<{$item.url}>">
+                <i class="fa fa-eye"></i> 预览</a>
+
+                <{permission perm_id='template' noshow=1}>
+                <a  class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=edit_node_template&p[0]=pc&p[1]=<{$item.node_id}>">
+                    <i class="fa fa-edit"></i> 编辑PC模板</a>
+                <a  class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=edit_node_template&p[0]=mobile&p[1]=<{$item.node_id}>">
+                    <i class="fa fa-edit"></i> 编辑H5模板</a>
+                <{/permission}>
+			<!-- <a target="_blank" class="btn btn-xs btn-default" href="<{link router='site' app=content ctl=site_node act=index args0=$item.node_id args1='alist'}>">
+	                <i class="fa fa-eye"></i>预览文章列表</a> -->
+                <{permission perm_id='cms_content_edit'}>
+
+            <label><input <{if $item.ifpub eq 'true'}>checked<{/if}> type="checkbox" data-pub-action="index.php?app=content&ctl=admin_node&act=publish&node_id=<{$item.node_id}>&pub=true" data-unpub-action="index.php?app=content&ctl=admin_node&act=publish&node_id=<{$item.node_id}>&pub=false"> 发布</label>
+                <{/permission}>
+            </td>
+        </tr>
+        <{/foreach}>
+    </tbody>
+    </table>
+</div>
+</form>
+
+
+<script charset="utf-8">
+
+
+$('#node_list tr input[type=checkbox]').on('change',function(){
+    var _this = $(this);
+    var current_checked = $(this).is(':checked');
+    var action_url = current_checked?$(this).attr('data-pub-action'):$(this).attr('data-unpub-action');
+
+    $.getJSON(action_url,function(re){
+        if(re.success){
+            Messagebox.success(re.success,'成功');
+			if(!current_checked){
+				$('#node_list tr[data-pid="'+_this.closest('tr').attr('data-nodeid')+'"] input[type=checkbox]').attr('checked',false);
+			}
+        }else{
+            Messagebox.error(re.error||'操作失败','失败');
+            _this.attr('checked',!current_checked);
+        }
+    });
+});
+</script>

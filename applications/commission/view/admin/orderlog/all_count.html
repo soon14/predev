@@ -1,0 +1,144 @@
+<div class="row">
+    <div class="col-md-3">
+        <h3 class="page-title">
+            仪表盘
+            <small>观察 & 分析</small>
+        </h3>
+    </div>
+    <div class="col-md-3">
+        <button type="button" class="btn btn-default pull-left">从</button>
+        <{input type="time" name="dashboard_from" value=$dashboard_from}>
+    </div>
+    <div class="col-md-3">
+        <button type="button" class="btn btn-default pull-left">至</button>
+        <{input type="time" name="dashboard_to" value=$dashboard_to}>
+    </div>
+    <div class="col-md-2">
+        <div class="btn-group from-to">
+            <button type="button" class="btn btn-default sub-btn"><i class="fa fa-refresh"></i> 刷新</button>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                <i class="fa fa-angle-down"></i>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li data-ftrange="<{$from_arr.w}>~<{$tody}>">
+                    <a href="javascript:;">最近一周</a>
+                </li>
+                <li data-ftrange="<{$from_arr.m}>~<{$tody}>">
+                    <a href="javascript:;">最近一个月</a>
+                </li>
+                <li data-ftrange="<{$from_arr.q}>~<{$tody}>">
+                    <a href="javascript:;">最近一季度</a>
+                </li>
+                <!-- <li class="divider">
+                </li>
+                <li>
+                    <a href="#">Separated link </a>
+                </li> -->
+            </ul>
+        </div>
+
+    </div>
+</div>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <!-- <i class="fa fa-clock-o"></i> -->
+            <a href="javascript:;">数据范围：从 <{$dashboard_from|date_format:'%Y年%m月%d日 %H时%M分'}> 至
+                <{$dashboard_to|date_format:'%Y年%m月%d日 %H时%M分'}></a>
+        </li>
+        <{if $cached_time}>
+        <li>数据最后缓存时间：<{$cached_time|cdate:'SDATE_FTIME'}></li>
+        <{/if}>
+    </ul>
+</div>
+<div class="diswell">
+    <div class="row">
+        <div class="col-md-12">
+            <{foreach from=$widgets.top item=widgets_top}>
+            <{if !$widgets_top.title}>
+            <{$widgets_top.html}>
+            <{else}>
+            <div class="portlet box widget <{$widgets_top.classname|default:'grey-silver'}>">
+                <div class="portlet-title">
+                    <{$widgets_top.title}>
+                </div>
+                <div class="widget-body">
+                    <{$widgets_top.html}>
+                </div>
+            </div>
+            <{/if}>
+            <{/foreach}>
+        </div>
+        <div class="col-md-6">
+            <{foreach from=$widgets.left item=widgets_left}>
+            <{if !$widgets_left.title}>
+            <{$widgets_left.html}>
+            <{else}>
+            <div class="portlet box widget <{$widgets_top.classname|default:'grey-silver'}>">
+                <div class="portlet-title">
+                    <{$widgets_left.title}>
+                </div>
+                <div class="portlet-body widget-body">
+                    <{$widgets_left.html}>
+                </div>
+            </div>
+            <{/if}>
+            <{/foreach}>
+        </div>
+        <div class="col-md-6">
+            <{foreach from=$widgets.right item=widgets_right}>
+            <{if !$widgets_right.title}>
+            <{$widgets_right.html}>
+            <{else}>
+            <div class="portlet box widget <{$widgets_top.classname|default:'grey-silver'}>">
+                <div class="portlet-title">
+                    <{$widgets_right.title}>
+                </div>
+                <div class="portlet-body widget-body">
+                    <{$widgets_right.html}>
+                </div>
+            </div>
+            <{/if}>
+            <{/foreach}>
+        </div>
+        <div class="col-md-12">
+            <{foreach from=$widgets.bottom item=widgets_bottom}>
+            <{if !$widgets_bottom.title}>
+            <{$widgets_bottom.html}>
+            <{else}>
+            <div class="portlet box widget <{$widgets_top.classname|default:'grey-silver'}>">
+                <div class="portlet-title">
+                    <{$widgets_bottom.title}>
+                </div>
+                <div class="portlet-body widget-body">
+                    <{$widgets_bottom.html}>
+                </div>
+            </div>
+            <{/if}>
+            <{/foreach}>
+        </div>
+    </div>
+
+</div>
+<script charset="utf-8">
+    !function () {
+        var from_input = $('input[name=dashboard_from]');
+        var to_input = $('input[name=dashboard_to]');
+        $('input[name=dashboard_from],input[name=dashboard_to]').on('keydown', function (e) {
+            if (e.keyCode == 13) {
+                $('.from-to .sub-btn').click();
+            }
+        });
+
+        $('.from-to .sub-btn').on('click', function () {
+            load_page('<{link app=commission ctl=admin_orderlog act=all_count}>', false, 'f=' + from_input.val() + '&t=' + to_input.val());
+
+        });
+        $('.from-to li[data-ftrange]').on('click', function () {
+            var range = $(this).attr('data-ftrange').split('~');
+            load_page('<{link app=commission ctl=admin_orderlog act=all_count}>', false, 'f=' + range[0] + '&t=' + range[1]);
+
+        });
+    }();
+
+</script>

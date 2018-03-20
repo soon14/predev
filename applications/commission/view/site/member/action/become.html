@@ -1,0 +1,220 @@
+<div class="order-processing-title">
+    <div class="page-header">
+        <h1>成为分佣者</h1>
+    </div>
+    <div class="become-wrap">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">        
+            <div class="become-title">
+            	<h4>只要验证手机即可成为分佣者,分享佣金提成!</h4>
+            </div>
+            <div class="container-block">
+                <div class="form-horizontal">
+                    <div class="form-group">
+                        <label for="mobile_input" class="col-md-2 control-label">手机号码</label>
+                        <div class="col-md-5">
+                            <div class="popover-tip">
+                                <input type="text" class="form-control" id="mobile_input" <{if $member_mobile}>value='<{$member_mobile}>' readonly  <{/if}> >
+                                <div class="popover top">
+                                    <div class="arrow" style="left: 50%;"></div>
+                                    <div class="popover-content"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputPassword3" class="col-md-2 control-label">手机验证码</label>
+                        <div class="col-md-2">                            
+                            <div class="popover-tip">
+                                <input type="text" class="form-control" name="vcode" id="vcode">
+                                <div class="popover top">
+                                    <div class="arrow" style="left: 50%;"></div>
+                                    <div class="popover-content"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <input type="button" class="form-control" id="get_vcode" value="获取验证码">
+                        </div>
+                    </div>
+
+                    <{if $need_sub_domain}>
+                        <div class="set-my-domain">
+                            <h5 class="tit">定制我的专属域名<small>定制后可以使用该专属域名分享,购买商品</small></h5>
+                            
+                            <div class="form-group">
+                                <div class="col-md-4 col-md-offset-2">
+                                    <div class="popover-tip">
+                                        <input type="text" class="form-control" name="domain_pre" id="domain_pre">
+                                        <div class="popover top">
+                                            <div class="arrow" style="left: 50%;"></div>
+                                            <div class="popover-content"></div>
+                                        </div>
+                                    </div>                                  
+                                </div>
+                                <div class="col-md-2 control-label">.<{$root_domain}></div>
+                            </div>
+                        </div>
+                    <{/if}>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <button class="btn btn-primary" id="sub_form">同意并确认验证</button>
+                            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#clauseModal">分佣者条款</button>
+                            <div class="modal fade bs-example-modal-lg" id="clauseModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel">
+                                <div class="modal-dialog modal-lg">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title">分佣者条款</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="clause">
+                                                1、前言：<br>
+                                                用户在注册会员前，需仔细阅读并完全理解本协议内容及闪其他服务规则（以下统称为“服务条款”），如果用户不同意受该等服务条款的约束，应停止注册程序并停止使用本服务。<br>
+                                                2、服务条款的接受：<br>
+                                                2.1：本协议所称的“用户”是指完全同意所有服务条款并完成注册程序的具备完全民事行为能力的自然人或者是具有合法经营资格的实体组织。<br>
+                                                2.2：用户注册、使用本站的行为即表示其已经完全同意并自愿接受服务条款的约束。<br>
+                                                2.3：本站通过其网站不定时发布的各项规则、公告、通知等为本协议不可分割的一部分。<br>
+                                                3、服务条款的变更和修改<br>
+                                                3.1：本站有权根据运营需要随时对服务条款进行修改，修改后的服务条款一经在闪耀绘上公示即生效，闪耀绘不再另行向用户发送修改通知。用户可随时登陆查阅最新服务条款，用户有义务不时关注并阅读最新版的服务条款及网站公告。用户如果不同意服务条款的修改，可以主动取消或放弃已经获得的网络服务；如果用户继续享用网络服务，则视为用户已经接受服务条款的修改。<br>
+                                                4、服务说明：<br>
+                                                4.1：本站通过国际互联网向用户提供丰富的网上资源，包括各种资讯文章、网上论坛、网上购物、个性化内容和服务（以称简称“网络服务”）等。除非另有明确规。
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default close-btn" data-dismiss="modal">关闭</button>
+                                        </div>  
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+	$(document.body).addClass('become-body');
+
+    function popoverShow(pop,txt){
+        pop.next().stop(true,true).fadeIn(100).delay(2000).fadeOut(1000).find('.popover-content').text(txt);
+    }
+
+    var become_verify={
+        err_data:{
+            mobile:false,
+            domain:true
+        },
+        moblie_reg:/^1[3|4|5|7|8]\d{9}$/,
+        init:function(){
+            this.get_vcode();
+            this.need_domain();
+            this.set_form();
+        },
+        _cutdown_sms:function(btn){
+            var cutdown = 120,
+                btn_o_text = btn.val(),
+                timer =setInterval((function(){
+                    btn.val('再次发送'+(cutdown--)+'秒');
+                    if(cutdown<1){
+                        clearInterval(timer);
+                        btn.val(btn_o_text).removeAttr('disabled');
+                    }
+                    return arguments.callee;
+                })(),1000);
+        },
+        get_vcode:function(){
+            var that=this;
+            $('#get_vcode').on('click',function(e){
+                var _this=$(this);
+                var mobile = $('#mobile_input').val();
+
+                if(!that.moblie_reg.test(mobile)){
+                    popoverShow($('#mobile_input'),'手机号码格式不正确');
+                }else{ 
+                    that.err_data.mobile=mobile;
+                    _this.popover('hide');
+                    _this.attr('disabled','true');
+                    $.post('<{link app=commission ctl=site_member act=send_vcode_sms arg0=signup}>',{mobile:mobile},function(re){
+                        if(re && re.error){
+                            _this.removeAttr('disabled');
+                        }
+                        if(re && re.success){
+                            that._cutdown_sms(_this);
+                        }
+                    },'json');
+                }
+            });
+        },
+        need_domain:function(){
+            var that=this;
+            $('#domain_pre').on('keyup' ,function(){
+                if($.trim($(this).val())){
+                    that.err_data.domain=false;
+                }else{
+                    that.err_data.domain=true;
+                }
+            });
+        },
+
+        check_domain:function(){
+            var that=this;
+            $.ajax({
+                url:'<{link app=commission ctl=site_member act=check_domain}>',
+                data:{'domain' : $('#domain_pre').val()},
+                dataType:'json'
+            }).done(function(data){
+                if(data.error){
+                    popoverShow($('#domain_pre'),'此域名已被占用,换个试试');
+                    $('#sub_form').removeAttr('disabled');
+                }else{
+                    that.update();
+                }
+            });
+        },
+        update:function(){
+            var that=this;
+            var vcode = $.trim($("#vcode").val());
+            var domain_pre = $.trim($("#domain_pre").val()) ? $.trim($("#domain_pre").val()) :'';
+            if(!that.err_data.mobile){
+                popoverShow($('#mobile_input'),'请验证手机号码');
+                $("#sub_form").removeAttr('disabled');
+                return;
+            }
+            if(!vcode){
+                popoverShow($('#vcode'),'请输入验证码');
+                $("#sub_form").removeAttr('disabled');
+                return;
+            }
+            var data = {
+                mobile :that.err_data.mobile,
+                vcode :vcode,
+                domain_pre :domain_pre
+            };
+            $.post('<{link app=commission ctl=site_member act=become}>',data,function(re){
+                if(re && re.error){
+                    popoverShow($('#mobile_input'),'验证失败');
+                }
+                if(re && re.success){
+                    location.href='<{$redirect}>';
+                }
+            },'json');
+        },
+        set_form:function(){
+            var that=this;
+            $("#sub_form").on('click',function(){
+                var _this=$(this);
+                _this.attr('disabled',true);
+                //先验证域名
+                if(!that.err_data.domain){
+                    that.check_domain();
+                }else{
+                    that.update();
+                }
+            });
+        }
+    }
+    become_verify.init();
+</script>

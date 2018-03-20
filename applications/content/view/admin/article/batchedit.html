@@ -1,0 +1,71 @@
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <h3 class="modal-title">批量编辑 <span class="label label-default"><{$article_id|count}></span></h3>
+</div>
+<form action="index.php?app=content&ctl=admin_article&act=batchedit&p[0]=save" method="post"  class="form">
+    <div class="modal-body">
+        <textarea name="filter" style="display:none"><{$article_id|json_encode}></textarea>
+        <div class="form-body form-horizontal">
+            <{if $env.get.p.1 == 'template_pc'}>
+            <div class="form-group">
+                <label class="col-md-4 control-label">
+                    PC模板
+                </label>
+                <div class="col-md-8">
+                    <{template_filter  type='article' name='article[bodys][setting][site_template]' selected=$article.bodys.setting.site_template class="form-control" }>
+                </div>
+            </div>
+            <{/if}>
+            <{if $env.get.p.1 == 'template_h5'}>
+            <div class="form-group">
+                <label class="col-md-4 control-label">
+                    HTML5模板
+                </label>
+                <div class="col-md-8">
+                    <{template_filter_m  type='article' name='article[bodys][setting][mobile_template]' selected=$article.bodys.setting.mobile_template class="form-control" }>
+                </div>
+            </div>
+            <{/if}>
+            <{if $env.get.p.1 == 'ispub'}>
+            <div class="form-group">
+                <label class="col-md-4 control-label">
+                    是否发布
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-8">
+                    <select class="form-control" name="article[indexs][ifpub]">
+                        <option value='1'>是</option>
+                        <option value="0" <{if $article.indexs.ifpub != 'true'}>selected<{/if}>>否</option>
+                    </select>
+                </div>
+            </div>
+            <{/if}>
+            <{if $env.get.p.1 == 'node'}>
+            <div class="form-group">
+                <label class="col-md-4 control-label">
+                    所属栏目
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-8">
+                    <{input type='select' name='article[indexs][node_id]' value=$article.indexs.node_id   rows=$selectmaps valueColumn="node_id" labelColumn="node_name"}>
+                </div>
+            </div>
+            <{/if}>
+            <{if $env.get.p.1 == 'ordernum'}>
+            <div class="form-group">
+                <label class="col-md-4 control-label">
+                    排序
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-8">
+                    <{input type='number' name='article[indexs][ordernum]' value=0}>
+                </div>
+            </div>
+            <{/if}>
+        </div>
+    </div>
+    <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+            <button type="submit" class="btn blue">确定</button>
+    </div>
+</form>

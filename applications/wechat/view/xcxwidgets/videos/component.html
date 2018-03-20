@@ -1,0 +1,15 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- video - 子组件 -->
+<template id="widget-child-videos">
+    <div class="">
+    	<video :src="widget.data.video_url" :controls="widget.data.show_controls" :autoplay="widget.data.is_autoplay" :poster="widget.data.poster_url" width="100%" :height="widget.data.height">
+    		
+    	</video>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_child_videos = Vue.extend({
+    props: ['widget'],
+    template: '#widget-child-videos',
+});
+</script>

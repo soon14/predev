@@ -1,0 +1,15 @@
+<span class="btn btn-danger disabled J-countdown pull-right">
+<i class="glyphicon glyphicon-time"></i>
+<span class="day-show">0</span>
+<span class="hour-show">0</span>
+<span class="minute-show">0</span>
+<span class="second-show">0</span>
+后抢购开始
+</span>
+<script>
+(function(){
+    var notStart = new Sale.countdown(<{$sale.start - $now}>,$('.J-countdown'),function(){
+        $('#J_sale_buy').load('<{link app=sale ctl=mobile_sale act=get_status arg0=$product_id}>',{'sale_id':<{$sale.id}>,'goods_id':<{$sale.goods_id}>});
+    });
+})();
+</script>

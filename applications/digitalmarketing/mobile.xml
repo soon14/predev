@@ -1,0 +1,6 @@
+<site>
+    <module controller='mobile_activity'>
+        <name>marketingactivity</name>
+        <title>互动营销</title>
+    </module>
+</site>

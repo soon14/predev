@@ -1,0 +1,16 @@
+<!-- 该xml文件用来定义后台管理操作员相关操作日志 -->
+<root>
+    <!-- register 注册日志拦截
+        @attribute act 控制器方法
+        @attribute ctl 控制器
+        @attribute module 模块
+        @attribute method 拦截method
+        @attribute method 拦截post或get中的参数名
+    -->
+    <register act="edit" ctl="admin_hello" method="post" module="helloworld" param="id">
+        <!-- operate_type 日志标题 -->
+        <operate_type>问候日志</operate_type>
+        <!-- operate_type 日志纪录模板（%s会带入拦截参数） -->
+        <template>问候id: %s</template>
+    </register>
+</root>

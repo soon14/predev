@@ -1,0 +1,70 @@
+<h3 class="page-title">报表导出</h3>
+<hr>
+<form action="index.php?app=vshop&ctl=admin_report&act=export" method="post" target="_blank" id='export_form' class="form" >
+    <div class="form form-horizontal">
+        <!-- begin form body -->
+        <div class="form-body">
+             <div class="form-group">
+                 <label class="col-md-2 control-label">
+                     报表类型
+                 </label>
+                 <div class="col-md-3">
+                    <select class="form-control" name="export_object">
+                        <option value="order">分润订单</option>
+                        <option value="voucher">结算凭证</option>
+                        <option value="statement">财务结算单</option>
+                    </select>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">
+                     微店编号
+                 </label>
+                 <div class="col-md-8">
+                     <input type="text" name="filter[shop_id]" value="" class="form-control" id="shop_id_ipt">
+                     <span class="help-block">
+                     不填写,则不限。填写多个微店铺ID时用逗号分割。 </span>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">单据最早生成时间  <span class="required" aria-required="true">*</span></label>
+                 <div class="col-md-4">
+                     <{input type="time" name="filter[createtime|bthan]" required="true"}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">单据最最晚成时间  <span class="required" aria-required="true">*</span></label>
+                 <div class="col-md-4">
+                     <{input type="time" name="filter[createtime|lthan]" required="true"}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <div class="col-md-5 col-md-offset-2">
+                     <div class="alert alert-warning">
+                         单据时间段范围必填,且时间范围不能大于3个月
+                     </div>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">
+                     单据状态
+                 </label>
+                 <div class="col-md-3">
+                    <select class="form-control" name="filter[status]">
+                        <option value="">全部状态</option>
+                        <option value="ready,process">准备中 (待发货\未确认\待结算)</option>
+                        <option value="succ">已完成（已发货\已确认\已结算）</option>
+                    </select>
+                 </div>
+             </div>
+         </div>
+         <!-- end form body -->
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">导出</button>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>

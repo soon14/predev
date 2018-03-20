@@ -1,0 +1,20 @@
+<div class="dashbd-list">
+    <div class="finder-packet sort">
+        <ul>
+            <{foreach from=$sections item=item key=key}>
+            <li class="<{if !$key}>current<{/if}>">
+               <a href="javascript:void(0);"> <span><{$item.name}></span></a>
+            </li>
+            <{/foreach}>
+        </ul>
+    </div>
+    <div style="height:240px;overflow:hidden" class="gridlist sale-top">
+        <{foreach from=$sections item=item key=key}>
+    	<div class="sort-items">
+
+    		      <{include file=$item.file}>
+    		
+    	</div>
+    	<{/foreach}>
+    </div>
+</div>

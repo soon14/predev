@@ -1,0 +1,82 @@
+<h3 class="page-title"><{if $theme}>编辑app版本主题信息<{else}>新建app版本主题信息<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=hybirdapp&ctl=admin_version&act=index">app版本信息</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $theme }>编辑app版本主题信息<{else}>新建app版本主题信息<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=hybirdapp&ctl=admin_version&act=theme_save" method="post" class="form" >
+    <{if $version.version_id }><input type="hidden" name="theme[version_id]" value="<{$version.version_id}>"><{/if}>
+    <div class="form form-horizontal">
+        <{if $theme}>
+        <{foreach from=$theme key=k item=item}>
+        <div class="form-body">
+            <{if $item.menu_id }><input type="hidden" name="theme[menu][menu_id][]" value="<{$item.menu_id}>"><{/if}>
+            <div class="form-group">
+                <label class="col-md-2 control-label">菜单标题</label>
+
+                <div class="col-md-5">
+                    <input type="text" name="theme[menu][menu_title][]" class="form-control" value="<{$item.menu_title}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">菜单标题链接</label>
+
+                <div class="col-md-5">
+                    <input type="text" name="theme[menu][menu_link][]" class="form-control" value="<{$item.menu_link}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">菜单图标
+                </label>
+
+                <div class="col-md-5">
+                    <{input type=image width=64 height=64 name="theme[menu][icon_image_id][]" value=$item.icon_image_id}>
+                </div>
+            </div>
+        </div>
+        <{/foreach}>
+        <{else}>
+        <{foreach from=$version.menu_num key=key item=val}>
+
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">菜单标题</label>
+
+                <div class="col-md-5">
+                    <input type="text" name="theme[menu][menu_title][]" class="form-control" value="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">菜单标题链接</label>
+
+                <div class="col-md-5">
+                    <input type="text" name="theme[menu][menu_link][]" class="form-control" value="">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">菜单图标
+                </label>
+
+                <div class="col-md-5">
+                    <{input type=image width=64 height=64 name="theme[menu][icon_image_id][]" value=""}>
+                </div>
+            </div>
+        </div>
+        <{/foreach}>
+        <{/if}>
+
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-9">
+                    <button type="submit" class="btn blue">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

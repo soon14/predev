@@ -1,0 +1,16 @@
+<div class="panel panel-default">
+    <!-- Default panel contents -->
+    <div class="panel-heading">公告
+        <span class="pull-right"><{$page}>/<{$totalpage}></span>
+    </div>
+    <!-- List group -->
+    <div class="list-group">
+        <{foreach from=$notice_list item=notice}>
+          <a target="_blank" href="<{link app=supplier ctl=site_supplier act=notice args0=$notice.notice_id}>" class="list-group-item">
+              <{$notice.title}>
+              <span class="pull-right"><{$notice.pubtime|cdate:'FDATE'}></span>
+          </a>
+        <{/foreach}>
+     </div>
+    <div class="panel-footer"><{pagers data=$pager}></div>
+</div>

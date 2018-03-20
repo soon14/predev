@@ -1,0 +1,80 @@
+<services>
+
+    <service id="desktop_sidepanel.desktop_ctl_dashboard">
+        <class>desktop_sidepanel_dashboard</class>
+    </service>
+    <service id="app_content_detector">
+        <class>desktop_application_menu</class>
+        <class>desktop_application_workground</class>
+        <class>desktop_application_permission</class>
+        <class>desktop_application_panelgroup</class>
+        <class>desktop_application_adminpanel</class>
+        <class>desktop_application_theme</class>
+        <class>desktop_application_widgets</class>
+    </service>
+
+    <service id="html_input">
+        <class>desktop_view_input</class>
+    </service>
+
+    <service id="view_helper">
+        <class>desktop_view_helper</class>
+    </service>
+
+    <!--修改用户-->
+    <service id="desktop_finder.desktop_mdl_users">
+        <class>desktop_finder_users</class>
+    </service>
+
+    <service id="desktop_finder.base_mdl_task">
+      <class>desktop_finder_crontab</class>
+    </service>
+
+    <!--修改用户角色-->
+    <service id="desktop_finder.desktop_mdl_roles">
+        <class>desktop_finder_roles</class>
+    </service>
+
+    <service id="desktop_io">
+        <class>desktop_io_type_csv</class>
+    </service>
+
+
+    <service id="desktop_finder.desktop_mdl_pam">
+        <class>desktop_finder_pam</class>
+    </service>
+
+    <service id="desktop_menu">
+        <class>desktop_service_view_menu</class>
+    </service>
+
+    <service id="desktop_task.finder_colset">
+        <class>desktop_finder_colset</class>
+    </service>
+
+
+    <service id="desktop_task.finder_favstar">
+        <class>desktop_finder_favstar</class>
+    </service>
+
+    <service id="desktop_finder.desktop_mdl_recycle">
+        <class>desktop_finder_recycle</class>
+    </service>
+   <service id="desktop_finder.desktop_mdl_magicvars">
+        <class>desktop_finder_magicvars</class>
+    </service>
+
+
+	<service id="pam_login_listener">
+		<class>desktop_service_login</class>
+		<!-- <class>desktop_cert_certcheck</class> -->
+	</service>
+    <service id="product_soft_certcheck">
+     <!--    <class>desktop_cert_certcheck</class> -->
+    </service>
+
+    <!--<service id="passport_index_present" interface="desktop_interface_passportpresent">
+        <class>暂时未使用</class>
+    </service>-->
+
+</services>

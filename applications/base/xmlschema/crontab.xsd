@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="cronentries">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="cron" maxOccurs="unBounded">
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="cron">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:attribute name="id" type="xs:string"/>
+        <xs:element name="description" type="xs:string"/>
+        <xs:element name="schedule" type="xs:string"/>
+        <xs:element name="enabled" type="xs:boolean" minOccurs="0"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

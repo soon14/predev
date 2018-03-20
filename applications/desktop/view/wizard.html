@@ -1,0 +1,114 @@
+<div class="page-wizard">
+    <h3 class="page-title">
+    			快速向导 <small>帮您快速上手,开始运营</small>
+    </h3>
+    <div class="row">
+    	<div class="col-md-6">
+    		<div class="dashboard-stat grey-cararra">
+    			<div class="visual">
+    				<i class="icon-diamond"></i>
+    			</div>
+    			<div class="details">
+    				<div class="number">
+    					  商品资料
+    				</div>
+    				<div class="desc">
+    					管理商品基本资料,设置商品图文信息、库存信息
+    				</div>
+    			</div>
+                <div class="more text-right">
+                    <div class="btn-group">
+                        <a href="index.php?app=b2c&ctl=admin_goods_editor&act=add" class="btn green">添加一个商品 </i></a>
+                        <a href="index.php?app=b2c&ctl=admin_stock&act=index" class="btn btn-default">设置商品库存 </i></a>
+                        <a href="index.php?app=b2c&ctl=admin_goods&act=index" class="btn btn-default">维护商品 </i></a>
+                    </div>
+                </div>
+    		</div>
+    	</div>
+        <div class="col-md-6">
+    		<div class="dashboard-stat grey-cararra">
+    			<div class="visual">
+    				<i class="fa fa-users"></i>
+    			</div>
+    			<div class="details">
+    				<div class="number">
+    					 会员政策
+    				</div>
+    				<div class="desc">
+    					 维护会员等级、查看会员资料
+    				</div>
+    			</div>
+                <div class="more text-right">
+                    <div class="btn-group">
+                        <a href="index.php?app=b2c&ctl=admin_member_lv&act=index" class="btn green">会员等级管理 </a>
+                        <a href="index.php?app=b2c&ctl=admin_member&act=index" class="btn btn-default">管理会员资料</i></a>
+                    </div>
+                </div>
+    		</div>
+    	</div>
+        <div class="col-md-6">
+    		<div class="dashboard-stat grey-cararra">
+    			<div class="visual">
+    				<i class="icon-settings"></i>
+    			</div>
+    			<div class="details">
+    				<div class="number">
+    					 配置
+    				</div>
+    				<div class="desc">
+    					 开业准备
+    				</div>
+    			</div>
+                <div class="more text-right">
+                    <div class="btn-group">
+                        <a href="index.php?app=ectools&ctl=payment_apps&act=index" class="btn green">在线支付配置</i></a>
+                        <a href="index.php?app=b2c&ctl=admin_dlytype&act=index" class="btn green">物流运费配置</a>
+                        <a href="index.php?app=b2c&ctl=admin_setting&act=index" class="btn btn-default">店铺购物流程配置 </i></a>
+                        <a href="index.php?app=desktop&ctl=adminpanel&act=index" class="btn btn-default">更多配置 </i></a>
+                    </div>
+                </div>
+    		</div>
+    	</div>
+        <div class="col-md-6">
+    		<div class="dashboard-stat grey-cararra">
+    			<div class="visual">
+    				<i class="icon-basket-loaded"></i>
+    			</div>
+    			<div class="details">
+    				<div class="number">
+    					 订单处理
+    				</div>
+    				<div class="desc">
+    					 处理订单及相关支付、配送单据
+    				</div>
+    			</div>
+                <div class="more text-right">
+                    <div class="btn-group">
+                        <a href="index.php?app=b2c&ctl=admin_order&act=index" class="btn green">查看订单</a>
+                        <a href="index.php?app=ectools&ctl=admin_payment&act=index" class="btn btn-default">查看支付单据</a>
+                        <a href="index.php?app=b2c&ctl=admin_delivery&act=index" class="btn btn-default">查看物流发货单据</a>
+                    </div>
+                </div>
+    		</div>
+    	</div>
+    </div>
+</div>
+
+
+<{foreach from=$html_parts item=part}>
+    <{$part}>
+<{/foreach}>
+<script type="text/javascript">
+$(function(){
+    $.cookie('see-the-wizard','1',{ expires: 30 });
+    $('.page-sidebar-menu .active').removeClass('active');
+    $('.hor-menu .nav .nav-wizard').addClass('active').find('.font-red').removeClass('font-red').addClass('font-grey-cararra');
+    var timer = setInterval(function(){
+            if(!$('.page-wizard').length){
+                $('.hor-menu .nav .nav-wizard').removeClass('active').find('.font-grey-cararra').removeClass('font-grey-cararra').addClass('font-red');
+                clearInterval(timer);
+            }
+    },400);
+});
+
+</script>

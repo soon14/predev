@@ -1,0 +1,6 @@
+<ol>
+<li>在系统配置文件config.php最底部加入 require_once(ROOT_DIR."/app/serveradm/xhprof.php");</li>
+<li>用curl访问页面 curl -b xhprof=1 http://yourdomain/index.php/gallery.html?scontent=</li>
+<li>进入xhprof列表查找你的访问的url</li>
+<li>查看分析报告</li>
+</ol>

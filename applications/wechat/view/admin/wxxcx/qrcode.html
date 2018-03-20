@@ -1,0 +1,184 @@
+<h3 class="page-title clearfix">
+    <img src="https://mp.weixin.qq.com/debug/wxadoc/gitbook/images/icon_note_logo@2x.png" alt="微信小程序" height="40"/> 微信小程序二维码下载
+</h3>
+<div class="page-bar">
+	<ul class="page-breadcrumb">
+		<li>
+			<a href="index.php?app=wechat&ctl=admin_wxxcx&act=setting">当前配置小程序appId: <{$env.conf.wechat.wxxcx_appid}> <i class="fa fa-edit"></i></a>
+		</li>
+	</ul>
+</div>
+<form id="qrdownload_form" action="" method="post"  class="form" target="_blank">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">二维码类型</label>
+                <div class="col-md-3">
+                    <select class="form-control page-url" name="qrcode_type">
+                        <option value="normal">普通二维码</option>
+                        <option value="xcx">小程序专用二维码</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group hidden rel-xcxqrcode">
+                <label class="col-md-3 control-label">小程序专用二维码颜色</label>
+                <div class="col-md-3">
+                    <input class="form-control" type="color" name="xcxqrcode_rgb" value="" placeholder="#000000">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">二维码宽度</label>
+                <div class="col-md-3">
+                    <input class="form-control" type="number" name="qrcode_width" value="" placeholder="默认430px">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">目标页面</label>
+                <div class="col-md-3">
+                    <select class="form-control page-url" name="page">
+                        <option value="/pages/index/index">小程序首页</option>
+                        <option value="/pages/product/product" data-extopt='.rel-product'>商品详情</option>
+                        <option value="/pages/gallery/gallery" data-extopt='.rel-gallery'>商品列表</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group page-options rel-product hidden">
+                <label class="col-md-3 control-label">选择目标商品</label>
+                <div class="col-md-9">
+                    <{input type="object" object="products@b2c" name="product_id" callback_func="product_sel_callback_func" placeholder="请选择..."}>
+                </div>
+                <div class="col-md-9 col-md-offset-3">
+                    <table class="table">
+                        <thead>
+                            <th>
+
+                            </th>
+                            <th>
+                                名称
+                            </th>
+                            <th>
+                                规格
+                            </th>
+                            <th>
+                                货号
+                            </th>
+                            <th>
+                                条码
+                            </th>
+                            <th>
+                                销售价
+                            </th>
+                        </thead>
+                        <tbody id="obj_product_selected">
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group page-options rel-gallery hidden">
+                <label class="col-md-3 control-label">分类</label>
+                <div class="col-md-9">
+                    <{input type="category" name="cat_id"}>
+                    <span class="help-block">
+                        不选择则不限分类
+                    </span>
+                </div>
+            </div>
+            <div class="form-group page-options rel-gallery hidden">
+                <label class="col-md-3 control-label">关键词</label>
+                <div class="col-md-3">
+                    <{input type="text" name="keyword"}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">其他参数</label>
+                <div class="col-md-9">
+                    <{input class="url-params" type="text" name="more_options" placeholder="非必填"}>
+                    <span class="help-block">k1=v1&k2=v2&k3=v3.....</span>
+                </div>
+            </div>
+            <div class="form-group hidden">
+                <label class="col-md-3 control-label">最终小程序页面地址</label>
+                <div class="col-md-9">
+                    <input type="url" class="form-control" id="url_show" readonly="true"/>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button  type="button" data-action="index.php?app=wechat&ctl=admin_wxxcx&act=qrdownload&preview=true" class="btn btn-default">预览</button>
+                        <button  type="button" data-action="index.php?app=wechat&ctl=admin_wxxcx&act=qrdownload" class="btn green">下载</button>
+                        <button type="button" data-action="index.php?app=wechat&ctl=admin_wxxcx&act=qrdownload&p[0]=page_url" class="btn btn-default">查看小程序页面地址</button>
+                        <a href="javascript:history.go(-1);" class="btn default">返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<div class="modal fade" id="modal_qrcode_show" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+    $('#qrdownload_form .page-url').on('change',function(e){
+        //console.info(e);
+        var option = this.options[this.selectedIndex];
+        $('#qrdownload_form .page-options').addClass('hidden');
+        //console.info($('#qrdownload_form .page-options'+$(option).attr('data-extopt')));
+        $('#qrdownload_form .page-options'+$(option).attr('data-extopt')).removeClass('hidden');
+    });
+    $('select[name=qrcode_type]').on('change',function(e){
+        var val = $(this).val();
+        switch ($(this).val()) {
+            case 'normal':
+                $('.rel-xcxqrcode').addClass('hidden');
+                break;
+            case 'xcx':
+                $('.rel-xcxqrcode').removeClass('hidden');
+                break;
+
+        }
+    });
+    // $('select.page-url').on('change',function(e){
+    //     var url_params = $('.url-params').val();
+    //     $('#url_show').val($(this).val()+(url_params?'?'+url_params:''));
+    // }).trigger('change');
+    var product_sel_callback_func = function(selected){
+        var product_id = [];
+        $.each(selected,function(k,v){
+            product_id.push(v.value);
+        });
+        if(!product_id.length)return;
+        $.post('<{link app=desktop ctl=finder act=object_row}>',{
+            'app':'b2c',
+            'model':'products',
+            'cols':'product_id,name,spec_info,bn,barcode,price',
+            'name':"product_id",
+            'pkey':'product_id',
+            'filter':{product_id:product_id}
+        },function(re){
+            $('#obj_product_selected').empty().append(re);
+        });
+    };
+    $('#qrdownload_form .form-actions button').on('click',function(e){
+        var action = $(this).attr('data-action');
+        $('#qrdownload_form').attr('action',action);
+        $('#qrdownload_form').submit();
+    });
+</script>
+<{if !$env.conf.wechat.wxxcx_appid}>
+    <script type="text/javascript">
+    bootbox.alert('请先进行小程序基本配置',function(e){
+        load_page('index.php?app=wechat&ctl=admin_wxxcx&act=setting');
+    });
+    </script>
+<{/if}>

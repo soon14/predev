@@ -1,0 +1,246 @@
+<!-- 此页面是后台管理界面 页面的class及元素定义依赖 bootstrap UI框架 -->
+<h3 class="page-title"><{if $subject.id }>编辑活动<{else}>新团购活动<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=fastgroup&ctl=admin_subject&act=index">活动列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $subject.id }>编辑活动<{else}>新团购活动<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=fastgroup&ctl=admin_subject&act=save" method="post" id='subject_form' class="form" >
+    <{if $subject.id }>
+        <input type="hidden" name="subject[id]" value="<{$subject.id}>">
+    <{/if}>
+    <div class="form form-horizontal">
+        <ul class="nav nav-tabs">
+				<li class="active">
+					<a href="#tab_edit_basic" data-toggle="tab">基本信息</a>
+				</li>
+                <li>
+					<a href="#tab_edit_setting" data-toggle="tab">活动设置</a>
+				</li>
+		</ul>
+		<div  class="tab-content">
+				<div id="tab_edit_basic" class="tab-pane active  form-body">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                活动商品
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-6">
+                                 <{input type="object" object="goods@b2c" callback_func="goods_select_callback_func"}>
+                                 <div id="goods_data_panel">
+
+                                 </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                立减金额
+                            </label>
+                            <div class="col-md-2">
+                                 <{input type="text" name="subject[goods_discount]" value=$subject.goods_discount}>
+                            </div>
+                            <div class="col-md-4">
+                                <i class="help-block">单个商品优惠立减金额,留空则不优惠</i>
+                            </div>
+                        </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 标题
+                                 <span class="required" aria-required="true">*</span>
+                             </label>
+                             <div class="col-md-10">
+                                  <{input type="text" name="subject[fg_title]" value=$subject.fg_title}>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 简介
+                                 <span class="required" aria-required="true">*</span>
+                             </label>
+                             <div class="col-md-10">
+                                  <{input type="textarea" name="subject[fg_intro]" value=$subject.fg_intro}>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 详细介绍
+                                 <span class="required" aria-required="true">*</span>
+                             </label>
+                             <div class="col-md-10">
+                                  <{input type="html" name="subject[fg_desc]" value=$subject.fg_desc}>
+                             </div>
+                         </div>
+
+
+				</div>
+                <div id="tab_edit_setting" class="tab-pane  form-body">
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            可订购开始时间
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-5">
+                             <{input type="time" name="subject[begin_time]" value=$subject.begin_time}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            可订购结束时间
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-5">
+                             <{input type="time" name="subject[end_time]" value=$subject.end_time}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            可购总量
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-1">
+                             <{input type="number" name="subject[limit]" value=$subject.limit}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            每人限购数量
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-1">
+                             <{input type="number" name="subject[per_limit]" value=$subject.per_limit}>
+                        </div>
+                        <div class="col-md-4">
+                            <i class="help-block">限制每人在此活动中可下单商品总量,填写0则不限</i>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            顾客备注标题
+                        </label>
+                        <div class="col-md-5">
+                             <{input type="text" name="subject[customer_memo_title]" value=$subject.customer_memo_title}>
+                             <i class="help-block">留空则前台无顾客备注项</i>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            是否启用顾客备注选项
+                        </label>
+                        <div class="col-md-5">
+                             <{input type="bool" data-extends='.cm-enabled-extends' name="subject[customer_memo_options_enabled]" value=$subject.customer_memo_options_enabled}>
+                             <i class="help-block">启用备注选项,则顾客只能选择备注,无法输入备注</i>
+                        </div>
+                    </div>
+                    <div class="form-group cm-enabled-extends hidden">
+                        <label class="col-md-2 control-label">
+                            顾客备注选项
+                        </label>
+                        <div class="col-md-10">
+                             <{input type="text" class="tag-input" name="subject[customer_memo_options]" value=$subject.customer_memo_options}>
+                        </div>
+                    </div>
+                    <div class="form-group cm-enabled-extends hidden">
+                        <label class="col-md-2 control-label">
+                            备注选项是否支持多选
+                        </label>
+                        <div class="col-md-5">
+                             <{input type="bool" name="subject[customer_memo_options_multiple]" value=$subject.customer_memo_options_multiple}>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            展示排序
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-1">
+                             <{input type="number" name="subject[sort]" value=$subject.sort|default:0}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            后台管理备注
+                        </label>
+                        <div class="col-md-5">
+                             <{input type="textarea" name="subject[op_memo]" value=$subject.op_memo}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            是否发布
+                            <span class="required" aria-required="true">*</span>
+                        </label>
+                        <div class="col-md-5">
+                             <{input type="bool" name="subject[is_pub]" value=$subject.is_pub|default:'true'}>
+                             <i class="help-block">不发布,留前台无法访问活动</i>
+                        </div>
+                    </div>
+                </div>
+        </div><!-- tab content end -->
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>
+<textarea id="goods_tpl" class="hidden">
+    <div class="well well-sm">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{default_image}" class="img-thumbnail" height="80" />
+            </div>
+            <div class="col-md-8">
+                <input type="hidden" name="subject[goods_id]" value="{goods_id}">
+                <h4>{name} <small>{gid}</small></h4>
+                <p>
+                    {brief}
+                </p>
+                <p>
+                    <i class="fa fa-yen fa-lg"></i> {price}
+                </p>
+                <p>
+                    <a href="index.php?app=b2c&ctl=admin_goods_editor&act=edit&p[0]={goods_id}" target="_blank">编辑</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</textarea>
+
+<script type="text/javascript">
+var goods_select_callback_func = function(data,auto_call){
+    $.getJSON('<{link app=fastgroup ctl=admin_subject act=load_goods}>&p[0]='+data[0].value,function(re){
+            $('#goods_data_panel').html(substitute($('#goods_tpl').val(),re.goods_info));
+            if(!auto_call){
+                var g_info = re.goods_info;
+                $('#subject_form input[name="subject[fg_title]"]').val(g_info.name);
+                $('#subject_form textarea[name="subject[fg_intro]"]').val(g_info.brief);
+                $('#subject_form textarea[name="subject[fg_desc]"]').summernote('reset');
+                $('#subject_form textarea[name="subject[fg_desc]"]').summernote('insertNode',$('<div class="fg-goods-description"></div>').html(g_info.description)[0]);
+            }
+    });
+};
+<{if $subject && $subject.goods_id }>
+    goods_select_callback_func([{"value":<{$subject.goods_id}>}],true);
+<{/if}>
+
+
+    $('#subject_form .tag-input').tagsInput({
+        width: 'auto',
+        'defaultText':'输入选项',
+    });
+    $('#subject_form input[data-extends]').on('change',function(e){
+        var extends_el = $($(this).attr('data-extends'));
+        extends_el[this.checked&&this.value=='true'?'removeClass':'addClass']('hidden');
+    });
+    $('#subject_form input[data-extends]:checked').trigger('change');
+</script>

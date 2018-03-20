@@ -1,0 +1,12 @@
+<app>
+    <name>余额宝</name>
+    <description>余额宝管理,余额支付方式</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.uubalance.com</url>
+    </author>
+    <version>1.2</version>
+    <license>http://www.vmcshop.com/license</license>
+    <parent_model_class>dbeav_model</parent_model_class>
+</app>

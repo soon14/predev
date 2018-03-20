@@ -1,0 +1,47 @@
+<{if $tree}>
+<ul class="widget-ntree <{$class_name}>">
+    <{foreach from=$tree item=item}>
+        <li class="nt-node n-<{$item.node_id|default:' hidden'}>">
+            <{if $item.node_name}>
+            <a href="<{$item.link}>" target="<{$target|default:'_self'}>"><span><{$item.node_name}></span></a>
+            <{/if}>
+            <{if $item.articles}>
+            <ul>
+                <{foreach from=$item.articles item=article}>
+                <li class="nt-article p-<{$article.article_id}>">
+                    <a href="<{$article.link}>" target="<{$target|default:'_self'}>"><span><{$article.title}></span></a>
+                </li>
+                <{/foreach}>
+            </ul>
+            <{/if}>
+            <{if $item.children}>
+            <ul>
+                <{foreach from=$item.children item=child}>
+                <li class="nt-node n-<{$child.node_id}>">
+                    <a href="<{$child.link}>" target="<{$target|default:'_self'}>"><span><{$child.node_name}></span></a>
+                    <{if $child.articles}>
+                    <ul>
+                        <{foreach from=$child.articles item=article2}>
+                        <li class="nt-article p-<{$article2.article_id}>">
+                            <a href="<{$article2.link}>" target="<{$target|default:'_self'}>"><span><{$article2.title}></span></a>
+                        </li>
+                        <{/foreach}>
+                    </ul>
+                    <{/if}>
+                    <{if $child.children}>
+                    <ul>
+                        <{foreach from=$child.children item=child2}>
+                        <li class="nt-node n-<{$child2.node_id}>">
+                            <a href="<{$child2.link}>" target="<{$target|default:'_self'}>"><span><{$child2.node_name}></span></a>
+                        </li>
+                        <{/foreach}>
+                    </ul>
+                    <{/if}>
+                </li>
+                <{/foreach}>
+            </ul>
+            <{/if}>
+        </li>
+    <{/foreach}>
+</ul>
+<{/if}>

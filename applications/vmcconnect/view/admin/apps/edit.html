@@ -1,0 +1,154 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">
+        <{if $set_app.app_id }>编辑服务<{else}>添加服务<{/if}>
+    </h3>
+</div>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=vmcconnect&ctl=admin_apps&act=index">VMCC服务管理</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $set_app.app_id }>编辑服务<{else}>添加服务<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form method="post" action="index.php?app=vmcconnect&ctl=admin_apps&act=save" calss="form">
+    <input type="hidden" name="app_id" value="<{$set_app.app_id}>">
+    <div class="modal-body form-horizontal">
+        <div class="form-body">
+            <{if $set_app.app_id }>
+            <div class="form-group">
+                <label class="col-md-3 control-label">app_key</label>
+                <div class="col-md-3">
+                    <code><{$set_app.app_id}></code>
+                </div>
+            </div>
+            <{/if}>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="app_set_app_name">
+                    服务名称
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="app_set_app_name" name="app_sets[app_name]" value="<{$set_app.app_name}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="app_set_app_secret">
+                    服务加密串
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="app_set_app_secret" name="app_sets[app_secret]" value="<{$set_app.app_secret}>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="app_set_api_alert_phone">
+                    服务预警号码
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="app_set_api_alert_phone" name="app_sets[api_alert_phone]" value="<{$set_app.api_alert_phone}>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="app_set_app_com_tpl">
+                    API命令模版
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-3">
+                    <{if $api_tpls}>
+                    <{foreach from=$api_tpls item=tpl key=key}>
+                    <label for="app_set_app_com_tpl_<{$key}>" class="control-label">
+                        <input id="app_set_app_com_tpl_<{$key}>" name="app_sets[app_com_tpl]" value="<{$key}>" type="radio"<{if $set_app.app_com_tpl == $key}> checked<{/if}>>
+                               <{$tpl}>
+                    </label>
+                    <{/foreach}>
+                    <{/if}>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="app_set_app_status">
+                    服务启用状态
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-7">
+                    <label for="app_set_app_status_1" class="control-label">
+                        <input id="app_set_app_status_1" name="app_sets[app_status]" value="1" type="radio"<{if $set_app.app_status}> checked<{/if}>>
+                               <span class="text-success">启用服务</span>
+                    </label>
+                    <label for="app_set_app_status_0" class="control-label">
+                        <input id="app_set_app_status_0" name="app_sets[app_status]" value="0" type="radio"<{if !$set_app.app_status}> checked<{/if}>>
+                               <span class="text-danger">禁用服务</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="app_set_app_api_status">
+                    服务API启用状态
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-7">
+                    <label for="app_set_app_api_status_1" class="control-label">
+                        <input id="app_set_app_api_status_1" name="app_sets[app_api_status]" value="1" type="radio"<{if $set_app.app_api_status}> checked<{/if}>>
+                               <span class="text-success">启用API</span>
+                    </label>
+                    <label for="app_set_app_api_status_0" class="control-label">
+                        <input id="app_set_app_api_status_0" name="app_sets[app_api_status]" value="0" type="radio"<{if !$set_app.app_api_status}> checked<{/if}>>
+                               <span class="text-danger">禁用API</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="app_set_app_hook_status">
+                    服务HOOK启用状态
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-7">
+                    <label for="app_set_app_hook_status_1" class="control-label">
+                        <input id="app_set_app_hook_status_1" name="app_sets[app_hook_status]" value="1" type="radio"<{if $set_app.app_hook_status}> checked<{/if}>>
+                               <span class="text-success">启用HOOK</span>
+                    </label>
+                    <label for="app_set_app_hook_status_0" class="control-label">
+                        <input id="app_set_app_hook_status_0" name="app_sets[app_hook_status]" value="0" type="radio"<{if !$set_app.app_hook_status}> checked<{/if}>>
+                               <span class="text-danger">禁用HOOK</span>
+                    </label>
+
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="app_set_app_order">
+                    服务排序
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="app_set_app_order" name="app_sets[app_order]" value="<{$set_app.app_order}>">
+                </div>
+            </div>
+            <div class="form-group  ">
+                <label class="col-md-3 control-label" for="app_desc">
+                    服务介绍
+                </label>
+                <div class="col-md-7">
+                    <input type="text" class="form-control" id="app_set_app_desc" name="app_sets[app_desc]" value="<{$set_app.app_desc}>">
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+        <a type="button" class="btn default" href="index.php?app=vmcconnect&ctl=admin_apps&act=index">返回</a>
+        <button type="submit" class="btn blue">保存</button>
+    </div>
+
+
+</form>

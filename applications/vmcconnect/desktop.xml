@@ -1,0 +1,42 @@
+<desktop>
+    <permissions>
+        <permission id="vmcconnect_setting" display='true' workground='vmcconnect.workground'>VMCConnect基本配置</permission>
+        
+        <permission id="vmcconnect_apps" display='true' workground='vmcconnect.workground'>VMCConnect服务管理</permission>
+        <permission id="vmcconnect_apps_add" display='true' workground='vmcconnect.workground'>添加VMCConnect服务</permission>
+        <permission id="vmcconnect_apps_edit" display='true' workground='vmcconnect.workground'>编辑VMCConnect服务管理</permission>
+        <permission id="vmcconnect_apps_del" display='true' workground='vmcconnect.workground'>删除VMCConnect服务</permission>
+        <permission id="vmcconnect_apps_apis" display='true' workground='vmcconnect.workground'>API管理</permission>
+        <permission id="vmcconnect_apps_hooks" display='true' workground='vmcconnect.workground'>HOOK管理</permission>
+        <permission id="vmcconnect_apps_batch" display='true' workground='vmcconnect.workground'>VMCConnect服务批量操作</permission>
+        
+        <permission id="vmcconnect_hooks" display='true' workground='vmcconnect.workground'>应用HOOK管理</permission>
+        <permission id="vmcconnect_hooks_add" display='true' workground='vmcconnect.workground'>添加应用HOOK</permission>
+        <permission id="vmcconnect_hooks_edit" display='true' workground='vmcconnect.workground'>编辑应用HOOK</permission>
+        <permission id="vmcconnect_hooks_batch" display='true' workground='vmcconnect.workground'>应用HOOK批量操作</permission>
+        <permission id="vmcconnect_hook_queues" display='true' workground='vmcconnect.workground'>查看执行队列</permission>
+        
+        <permission id="vmcconnect_goodsrec" display='true' workground='vmcconnect.workground'>VMCConnect商品回收站</permission>
+        <permission id="vmcconnect_delorder" display='true' workground='vmcconnect.workground'>VMCConnect订单删单</permission>
+        <permission id="vmcconnect_logs" display='true' workground='vmcconnect.workground'>VMCConnect日志查看</permission>
+    </permissions>
+
+    <panelgroup icon="fa fa-code" id="apiconnect" order="60">VMCConnect配置</panelgroup>
+    <adminpanel action="index" controller="admin_setting" display='true' group="vmcconnect_apiconnect" order='10' permission='vmcconnect_setting'>基本配置</adminpanel>
+    
+    <adminpanel action="index" controller="admin_apps" display='true' group="vmcconnect_apiconnect" order='10' permission='vmcconnect_apps'>服务管理</adminpanel>
+    <menu action='add' controller='admin_apps' display='false' order='10' permission='vmcconnect_apps_add'>添加服务</menu>
+    <menu action='edit' controller='admin_apps' display='false' order='15' permission='vmcconnect_apps_edit'>编辑服务</menu>
+    <menu action='del' controller='admin_apps' display='false' order='15' permission='vmcconnect_apps_del'>删除服务</menu>
+    
+    <menu action='apis' controller='admin_apps' display='false' order='15' permission='vmcconnect_apps_apis'>API管理</menu>
+    <menu action='hooks' controller='admin_apps' display='false' order='15' permission='vmcconnect_apps_hooks'>HOOK管理</menu>
+    <menu controller='index' display='false' order='20' permission='vmcconnect_apps_batch'>批量操作</menu>
+    
+    <menu action='index' controller='admin_hooks' display='false' order='20' permission='vmcconnect_hooks'>应用HOOK管理</menu>
+    <menu action='add' controller='admin_hooks' display='false' order='20' permission='vmcconnect_hooks_add'>添加应用HOOK</menu>
+    <menu action='edit' controller='admin_hooks' display='false' order='20' permission='vmcconnect_hooks_edit'>编辑应用HOOK</menu>
+    <menu action='index' controller='admin_hooks' display='false' order='20' permission='vmcconnect_hooks_batch'>应用HOOK批量操作</menu>
+    <menu action='index' controller='admin_hook_queues' display='false' order='20' permission='vmcconnect_hook_queues'>查看执行队列</menu>
+
+</desktop>

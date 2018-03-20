@@ -1,0 +1,68 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="input-group">
+			<div class="input-group-btn">
+				<button id="storeSearchTypeShow" class="btn btn-default dropdown-toggle" data-toggle="dropdown" type="button" aria-haspopup="true" aria-expanded="false">
+					店铺名称<span class="caret"></span>
+				</button>
+				<ul class="dropdown-menu">
+					<li>
+						<a class="store-search-type" data-searchtype="store-name" href="javascript:void(0);">店铺名称</a>
+					</li>
+					<li><a class="store-search-type" data-searchtype="store-bn" href="javascript:void(0);">店铺编号</a></li>
+				</ul>
+				<input id="storeSearchType" name="store_search_type" type="hidden" value="store-name">
+			</div><!-- /btn-group -->
+			<input id="storeSearchKeyword" class="form-control" name="store_search_keyword" type="text" placeholder="请输入店铺名称" value="<{$storeSearchKeyword}>">
+			<span class="input-group-btn">
+		        <button class="btn btn-default" id="storeSearchBtn" type="button">搜索</button>
+			</span>
+		</div><!-- /input-group -->
+	</div><!-- /.col-lg-6 -->
+
+	<div class="col-md-12">
+		<table class="table text-center">
+			<thead>
+			<tr>
+				<th>操作</th>
+				<th>状态</th>
+				<th>名称</th>
+				<th>联系方式1</th>
+				<th>联系方式2</th>
+				<th>企业负责人</th>
+				<th>编号</th>
+			</tr>
+			</thead>
+			<tbody>
+			<{if is_array($sotreInfos) === true && count($sotreInfos) > 0}>
+				<{foreach from=$sotreInfos item=sotreInfo}>
+					<tr>
+						<td>
+							<input class="search-store-id" name="store_id" data-storeinfo="<{$sotreInfo['store_id']}>^<{$sotreInfo['store_name']}>^<{$sotreInfo['store_bn']}>^<{$sotreInfo['store_name']}>^<{$sotreInfo['store_name']}>" type="checkbox" value="<{$sotreInfo['store_id']}>">
+						</td>
+						<td>有效</td>
+						<td><{$sotreInfo['store_name']}></td>
+						<td><{$sotreInfo['store_contact']}></td>
+						<td><{$sotreInfo['store_contact']}></td>
+						<td>五更瑠璃</td>
+						<td><{$sotreInfo['store_bn']}></td>
+					</tr>
+				<{/foreach}>
+			<{else}>
+				<tr>
+					<td class="text-center" colspan="7">
+						当前没有店铺
+					</td>
+				</tr>
+			<{/if}>
+			</tbody>
+			<tfoot>
+			<tr>
+				<td class="text-center" colspan="7">
+					<{pager data=$pager}>
+				</td>
+			</tr>
+			</tfoot>
+		</table>
+	</div>
+</div><!-- /.row -->

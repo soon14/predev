@@ -1,0 +1,64 @@
+<h3 class="page-title">
+    清除体验数据
+    <small>用于清除站点体验数据</small>
+</h3>
+<hr>
+<div class="alert alert-warning">
+    <h4><i class="fa fa-warning"></i>请注意！</h4>
+    将清除的数据：
+    <ul class="row list-unstyled">
+        <li class="col-md-4">商品相关
+            <ol>
+                <li>全部商品分类数据</li>
+                <li>全部商品品牌数据</li>
+                <li>全部商品类型数据</li>
+                <li>全部商品库存数据</li>
+                <li>全部商品及货品数据</li>
+            </ol>
+        </li>
+        <li class="col-md-4">会员相关
+            <ol>
+                <li>全部会员数据</li>
+                <li>全部会员评论评价数据</li>
+                <li>全部会员消息数据</li>
+            </ol>
+        </li>
+        <li class="col-md-4">
+            交易相关
+            <ol>
+                <li>全部订单数据</li>
+                <li>全部付款\退款单据数据</li>
+                <li>全部发货\退货单据数据</li>
+                <li>全部售后服务单据</li>
+            </ol>
+        </li>
+    </ul>
+</div>
+<form method="post" action="index.php?app=clearexpdata&ctl=admin_default&act=clear">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">管理员
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="uname"  disabled="disabled" class="hidden">
+                    <input type="text" name="uname" readonly class="form-control" value="<{$current_super.name}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">密码
+                </label>
+                <div class="col-md-5">
+                    <input type="password" required="true" autocomplete="off" name="password"  class="form-control"  placeholder="请输入当前管理员登录密码">
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-5 col-md-offset-3">
+                    <button type="submit" class="btn btn-block red">确认清除体验数据</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

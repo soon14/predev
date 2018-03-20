@@ -1,0 +1,48 @@
+<div id="goods_cat_filter_<{$name}>" class="pull-right">
+	<{assign var=callback_fn_store value='goods_store_filter_fix_fn_'.$name}>
+	<{input type="goodsstoreid" divider='全部店铺' store_ids=$extra_pagedata callback=$callback_fn_store value=$env.get.filter.storeId}>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * 商品店铺筛选回调函数
+	 */
+	var <{$callback_fn_store}> = function(storeId){
+
+		var actionUrl = $('#finder_form_<{$name}>').prop('action');
+		actionUrl = actionUrl.replace(/&filter\[store_id\]([^&]+)/, '');
+		if (storeId) {
+			actionUrl += '&filter[store_id]=' + storeId;
+		}
+
+		$('#finder_form_<{$name}>').prop('action', actionUrl);
+
+		update_finder_<{$name}>();
+	};
+
+	$(function () {
+        //修正toolbar样式
+        $('#finder_actions_<{$name}>').find(".row").addClass('pull-left');
+		//点击店铺商品库存列表里的输入框,可以修改库存 start
+		$('#finder_body_<{$name}>').on('focus', 'input.edit-col', function (e) {
+			$(this).data('v', $(this).val());
+		});
+		$('#finder_body_<{$name}>').on('blur', 'input.edit-col', function (e) {
+			var edit_input = $(this), current_val = edit_input.val();
+			if (current_val == edit_input.data('v'))return;
+			var post_data = {
+				'stock_id': edit_input.attr('data-pkey'),
+			};
+			post_data[edit_input.prop('name')] = edit_input.val();
+			$.post("<{link app=b2c ctl=admin_stock act=quick_update}>", post_data, function (re) {
+				if (re && ('success' in re)) {
+					edit_input.data('v', edit_input.val());
+					edit_input.val('已修改').fadeOut(function () {
+						edit_input.val(edit_input.data('v'));
+					}).fadeIn();
+				}
+			}, 'json');
+		});
+		//点击店铺商品库存列表里的输入框,可以修改库存 end
+	});
+</script>

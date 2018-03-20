@@ -1,0 +1,7 @@
+<services>
+
+	<service id="dbeav_filter">
+		<class>dbeav_filter</class>
+	</service>
+
+</services>

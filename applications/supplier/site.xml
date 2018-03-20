@@ -1,0 +1,6 @@
+<site>
+    <module controller='site_supplier'>
+        <name>supplier</name>
+        <title>供应商管理面板</title>
+    </module>
+</site>

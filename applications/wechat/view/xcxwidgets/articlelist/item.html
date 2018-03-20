@@ -1,0 +1,15 @@
+<!-- 图文混合 -->
+<template id="widget-articlelist">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-articlelist :widget="widget" :index="index"></widget-child-articlelist>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_articlelist = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-articlelist',
+    components: {
+        'widget-child-articlelist': widget_child_articlelist
+    }
+});
+</script>

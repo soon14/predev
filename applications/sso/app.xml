@@ -1,0 +1,23 @@
+<!--该xml文件用来定义app应用信息、作者、版本,使用时重命名后缀为.xml-->
+<app>
+    <!--
+        @value APP名称
+        禁止特殊字符、空格
+    -->
+    <name>sso</name>
+    <!--@value APP描述-->
+    <description>SSO单点登录</description>
+    <author>
+        <!-- @value app作者 -->
+        <name>辰商软件</name>
+        <!-- @value 作者联系邮箱 -->
+        <email>dev@vmcshop.com</email>
+        <!-- @value 作者主页 -->
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <!--
+        @value 当前版本
+        改变当前版本将会在后台提示升级
+    -->
+    <version>1.0</version>
+</app>

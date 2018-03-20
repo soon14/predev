@@ -1,0 +1,265 @@
+<{include file='site/supplier/layout/top.html' }>
+<div class="my-main supplier-main">
+            <div class="page-header clearfix">
+              <h1 class="pull-left">财务结算单明细 <small>Statement Detail</small></h1>
+              <div class="btn-group pull-right">
+                  <button class="btn  btn-default" onclick="print();"><i class="glyphicon glyphicon-print"></i> 打印</button>
+                  <a class="btn btn-default" href="<{link app=supplier ctl=site_supplier act=statement}>"><i class="glyphicon glyphicon-align-justify"></i> 返回列表 </a>
+              </div>
+            </div>
+            <ul class="nav nav-tabs nav-tabs-lg">
+                <li class="active">
+                    <a href="#tab_1" data-toggle="tab">
+                        结算单基本信息
+                    </a>
+                </li>
+                <li>
+                    <a href="#tab_2" data-toggle="tab">
+                        结算凭证 <span class="badge bg-gallery" id="voucher_all_price_badge"></span>
+                    </a>
+                </li>
+            </ul>
+            <br>
+            <div class="tab-content">
+                <div class="tab-pane active" id="tab_1">
+                        <div class="form form-horizontal">
+                            <!-- begin form body -->
+                            <div class="form-body">
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">
+                                         结算单号
+                                     </label>
+                                     <div class="col-md-5">
+                                         <p class="form-control-static">
+                                             <{$statement.statement_id}>
+                                         </p>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">
+                                         结算单状态
+                                     </label>
+                                     <div class="col-md-5">
+                                         <div class="form-control-static">
+                                             <span class="label label-success">已结算</span>
+                                         </div>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">
+                                         供应商
+                                     </label>
+                                     <div class="col-md-10">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        名称
+                                                    </th>
+                                                    <th>
+                                                        编号
+                                                    </th>
+                                                    <th>
+                                                        地址
+                                                    </th>
+                                                    <th>
+                                                        联系人
+                                                    </th>
+                                                    <th>
+                                                        联系方式
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <{$supplier.supplier_name}>
+                                                    </td>
+                                                    <td>
+                                                        <{$supplier.supplier_bn}>
+                                                    </td>
+                                                    <td>
+                                                        <{$supplier.supplier_region|region}>
+                                                        <{$supplier.supplier_address}>
+                                                    </td>
+                                                    <td>
+                                                        <{$supplier.supplier_manager}>
+                                                    </td>
+                                                    <td>
+                                                        <{$supplier.supplier_link1}><{if $supplier.supplier_link2}>,<{$supplier.supplier_link2}><{/if}>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">收款人</label>
+                                     <div class="col-md-3">
+                                         <p class="form-control-static">
+                                             <{$statement.payee}>
+                                         </p>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">收款银行</label>
+                                     <div class="col-md-5">
+                                         <p class="form-control-static">
+                                             <{$statement.payee_bank}>
+                                         </p>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">收款账户</label>
+                                     <div class="col-md-5">
+                                         <p class="form-control-static">
+                                             <{$statement.payee_account}>
+                                         </p>
+                                     </div>
+                                 </div>
+                                 <hr>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">付款人</label>
+                                     <div class="col-md-3">
+                                         <p class="form-control-static">
+                                             <{$statement.payer}>
+                                         </p>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">付款银行</label>
+                                     <div class="col-md-5">
+                                         <p class="form-control-static">
+                                             <{$statement.payer_bank}>
+                                         </p>
+
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">付款账户</label>
+                                     <div class="col-md-5">
+                                         <p class="form-control-static">
+                                             <{$statement.payer_account}>
+                                         </p>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">付款金额</label>
+                                     <div class="col-md-3">
+                                         <p class="form-control-static">
+                                             <{$statement.money|cur}>
+                                         </p>
+                                     </div>
+                                 </div>
+                                 <div class="form-group">
+                                     <label class="col-md-2 control-label">支付平台流水号</label>
+                                     <div class="col-md-5">
+                                         <p class="form-control-static">
+                                             <{$statement.out_trade_no}>
+                                         </p>
+                                     </div>
+                                 </div>
+                             </div>
+                        </div>
+                </div>
+                <div class="tab-pane" id="tab_2">
+                    <{assign var=s_allprice value=0}>
+                    <{foreach from=$voucher_list item=voucher}>
+                        <div class="panel panel-default">
+                            <div class="panel-heading clearfix">
+                                <div class="pull-left">
+                                    #<{$voucher.voucher_id}>
+                                    <small>,创建时间:<{$voucher.createtime|cdate}> ,
+                                    最后更新时间:<{$voucher.last_modify|cdate}></small>
+                                </div>
+                                <div class="pull-left">&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <a class="label label-default" href="<{link app=supplier ctl=site_supplier act=order args0=$voucher.delivery_id}>">发货单#<{$voucher.delivery_id}></a>
+                                </div>
+
+                                <div class="pull-right">
+                                    <{switch from=$voucher.status}>
+                                    <{case value='succ'}>
+                                    <span class="label label-success">已确认</span>
+                                    <{case value='ready'}>
+                                    <span class="label bg-blue">待结算</span>
+                                    <{case value='process'}>
+                                    <span class="label bg-yellow">待结算</span>
+                                    <{case value='cancel'}>
+                                    <span class="label label-success">已取消</span>
+                                    <{/switch}>
+                                </div>
+
+                            </div>
+                            <table  class="table">
+                                <thead class="text-muted">
+                                    <tr>
+                                        <th width="20%">货号</th>
+                                        <th width="8%">图片</th>
+                                        <th width="32%">名称</th>
+                                        <th width="10%">规格</th>
+                                        <th width="10%">结算单价</th>
+                                        <th width="10%">应结算数量</th>
+                                        <th width="10%" class="text-right">小记</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <{assign var=s_totalprice value=0}>
+                                    <{foreach from=$voucher_list_items[$voucher.voucher_id] item=item}>
+                                        <tr>
+                                            <td><{$item.bn}></td>
+                                            <td>
+                                                <img src="<{$item.image_id|storager:'xs'}>" height=36>
+                                            </td>
+                                            <td>
+                                                <{$item.name}>
+                                            </td>
+                                            <td>
+                                            <{$item.spec_info}>
+                                            </td>
+                                            <td>
+                                                <{$item.s_price|cur}>
+                                            </td>
+                                            <td>
+                                                <{$item.s_num}>
+                                            </td>
+                                            <td class="text-right">
+                                                <{$item.s_subprice|cur}>
+                                                <{assign var=s_totalprice value=$s_totalprice+$item.s_subprice}>
+                                            </td>
+                                        </tr>
+                                    <{/foreach}>
+                                </tbody>
+                                <tfoot class="hidden">
+                                    <tr>
+                                        <td colspan="5">
+
+                                        </td>
+                                        <td colspan="2" class="text-right">
+                                            合计：<{$s_totalprice|cur}>
+                                            <{assign var=s_allprice value=$s_allprice+$s_totalprice}>
+                                        </td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                    <{/foreach}>
+                    <div class="well">
+                        <h3 class="text-right">
+                            <small>结算合计：</small><i class="fa fa-yen"></i> <strong class="text-danger"><{$s_allprice|cur}></strong>
+                        </h3>
+                    </div>
+                </div>
+                <!-- tab_2 end -->
+            </div>
+
+</div>
+<script type="text/javascript">
+    var page_limit_match = location.href.match(/-statement-([\d]+?)-([\d]+?).html/);
+    if(page_limit_match && page_limit_match[2]){
+        $('#page_limit_sel option[value="'+page_limit_match[2]+'"]').prop('selected','selected');
+    }
+    $('#page_limit_sel').on('change',function(){
+        location = $(this.options[this.selectedIndex]).attr('data-action');
+    });
+    $('#voucher_all_price_badge').text("<{$s_allprice|cur}>");
+</script>

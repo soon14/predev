@@ -1,0 +1,134 @@
+<div class="content">
+    <form action="<{link app=preselling ctl=mobile_checkout act=create}>" method="post" class="checkout-container">
+        <!--<input type="hidden" name="activity_id" value="<{$activity.activity_id}>">
+        <input type="hidden" name="main_id" value="<{$main_id}>">
+        <input type="hidden" name="product_id" value="<{$activity.product_id}>">-->
+        <input type="hidden" name="cart_md5" value="<{$activity_result.cart_md5}>">
+        <!-- checkout-container begin -->
+        <ul class=table-view>
+
+            <li class="table-view-divider">送货清单</li>
+
+            <li class="table-view-cell media checkout-item">
+                <img class="media-object pull-left" width=50  src="<{$activity_result.product.image_id|storager:'s'}>" alt="<{$activity_result.product.name}>-<{$activity_result.product.spec_info}>" />
+                <div class="media-body">
+                    <p><strong><{$activity_result.product.name}></strong><br><{$activity_result.product.spec_info}></p>
+                    <div class="product-quantity"   data-minibuy="<{$data_detail.minibuy}>">
+                        <button type="button" class="btn btn-outlined pull-left"><span class="fa fa-minus"></span></button>
+                        <input type="number" name="quantity" <{if $activity.restrict_status}>max=<{$activity.restrict_number}><{/if}> data-productid="<{$activity_result.product.product_id}>"  data-activityid="<{$activity.activity_id}>"  class="spinner-input pull-left"  value="<{$activity_result.quantity}>" data-now="<{$activity_result.quantity}>" pattern="[0-9]*">
+                        <button type="button" class="btn btn-outlined"><span class="fa fa-plus"></span></button>
+                    </div>
+                </div>
+                <div class="table-view-cell-right">
+                    <small>￥</small><{$activity_result.price|cur}><br>
+                    x <{$activity_result.quantity}>
+                </div>
+
+            </li>
+
+            <li class="table-view-divider">支付方式</li>
+            <{foreach from=$paymentapps key=k item=papp}>
+            <li  class="table-view-cell checkout-payment <{if $papp.selected}> active<{/if}>" data-flowindex=2>
+                <input class='i-radio' id="rd_payapp_id_<{$papp.app_id}>" type="radio" <{if $papp.selected}>checked<{/if}> name="payapp_id" value="<{$papp.app_id}>">
+                <label for="rd_payapp_id_<{$papp.app_id}>" class="fa"></label>
+                <span class="payapp-name"><{$papp.display_name|default:$papp.name}></span>
+                <{if $papp.description}>
+                <p>
+                    <{$papp.description}>
+                </p>
+                <{/if}>
+            </li>
+            <{/foreach}>
+        </ul>
+
+        <ul class="table-view checkout-total">
+
+            <li class="table-view-cell">
+                <p class="pull-right">
+                    应付总额：
+                    ￥<strong data-bind="total/order_total"><{$activity_result.order_total|cur}></strong>
+                </p>
+            </li>
+            <li class="table-view-cell">
+                <p class="pull-right">
+                    预售成功需支付尾款：
+                    ￥<span data-bind="total/cost_freight"><{$activity_result.balance_payment|cur}></span>
+                </p>
+            </li>
+        </ul>
+
+    </form>
+</div>
+
+<div class="bar bar-tab  checkout-bar-footer">
+    <div class="tab-item tab-total">
+      <span class="order-total">应付总额：
+          <span class="text-danger">
+                <small>￥</small><strong data-bind="total/order_total"><{$activity_result.order_total|cur}></strong>
+          </span>
+      </span>
+    </div>
+    <div class="tab-item tab-submit">
+        <button type="button" onclick="$('form.checkout-container').trigger('submit');" class="btn btn-block btn-submit btn-link">提交订单</button>
+    </div>
+</div>
+
+
+<script charset="utf-8">
+    /**
+     * 订单确认页操作JS闭包
+     * 以下脚本用于订单确认页,收货地址、配送、及支付方式的确认操作
+     * @author vmcshop.com
+     * @version 1.150809
+     */
+    $(function () {
+        //快速购买可修改数量
+
+        //数量修改
+        $('.checkout-container .product-quantity input').on('_change',function(e){
+            var ipt = $(this);
+            var cur_val = ipt.val();
+            var payapp_id = $("input[name=payapp_id]:checked").val();
+            var dlytype_id = $("input[name=dlytype_id]:checked").val();
+            var params = '?payapp_id='+payapp_id;
+            location = "<{link app=preselling ctl=mobile_checkout act=index args0='_activityid_' args1='_product_id_' args2='_quantity_' }>".replace('_activityid_',$(this).attr('data-activityid')).replace('_quantity_',cur_val).replace('_product_id_',$(this).attr('data-productid'))+params;
+        });
+
+
+        $('.table-view').on('click','.checkout-dlytype,.checkout-payment',function(e){
+            $(this).find('input:radio').prop('checked',true);
+            $(this).closest('ul').find('[data-flowindex="'+$(this).attr('data-flowindex')+'"]').removeClass('active');
+            $(this).addClass('active');
+            _check($(this).attr('data-flowindex'));
+        });
+
+
+        //提交订单动作
+        $('form.checkout-container').on('submit',function(e){
+            e.stopPropagation();
+            var form = $(this),submit_btn = $(form.find('.btn-submit'));
+            submit_btn.text('正在提交').prop('disabled','disabled');
+            $.post(form.prop('action'),form.serialize(),function(re){
+                setTimeout(function(){
+                    try{
+                        submit_btn.text('确认订单').removeProp('disabled');
+                    }catch(e){}
+                },800);
+                if(re.error){
+                    Messagebox('error',re.error);
+                }
+                if(re.success){
+                    if(re.redirect){
+                        location = re.redirect;
+                    }else{
+                        alert(re.success);
+                    }
+                }
+            },'json');
+            return false;
+        });
+
+
+
+    });
+</script>

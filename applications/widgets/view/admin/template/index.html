@@ -1,0 +1,275 @@
+<h3 class="page-title">
+    模板文件管理 <small><{$current_dir}></small>
+</h3>
+<div class="table-toolbar">
+    <{if $type =='pc'}>
+    <{permission perm_id='widgets_pc_edit' noshow=1}>
+    <div class="btn-group">
+        <a class="btn green"  label="添加模板文件" data-toggle="modal" href="#create_file_modal" id="J_create_file">
+            添加模板文件&nbsp;<i class="fa fa-plus"></i>
+        </a>
+    </div>
+    <div class="btn-group">
+        <a class="btn default"  label="创建目录" href="#create_dir_modal" data-toggle="modal" id="J_create_dir">
+            创建目录&nbsp;<i class="fa fa-folder"></i>
+        </a>
+    </div>
+    <{/permission}>
+    <{else}>
+    <{permission perm_id='widgets_mobile_edit' noshow=1}>
+    <div class="btn-group">
+        <a class="btn green"  label="添加模板文件" data-toggle="modal" href="#create_file_modal" id="J_create_file">
+            添加模板文件&nbsp;<i class="fa fa-plus"></i>
+        </a>
+    </div>
+    <div class="btn-group">
+        <a class="btn default"  label="创建目录" href="#create_dir_modal" data-toggle="modal" id="J_create_dir">
+            创建目录&nbsp;<i class="fa fa-folder"></i>
+        </a>
+    </div>
+    <{/permission}>
+    <{/if}>
+</div>
+
+<div class="table-scrollable">
+    <table class="table  table-striped table-hover">
+        <thead>
+        <tr>
+            <th>
+                <{if $path_node}>
+                <div class="btn-group">
+                        <a href="index.php?app=widgets&ctl=admin_template&act=manage&p[0]=<{$type}>" class="btn btn-xs btn-default"><{$type}>模板目录</a>
+                        <span class="btn btn-xs"><i class="fa fa-angle-double-right"></i></span>
+                </div>
+                <{else}>
+                    <span class="btn btn-xs"><{$type}>模板目录 <i class="fa fa-angle-double-down"></i></span>
+                <{/if}>
+                <{foreach from=$path_node item=vo name=file_path}>
+                    <{if !$env.foreach.file_path.last}>
+                    <div class="btn-group">
+                        <a href="index.php?app=widgets&ctl=admin_template&act=manage&p[0]=<{$type}>&p[1]=<{$vo.path}>" class="btn btn-xs btn-default"><{$vo.name}></a>
+                        <span class="btn btn-xs"><i class="fa fa-angle-double-right"></i></span>
+                    </div>
+                    <{else}>
+                        <span class="btn btn-xs"><{$vo.name}> <i class="fa fa-angle-double-down"></i></span>
+                    <{/if}>
+                <{/foreach}>
+            </th>
+            <th>文件说明</th>
+            <th>最后修改时间</th>
+            <!-- <th>文件类型</th> -->
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <{foreach from=$list item=item name="item"}>
+        <tr>
+            <td>
+                <{if $item.is_dir == 'true'}>
+                <a class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=manage&p[0]=<{$type}>&p[1]=<{$current}><{$item.file_name}>">
+                    <i class="fa fa-folder"></i> <{$item.file_name}>
+                </a>
+                <!-- <span class="text-muted"><i class="fa  fa-angle-double-right"></i></span> -->
+                <{else}>
+                <{if $type =='pc'}>
+                <{permission perm_id='widgets_pc_edit'}>
+
+                <{/permission}>
+                <{else}>
+                <{permission perm_id='widgets_pc_edit'}>
+
+                <{/permission}>
+                <{/if}>
+                    <{if $item.file_extension == 'html'}>
+                    <a href="index.php?app=widgets&ctl=admin_template&act=edit&p[0]=<{$type}>&p[1]=<{$current}><{$item.file_name}>">
+                        <{$item.file_name}>
+                    </a>
+                    <{elseif $item.file_extension == 'xml'}>
+                    <a href="index.php?app=widgets&ctl=admin_template&act=edit_file&p[0]=<{$type}>&p[1]=<{$current}><{$item.file_name}>">
+                        <{$item.file_name}>
+                    </a>
+                    <{else}>
+                        <{$item.file_name}>
+                    <{/if}>
+
+
+                <{/if}>
+            </td>
+            <td>
+                <{$item.use}>
+            </td>
+            <td>
+                <{$item.last_modify|cdate:"FDATE_FTIME"}>
+            </td>
+            <!-- <td>
+                <{$item.type}>
+            </td> -->
+            <td>
+
+                <{if $item.is_dir == true}>
+                <!-- <a class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=manage&p[0]=<{$type}>&p[1]=<{$current}><{$item.file_name}>">
+                    <i class="fa fa-list"></i> 查看文件</a> -->
+                <{else}>
+
+                <{if $item.is_writable == true}>
+                <{if $type =='pc'}>
+                <{permission perm_id='widgets_pc_edit' noshow=1}>
+                <{if $item.file_extension == 'html'}>
+                <a class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=edit&p[0]=<{$type}>&p[1]=<{$current}><{$item.file_name}>">
+                    <i class="fa fa-edit"></i> 编辑
+                </a>
+                <{else}>
+                <a class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=edit_file&p[0]=<{$type}>&p[1]=<{$current}><{$item.file_name}>">
+                    <i class="fa fa-edit"></i> 编辑
+                </a>
+                <{/if}>
+                <{/permission}>
+                <{else}>
+                <{permission perm_id='widgets_mobile_edit' noshow=1}>
+                <{if $item.file_extension == 'html'}>
+                <a class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=edit&p[0]=<{$type}>&p[1]=<{$current}><{$item.file_name}>">
+                    <i class="fa fa-edit"></i> 编辑
+                </a>
+                <{else}>
+                <a class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=edit_file&p[0]=<{$type}>&p[1]=<{$current}><{$item.file_name}>">
+                    <i class="fa fa-edit"></i> 编辑
+                </a>
+                <{/if}>
+                <{/permission}>
+                <{/if}>
+
+                    <{if $item.file_name != 'index.html' &&
+                         $item.file_name != 'default.html'&&
+                         $item.file_name != 'config.xml'&&
+                         $item.file_name != 'index.html'
+                    }>
+                <{if $type =='pc'}>
+                <{permission perm_id='widgets_pc_delete' noshow=1}>
+                    <a target="_command" data-confirm="确定删除 <{$item.file_name|t:'content'}>？" class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=remove&p[0]=<{$type}>&p[1]=<{$item.file_name}>&p[2]=<{$current}>">
+                        <i class="fa fa-trash"></i> 删除
+                    </a>
+                <{/permission}>
+                <{else}>
+                <{permission perm_id='widgets_pc_delete' noshow=1}>
+                <a target="_command" data-confirm="确定删除 <{$item.file_name|t:'content'}>？" class="btn btn-xs btn-default" href="index.php?app=widgets&ctl=admin_template&act=remove&p[0]=<{$type}>&p[1]=<{$item.file_name}>&p[2]=<{$current}>">
+                    <i class="fa fa-trash"></i> 删除
+                </a>
+                <{/permission}>
+                <{/if}>
+                    <{/if}>
+                <{/if}>
+
+                <{/if}>
+
+            </td>
+        </tr>
+        <{/foreach}>
+        </tbody>
+    </table>
+</div>
+<div class="modal fade" id="create_file_modal" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">新建模板文件</h4>
+			</div>
+            <form action="<{link app=widgets ctl=admin_template act=create_file}>" method="post">
+			<div class="modal-body">
+                 <input type="hidden" name="type" value="">
+                 <input type="hidden" name="current" value="">
+				 <div class="form-horizontal">
+                     <div class="form-group">
+						<label class="control-label col-md-3">html文件名
+                        <span class="required">*</span>
+                        </label>
+						<div class="col-md-4">
+                            <input class="form-control" required=true type="text" name="name"/>
+						</div>
+                         <span class="help-inline">不要填写.html文件后缀</span>
+					 </div>
+                     <div class="form-group">
+						<label class="control-label col-md-3">说明
+                        <span class="required">*</span>
+                        </label>
+						<div class="col-md-4">
+                            <input class="form-control" required=true type="text" name="use"/>
+						</div>
+					 </div>
+                     <div class="form-group">
+                         <label class="control-label col-md-3">模板类型
+                             <span class="required">*</span>
+                         </label>
+                         <div class="col-md-4">
+                             <input class="form-control" required=true type="text" name="tpl_type"/>
+                         </div>
+                         <span class="help-inline">请参考说明填写类型英文名称</span>
+                     </div>
+                     <div class="form-group">
+                         <div class="col-md-10 col-md-offset-1">
+                             <div class="alert alert-warning ">
+                                 <p>常用模板类型说明：</p>
+                                 <pre>
+index:首页模板  |  node:栏目相关     |  cart:购物车
+list:商品列表   |  article:文章详情  |  checkout:订单结算
+item:商品详情   |  brand:商品品牌    |  passport:登录注册
+member:会员中心 |  order:订单详情
+                                 </pre>
+
+                             </div>
+                         </div>
+                     </div>
+				 </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn default" data-dismiss="modal">关闭</button>
+				<button type="submit" class="btn blue">确定</button>
+			</div>
+            </form>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="create_dir_modal" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">新建文件夹</h4>
+			</div>
+            <form action="<{link app=widgets ctl=admin_template act=create_dir}>" method="post">
+			<div class="modal-body">
+                 <input type="hidden" name="type" value="">
+                 <input type="hidden" name="current" value="">
+				 <div class="form-horizontal">
+                     <div class="form-group">
+						<label class="control-label col-md-3">文件夹名
+                        <span class="required">*</span>
+                        </label>
+						<div class="col-md-4">
+                            <input class="form-control" required=true type="text" name="name"/>
+						</div>
+					</div>
+				 </div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn default" data-dismiss="modal">关闭</button>
+				<button type="submit" class="btn blue">确定</button>
+			</div>
+            </form>
+		</div>
+	</div>
+</div>
+<script>
+(function(){
+    $('#J_create_dir').on('click',function(e){
+        $('#create_dir_modal').find('input[name=type]').val('<{$type}>');
+        $('#create_dir_modal').find('input[name=current]').val('<{$current}>');
+        $('#create_dir_modal').find('input[name=name]').val('');
+    });
+    $('#J_create_file').on('click',function(e){
+        $('#create_file_modal').find('input[name=type]').val('<{$type}>');
+        $('#create_file_modal').find('input[name=current]').val('<{$current}>');
+        $('#create_file_modal').find('input[name=name]').val('');
+    });
+})();
+</script>

@@ -1,0 +1,41 @@
+<app>
+    <name>VMCPLUS</name>
+    <description>VMCPLUS</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.2</version>
+    <license>http://www.vmcshop.com/license</license>
+    <parent_model_class>dbeav_model</parent_model_class>
+    <depends>
+        <app>vmcshop</app>
+        <!--
+         vmcshop depends:
+         <app>b2c</app>
+        <app>site</app>
+        <app>mobile</app>
+        <app>toauth</app>
+        <app>content</app>
+        <app>logisticstrack</app>
+        <app>operatorlog</app>
+        <app>ruleplus</app>
+        <app>system</app>
+        <app>serveradm</app>
+        -->
+        <!--vmcplus -->
+        <app>adjustprices</app>
+        <app>aftersales</app>
+        <app>baidutj</app>
+        <app>gift</app>
+        <app>integraldeduction</app>
+        <app>integralexchange</app>
+        <app>productplus</app>
+        <app>routeplus</app>
+        <app>supplier</app>
+        <app>ubalance</app>
+        <app>wechat</app>
+        <app>widgets</app>
+    </depends>
+</app>

@@ -1,0 +1,14 @@
+<app>
+    <name>限时降价</name>
+    <description>批量对商品(SKU货品)价格进行调整,支持预约调价,价格回滚</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.1</version>
+    <license>http://www.vmcshop.com/license</license>
+    <depends>
+        <app>b2c</app>
+    </depends>
+</app>

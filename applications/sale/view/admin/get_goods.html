@@ -1,0 +1,15 @@
+<tr>
+	<td>
+		<button onclick="$(this).closest('tr').remove();" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+	</td>
+    <td>
+    <img src="<{$goods.image_default_id|storager:'s'}>" alt="<{$goods.name}>" class="img-thumbnail" style="height:50px;"/>
+    </td>
+	<td>
+		<input type="hidden" name="goods_id"  value="<{$goods.goods_id}>">
+        <{$goods.name}>
+	</td>
+    <td>
+        <{$goods.gid}>
+    </td>
+</tr>

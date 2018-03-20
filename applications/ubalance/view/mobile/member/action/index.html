@@ -1,0 +1,84 @@
+<div class="content my-main">
+    <div class="table-view">
+        <div class="table-view-cell">
+            <a class="navigate-right" href="<{link app=ubalance ctl=mobile_member act=recharge}>">
+            <p>
+                当前可用<{$env.conf.ubalance.name}>
+            </p>
+            <h1 class="text-danger"><{$data.user_balance|number_format:'3'}> <small><{$env.conf.ubalance.unit}></small></h1>
+            <{if $env.conf.ubalance.earnings_type=='1'}>
+            <p>
+                年化<{$env.conf.ubalance.year_ratio*100}>%收益
+            </p>
+            <{/if}>
+            <span class="badge badge-inverted">立即充值</span>
+            </a>
+        </div>
+        <{if $env.conf.ubalance.earnings_type=='1'}>
+        <div class="table-view-cell">
+            <a class="navigate-right" href="<{link app=ubalance ctl=mobile_member act=index arg0=2}>">
+                <span class="badge badge-inverted badge-negative"><{$data.income|number_format:'3'}> <{$env.conf.ubalance.unit}></span>
+                累计收益：
+            </a>
+        </div>
+        <div class="table-view-cell" href="<{link app=ubalance ctl=mobile_member act=index arg0=2}>">
+            <a class="navigate-right">
+                <span class="badge badge-inverted badge-negative">+<{$data.yesterday_income|number_format:'3'}> <{$env.conf.ubalance.unit}></span>
+                昨日收益：
+            </a>
+        </div>
+        <{/if}>
+        <li class="table-view-cell table-view-divider"><{$env.conf.ubalance.name}>变动明细</li>
+    </div>
+    <div class="content-padded">
+        <div class="segmented-control">
+            <a class="control-item <{if $type=='all'}>active<{/if}>" href="<{link app=ubalance ctl=mobile_member act=index}>">全部</a>
+            <a class="control-item <{if $type=='0'}>active<{/if}>" href="<{link app=ubalance ctl=mobile_member act=index arg0=0}>">收入</a>
+            <a class="control-item <{if $type=='1'}>active<{/if}>" href="<{link app=ubalance ctl=mobile_member act=index arg0=1}>">支出</a>
+            <a class="control-item <{if $type=='2'}>active<{/if}>" href="<{link app=ubalance ctl=mobile_member act=index arg0=2}>">收益</a>
+        </div>
+    </div>
+    <div class="card">
+      <ul class="table-view ubalance-log">
+      <{if !$record_list}>
+      <li class="table-view-cell table-view-divider">暂无</li>
+      <{else}>
+      <{foreach from=$record_list item=record}>
+          <li class="table-view-cell">
+              <div class="media-body">
+                  <span class="<{if $record.change_fund<0}>text-success<{else}>text-danger<{/if}>"><{$record.change_fund|number_format:'3'}></span>
+                  <p>
+                      <{$record.opt_time|cdate:'FDATE_FTIME'}><br>
+                      <{$record.mark}>
+                  </p>
+              </div>
+              <span class="badge"><{$type_list[$record.type]}></span>
+          </li>
+      <{/foreach}>
+       <{/if}>
+      </ul>
+    </div>
+    <div class="content-padded content-morepage">
+        <{morepage data=$pager}>
+    </div>
+</div>
+<script type="text/javascript">
+//翻页
+var current_page = 1;
+$('.btn-morepage').on('touchend',function(e){
+    e.stopPropagation();
+    var btn = $(this);
+    btn.find('.fa-circle-o-notch').removeClass('hidden');
+    var data_morepage = btn.attr('data-morepage');
+    data_morepage = $.parseJSON(data_morepage);
+    var new_page = $('<div></div>');
+    new_page.load(data_morepage.link.replace(data_morepage.token,++current_page)+" .ubalance-log",function(){
+        new_page.find('.ubalance-log .table-view-cell').appendTo($('.ubalance-log'));
+        btn.find('.fa-circle-o-notch').addClass('hidden');
+    });
+    if(current_page == data_morepage.total){
+        btn.remove();
+    }
+    return false;
+});
+</script>

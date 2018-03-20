@@ -1,0 +1,191 @@
+<div class="passport-signup-container">
+    <div class="panel panel-default signup-panel">
+      <div class="panel-heading clearfix">
+          注册成为会员
+          <a class="btn btn-danger btn-xs pull-right" href="<{link app=sso ctl=site_sso act=login}>?forward=<{$forward}>">立即登录&raquo;</a>
+      </div>
+      <div class="panel-body">
+          <form id="member_signup_form" class="form-horizontal" action="<{link app=sso ctl=site_sso act=create}>" method="post">
+              <!-- 登陆后跳转地址 -->
+              <input type="hidden" name="forward" value="<{$forward}>">
+              <div class="form-group">
+                  <label for="input_login_name" class="col-md-2 control-label">登录账号<span class="text-danger">*</span></label>
+                  <div class="col-md-5">
+
+                    <input type="text" required="true" autocomplete='off' name="pam_account[login_name]" class="form-control" id="input_login_name" placeholder="手机号/邮箱/用户名">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="input_login_password" class="col-md-2 control-label">登录密码<span class="text-danger">*</span></label>
+                  <div class="col-md-5">
+
+                    <input type="password" required="true" name="pam_account[login_password]" class="form-control" id="input_login_password" placeholder="登录密码">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="input_psw_confirm" class="col-md-2 control-label">确认密码<span class="text-danger">*</span></label>
+                  <div class="col-md-5">
+
+                    <input type="password" required="true" name="pam_account[psw_confirm]" class="form-control" id="input_psw_confirm" placeholder="再次输入登录密码">
+                  </div>
+              </div>
+              <hr>
+              <{foreach from=$attr item=item name="item" key='row'}>
+              <{if $item.attr_type == 'select'}>
+              <div class="form-group">
+                  <label  class="col-md-2 control-label"><{$item.attr_name}></label>
+                  <div class="col-md-5">
+                      <{input type=$item.attr_type name=$item.attr_column value=$item.attr_value options=$item.attr_option}>
+                  </div>
+              </div>
+              <{elseif $item.attr_type == 'checkbox' }>
+              <div class="form-group">
+                  <label  class="col-md-2 control-label"><{$item.attr_name}></label>
+                  <div class="col-md-5">
+                      <{input type=$item.attr_type name=$item.attr_column value=$item.attr_value options=$item.attr_option}>
+                  </div>
+              </div>
+              <{elseif $item.attr_type=='date'}>
+              <div class="form-group">
+                  <label  class="col-md-2 control-label"><{$item.attr_name}></label>
+                  <div class="col-md-5">
+                      <input type="date" class="form-control" name="<{$item.attr_column}>" value="<{$item.attr_value|default:'YYYY-MM-DD'}>">
+                  </div>
+              </div>
+              <{else}>
+              <div class="form-group">
+                  <label  class="col-md-2 control-label"><{$item.attr_name}></label>
+                  <div class="col-md-5">
+                      <{input type=$item.attr_type name=$item.attr_column value=$item.attr_value}>
+                  </div>
+              </div>
+              <{/if}>
+              <{/foreach}>
+              <div class="form-group">
+                  <label for="input_vcode" class="col-md-2 control-label">验证码<span class="text-danger">*</span></label>
+                  <div class="col-md-3">
+                    <input type="text" required="true" name="vcode" class="form-control" id="input_vcode" placeholder="验证码">
+                  </div>
+                  <div class="col-md-2">
+                      <div class="local-vcode">
+                          <img src="<{link app=site ctl=vcode act=index args0='passport'}>" alt="验证码" />
+                          <button type="button" class="btn btn-link btn-sm" onclick="$(this).prev().prop('src',$(this).attr('data-src')+'?'+new Date().getTime())" data-src="<{link app=site ctl=vcode act=index args0='passport'}>" >更换验证码</button>
+                      </div>
+                      <div class="mobile-vcode" style="display:none;">
+                          <button type="button" data-loading-text="正在发送..." class="btn btn-default">获取短信验证码</button>
+                      </div>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <div class="col-md-offset-2 col-md-5">
+                    <div class="checkbox">
+                      <label>
+                        <input onclick="return false;" type="checkbox" checked name="" value="1">同意
+                      </label>
+                      <a href="javascript:;">《会员注册条款》</a>
+                    </div>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <div class="col-md-offset-2 col-md-5">
+                    <button type="submit" data-loading-text="正在提交..." class="btn btn-warning">提交</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+
+    </div>
+
+</div>
+
+
+
+
+<script>
+    /*
+    * 会员注册脚本
+    */
+
+    void function(signup_form){
+
+        var alert_timer = 0;
+        var _alert_error = function(msg){
+            signup_form.find('.alert-error').remove();
+            signup_form.append($('<div class="alert alert-danger">'+msg+'</div>'));
+            alert_timer = setTimeout(function(){
+                clearTimeout(alert_timer);
+                signup_form.find('.alert-danger').fadeOut('fast',function(){
+                    $(this).remove();
+                });
+            },3000);
+        }
+
+        $('#input_login_name').on('blur',function(e){
+            var ipt = $(this);
+            $.post('<{link app=b2c ctl=site_passport act=check_login_name}>',{'pam_account[login_name]':ipt.val()},function(re){
+                if(re.error){
+                    ipt.popover({content:re.error,placement:'right',trigger:'click',container:'body'});
+                    ipt.popover('show');
+                    ipt.closest('.form-group').removeClass('has-success').addClass('has-error');
+                }else if(re.success){
+                    ipt.closest('.form-group').removeClass('has-error').addClass('has-success');
+                    if(re.data && re.data.is_mobile){
+                        $('.local-vcode').hide();
+                        $('.mobile-vcode').show();
+                    }else{
+                        $('.local-vcode').show();
+                        $('.mobile-vcode').hide();
+                    }
+                }
+
+            },'json');
+        });
+        $('#input_login_name').on('focus',function(e){
+            $(this).popover('destroy');
+        });
+
+
+        signup_form.on('submit',function(e){
+            e.stopPropagation();
+            signup_form.find('button[type=submit]').button('loading');
+            $.post(signup_form.prop('action'),signup_form.serialize(),function(re){
+                if(re.error){
+                    _alert_error(re.error);
+                }
+                if(re.success){
+                    location = re.redirect;
+                }
+                signup_form.find('button[type=submit]').button('reset');
+            },'json');
+            return false;
+        });
+
+        //获得短信验证码
+        var _cutdown_sms = function(btn){
+            btn.addClass('disabled');
+            var cutdown = 120,btn_o_text = btn.text(),timer =
+            setInterval((function(){
+                btn.text('短信已发送,'+(cutdown--)+'秒后可重试');
+                if(cutdown<1){
+                    clearInterval(timer);
+                    btn.text(btn_o_text).removeClass('disabled');
+                }
+                return arguments.callee;
+            })(),1000);
+        };
+        signup_form.find('.mobile-vcode button').on('click',function(e){
+            var btn = $(this);
+            if(btn.hasClass('disabled'))return;
+            btn.addClass('disabled');
+            $.post('<{link app=b2c ctl=site_passport act=send_vcode_sms}>',{mobile:$('#input_login_name').val()},function(re){
+                if(re && re.error){
+                    btn.removeClass('disabled');
+                    _alert_error(re.error);
+                }
+                if(re && re.success){
+                    _cutdown_sms(btn);
+                }
+            },'json');
+        });
+    }($('#member_signup_form'));
+</script>

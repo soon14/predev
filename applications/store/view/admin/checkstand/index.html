@@ -1,0 +1,2408 @@
+<!-- 样式表 -->
+<{include file="admin/checkstand/style.html"}>
+<div class="page-header navbar navbar-fixed-top">
+    <!-- BEGIN HEADER INNER -->
+    <div class="page-header-inner clearfix">
+        <form id="barcode_input_form" class="search-form search-form-expanded open" method="POST">
+            <div class="input-group">
+                <span class="input-group-btn">
+				    <span class="btn"><i class="glyphicon glyphicon-barcode font-grey-cararra"></i></span>
+				</span>
+                <input class="form-control" autocomplete="off" id="product_barcode" name="barcode" data-placeholder="扫描或输入条码" type="text" placeholder="扫描或输入条码">
+            </div>
+        </form>
+
+        <div class="hor-menu hor-menu-light">
+            <ul class="nav navbar-nav">
+                <li class="classic-menu-dropdown active">
+                    <a href="javascript:;" onclick="location.href='index.php?app=store&ctl=admin_checkstand&act=single_index&store_id=<{$now_selected_store}>&singlepage=1'">
+                        普通商品 <span class="selected">
+					</span>
+                    </a>
+                </li>
+
+                <li>
+                    <a href="javascript:;" onclick="location.href='index.php?app=store&ctl=admin_history&act=index&singlepage=1'">
+                        <i class="fa fa-list"></i>历史订单
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="top-menu pull-right">
+            <ul class="nav navbar-nav">
+                <li class="dropdown dropdown-user">
+                    <a href="javascript:;" class="dropdown-toggle">
+                        <i class="icon-home"></i><span class="username">&nbsp;<{$store_info['store_name']}></span>
+                    </a>
+                </li>
+                <li class="dropdown dropdown-user">
+                    <a href="javascript:;" class="dropdown-toggle" onclick="$(this).next('.dropdown-menu').toggle()">
+                        <i class="icon-user"></i>
+                        <span class="username">&nbsp;<{$user.name}></span>
+                        <i class="fa fa-angle-down"></i>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-default">
+                        <li>
+                            <a id="current_count" href="javascript:;">
+                                <i class="fa fa-print"></i><span class="username">当班日报</span>
+                            </a>
+                        </li>
+                        <li class="divider">
+                        </li>
+                        <li>
+                            <a href="javascript:logout()">
+                                <i class="fa fa-power-off"></i><span class="username">注销</span>
+                            </a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="dropdown dropdown-user visible-md visible-lg">
+                    <a class="dropdown-toggle full-screen-handle" href="javascript:;">
+                        <span class="username">全屏操作</span>
+                        <i class="fa fa-expand"></i>
+                        <i class="fa"></i>
+                    </a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+    <!-- END HEADER INNER -->
+</div>
+<div class="row pos-pane">
+    <div class="col-xs-9">
+        <div id="goods_list_panel">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr class="heading">
+                    <th>#</th>
+                    <th>名称</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>金额</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-5" id="goods_list_btns">
+                <div class="well well-sm">
+                    <button class="icon-btn" data-act='p-prev'>
+                        <i class="glyphicon glyphicon-arrow-up"></i>
+
+                        <div>上页</div>
+                    </button>
+                    <button class="icon-btn" data-act='p-next'>
+                        <i class="glyphicon glyphicon-arrow-down"></i>
+
+                        <div>下页</div>
+                    </button>
+                    <button class="icon-btn" data-act='r-prev'>
+                        <i class="glyphicon glyphicon-chevron-up"></i>
+
+                        <div>上条</div>
+                    </button>
+                    <button class="icon-btn" data-act='r-next'>
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+
+                        <div>下条</div>
+                    </button>
+                </div>
+                <div class="well well-sm">
+                    <button class="icon-btn" data-act='r-edit'>
+                        <i class="glyphicon font-grey-gallery glyphicon-edit"></i>
+
+                        <div>编辑</div>
+                    </button>
+                    <button class="icon-btn" data-act='r-delete'>
+                        <i class="glyphicon font-yellow-casablanca glyphicon-remove-circle"></i>
+
+                        <div>移除</div>
+                    </button>
+
+                    <button class="icon-btn" data-act='r-minus'>
+                        <i class="glyphicon font-red glyphicon-minus-sign"></i>
+
+                        <div>减少</div>
+                    </button>
+                    <button class="icon-btn" data-act='r-plus'>
+                        <i class="font-green glyphicon glyphicon-plus-sign"></i>
+
+                        <div>增加</div>
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="well well-sm">
+                    <button id="show_promotions" class="icon-btn disabled">
+                        <i class="font-yellow glyphicon glyphicon-tags"></i>
+
+                        <div>优惠明细</div>
+                        <span class="badge badge-danger"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-5">
+                <div id="total_panel">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td class="text-right bg-grey-steel h4">商品数量</td>
+                            <td class="text-left h3" data-bind="cart_result/goods_count">0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel">总额</td>
+                            <td class="text-left" data-bind="total/cart_amount">0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel">会员折扣</td>
+                            <td class="text-left font-red">- <strong data-bind="total/member_discount_amount">0</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel">促销优惠</td>
+                            <td class="text-left font-red">-
+                                <strong data-bind="total/promotion_discount_amount">0</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel">运费</td>
+                            <td class="text-left font-green">+ <strong data-bind="total/cost_freight">0</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right bg-grey-steel h3">应收款</td>
+                            <td class="text-left  h2">
+                                ¥<strong data-bind="total/order_total" id="final_amount_money"> 0
+                            </strong>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="col-xs-3">
+        <div class="tiles" id="main_actions">
+            <div class="tile bg-yellow-gold" id="member_filter" data-act='member_filter'>
+                <div class="tile-body">
+                    <h4>会员</h4>
+                    <i class="fa fa-users"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        查询\新建
+                    </div>
+                </div>
+            </div>
+            <div class="tile bg-yellow-gold selected member-following hidden" id="member_show" data-act='member_show' data-memberid="{m_memberid}">
+                <div class="corner">
+                </div>
+                <div class="tile-body">
+                    <h4>{m_discount}</h4>
+                    <i class="icon-user-following"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        {m_level}
+                    </div>
+                </div>
+            </div>
+            <div class="tile bg-blue-steel" id="goods_filter" data-act='goods_filter'>
+                <div class="tile-body">
+                    <h4>商品</h4>
+                    <i class="icon-diamond"></i>
+                </div>
+                <div class="tile-object">
+
+                    <div class="number">
+                        查询
+                    </div>
+                </div>
+            </div>
+            <div class="tile bg-blue-hoki" id="need_delivery" data-mustmember="true" data-act='delivery_setting'>
+                <div class="tile-body">
+                    <h4>需配送</h4>
+                    <i class="fa fa-truck"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        设置
+                    </div>
+                </div>
+            </div>
+            <div class="tile bg-red-sunglo" id="use_coupon" data-mustmember="true" data-act='coupon_setting'>
+                <div class="tile-body">
+                    <h4>优惠券</h4>
+                    <i class="glyphicon glyphicon-tags"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        使用
+                    </div>
+                </div>
+            </div>
+            <div class="tile bg-purple-studio" id="handup_order" data-act='handup_order'>
+                <div class="corner">
+                </div>
+                <div class="tile-body">
+                    <h4>挂单</h4>
+                    <i class="glyphicon glyphicon-import"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        <span class="badge bg-red"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="tile bg-green-meadow" id="pickup_order" data-act='pickup_order'>
+                <div class="tile-body">
+                    <h4>取单</h4>
+                    <i class="glyphicon glyphicon-export"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        继续订单
+                    </div>
+                </div>
+            </div>
+            <div class="tile double bg-green-seagreen" id="checkout_btn" data-act='checkout'>
+                <div class="tile-body">
+                    <h4>结算</h4>
+                    <i class="fa fa-jpy"></i>
+                </div>
+                <div class="tile-object">
+                    <div class="number">
+                        结算订单\收款
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--购物车相关隐藏域-->
+<form id="cart_form" class="hidden">
+    <input id="cart_store_id" name="store_id" type="hidden" value="<{$now_selected_store}>">
+    <input id="cart_pay_method" name="payment[pay_app_id]" type="hidden" value="cash">
+    <input id="is_delivery" name="is_delivery" type="hidden" value="N">
+    <input id="dlytype" name="dlytype" type="hidden" value="">
+</form>
+<iframe src="about:blank" id="print_iframe" class="hidden" name="print_iframe"></iframe>
+<!--所有交互模态框-->
+<{include file="admin/checkstand/pos_modal.html"}>
+
+<!-- begin chrome bridge -->
+<input type="hidden" id="mscreen_url" value="<{$base_full_url}><{link app=store ctl=admin_checkstand act=mscreen }>&singlepage=1&store_id=<{$now_selected_store}>">
+<textarea id="pointofsale_event_area" class="hidden"></textarea>
+<script type="text/javascript">
+    var customEvent = document.createEvent('Event');
+    customEvent.initEvent('pointOfSale', true, true);
+
+    function firePointOfSale(data) {
+        var pea = document.getElementById('pointofsale_event_area');
+        pea.innerText = data;
+        pea.dispatchEvent(customEvent);
+    }
+</script>
+<!-- end chrome bridge -->
+
+<script charset="utf-8">
+    !function () {
+        var auto_focus_timer = 0;
+        $(document).ready(function(){
+            clearTimeout(auto_focus_timer);
+            if(!$('input:visible:not(#product_barcode),select:visible,textarea:visible').length){
+                $("#product_barcode").trigger('focus').trigger('click').off('blur');
+            }
+            auto_focus_timer = setTimeout(arguments.callee,1000);
+        });
+        var obj_cart_form = $('#cart_form');
+        var obj_cart_form_necessary_data = obj_cart_form.children();
+        var obj_barcode_input_form = $('#barcode_input_form');
+        var obj_goods_list_panel = $('#goods_list_panel');
+        var obj_main_actions = $('#main_actions');
+        var obj_goods_list_btns = $('#goods_list_btns');
+
+        var cart_ajax_status = '0';
+        var cart_ajax_timer = null;
+
+        //保存挂起的订单信息
+        var _temp_order_arr = [];
+
+        //保存当前购物车信息
+        var _currentCheckoutInfo = null;
+
+        //实例化支付对象
+        var pay = new Pay();
+        /**
+         * 支付类
+         */
+        function Pay() {
+            this.order_id = '0';//订单id
+            this.bill_id = '0';//支付单id
+            this.payed = '0';//已经支付的金额
+            this.total_pay = '0';//订单支付的金额
+            this.pay_method = 'cash';//支付方式
+            this.aleady_pay_status = '';//判断已经发生支付
+            this.ajax_status = '0';//0->未请求,1->请求中
+            this.ajax_response = {};//ajax响应数据
+            this.callback_succ_fn = null;
+            this.callback_error_fn = null;
+            this.have_cash_pay_permission = '<{$have_cash_pay_permission}>';//是否拥有现金支付权限.0->没有;1->有
+        }
+        /**
+         * 现金支付打印支付凭据
+         */
+        Pay.prototype.print_cashier_credentials = function () {
+            var print_cashier_credentials_url = '<{link app=store ctl=admin_pay act=print_cashier_credentials}>';
+            print_cashier_credentials_url += '&orderId=' + this.order_id + '&billId=' + this.bill_id + '&direct_printing=1&pages=1&singlepage=1';
+            //关闭结账窗
+            $('#payment_modal').modal('hide');
+            //购物车清除操作
+            clear_order_history();
+            //加载打印
+            $('#print_iframe').attr('src',print_cashier_credentials_url);
+        };
+
+        /**
+         * 生成支付单
+         */
+        Pay.prototype.create_pay_bill = function (callbackFnName) {
+            var _this = this;
+            var ajaxUrl = '<{link app=store ctl=admin_pay act=create_pay_bill}>';
+            var ajaxData = {
+                order_id: _this.order_id
+            };
+
+            //ajax生成支付单
+            this.ajax(ajaxUrl, ajaxData, callbackFnName);
+        };
+        /**
+         * 再次支付处理
+         */
+        Pay.prototype.pay_again_after_createbill = function () {
+            this.bill_id = this.ajax_response.pay_bill_info.bill_id;
+            this.pay_method = this.ajax_response.pay_bill_info.pay_app_id;
+            $('#show_payment_info_modal').hide();
+        }
+
+        /**
+         *
+         * 获取订单结账信息并显示
+         */
+        Pay.prototype.show_payment_infos = function () {
+            this.bill_id = this.ajax_response.pay_bill_info.bill_id;
+            this.pay_method = this.ajax_response.pay_bill_info.pay_app_id;
+
+            var ajaxUrl = '<{link app=store ctl=admin_pay act=show_payment_infos}>';
+            var ajaxData = {
+                order_id: this.order_id,
+                pay_bill_id: this.bill_id
+            };
+
+            console.log('ajax_status: ' + this.ajax_status);
+
+            //关闭结账窗
+            $('#payment_modal').modal('hide');
+            //获取结账信息并且显示结账信息模态框
+            this.ajax(ajaxUrl, ajaxData, this.show_payment_info_modal);
+        };
+
+        /**
+         * 显示结账信息的模态框
+         */
+        Pay.prototype.show_payment_info_modal = function () {
+            var _this = this;
+            var show_payment_info_modal = $('#show_payment_info_modal');
+            show_payment_info_modal.find('.modal-content').html(this.ajax_response.pay_body);
+            show_payment_info_modal.modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+
+
+            show_payment_info_modal.off('shown.bs.modal').on('shown.bs.modal', function () {
+                $("#collection_money,#auth_code,#out_trade_no,#out_membercard_no").trigger('focus');
+                var themodal = $(this);
+                var num_ipt_panel = themodal.find('.screen-num-ipt'),
+                        sni = num_ipt_panel.find('input[type=text]:focus'),
+                        btns = num_ipt_panel.find('button[data-val]'), start_ipt = true;
+                if(btns){
+                    sni[0].select();
+                    btns.on('click', function () {
+                        var val = $(this).attr('data-val');
+                        switch (val) {
+                            case 'delete':
+                                sni.val(sni.val().slice(0, -1));
+                                break;
+                            default:
+                                if (sni.val() == '' && val == '0') {
+                                    return;
+                                }
+                                sni.val(start_ipt ? val : (sni.val() + val));
+                                start_ipt = false;
+                        }
+                        sni.trigger('focus');
+                        $("#collection_money").trigger('keyup');
+                    });
+                }
+
+            })
+
+
+            //为修改支付方式按钮绑定点击显示更改支付方式模态框方法
+            $('#change_pay_method_btn').off('click').on('click',function () {
+                _this.show_change_pay_method_modal();
+            });
+
+            //为二维码输入框绑定键盘事件, 点击回车就去支付
+            $("#collection_money,#auth_code,#out_trade_no").off('keydown').on('keydown', function (e) {
+                if (e.keyCode === 13) {
+                    _this.do_pay();
+                    return false;
+                }
+            });
+            $("#out_membercard_no").off('keydown').on('keydown', function (e) {
+                if (e.keyCode === 13) {
+                    _this.do_read();
+                    return false;
+                }
+            });
+            //取消储值卡刷卡消费项！
+            $('#payBodyForm ').on('click','#data_add_table .table-data button',function(e){
+                $(this).parent('td').parent('tr').remove();
+                // 每次消费卡号内容不能重复
+                var num =0;
+                var card_sum = 0;
+                var card_surplus= 0;
+                $('#payBodyForm  .table-data ').each(function(){
+                    num++;
+                    card_sum += parseFloat($(this).find('td').eq(3).find('input').val());
+                    card_surplus += parseFloat($(this).find('td').eq(4).html());
+                    console.log(card_surplus);
+                });
+                console.log(num);
+                if(num == 0){
+                    $('#data_add_table').hide();
+                }
+                $('#table_sum').html(card_sum);
+                $('#table_surplus').html(card_surplus);
+            }).on('input','#data_add_table .table-data input',function(){
+                var card_sum = 0;
+                var card_surplus= 0;
+                var input_pay = 0;
+                var input_need_pay =parseFloat($('#need_total_pay').html());
+                var input_Balance = parseFloat($(this).parent().prev('td').html());
+                var input_surplus = 0;
+                var input_max_val = Math.min(input_need_pay,input_Balance);
+
+                input_pay = $(this).val();
+                console.log('输入值'+input_pay+'最大值'+input_max_val);
+                if(/^\d+\.?\d*$/.test(input_pay) == false){
+                    input_pay=0;
+                    $(this).val('');
+                }
+                console.log('支付'+input_pay+'余额'+input_Balance+'剩余'+input_surplus);
+                if(input_pay>input_max_val){
+                    $(this).val(input_max_val);
+                    $(this).parent().next().html(0)
+                }else{
+                    input_surplus=floatSub(input_Balance,input_pay);
+                    console.log(input_surplus);
+                    $(this).parent().next().html(input_surplus)
+                }
+
+                $('#payBodyForm  .table-data ').each(function(){
+                    var i3 = parseFloat($(this).find('td').eq(3).find('input').val());
+                    var i4 = parseFloat($(this).find('td').eq(4).html());
+                    card_sum += i3;
+                    card_surplus += i4;
+                    $(this).find('td').eq(0).find('input').val(i4);
+                });
+                $('#table_sum').html(card_sum);
+                $('#table_surplus').html(card_surplus);
+            })
+
+            //为现金支付的现金输入框绑定键盘时间,输入数字时自动计算
+            $('#collection_money').off('keyup').on('keyup', function () {
+
+                var collection_money = parseFloat($(this).val());
+                var pay_money = parseFloat($('#need_total_pay').html());
+                var obj_show_change_money = $('#show_change_money');
+
+                if (/^\d+\.?\d*$/.test(collection_money) == false) {
+                    $(this).val('').attr('placeholder', '请输入正确的收款金额');
+                    obj_show_change_money.val('0');
+
+                    return false;
+                }
+
+                //计算找零金额, 保留两位小数不四舍五入
+                var change_money = floatSub(collection_money, pay_money);
+                if(change_money < 0){
+                    obj_show_change_money.val(0);
+                }else {
+                    obj_show_change_money.val(change_money);
+                }
+            });
+
+            //为确认付款,打印小票按钮绑定点击事件,点击就去支付
+            $('#confirm_pay_btn').off('click').on('click', function () {
+                _this.do_pay();
+            });
+        };
+
+        /**
+         * 显示更改支付方式模态框
+         */
+        Pay.prototype.show_change_pay_method_modal = function () {
+
+            var _this = this;
+            var show_payment_info_modal = $('#show_payment_info_modal');
+            var change_pay_method_modal = $('#change_pay_method_modal');
+
+            console.log(_this.pay_method);
+
+            //选中当前的支付方式
+            (function () {
+                change_pay_method_modal.find('.pay-method-btn').removeClass('text-danger');
+                var obj_btn_now_pay_method = change_pay_method_modal.find('.pay-method-btn[data-payappid=' + _this.pay_method + ']');
+                obj_btn_now_pay_method.addClass('text-danger');
+                change_pay_method_modal.find('button .fa-check-circle-o').appendTo(obj_btn_now_pay_method);
+            })();
+
+            change_pay_method_modal.find('.pay-method-btn').off('click').on('click', function () {
+                change_pay_method_modal.find('.pay-method-btn').removeClass('text-danger');
+                $(this).addClass('text-danger');
+
+                _this.pay_method = $(this).attr('data-payappid');
+
+                change_pay_method_modal.find('button .fa-check-circle-o').appendTo($(this));
+
+                this.blur();
+                //点击确定按钮根据新的支付方式修改订单并且,重新生成支付单
+                var ajax_url = '<{link app=store ctl=admin_pay act=create_pay_bill}>';
+                var ajax_data = {
+                    order_id: _this.order_id,
+                    pay_app_id: _this.pay_method
+                };
+
+                //当选择了现金支付,但是没有现金支付权限的只能打印支付凭据,有的才可以显示支付信息modal
+                if ((_this.have_cash_pay_permission == '0' && _this.pay_method == 'cash')) {
+                    bootbox.confirm("<h3>将打印中台收银小票,请指引顾客到中台进行现金支付!</h3>",function(is_confirm){
+                        if(is_confirm){
+                            _this.ajax(ajax_url, ajax_data, _this.print_cashier_credentials);
+                            //隐藏修改支付方式的modal
+                            change_pay_method_modal.modal('hide');
+                        }else{
+                            //todo
+                        }
+                    });
+
+                } else {
+                    _this.ajax(ajax_url, ajax_data, _this.show_payment_infos);
+                    //隐藏修改支付方式的modal
+                    change_pay_method_modal.modal('hide');
+                }
+
+            });
+            //隐藏结账信息模态框
+            show_payment_info_modal.modal('hide');
+
+            //显示修改支付方式模态框
+            change_pay_method_modal.modal({
+                backdrop: 'static',
+                keyboard: false,
+                show: true
+            });
+        };
+
+        /**
+         * 开始支付
+         */
+        Pay.prototype.do_pay = function () {
+            var ajax_url = '<{link app=store ctl=admin_pay act=toPay}>';
+            var ajax_data = $('#payBodyForm').serializeArray();
+            BlockLoading({
+                target: $('#payBodyForm').closest('.modal-content'),
+                animate: true
+            });
+            $('#auth_code,#out_trade_no').trigger('blur');
+            //ajax去调起支付
+            this.ajax(ajax_url, ajax_data, this.handle_pay, this.handle_pay);
+        };
+
+        /**
+         * 开始读取储值卡信息
+         */
+        Pay.prototype.do_read = function () {
+            /*
+             * tag 是否输入重复的卡号
+             * unm 记录已经有几张会员卡消费
+             * cardcode 扫描进入的卡片磁条内容
+             * ready_pay 所有卡片准备消费的金额
+             * card_sum 已经支付的金额
+             *card_surplus  所有卡片使用后剩余的金额
+             * total  总共需要支付的金额
+             * */
+            var tag = false;
+            var num = 0;
+            var cardcode =  $('#out_membercard_no').val();
+            var ready_pay = 0;
+            var total =  parseFloat($('#need_total_pay').html());
+            if(cardcode == 0){
+                Messagebox.error('请输入卡号！！！');
+                return false;
+            }
+            // 每次消费卡号内容不能重复
+            $('#payBodyForm  .table-data ').each(function(){
+                var CardCode = $(this).find('td').eq(1).data('cardcode');
+                console.log(CardCode);
+                ready_pay += parseFloat($(this).find('td').eq(3).find('input').val());
+                num++;
+                if(cardcode == CardCode){
+                    tag = true;
+                    Messagebox.error('警告：发现重复储值卡');
+                    return false;
+                }
+            });
+            if(tag){
+                $('#out_membercard_no').val('');
+                return false;
+            }
+            console.log('卡数'+num);
+            var ajax_url = '<{link app=store ctl=admin_pay act=toRead}>';
+            var ajax_data = $('#payBodyForm').serializeArray();
+            BlockLoading({
+                target: $('#payBodyForm').closest('.modal-content'),
+                animate: true
+            });
+            //查询已经准备刷卡的金额，
+            console.log('预定支付'+ready_pay);
+            $('#auth_code,#out_membercard_no').trigger('blur');
+            //ajax去调起支付
+            $.post(ajax_url, ajax_data, function(data,status){
+                if(status == 'success'){
+                    UnblockLoading($('#payBodyForm').closest('.modal-content'));
+                    $('#auth_code,#out_membercard_no').trigger('focus');
+                    $('#out_membercard_no').val('');
+                    var jsonObject = data;
+                    if(jsonObject.error){
+                        Messagebox.error(jsonObject.error);
+                        return false;
+                    }
+                    if(data.CardTypeId != '513' && data.CardTypeId != '514'){
+                        Messagebox.error('非MMGO专用卡，不能使用');
+                        UnblockLoading($('#payBodyForm').closest('.modal-content'));
+                        $('#auth_code,#out_membercard_no').trigger('focus');
+                        $('#out_membercard_no').val('');
+                        return false;
+                    }
+                    if(jsonObject.Balance == 0){
+                        Messagebox.error('警告：余额为0！请回收卡片');
+                        return false;
+                    }
+                    if(floatSub(total,ready_pay) == 0){
+                        Messagebox.error('警告：无需继续刷卡！');
+                        return false;
+                    }
+                    if(num == 0){
+                        $('#data_add_table').show();
+                    }
+                    if(floatSub(total,ready_pay) <= parseFloat(jsonObject.Balance)) {
+                        Messagebox.success('请点击结算！');
+                        $('#payBodyForm table tbody').prepend('<tr class="table-data">'+
+                        '<td ><button type="button" class="btn btn-danger " style="width:60px;min-width:50px">删除</button><input type="hidden"  name="cardInfo['+jsonObject.CardCode+']" value="'+floatSub(jsonObject.Balance,floatSub(total,ready_pay))+'"></td>'+
+                        '<td data-cardcode="'+cardcode+'">'+jsonObject.CardId+'</td>'+
+                        '<td>'+jsonObject.Balance+'</td>'+
+                        '<td><input type="text" name="membercard['+jsonObject.CardId+']"value="'+floatSub(total,ready_pay)+'"'+'</td>'+
+                        '<td>'+floatSub(jsonObject.Balance,floatSub(total,ready_pay))+'</td>'+
+                        '</tr>');
+//                        $('#payBodyForm table tbody').prepend()('<li><span class="card-code" data-code="'+cardcode+'">'+jsonObject.CardCode + '   </span>余额   ' + jsonObject.Balance + '使用  <input type="text" name="membercard['+jsonObject.CardId+']" value="' + floatSub(total,ready_pay) + '">剩余:<span style="color: green">'+floatSub(jsonObject.Balance,floatSub(total,ready_pay))+'</span><button type="button" class="btn btn-default btn-clean">取消</button></li><input type="hidden"  name="cardInfo['+jsonObject.CardCode+']" value="'+floatSub(jsonObject.Balance,floatSub(total,ready_pay))+'">');
+                    }else{
+                        Messagebox.error('警告：请继续添加购物卡！');
+//                        $('#payBodyForm').append('<li><span class="card-code" data-code="'+cardcode+'">'+jsonObject.CardCode + '   </span>余额   ' + jsonObject.Balance + '使用  <input type="text" name="membercard['+jsonObject.CardId+']" value="' + jsonObject.Balance + '"> 剩余:<span style="color: green">'+0.00+'</span><button type="button" class="btn btn-default btn-clean">取消</button></li><input type="hidden"  name="cardInfo['+jsonObject.CardCode+']" value="'+jsonObject.Balance+'">');
+                        $('#payBodyForm table tbody').prepend('<tr class="table-data">'+
+                        '<td ><button type="button" class="btn btn-danger " style="width:60px;min-width:50px">删除</button><input type="hidden"  name="cardInfo['+jsonObject.CardCode+']" value="'+0+'"></td>'+
+                        '<td data-cardcode="'+cardcode+'">'+jsonObject.CardId+'</td>'+
+                        '<td>'+jsonObject.Balance+'</td>'+
+                        '<td><input type="text" name="membercard['+jsonObject.CardId+']"value="'+jsonObject.Balance+'"'+'</td>'+
+                        '<td>'+0.00+'</td>'+
+                        '</tr>');
+                    }
+                    //更改合计消费金额及卡片余额
+                    var card_sum = 0;
+                    var card_surplus= 0;
+                    $('#payBodyForm  .table-data ').each(function(){
+                        card_sum += parseFloat($(this).find('td').eq(3).find('input').val());
+                        card_surplus += parseFloat($(this).find('td').eq(4).html());
+                        console.log(card_surplus);
+                    });
+                    $('#table_sum').html(card_sum);
+                    $('#table_surplus').html(card_surplus);
+                }else{
+                    UnblockLoading($('#payBodyForm').closest('.modal-content'));
+                    alert('读取储值卡信息失败，请重新读取');
+                }
+            },'json');
+
+        };[]
+        /**
+         * 去支付以后处理支付返回结果
+         */
+        Pay.prototype.handle_pay = function () {
+            console.log('支付完成返回数据');
+            var ajax_response = this.ajax_response;
+            console.log(ajax_response);
+            UnblockLoading($('#payBodyForm').closest('.modal-content'));
+            $('#auth_code,#out_trade_no').trigger('focus');
+            if (ajax_response.success) {//支付成功了
+                //打印小票
+
+                if(ajax_response.payment_info.pay_app_id =='membercard' || ajax_response.payment_info.pay_app_id =='cash'){
+                    if(ajax_response.payment_info.pay_status=='1'){
+                        this.print_receipt();
+                        return false;
+                    }
+                    var need_pay = floatSub(ajax_response.payment_info.order_total,ajax_response.payment_info.payed);
+                    pay.total_pay = parseFloat(ajax_response.payment_info.order_total).toFixed(2);
+                    pay.payed = parseFloat(ajax_response.payment_info.payed).toFixed(2);
+                    pay.need_pay = parseFloat(need_pay).toFixed(2);
+                    pay.aleady_pay_status = 'true'
+                    $('#pay_total_pay').html(pay.total_pay);
+                    $('#pay_payed').html(pay.payed);
+                    $('#pay_need_pay').html(pay.need_pay);
+                    $('#show_pay_info_item').show();
+                    pay.create_pay_bill(pay.pay_again_after_createbill);
+                    $('#show_payment_info_modal').modal('hide');
+//                    $('#payment_modal').modal({
+//                        backdrop: 'static',
+//                        keyboard: false,
+//                        show: true
+//                    });
+                    Messagebox.success('请继续支付！');
+
+                    this.show_change_pay_method_modal();
+                    $('#show_payment_info_modal').modal('hide');
+                    return false;
+                }
+                this.print_receipt();
+            } else {
+                if (['wxqrcode','alipayqrcode'].indexOf(ajax_response.pay_response.pay_method)>-1) {
+                    if (['USERPAYING','10003'].indexOf(ajax_response.pay_response.err_code)>-1) {
+                        //扫码支付支付中，顾客确认中...
+                        console.log(ajax_response);
+                        this.check_pay_result();
+                    }else{
+                        $('#auth_code').val('');
+                        //Messagebox.warning('请重试','支付失败');
+                    }
+                } else {
+                    //Messagebox.warning('请重试','支付失败');
+                }
+            }
+        };
+
+
+        /**
+         * 延迟2秒检查支付结果
+         */
+        Pay.prototype.check_pay_result = function () {
+            var _this = this;
+            BlockLoading({
+                target: $('#payBodyForm').closest('.modal-body'),
+                animate: true
+            });
+            setTimeout(function () {
+                var ajax_url = '<{link app=store ctl=admin_pay act=check_pay_result}>';
+                var ajax_data = $('#payBodyForm').serializeArray();
+
+                _this.ajax(ajax_url, ajax_data, _this.handle_pay);
+            }, 2000);
+        };
+
+
+        /**
+         * 打印购物小票(收银小票)
+         */
+        Pay.prototype.print_receipt = function () {
+            console.log('打印小票开始');
+            //打印小票url
+            var print_receipt_url = '<{link app=store ctl=admin_pay act=print_receipt}>';
+            print_receipt_url += '&orderId=' + this.ajax_response.payment_info.order_id +
+            '&billId=' + this.ajax_response.payment_info.bill_id + '&direct_printing=1&singlepage=1';
+
+            //关闭支付信息modal
+            $('#show_payment_info_modal').modal('hide');
+            //清空订单干和支付单号
+            this.order_id = '0';//订单id
+            this.bill_id = '0';//支付单id
+            this.aleady_pay_status = '';
+            //购物车清除操作
+            clear_order_history();
+            //加载打印
+            $('#print_iframe').attr('src',print_receipt_url);
+            //清空支付提示信息：
+            $('#pay_total_pay').html('');
+            $('#pay_payed').html('');
+            $('#pay_need_pay').html('');
+            $('#show_pay_info_item').hide();
+        };
+
+        /**
+         * 支付发送ajax请求
+         *
+         * @param ajaxUrl ajax请求地址
+         * @param ajaxData ajax请求参数
+         * @param callbackSuccFn 请求成功回调函数
+         * @param callbackErrFn 请求失败回调函数
+         */
+        Pay.prototype.ajax = function (ajaxUrl, ajaxData, callbackSuccFn, callbackErrFn) {
+            var _this = this;
+            if (this.ajax_status === '0') {
+                this.ajax_status = '1';
+                $.ajax({
+                    url: ajaxUrl,
+                    type: 'post',
+                    data: ajaxData,
+                    dataType: 'html',
+                    success: function (response) {
+                        console.log(response);
+
+
+                        _this.ajax_response = $.parseJSON(response);
+
+                        _this.ajax_status = '0';
+
+                        if (_this.ajax_response.success) {
+                            //console.log(callbackSuccFn);
+
+                            if (typeof callbackSuccFn === 'function') {
+                                callbackSuccFn.apply(_this);
+                            }
+                        } else {
+                            Messagebox.error(_this.ajax_response.error);
+
+                            if (typeof callbackErrFn === 'function') {
+                                callbackErrFn.apply(_this);
+                            }
+                        }
+                    }
+                });
+            }
+        };
+        /**/
+        obj_barcode_input_form.on('keydown', '#product_barcode', function (e) {
+            var _this = $(this);
+            if (e.keyCode == 13) {
+                //根据商品条码查询商品
+                get_product_by_barcode();
+            }
+
+            /**
+             * 根据商品条码查询商品
+             */
+            function get_product_by_barcode() {
+                var barcode = _this.val();
+                var ajax_url = '<{link app=store ctl=admin_checkstand act=product_filter_by_barcode}>';
+                var data = {
+                    filter: {
+                        now_selected_store: '<{$now_selected_store}>',
+                        barcode: barcode
+                    }
+                };
+
+                _this.val('').prop('placeholder', '正在查询...');
+
+                $.post(ajax_url, data, function (re) {
+                    console.info(re);
+
+                    if ('error' in re) {
+                        bootbox.alert("<h1>条码查询异常</h1><p>条码"+barcode+"未在系统内找到,"+re.error+"</p>");
+                        Messagebox.error(re.error, '失败');
+                    } else if ('success' in re) {
+                        //添加商品到购物车
+                        goods2cart(re.product.product_id);
+                    }
+
+                    _this.prop('placeholder', _this.data('placeholder'));
+                }, 'json');
+            }
+        });
+
+        obj_goods_list_panel.on('click', 'tr[data-productid]', function (e) {
+            select_row($(this));
+            obj_goods_list_btns.find('.icon-btn[data-act="r-edit"]').trigger('click', e);
+        });
+        $('#goods_filter').on('click', function () {
+            //点击显示商品搜索modal
+            $('#goods_filter_modal').modal('show');
+            $("#product_filter_input").focus();
+        })
+        obj_main_actions.on('click', '#member_filter', function () {
+            if(pay.order_id !== '0' && pay.aleady_pay_status =='true'){
+                Messagebox.error('请点击结算按钮继续收银！');
+                return false;
+            }
+            var obj_member_modal = $('#member_modal');
+            obj_member_modal.modal('show');
+            $("#member_card").focus();
+        }).on('click', '#member_show', function () {
+            if(pay.order_id !== '0' && pay.aleady_pay_status =='true'){
+                Messagebox.error('请点击结算按钮继续收银！');
+                return false;
+            }
+            bootbox.confirm('<h4>确认取消使用会员？</h4>', function (flag) {
+                if (flag) {
+
+                    //会员相关操作
+                    cart_member();
+
+                    var current_select_pid = obj_goods_list_panel.find('tr[data-productid].bg-blue-chambray').attr('data-productid');
+                    //更新购物车
+                    update_cart(function (re) {
+                        if (current_select_pid) {
+                            select_row(current_select_pid);
+                        }
+                    });
+                }
+            });
+        }).on('click', '#need_delivery', function () {
+            if(pay.order_id !== '0' && pay.aleady_pay_status =='true'){
+                Messagebox.error('请点击结算按钮继续收银！');
+                return false;
+            }
+            //点击需配送按钮,如果已经选择了会员,显示这个会员所有的配送方式
+            var member_id = check_is_member();
+            //获取会员收货地址信息,并且弹出modal,如果没有收货地址信息,显示添加收货地址
+            var get_member_addr_url = '<{link app=store ctl=admin_checkstand act=sel_delivery}>';
+            var get_member_addr_request_data = {
+                member_id: member_id
+            };
+            var obj_delivery_modal = $('#delivery_modal');
+            $.ajax({
+                url: get_member_addr_url,
+                type: 'post',
+                data: get_member_addr_request_data,
+                dataType: 'html',
+                success: function (response) {
+                    response = $.parseJSON(response);
+                    if (response.success) {
+                        obj_delivery_modal.find('.modal-content').html(response.modal_content);
+                        obj_delivery_modal.modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+                        var check_addr_id = $('#cart_form').find('#cart_addr_id').val();
+                        if(check_addr_id !=undefined){
+                            $(".delivery-list").each(function(){
+                                if($(this).attr('data-delivery_id') == check_addr_id){
+                                    $(this).addClass('list-group-item-success');
+                                }
+                            });
+                        }
+                        if($("#dlytype").val()){
+                            $("#delivery_type").val($("#dlytype").val());
+                        }
+
+                    } else {
+                        Messagebox.error(response.error);
+                    }
+                }
+            });
+        }).on('click', '#card_Balance', function (){
+            $('#get_card_balance').modal('show');
+            $("#cardCode_input").focus();
+        }).on('click', '#use_coupon', function () {
+            if(pay.order_id !== '0' && pay.aleady_pay_status =='true'){
+                Messagebox.error('请点击结算按钮继续收银！');
+                return false;
+            }
+            //点击使用优惠券,如果已经选择了会员,显示这个会员的优惠券列表modal
+            var member_id = check_is_member();
+
+            //获取会员优惠券信息,并且弹出modal
+            var get_member_coupon_url = '<{link app=store ctl=admin_checkstand act=sel_coupon}>';
+            var get_member_coupon_request_data = {
+                member_id: member_id
+            };
+            var obj_coupon_modal = $('#coupon_modal');
+            $.ajax({
+                url: get_member_coupon_url,
+                type: 'post',
+                data: get_member_coupon_request_data,
+                dataType: 'html',
+                success: function (response) {
+                    response = $.parseJSON(response);
+                    if (response.success) {
+                        obj_coupon_modal.find('.modal-content').html(response.modal_content);
+                        obj_coupon_modal.modal({
+                            backdrop: 'static',
+                            keyboard: false,
+                            show: true
+                        });
+                    } else {
+                        Messagebox.error(response.error);
+                        e.stopPropagation();
+                    }
+                }
+            });
+
+        }).on('click', '#handup_order', function () {
+            if(pay.order_id !== '0' && pay.aleady_pay_status =='true'){
+                Messagebox.error('请点击结算按钮继续收银！');
+                return false;
+            }
+            //点击进行挂单操作
+            if (!_currentCheckoutInfo) {
+                Messagebox.warning('还未开始订单,无法挂起!', '提示');
+            } else {
+                if(!_currentCheckoutInfo.cart_result.object_count){
+                    Messagebox.warning('该单没有商品,无法挂起!', '提示');
+                }else{
+                    bootbox.confirm('<h4>确认挂起该单？</h4>', function (flag) {
+                        flag && handup_order();
+                    });
+                }
+            }
+        }).on('click', '#pickup_order', function () {
+            if(pay.order_id !== '0' && pay.aleady_pay_status =='true'){
+                Messagebox.error('请点击结算按钮继续收银！');
+                return false;
+            }
+            //点击进行取单操作
+            if (_temp_order_arr.length > 0) {
+                $('#pickup_order_modal').modal('show');
+            }
+
+        }).on('click', '#checkout_btn', function () {
+            //点击显示选择支付方式modal
+
+            if (!obj_cart_form.find('input[name^="product"]').length) {
+
+                return Messagebox.warning('还未加入货品！', '提示');
+            }
+            if(pay.order_id =='0'){
+                //显示选择支付方式模态框
+                $('#payment_modal').modal({
+                    backdrop: 'static',
+                    keyboard: false,
+                    show: true
+                });
+            }else{
+                console.log(pay);
+                pay.show_change_pay_method_modal();
+//            $('#change_pay_method_modal').modal({
+//                backdrop: 'static',
+//                keyboard: false,
+//                show: true
+//            });
+            }
+
+
+        });
+
+        $('#member_modal').on('keydown', 'input', function (e) {
+
+            if (e.keyCode == 13) {
+                var type ='card';
+                if($(this).attr('id') == 'member_phone_or_card'){
+                    type = 'login_account';
+                }
+                var member_phone_or_card = $(this).val();
+                if (!member_phone_or_card) {
+                    Messagebox.error(type == 'card'?'请输入会员卡号或帐号' :'请输入会员帐号');
+
+                    return false;
+                }
+                var data = {
+                    type:type,
+                    member_phone_or_card: member_phone_or_card
+                }
+                if(type =='card'){
+                    data.card_type = $("#card_type").val();
+                }
+                $.ajax({
+                    url: '<{link app=store ctl=admin_checkstand act=get_member_info}>',
+                    type: 'post',
+                    data :data,
+                    dataType: 'html',
+                    success: function (response) {
+                        response = $.parseJSON(response);
+                        if (response.success) {
+                            console.log(response);
+                            Messagebox.success(response.success);
+                            $('#member_modal').modal('hide');
+
+                            cart_member(response.member_info);
+                        } else if (response.error) {
+                            Messagebox.error(response.error);
+                        }
+                    },
+                    error: function () {
+                        Messagebox.error('网络连接错误');
+                    }
+                });
+            }
+        }).on('click' ,'#add_member' ,function(){
+            var login_account = $("#member_phone_or_card").val();
+            if(!login_account){
+                Messagebox.error('请填写会员帐号');
+            }
+            var data = {
+                act :'add',
+                login_account:login_account ,
+                card:$('#member_card').val(),
+                card_type:$('#card_type').val()
+            };
+            $.post("<{link app=store ctl=admin_checkstand act=save_member}>" ,data ,function(re){
+                if(re.success){
+                    Messagebox.success('添加成功');
+                    $('#member_modal').modal('hide');
+                    cart_member(re.success.member_info);
+                }else{
+                    Messagebox.error(re.error);
+                }
+            },'json');
+
+        }).on('click' ,'#bind_card' ,function(){
+            var login_account = $("#member_phone_or_card").val();
+            var card = $("#member_card").val();
+            if(!login_account){
+                Messagebox.error('请填写会员帐号');
+            }
+            if(!card){
+                Messagebox.error('请填写会员卡');
+            }
+            var data = {
+                act :'bind',
+                login_account:login_account ,
+                card:card,
+                card_type:$('#card_type').val()
+            };
+            $.post("<{link app=store ctl=admin_checkstand act=save_member}>" ,data ,function(re){
+                if(re.success){
+                    Messagebox.success('绑定成功');
+                    $('#member_modal').modal('hide');
+                }else{
+                    Messagebox.error(re.error);
+                }
+            },'json');
+
+        });
+
+
+        $('#payment_modal').on('click', 'button[data-payappid]', function () {
+            //更改支付方式
+
+            var obj_payment_modal = $('#payment_modal');
+            obj_payment_modal.find('button .fa-check-circle-o').appendTo($(this));
+            this.blur();
+
+            var pay_app_id = $(this).attr('data-payappid');
+            obj_cart_form.find('#cart_pay_method').val(pay_app_id);
+
+            //创建订单
+            $.post("<{link app=store ctl=admin_checkstand act=neworder}>", obj_cart_form.serializeArray(), function (response) {
+
+                console.log(response);
+                response = jsonDecode(response);
+                if (response && response.success) {
+                    order_create_success(response.success);
+                } else {
+                    Messagebox.error(response.error || '提交失败');
+                }
+            });
+        });
+
+        //点击新增收货人信息按钮,如果当前显示的是收货人信息列表,隐藏收货人信息列表,显示添加收货人信息表单
+        //如果当前显示的收货人信息表单,提交表单信息到后台添加收货人信息
+        $('#delivery_modal').on('click', '#add_delivery_btn', function () {
+            var obj_delivery_modal = $('#delivery_modal');
+            var obj_delivery_list_body = obj_delivery_modal.find('.delivery-list-body');
+            var obj_add_delivery_body = obj_delivery_modal.find('.add-delivery-body');
+            if (obj_add_delivery_body.hasClass('hide')) {
+                obj_delivery_list_body.remove();
+                obj_add_delivery_body.removeClass('hide');
+            } else {
+                //禁用点击按钮
+                $(this).attr('disabled', true);
+                //每次点击清空ajax提交定时器,避免重复提交
+                clearTimeout(cart_ajax_timer);
+                //延迟0.5秒提交,快速重复点击的时候在前一步先清空定时器,这样可以避免重复提交
+                cart_ajax_timer = setTimeout(function () {
+                    var member_id = check_is_member();
+                    var add_delivery_url = '<{link app=store ctl=admin_checkstand act=edit_delivery}>';
+                    var add_delivery_data = $('#edit_delivery_form').serializeArray();
+                    add_delivery_data.push({name: 'member_id', value: member_id});
+                    add_delivery_data.push({name: 'action', value: 'save'});
+                    cart_ajax_status = '1';
+                    $.ajax({
+                        url: add_delivery_url,
+                        type: 'post',
+                        data: add_delivery_data,
+                        dataType: 'html',
+                        success: function (response) {
+                            response = $.parseJSON(response);
+                            if (response.success) {
+                                //更新收货信息modal数据
+                                update_delivery_modal(member_id);
+                            } else {
+                                Messagebox.error(response.error);
+                            }
+                        },
+                        error: function () {
+                            Messagebox.error('未知错误');
+                        }
+                    });
+                }, 500);
+            }
+        }).on('click', '.perfect-delivery-btn', function (e) {
+            e.stopPropagation();
+            //点击完善信息按钮,把收货地址id传递给后端,获取这个收货地址的编辑框
+
+            var obj_delivery_modal = $('#delivery_modal');
+            var addr_id = $(this).attr('data-delivery_id');
+            var member_id = check_is_member();
+            if (/^[1-9]\d*$/.test(addr_id) == false) {
+                Messagebox.error('收货地址id错误');
+                obj_delivery_modal.modal('hide');
+
+                return false;
+            }
+            var edit_delivery_url = '<{link app=store ctl=admin_checkstand act=edit_delivery}>';
+            var edit_delivery_data = {
+                member_id: member_id,
+                addr_id: addr_id,
+                action: 'edit'
+            };
+
+            $.ajax({
+                url: edit_delivery_url,
+                type: 'post',
+                data: edit_delivery_data,
+                dataType: 'html',
+                success: function (response) {
+                    response = $.parseJSON(response);
+                    if (response.success) {
+                        obj_delivery_modal.find('.modal-content').html(response.modal_content);
+                    } else {
+                        Messagebox.error(response.error);
+                        //更新失败隐藏modal
+                        obj_delivery_modal.modal('hide');
+                    }
+                },
+                error: function () {
+                    Messagebox.error('未知错误');
+                    //更新失败隐藏modal
+                    obj_delivery_modal.modal('hide');
+                }
+            });
+        }).on('click', '.delivery-list', function (e) {
+            e.stopPropagation();
+            //点击使用按钮,使用当前这个收货地址作为订单的收货地址,并且把收货地址信息写入隐藏表单域
+
+            var addr_id = $(this).attr('data-delivery_id');
+            var dlytype = $("#delivery_type").val();
+            var obj_cart_form = $('#cart_form');
+            var obj_delivery_modal = $('#delivery_modal');
+            var obj_addr_id_hidden_input = obj_cart_form.find('#cart_addr_id');
+
+            //如果已经选择过，那么这次就是取消
+            if($(this).hasClass('list-group-item-success')){
+                $('#is_delivery').val('N');
+                $('#dlytype').val('');
+                obj_addr_id_hidden_input.remove();
+                $(this).removeClass('list-group-item-success');
+            }else{
+                if (obj_addr_id_hidden_input.length == 0) {
+                    obj_addr_id_hidden_input = $('<input id="cart_addr_id" name="addr_id" type="hidden">');
+                    obj_addr_id_hidden_input.appendTo(obj_cart_form);
+                }
+                if (/^[1-9]\d*$/.test(addr_id) == false) {
+                    Messagebox.error('收货地址id错误');
+                } else {
+                    $('#is_delivery').val('Y');
+                    $('#dlytype').val(dlytype);
+                    obj_addr_id_hidden_input.val(addr_id);
+                }
+            }
+            obj_delivery_modal.modal('hide');
+            //更新购物车
+            update_cart(function () {
+                if($('#goods_list_panel tbody tr[data-productid]').length>0){
+                    select_row($('#goods_list_panel tbody tr[data-productid]:last'));
+                }
+
+            });
+
+        }).on('change' ,'#delivery_type' ,function(){
+            $("#dlytype").val($(this).val());
+            //更新购物车
+            update_cart(function () {
+                if($('#goods_list_panel tbody tr[data-productid]').length>0){
+                    select_row($('#goods_list_panel tbody tr[data-productid]:last'));
+                }
+
+            });
+        });
+
+
+
+        //点击优惠券列表后添加优惠券到购物车
+        $('#coupon_modal').on('click', '.coupon-check' ,function(e){
+            $(this).parent('.coupon-list').trigger('click');
+        })
+        $('#coupon_modal').on('click', '.coupon-list', function () {
+            var obj_coupon_modal = $('#coupon_modal');
+            var coupon_code = $(this).attr('data-coupon_code');
+            var cpns_check = $(this).find('.coupon-check input');
+            cpns_check.attr("checked" ,!cpns_check.prop('checked'));
+            obj_coupon_modal.modal('hide');
+
+            if (!coupon_code) {
+                Messagebox.error('错误的优惠券号码');
+                return false;
+            }
+            add_cpns();
+
+        }).on('click', '#add_coupon_btn', function () {
+            //点击添加优惠券按钮,如果优惠券输入框没有显示,显示优惠券输入框
+            //如果已经显示,获取优惠券号码并加入购物车
+
+            var obj_coupon_modal = $('#coupon_modal');
+            var obj_coupon_code_body = obj_coupon_modal.find('.coupon-code-body');
+            var obj_coupon_list_body = obj_coupon_modal.find('.coupon-list-body');
+            var add_coupon_to_cart_url = '<{link app=store ctl=admin_checkstand act=add_coupon_to_cart}>';
+            $("#inpu_coupon_code").focus();
+            if (obj_coupon_code_body.hasClass('hide')) {
+                obj_coupon_code_body.removeClass('hide');
+                obj_coupon_list_body.remove();
+                $("#inpu_coupon_code").focus();
+            } else {
+                var coupon_code = $('#inpu_coupon_code').val();
+                $(this).prop('disabled', true);
+                if (!coupon_code) {
+                    $(this).prop('disabled', false);
+                    Messagebox.error('错误的优惠券号码');
+                } else {
+                    var member_id = check_is_member();
+                    var add_coupon_to_cart_data = {
+                        member_id: member_id
+                    };
+                    if (!coupon_code) {
+                        Messagebox.error('错误的优惠券号码');
+                        $(this).prop('disabled', false);
+
+                        return false;
+                    }
+                    add_coupon_to_cart_data.coupons = coupon_code;
+
+                    //优惠券加入购物车
+                    add_coupon_to_cart(add_coupon_to_cart_url, add_coupon_to_cart_data);
+                }
+
+                obj_coupon_modal.modal('hide');
+            }
+        });
+
+        //挂单modal显示以后,获取挂起的订单信息
+        $('#pickup_order_modal').on('show.bs.modal', function () {
+            var lgitem_tpl = $(this).find('.modal-body .list-group-item.tpl');
+            lgitem_tpl.nextAll('.list-group-item').remove();
+
+            $.each(_temp_order_arr, function (idx, obj) {
+
+                var item = $(substitute(lgitem_tpl[0].outerHTML, {
+                    goods_count: obj.cart_result.goods_count,
+                    handup_time: new Date(obj.handup_time * 1).toLocaleString(),
+                    order_total: obj.total.order_total,
+                    tmp_order_id: obj.tmp_order_id
+                })).insertAfter(lgitem_tpl).removeClass('hidden tpl');
+
+                $.each(obj.cart_result.objects.goods, function (idx, obj) {
+                    if (idx > 2)return;
+                    item.find('tbody').append('<tr><td>' + obj.item.product.name + ' ' + (obj.item.product.spec_info ? obj.item.product.spec_info : '') + '</td><td>*' + obj.quantity + '</td></tr>');
+                    if (idx == 2) {
+                        item.find('tbody').append('<tr><td colspan="2">...</td></tr>');
+                    }
+                });
+            });
+        }).on('click', ' .modal-body .icon-btn', function () {
+            var act = $(this).attr('data-act'),
+                    oid = $(this).attr('data-oid'),
+                    row = $($(this).closest('.list-group-item')),
+                    themodal = $(this).closest('.modal');
+            if (!act || !oid) {
+                return;
+            }
+            switch (act) {
+                case 'delete':
+                    bootbox.confirm('<h4>确认删除？</h4>', function (flag) {
+                        if (!flag)return;
+                        delete_tmp_order(oid, function () {
+                            row.fadeOut(function () {
+                                row.remove();
+                            });
+                        });
+                    });
+                    break;
+                case 'pickup':
+                    pickup_order(oid);
+                    themodal.modal('hide');
+                    break;
+            }
+        });
+        //绑定MMGO专用卡搜索事件
+        $('#get_card_balance').on('keydown','#cardCode_input',function(e){
+            var _this = $(this);
+            var ajax_url = '<{link app=store ctl=admin_pay act=toRead}>';
+            if (e.keyCode == 13) {
+                var ajax_data = {
+                    pay: {
+                        store_id: '<{$now_selected_store}>',
+                        out_membercard_no: $('#cardCode_input').val()
+                    }
+                };
+                BlockLoading({
+                    target: $('#cardCode_input').closest('.modal-content'),
+                    animate: true
+                });
+
+                $.post(ajax_url, ajax_data, function(data,status){
+                    UnblockLoading($('#cardCode_input').closest('.modal-content'));
+                    if(data.error == undefined){
+                        var jsonObject = data;
+                        if(jsonObject.Balance == 0){
+                            Messagebox.error('警告！余额为0请回收卡片！');
+                            $('#cardCode_input').val('');
+                            $('#cardCode_input').trigger('focus');
+                            $('#viewCardInfo').html('');
+                            return false;
+                        }
+                        $('#cardCode_input').trigger('focus');
+                        $('#cardCode_input').val('');
+
+                        var message = '余额： <span style="color:green;font-size: 35px;">'+jsonObject.Balance+'</span>';
+                        $('#viewCardInfo').html(message);
+                        Messagebox.success('查询信息成功！');
+                    }else{
+                        Messagebox.error(data.error);
+                    }
+                },'json');
+            }
+
+        });
+        $('#goods_filter_modal').on('click', '.filter_type', function () {
+            var obj_product_filter_input = $('#product_filter_input');
+
+            $('.filter_type').removeClass('active');
+
+            $(this).addClass('active');
+
+            $('#change_filter_type_btn').text($(this).find('a').text());
+
+            obj_product_filter_input.attr('data-searchtype', $(this).attr('data-name'))
+                    .prop('placeholder', $(this).attr('data-placeholder'))
+                    .val('');
+        }).on('keydown', '#product_filter_input', function (e) {
+            var _this = $(this);
+            var search_type = _this.attr('data-searchtype');
+            var obj_product_panel_body = _this.closest('#product_filter').find('.panel-body');
+            var search_keyword = _this.val();
+            if($.trim(search_keyword)=='')return true;
+            var product_filter_url = '<{link app=store ctl=admin_checkstand act=product_filter}>';
+
+            if (e.keyCode == 13) {
+                var product_filter_params = {
+                    filter: {
+                        store_id: '<{$now_selected_store}>',
+                        search_type: search_type,
+                        search_keyword: search_keyword
+                    }
+                };
+                obj_product_panel_body.load(product_filter_url, product_filter_params, function () {
+                    _this.prop('placeholder', '');
+                });
+
+                _this.val('');
+                _this.prop('placeholder', '正在查找...');
+            }
+        }).on('click', 'tr[data-productid]', function () {
+            //点击货品tr加入货品到购物车, 并且更新购物车
+
+            var this_product_id = $(this).attr('data-productid');
+            var obj_product_input = obj_cart_form.find('#product_' + this_product_id);
+
+            //$('#goods_filter_modal').modal('hide');
+
+            if (obj_product_input.length > 0) {
+                var product_num = parseInt(obj_product_input.val());
+                if (isNaN(product_num) || product_num <= 0) {
+                    product_num = 1;
+                }
+
+                obj_product_input.val(product_num + 1);
+            } else {
+                obj_product_input = $('<input type="hidden" value="1">');
+                obj_product_input.attr({
+                    id: 'product_' + this_product_id,
+                    name: 'products[' + this_product_id + ']'
+                }).appendTo(obj_cart_form);
+            }
+
+            update_cart(function () {
+                select_row(this_product_id);
+            });
+        });
+
+        //商品列表操作逻辑
+        $('#item_edit_modal').on('loaded.bs.modal', function () {
+            var themodal = $(this);
+            var num_ipt_panel = themodal.find('.screen-num-ipt'),
+                    sni = num_ipt_panel.find('input[type=text]'),
+                    btns = num_ipt_panel.find('button'), start_ipt = true;
+            sni[0].select();
+            btns.on('click', function () {
+                var val = $(this).attr('data-val');
+                switch (val) {
+                    case 'delete':
+                        sni.val(sni.val().slice(0, -1));
+                        break;
+                    default:
+                        if (sni.val() == '' && val == '0') {
+                            return;
+                        }
+                        sni.val(start_ipt ? val : (sni.val() + val));
+                        start_ipt = false;
+                }
+            });
+            $(this).find('button.button-confirm').on('click', function () {
+                var product_id = $(this).attr('data-productid');
+                obj_cart_form.find('input[name="products[' + product_id + ']"]').val(sni.val());
+                update_cart(function () {
+                    select_row(product_id);
+                });
+                themodal.modal('hide');
+            });
+        });
+
+        obj_goods_list_btns.on('click', '.icon-btn', function () {
+            if(pay.order_id !== '0' && pay.aleady_pay_status =='true'){
+                Messagebox.error('请点击结算按钮继续收银！');
+                return false;
+            }
+            var current_row = obj_goods_list_panel.find('tbody tr.bg-blue-chambray'),
+                    product_id = current_row.attr('data-productid'),
+                    current_tbody = current_row.closest('tbody'),
+                    prev_tbody = $(current_tbody).prev('tbody'),
+                    next_tbody = $(current_tbody).next('tbody');
+
+            switch ($(this).attr('data-act')) {
+                case 'p-prev':
+                    if (prev_tbody.length) {
+                        select_row(prev_tbody.find('tr:first'));
+                    }
+                    break;
+                case 'p-next':
+                    if (next_tbody.length) {
+                        select_row(next_tbody.find('tr:first'));
+                    }
+                    break;
+                case 'r-prev':
+                    if (current_row.prev('tr').length) {
+                        select_row(current_row.prev('tr'));
+                    } else if (prev_tbody.length) {
+                        select_row(prev_tbody.find('tr:last'));
+                    }
+                    break;
+                case 'r-next':
+                    if (current_row.next('tr').length && current_row.next('tr').attr('data-productid')) {
+                        select_row(current_row.next('tr'));
+                    } else if (next_tbody.length) {
+                        select_row(next_tbody.find('tr:first'));
+                    }
+                    break;
+                case 'r-edit':
+                    if (product_id) {
+                        $('#item_edit_modal').modal({
+                            remote: "index.php?app=store&ctl=admin_checkstand&act=item_edit&product_id=" + product_id + "&current_count=" + current_row.find('td:nth-child(4)').text(),
+                            show: true
+                        });
+                    }
+                    break;
+                case 'r-delete':
+                    if (product_id) {
+                        bootbox.confirm('<h4>确认移除' + current_row.find('td:nth-child(2)').text() + '</h4>', function (flag) {
+                            if (flag) {
+                                var i_p = obj_cart_form.find('input[name="products[' + product_id + ']"]');
+                                if (i_p.length) {
+                                    i_p.remove();
+                                    var prev_row = current_row.prev('tr'),
+                                            next_row = current_row.next('tr');
+                                    var selected_productid;
+                                    if (next_row.length && next_row.attr('data-productid')) {
+                                        selected_productid = next_row.attr('data-productid');
+                                    } else if (prev_row.length && prev_row.attr('data-productid')) {
+                                        selected_productid = prev_row.attr('data-productid');
+                                    } else if (next_tbody.length && next_tbody.find('tr:first').attr('data-productid')) {
+                                        selected_productid = next_tbody.find('tr:first').attr('data-productid');
+
+                                    } else if (prev_tbody.length && prev_tbody.find('tr:last').attr('data-productid')) {
+                                        selected_productid = prev_tbody.find('tr:last').attr('data-productid');
+                                    }
+                                    if (!selected_productid) {
+                                        location.reload();
+                                        return;
+                                    }
+                                    update_cart(function () {
+                                        if (selected_productid) {
+                                            select_row(selected_productid);
+                                        }
+                                    });
+                                }
+                            }
+                        });
+                    }
+                    break;
+                case 'r-minus':
+                    if (product_id) {
+                        goods2cart(product_id, 'minus');
+                    }
+                    break;
+                case 'r-plus':
+                    if (product_id) {
+                        goods2cart(product_id);
+                    }
+                    break;
+            }
+        });
+
+        /**
+         * 加入购物车商品
+         */
+        var goods2cart = function (product_id, minus) {
+            var obj_product_input = obj_cart_form.find('#product_' + product_id);
+            if (obj_product_input.length > 0) {
+                var product_num = parseInt(obj_product_input.val());
+                if (isNaN(product_num) || product_num <= 0) {
+                    product_num = 1;
+                }
+                if (minus && product_num > 0) {
+                    obj_product_input.val(product_num - 1);
+                } else {
+                    obj_product_input.val(product_num + 1);
+                }
+            } else {
+                obj_product_input = $('<input id="product_' + product_id + '" type="hidden" name="products[' + product_id + ']" value="1">');
+                obj_product_input.appendTo(obj_cart_form);
+            }
+
+            //商品加入购物车
+            update_cart(function () {
+                select_row(product_id);
+            });
+        };
+
+        /**
+         * 购物车更新逻辑
+         */
+        var update_cart = function (callback_fn) {
+            if(pay.order_id !== '0' && pay.aleady_pay_status =='true'){
+                Messagebox.error('请点击结算按钮继续收银！');
+                return false;
+            }
+            var cart_data = obj_cart_form.find('input').serializeArray();
+            var ajax_update_cart_url = '<{link app=store ctl=admin_checkstand act=update_cart}>';
+
+            // BlockLoading({
+            //     target: $(document.body),
+            //     animate: true
+            // });
+
+            $.post(ajax_update_cart_url, cart_data, function (response) {
+                //UnblockLoading($(document.body));
+                if (response.member_info) {
+                    response.checkout_info['member_info'] = response.member_info;
+                }
+                _currentCheckoutInfo = response.checkout_info;
+                try {
+                    var goods_list = response.checkout_info.cart_result.objects.goods;
+                    goods_list_render(goods_list);
+                } catch (e) {
+                    console.error(e);
+                }
+                //触发浏览器插件
+                firePointOfSale(JSON.stringify(response));
+                //界面数据绑定
+                data_bind($('#total_panel'), response.checkout_info);
+                //会员界面修改
+                //cart_member(response.member_info);
+                pay.order_id = '0';
+                if (typeof(callback_fn) == 'function') {
+                    callback_fn(response);
+                }
+            }, 'json');
+        };
+
+        /**
+         * selectrow
+         */
+        var select_row = function (product_id) {
+            obj_goods_list_panel.find('tbody tr').removeClass('bg-blue-chambray');
+            if (typeof(product_id) == 'object') {
+                product_id = $(product_id).attr('data-productid');
+            }
+            if (product_id) {
+                obj_goods_list_panel.find('tbody tr[data-productid=' + product_id + ']').addClass('bg-blue-chambray');
+            }
+
+            goods_list_fix_page();
+        };
+
+        /**
+         * 翻页逻辑
+         */
+        var goods_list_fix_page = function () {
+            obj_goods_list_panel.find('tbody').addClass('hidden');
+            obj_goods_list_panel.find('tbody tr.bg-blue-chambray').closest('tbody').removeClass('hidden');
+        };
+
+        /**
+         * 会员相关操作
+         */
+        var cart_member = function (minfo) {
+            console.log(minfo);
+            var obj_cart_form_member_input = obj_cart_form.find('#cart_member');
+            var mfilter = obj_main_actions.find('.tile[data-act="member_filter"]');
+            var mfollow = obj_main_actions.find('.tile.member-following');
+            if (obj_cart_form_member_input.length == 0) {
+                obj_cart_form_member_input = $('<input id="cart_member" name="member_id" type="hidden">');
+                obj_cart_form_member_input.appendTo(obj_cart_form);
+            }
+            if (!minfo) {
+                mfilter.removeClass('hidden');
+                mfollow.addClass('hidden');
+                obj_cart_form_member_input.val('');
+                $('#cart_form input[name=is_delivery]').val("N");
+            } else {
+                mfilter.addClass('hidden');
+                mfollow.removeClass('hidden');
+                mfollow.prop('outerHTML', substitute(mfollow.prop('outerHTML'), {
+                    m_discount: minfo.lv_discount < 1 ? parseFloat(minfo.lv_discount * 10) + '折' : '',
+                    m_level: minfo.levelname,
+                    m_memberid: minfo.member_id
+                }));
+
+                obj_cart_form_member_input.val(minfo.member_id);
+                //更新购物车
+                update_cart(function () {
+                    if($('#goods_list_panel tbody tr[data-productid]').length>0){
+                        select_row($('#goods_list_panel tbody tr[data-productid]:last'));
+                    }
+
+                });
+            }
+        };
+
+        /**
+         * 订单创建成功以后,清除购物车页面记录,商品搜索记录等等
+         */
+        var clear_order_history = function () {
+            obj_cart_form.html(obj_cart_form_necessary_data);
+
+            //清空会员
+            cart_member();
+
+            //空数据更新购物车
+            update_cart();
+        };
+
+        /**
+         * 结账(创建订单)成功时
+         *
+         * @param order_info 订单信息
+         */
+        var order_create_success = function (order_info) {
+            pay.order_id = order_info.order_id;
+            pay.pey_method = order_info.pay_app;
+            switch (order_info.pay_app) {
+                case 'alipayqrcode':
+                case 'wxqrcode':
+                case 'paybycard':
+                case 'membercard':
+                    pay.create_pay_bill(pay.show_payment_infos);
+                    break;
+                case 'cash':
+                    if (pay.have_cash_pay_permission == '1') {//如果有现金收款权限,走正常的流程
+                        pay.create_pay_bill(pay.show_payment_infos);
+                    } else {//没有现金收款权限,打印收款凭据
+                        bootbox.confirm("<h3>将打印中台收银小票,请指引顾客到中台进行现金支付!</h3>",function(is_confirm){
+                            if(is_confirm){
+                                pay.create_pay_bill(pay.print_cashier_credentials);
+                            }else{
+                                //todo
+                            }
+                        });
+                    }
+                    break;
+                default:
+                    Messagebox.error('未知支付方式');
+                    break;
+            }
+        };
+
+        /**
+         * 检查购物车是否是会员购买
+         *
+         * @returns {boolean}
+         */
+        var check_is_member = function () {
+            //获取购物车会员信息
+            var obj_cart_member = obj_cart_form.find('#cart_member');
+            var member_id = obj_cart_member.val();
+
+            if (obj_cart_member.length == 0) {
+                Messagebox.warning('会员才能使用此服务', '提示');
+                //throw "会员才能使用此服务(会员id错误)";
+            }
+
+            if (/^[1-9]\d*$/.test(member_id) == false) {
+                Messagebox.warning('会员id错误', '提示');
+                //throw "会员id只能是数字";
+            }
+
+            return member_id;
+        };
+
+        /**
+         *  更新收货信息modal数据
+         */
+        var update_delivery_modal = function (member_id) {
+            var get_member_addr_url = '<{link app=store ctl=admin_checkstand act=sel_delivery}>';
+            var get_member_addr_request_data = {
+                member_id: member_id
+            };
+            var obj_delivery_modal = $('#delivery_modal');
+            $.ajax({
+                url: get_member_addr_url,
+                type: 'post',
+                data: get_member_addr_request_data,
+                dataType: 'html',
+                success: function (response) {
+                    response = $.parseJSON(response);
+                    if (response.success) {
+                        obj_delivery_modal.find('.modal-content').html(response.modal_content);
+
+                    } else {
+                        Messagebox.error(response.error);
+                        //更新失败隐藏modal
+                        obj_delivery_modal.modal('hide');
+                    }
+                },
+                error: function () {
+                    Messagebox.error('未知错误');
+                    //更新失败隐藏modal
+                    obj_delivery_modal.modal('hide');
+                }
+            });
+        };
+
+        /**
+         * 添加优惠券到购物车
+         *
+         * @param add_coupon_to_cart_url
+         * @param add_coupon_to_cart_data
+         */
+        var add_coupon_to_cart = function (add_coupon_to_cart_url, add_coupon_to_cart_data) {
+            clearTimeout(cart_ajax_timer);
+            cart_ajax_timer = setTimeout(function () {
+                $.ajax({
+                    url: add_coupon_to_cart_url,
+                    type: 'post',
+                    data: add_coupon_to_cart_data,
+                    dataType: 'html',
+                    success: function (response) {
+                        response = $.parseJSON(response);
+                        if (response.success) {
+                            $('#cart_body').html(response.cart_info);
+                            add_cpns(response.checkout_info.cart_result.objects.coupon);
+                            Messagebox.success(response.success);
+                        } else {
+                            Messagebox.error(response.error);
+                        }
+                    },
+                    error: function () {
+                        Messagebox.error('未知错误');
+                    }
+                });
+            }, 500);
+        };
+
+        function add_cpns(cpns){
+            obj_cart_form.find('.cpns').remove();
+            if(cpns!=undefined && cpns.length>0){
+                for(var i=0 ;i<cpns.length ; i++){
+                    var obj_cons_input = $('<input class="cpns" type="hidden" name="coupons[]" value="'+cpns[i]['coupon']+'">');
+                    obj_cons_input.appendTo($('#cart_form'));
+                }
+            }else{
+                //点击优惠券加入购物车
+                $(".coupon-list").each(function (){
+                    if($(this).find('.coupon-check input').prop('checked')){
+                        var obj_cons_input = $('<input class="cpns" type="hidden" name="coupons[]" value="'+$(this).attr("data-coupon_code")+'">');
+                        obj_cons_input.appendTo($('#cart_form'));
+                    }
+
+                });
+            }
+            update_cart(function () {
+                if($('#goods_list_panel tbody tr[data-productid]').length>0){
+                    select_row($('#goods_list_panel tbody tr[data-productid]:last'));
+                }
+
+            });
+        }
+
+        /**
+         * 挂单取单操作
+         */
+        var handup_order = function (tmp_order_id) {
+            if (!tmp_order_id) {
+                tmp_order_id = new Date().getTime();
+            }
+            localStorage['webpos-tmp_order-' + tmp_order_id] = JSON.stringify(_currentCheckoutInfo);
+            location.reload();
+        };
+
+        /**
+         * 获取可能存在的挂起的订单信息
+         */
+        var checkhandup = (function () {
+            var handup_order_tile = obj_main_actions.find('.tile[data-act="handup_order"]').removeClass('selected');
+            handup_order_tile.find('.badge').text('');
+            _temp_order_arr = [];
+
+            $.each(localStorage, function (key, val) {
+                var match = key.match(/webpos-tmp_order-([\d]+)/);
+                if (key.match(/webpos-tmp_order-([\d]+)/)) {
+                    var tmp_order = $.parseJSON(val);
+                    tmp_order['handup_time'] = match[1];
+                    tmp_order['tmp_order_id'] = match[0];
+                    _temp_order_arr.push(tmp_order);
+                }
+            });
+
+            if (_temp_order_arr.length > 0) {
+                handup_order_tile.addClass('selected');
+                handup_order_tile.find('.badge').text(_temp_order_arr.length);
+                console.info(_temp_order_arr);
+            }
+
+            return arguments.callee;
+        })();
+
+        /**
+         * 取单函数.取出挂起的订单
+         *
+         * @param tmp_order_id
+         * @returns {*}
+         */
+        var pickup_order = function (tmp_order_id) {
+            var checkout_info = $.parseJSON(localStorage[tmp_order_id]);
+            if (!checkout_info) {
+                Messagebox.error('取单失败', '错误');
+
+                delete_tmp_order(tmp_order_id);
+            }
+
+            obj_cart_form.empty();
+            obj_cart_form.html(obj_cart_form_necessary_data);
+            $.each(checkout_info.cart_result.objects, function (type, objs) {
+                switch (type) {
+                    case 'goods':
+                        $.each(objs, function (i, g) {
+                            obj_cart_form.append('<input type="hidden" name="products[' + g.item.product.product_id + ']" value="' + g.quantity + '"/>');
+                        });
+                        break;
+                    case 'coupon':
+                        $.each(objs, function (i, g) {
+                            obj_cart_form.append('<input type="hidden" name="coupons[]" value="' + g.coupon + '"/>');
+                        });
+                        break;
+                }
+            });
+
+            //如果有会员信息, 操作会员信息后再更新购物车
+            if (checkout_info.member_info) {
+                if(checkout_info.member_addrs){
+                    member_addr(checkout_info.member_addrs);
+                }
+                //会员相关操作
+                cart_member(checkout_info.member_info);
+
+            }else{
+                //没有会员信息,直接更新购物车
+                update_cart(function () {
+                    select_row($('#goods_list_panel tbody tr[data-productid]:last'));
+                });
+            }
+
+            delete_tmp_order(tmp_order_id);
+        };
+
+        //处理取单后的收货地址
+        var member_addr = function(member_addrs){
+            $.each(member_addrs, function (addr_id, objs) {
+                if(objs.selected == 'true'){
+                    $("#is_delivery").val("Y");
+                    obj_cart_form.append('<input id="cart_addr_id" name="addr_id" type="hidden" value="'+addr_id+'">');
+                }
+            });
+        }
+
+        /**
+         * 删除挂起的订单
+         *
+         * @param tmp_order_id
+         * @param callback_fn
+         */
+        var delete_tmp_order = function (tmp_order_id, callback_fn) {
+            localStorage[tmp_order_id] = null;
+            delete(localStorage[tmp_order_id]);
+            checkhandup();
+            if (typeof(callback_fn) == 'function') {
+                callback_fn(tmp_order_id);
+            }
+        };
+
+        var data_bind = function (scope, obj) {
+
+            $.each($(scope).find('[data-bind]'), function (i, el) {
+                var path = $(el).attr('data-bind'),
+                        handler = $(el).attr('data-bind-handler'),
+                        v = eval('obj["' + path.replace(/\//g, '"]["') + '"]');
+                $(el).text(v);
+            });
+
+            promotions_bind(obj.cart_result.promotions);
+        };
+
+        var promotions_bind = function (promotions_data) {
+            if (!promotions_data) {
+                promotions_data = {};
+            }
+            var p_data_arr = [], o_data_arr = [];
+            if (promotions_data.goods) {
+                $.each(promotions_data.goods, function (ident, item_arr) {
+                    var _arr = [];
+                    $.each(item_arr, function (idx, item) {
+                        _arr.push({
+                            'tag': item.tag,
+                            'p_name': item.name,
+                            'p_desc': item.desc,
+                            'p_save': item.save
+                        });
+                    });
+                    p_data_arr.push({
+                        'goods_name': $('#goods_list_panel tr[data-ident="' + ident + '"] td:nth-child(2)').text() + ' * ' + $('#goods_list_panel tr[data-ident="' + ident + '"] td:nth-child(4)').text(),
+                        'plist': _arr
+                    });
+                });
+            }
+            if (promotions_data.order) {
+                $.each(promotions_data.order, function (idx, item) {
+                    if (item.tag == '包邮' && $('#cart_form input[name=is_delivery]').val() != 'Y') {
+                        return;
+                    }
+                    o_data_arr.push({
+                        'tag': item.tag,
+                        'p_name': item.name,
+                        'p_desc': item.desc,
+                        'p_save': item.save
+                    });
+                });
+            }
+            console.info(p_data_arr, o_data_arr);
+            if (p_data_arr.length || o_data_arr.length) {
+                promotions_btn.find('.badge').text(p_data_arr.length + o_data_arr.length);
+                promotions_btn.data('promotions_data', {'goods': p_data_arr, 'order': o_data_arr});
+            } else {
+                promotions_btn.find('.badge').empty();
+                promotions_btn.data('promotions_data', false);
+            }
+        };
+
+        var promotions_btn = $('#show_promotions').on('click', function (e) {
+            var promotions_data = $(this).data('promotions_data');
+            if (!promotions_data)return;
+            var plist_goods = $.map(promotions_data.goods, function (i) {
+                var _return = '<ul class="list-group margin-top-20 h5"><li class="list-group-item">' + i.goods_name + '</li>';
+                _return += '<li class="list-group-item"><ul class="list-unstyled">' + $.map(i.plist, function (p) {
+                    return '<li><span class="label bg-blue-steel">商品</span><span class="label label-danger">' + p.tag + '</span> '
+                            + p.p_desc +
+                            (p.p_save && p.p_save > 0 ? (',<strong class="font-red h4">省:¥' + p.p_save + '</strong>') : '')
+                            + '</li>';
+                }).join('') + '</ul></li></ul>';
+                return _return;
+            }).join('');
+            var plist_order = '<ul class="margin-top-20 h5 list-group">' + $.map(promotions_data.order, function (p) {
+                        return '<li class="list-group-item"><span class="label bg-green-seagreen">订单</span><span class="label label-danger">' + p.tag + '</span> '
+                                + p.p_desc +
+                                (p.p_save && p.p_save > 0 ? (',<strong class="font-red h4">省:¥' + p.p_save + '</strong>') : '')
+                                + '</li>';
+                    }).join('') + '</ul>';
+            $('#promotions_modal .modal-body').empty();
+            $('#promotions_modal .modal-body').append(plist_goods);
+            $('#promotions_modal .modal-body').append(plist_order);
+            $('#promotions_modal').modal('show');
+        });
+
+        var goods_list_render = function (goods_list) {
+            //cleanup tbody
+            var goods_list_panel = obj_goods_list_panel;
+            var first_tbody = $(goods_list_panel.find('tbody:first'));
+            var first_tbody_trs = first_tbody.find('tr');
+            first_tbody.nextAll('tbody').remove();
+            first_tbody.find('td').empty();
+            first_tbody.find('td:first-child').html('&nbsp;');
+            first_tbody_trs.removeClass('bg-blue-chambray').removeAttr('data-productid');
+
+            if (!goods_list || !goods_list.length) {
+                return;
+            } else {
+                var list_page = Math.ceil(goods_list.length / first_tbody_trs.length);
+                while (--list_page) {
+                    var next_tbody = first_tbody.clone();
+                    $(goods_list_panel.find('table')).append(next_tbody);
+                    $(next_tbody).addClass('hidden').find('td:first-child').html('&nbsp;');
+                }
+            }
+
+            $.each(goods_list_panel.find('tbody tr'), function (index, item) {
+                //console.info(arguments);
+                var tr = $(item);
+                var cart_object = goods_list[index];
+                if (!cart_object) {
+                    return;
+                }
+                var product = cart_object.item.product;
+                var row = [index + 1,
+                    product.name + '&nbsp' + (product.spec_info || '') + (cart_object.disabled == 'true' ? "<span class='font-yellow'>&nbsp;<i class='fa fa-warning'></i> " + cart_object.warning + '</span>' : '')+"<span> <i class='glyphicon glyphicon-barcode'></i> "+product.barcode+"</span>",
+                    product.buy_price,
+                    cart_object.quantity,
+                    cart_object.amount
+                ];
+
+                tr.attr('data-productid', product.product_id);
+                tr.attr('data-ident', cart_object.obj_ident);
+                $(tr.find('td')).each(function (index, td) {
+                    $(td).html(row[index]);
+                });
+            });
+
+        };
+
+
+
+        /**
+         * 订单生成成功后，临时存储当前订单信息
+         */
+        var save_tmp_order = function (tmp_order) {
+            if (!tmp_order_id) {
+                tmp_order_id = new Date().getTime();
+            }
+            localStorage['webpos-tmp_order-' + tmp_order_id] = JSON.stringify(_currentCheckoutInfo);
+            location.reload();
+        };
+
+
+        //当班报表
+        $('#current_count').on('click' ,function(){
+            $("#report_modal").modal('show');
+        });
+        $('#report_modal').on('click' ,'.button-confirm' ,function(){
+            $('#report_modal').find('form').attr('action' ,$(this).attr('data-url')).submit();
+        });
+
+
+
+
+
+    }();
+
+    /**
+     * js精确加法计算
+     *
+     * @param arg1
+     * @param arg2
+     * @returns {number}
+     */
+    function floatAdd(arg1, arg2) {
+        var r1, r2, m;
+        try {
+            r1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+            r1 = 0
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+            r2 = 0
+        }
+        m = Math.pow(10, Math.max(r1, r2));
+
+        return (arg1 * m + arg2 * m) / m;
+    }
+
+    /**
+     * js精确减法计算
+     *
+     * @param arg1
+     * @param arg2
+     * @returns {string}
+     */
+    function floatSub(arg1, arg2) {
+        var r1, r2, m, n;
+        try {
+            r1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+            r1 = 0
+        }
+        try {
+            r2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+            r2 = 0
+        }
+        m = Math.pow(10, Math.max(r1, r2));
+        //动态控制精度长度
+        n = (r1 >= r2) ? r1 : r2;
+
+        return ((arg1 * m - arg2 * m) / m).toFixed(n);
+    }
+
+    /**
+     * js精确乘法计算
+     *
+     * @param arg1
+     * @param arg2
+     * @returns {number}
+     */
+    function floatMul(arg1, arg2) {
+        var m = 0, s1 = arg1.toString(), s2 = arg2.toString();
+        try {
+            m += s1.split(".")[1].length
+        } catch (e) {
+        }
+        try {
+            m += s2.split(".")[1].length
+        } catch (e) {
+        }
+
+        return Number(s1.replace(".", "")) * Number(s2.replace(".", "")) / Math.pow(10, m);
+    }
+
+
+    /**
+     * js精确除法计算
+     *
+     * @param arg1
+     * @param arg2
+     * @returns {number}
+     */
+    function floatDiv(arg1, arg2) {
+        var t1 = 0, t2 = 0, r1, r2;
+        try {
+            t1 = arg1.toString().split(".")[1].length
+        } catch (e) {
+        }
+        try {
+            t2 = arg2.toString().split(".")[1].length
+        } catch (e) {
+        }
+
+        r1 = Number(arg1.toString().replace(".", ""));
+
+        r2 = Number(arg2.toString().replace(".", ""));
+
+        return (r1 / r2) * Math.pow(10, t2 - t1);
+    }
+</script>
+<script>
+    function logout(){
+        $.get('index.php?ctl=passport&act=logout' ,function(re){
+            if(re.success){
+                window.location.href = re.redirect;
+            }
+        });
+    }
+</script>

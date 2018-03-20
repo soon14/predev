@@ -1,0 +1,72 @@
+<!--该xml文件用来定义后台管理权限和菜单-->
+<desktop>
+    <permissions>
+        <!-- permission 权限定义
+            @attribute id 权限ID
+            @value 权限说明
+        -->
+        <permission display="true" id="supplier">查看供应商列表</permission>
+        <permission display="true" id="supplier_edit">添加/编辑供应商</permission>
+        <permission display="true" id="supplier_tag">供应商列表标签</permission>
+        <permission display="true" id="supplier_relgoods">供应商商品管理</permission>
+
+        <permission display="true" id="supplier_notice">查看公告列表</permission>
+        <permission display="true" id="supplier_notice_edit">添加/编辑公告</permission>
+        <permission display="true" id="supplier_notice_delete">删除公告</permission>
+        <permission display="true" id="supplier_notice_tag">公告标签</permission>
+
+        <permission display="true" id="supplier_voucher">查看结算凭证</permission>
+        <permission display="true" id="supplier_voucher_tag">结算凭证标签</permission>
+        <permission display="true" id="supplier_voucher_statement">生成财务结算单</permission>
+        <permission display="true" id="supplier_voucher_delete">结算凭证删除</permission>
+
+        <permission display="true" id="supplier_statement">查看财务结算单</permission>
+        <permission display="true" id="supplier_statement_tag">财务结算单标签</permission>
+        <permission display="true" id="supplier_statement_delete">删除财务结算单</permission>
+        <permission display="true" id="supplier_statement_edit">财务结算单编辑</permission>
+
+        <permission display="true" id="supplier_report">供应商相关单据报表导出</permission>
+    </permissions>
+
+    <!-- workground 工作组定义
+            @attribute icon 图标css classname
+            @attribute id 工作组id
+            @attribute name 工作组名称
+            @attribute order 工作组升序排序
+    -->
+    <workground icon="icon-globe" id="supplier.wrokground" name="供应商" order="22">
+        <!-- menugroup 工作组内菜单组定义
+            @attribute name 菜单组名次
+        -->
+        <menugroup name="供应商管理">
+            <menu action='index' controller='admin_supplier' display='true' order='10' permission='supplier'>供应商列表</menu>
+            <menu action='edit' controller='admin_supplier' display='false' permission='supplier_edit'>供应商编辑</menu>
+            <menu action='index' controller='admin_relgoods' display='false' permission='supplier_relgoods'>供应商商品编辑</menu>
+        </menugroup>
+        <menugroup name="公告管理">
+            <menu action='index' controller='admin_notice' display='true' order='10' permission='supplier_notice'>公告管理</menu>
+            <menu action='edit' controller='admin_notice' display='false' permission='supplier_notice_edit'>公告编辑</menu>
+            <menu display='false' permission='supplier_notice_delete'>公告删除</menu>
+            <menu display='false' permission='supplier_notice_tag'>公告标签</menu>
+        </menugroup>
+        <menugroup name="结算凭证">
+            <menu action='index' controller='admin_voucher' display='true' order='11' permission='supplier_voucher'>结算凭证</menu>
+            <menu action='docreate' controller='admin_voucher' display='false'  permission='supplier_voucher_statement'>生成财务结算单</menu>
+            <menu action='docreate_multiple' controller='admin_voucher' display='false'  permission='supplier_voucher_statement'>批量生成财务结算单</menu>
+            <menu display='false' permission='supplier_voucher_delete'>结算凭证删除</menu>
+            <menu display='false' permission='supplier_voucher_tag'>结算凭证标签</menu>
+        </menugroup>
+        <menugroup name="财务结算单">
+            <menu action='index' controller='admin_statement' display='true' order='12' permission='supplier_statement'>财务结算单</menu>
+            <menu action='edit' controller='admin_statement' display='false'  permission='supplier_statement_edit'>编辑财务结算单</menu>
+            <menu display='false' permission='supplier_voucher_delete'>财务结算单标签</menu>
+            <menu display='false' permission='supplier_voucher_delete'>财务结算单删除</menu>
+        </menugroup>
+        <menugroup name="报表">
+            <menu action='index' controller='admin_report' display='true' order='12' permission='supplier_report'>报表导出</menu>
+            <menu action='export' controller='admin_report' display='false' order='12' permission='supplier_report'>报表导出</menu>
+        </menugroup>
+    </workground>
+
+
+</desktop>

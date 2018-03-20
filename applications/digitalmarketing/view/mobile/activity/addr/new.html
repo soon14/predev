@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><{$title}></title>
+        <meta name="description" content="<{$description}>" />
+        <meta name="keywords" content="<{$keywords}>" />
+
+        <meta charset="utf-8">
+        <meta name="charset" content="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link type="image/x-icon" href="<{$env.conf.mobile.mobile_icon|storager}>" rel="apple-touch-icon-precomposed">
+
+
+        <link href="/themes/mobile/default/statics/activity/styles/weiui.common.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/themes/mobile/default/statics/activity/styles/common.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/themes/mobile/default/statics/activity/styles/addr.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body class="page-addr">
+        <header class="act-view-header view-addr">
+            <nav class="top-navs">
+                <ul>
+                    <li>
+                        <a href="<{link app=mobile ctl=index}>"><i class="icon-arrow-left icons"></i></a>
+                    </li>
+                    <li>
+                        <span><{$title}></span>
+                    </li>
+                    <li>
+                        <a href="<{link app=digitalmarketing ctl=mobile_activity act=addrs}>?type=sel&partin_id=<{$partin.partin_id}>">选择</a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+        <main class="view-addr">
+            <form method="post">
+                <div class="view-new-addr">
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">收货人</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="text" required="true" autocomplete="off" name="maddr[name]" value="" placeholder="收货人姓名">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">联系电话</label></div>
+                        <div class="weui-cell__bd">
+                            <input class="weui-input" type="tel" required="true" autocomplete="off" name="maddr[mobile]" placeholder="收货人手机号码">
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">选择地区</label></div>
+                        <div class="weui-cell__bd">
+                            <input type="hidden" id="addr_area_val" required="true" name="addr_area_val">
+                            <input type="hidden" id="addr_area_name" required="true" name="addr_area_name">
+                            <input class="weui-input" type="text" required="true" autocomplete="off" value="" placeholder="选择地区" id='city-picker'/>
+                        </div>
+                    </div>
+                    <div class="weui-cell">
+                        <div class="weui-cell__hd"><label class="weui-label">详细地址</label></div>
+                        <div class="weui-cell__bd">
+                            <textarea class="weui-textarea" rows="3" required="true" autocomplete="off" name="maddr[addr]" value="" placeholder="请填写详细的地址门牌号码,无需重复填写地区"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="weui-btn-area">
+                    <button class="weui-btn weui-btn_warn" type="submit">提交保存</button>
+                </div>
+            </form>
+        </main>
+    </body>
+    <script src="/themes/mobile/default/statics/activity/js/common.min.js" type="text/javascript"></script>
+    <script src="/themes/mobile/default/statics/activity/js/weiui.common.min.js" type="text/javascript"></script>
+    <script src="/themes/mobile/default/statics/activity/js/newaddr.min.js" type="text/javascript"></script>
+</html>

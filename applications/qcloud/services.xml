@@ -1,0 +1,5 @@
+<services>
+    <service id="openapi.qcloud_cos" optname="openapi@腾讯云存储COS授权">
+        <class>qcloud_cos</class>
+    </service>
+</services>

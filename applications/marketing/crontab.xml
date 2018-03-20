@@ -1,0 +1,7 @@
+<cronentries>
+<cron id="marketing_tasks_send">
+  <description>主动营销定时发送</description>
+  <schedule>*/1 * * * *</schedule>
+  <enabled>true</enabled>
+</cron>
+</cronentries>

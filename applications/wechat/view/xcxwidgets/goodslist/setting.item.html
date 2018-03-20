@@ -1,0 +1,19 @@
+<!-- 产品列表 -->
+<template id="widget-goodslist">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-goodslist :widget="widget" :index="index"></widget-child-setting-goodslist>
+        <widget-child-goodslist :widget="widget" :index="index"></widget-child-goodslist>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_goodslist = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-goodslist',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-goodslist': widget_child_setting_goodslist,
+        'widget-child-goodslist': widget_child_goodslist
+    }
+});
+</script>

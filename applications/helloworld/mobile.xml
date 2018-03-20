@@ -1,0 +1,21 @@
+<!-- 这个xml文件是移动H5端站点路由 -->
+<site>
+    <!-- module 路由定义
+        @attribute controller 控制器
+        @attribute id appid
+    -->
+    <module controller='mobile_hello' id='helloworld'>
+        <!--
+            @value 路由名称定义 http://xxxx.com/m/hello.html
+        -->
+        <name>hello</name>
+        <!--
+            @value 路由名称备注
+        -->
+        <title>问候</title>
+    </module>
+    <module controller='mobile_hellolist' id='helloworld'>
+        <name>hlist</name>
+        <title>问候列表</title>
+    </module>
+</site>

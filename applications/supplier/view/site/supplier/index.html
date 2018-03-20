@@ -1,0 +1,49 @@
+<{include file='site/supplier/layout/top.html' }>
+<div class="my-main supplier-main">
+    <div class="row">
+        <div class="col-xs-2">
+            <{include file='site/supplier/layout/menu.html' }>
+        </div>
+        <div class="col-xs-10 my-page">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="well">
+                        <p><i class="fa fa-list"></i> 待发货订单</p>
+                        <h1><span><{$count_ready_delivery|default:0}></span></h1>
+                        <a class="btn btn-block btn-default" href="<{link app=supplier ctl=site_supplier act=order args0=1 args1=20 args2=ready}>" role="button">处理订单 &raquo;</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="well">
+                        <p><i class="fa fa-diamond"></i> 商品在线</p>
+                        <h1><span><{$count_online_goods|default:0}></span></h1>
+                        <a class="btn btn-block btn-default" href="<{link app=supplier ctl=site_supplier act=stock}>" role="button">管理库存 &raquo;</a>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="well">
+                        <p><i class="fa fa-line-chart"></i> 本月销售额</p>
+                        <h1><span><{$count_voucher_subprice|cur}></span></h1>
+                        <a class="btn btn-block btn-default" href="<{link app=supplier ctl=site_supplier act=voucher}>" role="button">查看凭证 &raquo;</a>
+                    </div>
+                </div>
+            </div>
+            <div class="supplier-notice" id="supplier_notice">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $('#supplier_notice').load('<{link app=supplier ctl=site_supplier act=notice_list}>');
+    $('#supplier_notice').on('click','.pagination a',function(e){
+        e.stopPropagation();
+        var load_url  = this.href;
+        if(!load_url.match(/http/)){
+            return false;
+        }
+        $('#supplier_notice').load(this.href);
+        return false;
+    });
+</script>

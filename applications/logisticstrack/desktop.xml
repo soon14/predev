@@ -1,0 +1,7 @@
+<desktop>
+    <permissions>
+        <!--物流-->
+        <permission display='true' id="admin_logistics_tracker">物流状态跟踪设置</permission>
+    </permissions>
+    <adminpanel group="ectools_logistics" controller="admin_tracker" action="index" permission="admin_logistics_tracker" display="true" order='30'>物流状态跟踪设置</adminpanel>
+</desktop>

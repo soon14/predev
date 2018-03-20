@@ -1,0 +1,73 @@
+<div class="content">
+    <{if $fgorder_list}>
+    <{foreach from=$fgorder_list item=order}>
+    <ul class="table-view tv-orderitem">
+        <li class="table-view-divider">
+            #<{$order.order_id}>
+            <span class="badge"><{$order.pay_status|order_pay_status}></span>
+        </li>
+        <{if $order.order_status == 'dead'}>
+        <li class="table-view-divider text-danger">
+            <span class="fa fa-ban"></span> 该订单已于<{$order.last_modify|cdate}>作废
+        </li>
+        <{/if}>
+        <{if $order.order_status == 'finish'}>
+        <li class="table-view-divider text-success">
+            <span class="fa fa-check"></span> 该订单已完成
+        </li>
+        <{/if}>
+        <li class="table-view-cell tvc-reset-padding">
+            <p>
+                <{$subjects[$order.subject_id]['fg_title']}>
+            </p>
+            <p>
+                订购手机号:<{$order.mobile}>
+            </p>
+            <p>
+                订购时间:<{$order.createtime|cdate}>
+            </p>
+        </li>
+        <li class="table-view-cell">
+            <p>
+                <a href="<{link app=fastgroup ctl=mobile_fastgroup act=order args0=$order.order_id_encrypt}>" class="btn btn-outlined btn-primary">订单详情</a>
+                <{if $order.order_status == 'active' && $order.pay_status == '0'}>
+                <a href="<{link app=fastgroup ctl=mobile_fastgroup act=order args0=$order.order_id_encrypt}>" class="btn  btn-negative">立即支付</a>
+                <a onclick="if(!confirm('确认取消？'))return false;" href="<{link app=fastgroup ctl=mobile_fastgroup act=cancel_order args0=$order.order_id_encrypt}>" class="btn btn-outlined pull-right">取消订单</a>
+                <{/if}>
+            </p>
+        </li>
+    </ul>
+    <{/foreach}>
+    <div class="content-padded content-morepage">
+        <{morepage data=$pager}>
+    </div>
+</div>
+
+<script type="text/javascript">
+//翻页
+var current_page = 1;
+$('.btn-morepage').on('touchend',function(e){
+    e.stopPropagation();
+    var btn = $(this);
+    btn.find('.fa-circle-o-notch').removeClass('hidden');
+    var data_morepage = btn.attr('data-morepage');
+    data_morepage = $.parseJSON(data_morepage);
+    var new_page = $('<div></div>');
+    new_page.load(data_morepage.link.replace(data_morepage.token,++current_page)+" .table-view.tv-orderitem",function(){
+        new_page.find('.table-view.tv-orderitem').insertBefore($('.content-morepage'));
+        btn.find('.fa-circle-o-notch').addClass('hidden');
+    });
+    if(current_page == data_morepage.total){
+        btn.remove();
+    }
+    return false;
+});
+</script>
+<{else}>
+<div class="content-splash">
+    <i class="fa fa-inbox fa-5x"></i>
+    <p>
+        暂无
+    </p>
+</div>
+<{/if}>

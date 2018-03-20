@@ -1,0 +1,74 @@
+<h3 class="page-title">
+    <{if $lv.shop_lv_id}>编辑
+        <{else}>添加
+            <{/if}>店铺等级
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="javascript:;">微店配置</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="index.php?app=vshop&ctl=admin_lv&act=index">店铺等级列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">
+                <{if $lv.shop_lv_id}>编辑
+                    <{else}>添加
+                        <{/if}>店铺等级</a>
+        </li>
+    </ul>
+</div>
+<form method="post" class="form" action="index.php?app=vshop&ctl=admin_lv&act=save">
+		<{if $lv.shop_lv_id}><{input type='hidden' name='shop_lv_id' value=$lv.shop_lv_id}><{/if}>
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">等级名称
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-4">
+                    <{input type="text" name="name" required="true" value=$lv.name}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">分润系数
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-2">
+                    <{input type="text" name="coefficient" value=$lv.coefficient|default:1}>
+                </div>
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="help-block">
+                        单个商品的佣金 = 商品成交价 * 分润比例 * 店铺分润系数
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">等级ICON图标
+
+                </label>
+                <div class="col-md-4">
+                    <{input type="image" name="lv_logo" value=$lv.lv_logo width=90 height=90}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">备注
+                </label>
+                <div class="col-md-5">
+                        <{input type="textarea" name="lv_remark"  value=$lv.lv_remark}>
+                </div>
+            </div>
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-offset-2 col-md-9">
+						<button type="submit" class="btn blue">保存</button>
+						<a href="index.php?app=vshop&ctl=admin_lv&act=index" class="btn default">返回</a>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+</form>

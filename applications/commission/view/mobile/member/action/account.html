@@ -1,0 +1,60 @@
+<div class="content-padded">
+    <ul class="table-view">
+        <li class="table-view-divider"><img class="media-object img-thumbnail img-circle pull-left" src="<{$member_list.avatar|storager:'s'}>"><{$member_list.name}></li>
+        <li class="table-view-cell media">
+            <div class="media-body">
+                <p>总额：<{$member_list.all_fund}>闪币 / 未结算：<{$member_list.frozen_fund}>闪币</p>
+            </div>
+        </li>
+    </ul>
+    <a href="<{link app=commission ctl=mobile_member act=cash}>" class="btn btn-block btn-primary cash-btn" > 可提现: <span><{$member_list.used_fund}></span>闪币 </a>
+</div>
+<div class="content-block">
+    <div class="content-padded">
+        <ul class="table-view">
+            <li class="table-view-divider">提现规则：</li>
+            <li class="table-view-cell"><p><{$cash_rule}></p></li>
+        </ul>
+
+        <ul class="table-view pager">
+            <li class="table-view-divider">账单记录：</li>
+            <{foreach from=$fundlog item=list}>
+                <li class="table-view-cell media">
+                    <span class="pull-right"><{$list.change_fund|to_coin}>闪币</span>
+                    <div class="media-body">
+                        <span><{$list.type|fund_type}></span>
+                        <p class="create-time"><{$list.opt_time|cdate:FDATE}></p>
+                    </div>
+                </li>
+            <{/foreach}>
+        </ul>
+        <div class="content-padded">
+            <{morepage data=$pager}>
+        </div>
+    </div>
+</div>
+<script>
+  $(document.body).addClass('my-account');
+
+  $(function(){
+      //翻页
+      var current_page = 1;
+      $('.btn-morepage').on('touchend',function(e){
+          e.stopPropagation();
+          var btn = $(this);
+          btn.find('.fa-circle-o-notch').removeClass('hidden');
+          var data_morepage = btn.attr('data-morepage');
+          data_morepage = $.parseJSON(data_morepage);
+
+          $.get(data_morepage.link.replace(data_morepage.token,++current_page) ,function(re){
+              var items = $(re).find('.pager');
+              $('.pager').append(items);
+          });
+
+          if(current_page == data_morepage.total){
+              btn.remove();
+          }
+          return false;
+      });
+  });
+</script>

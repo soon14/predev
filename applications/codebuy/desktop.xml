@@ -1,0 +1,15 @@
+<desktop>
+    <permissions>
+        <!--商品-->
+        <permission display='true' id="sale">优购码管理</permission>
+    </permissions>
+    <workground icon="icon-diamond" id="b2c.wrokground.sale" name="营销" order="10">
+        <menugroup name="优购码管理">
+            <menu action='add' controller='admin_activity' display='false' order='10' permission='sale'>添加优购码活动</menu>
+            <menu action='edit' controller='admin_activity' display='false' order='11' permission='sale'>编辑优购码活动</menu>
+            <menu action='index' controller='admin_activity' display='true' order='20' permission='sale'>优购码活动列表</menu>
+            <menu action='index' controller='admin_code' display='false' order='20' permission='sale'>优购码列表</menu>
+            <menu action='index' controller='admin_log' display='true' order='20' permission='sale'>优购码使用记录</menu>
+        </menugroup>
+    </workground>
+</desktop>

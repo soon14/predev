@@ -1,0 +1,19 @@
+<!-- 智能橱窗 -->
+<template id="widget-grouppresale">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-grouppresale :widget="widget" :index="index"></widget-child-setting-grouppresale>
+        <widget-child-grouppresale :widget="widget" :index="index"></widget-child-grouppresale>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_grouppresale = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-grouppresale',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-grouppresale': widget_child_setting_grouppresale,
+        'widget-child-grouppresale': widget_child_grouppresale
+    }
+});
+</script>

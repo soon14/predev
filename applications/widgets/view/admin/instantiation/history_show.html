@@ -1,0 +1,140 @@
+     <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                    <span class="required" aria-required="true">*</span>
+                    板块名称
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="name" value="<{$widget.instantiation.name}>" required=true class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group" <{if $widget.instantiation.type == '2'}>style="display:none"<{/if}>>
+            <label class="col-md-2 control-label">
+                展示数量
+            </label>
+            <div class="col-md-5">
+                <input type="text" name="nums" value="<{$widget.instantiation.nums|default:0}>" required=true class="form-control"/>
+                <span class="help-inline">0表示展示全部</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                状态
+            </label>
+            <div class="col-md-5">
+                <select name="status" class="form-control">
+                    <option value="0" <{if $widgets.status == '0'}>selected<{/if}>>有效</option>
+                    <option value="1" <{if $widgets.status == '1'}>selected<{/if}>>暂停</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                板块形象图
+            </label>
+            <div class="col-md-2">
+                <img src="<{$widget.instantiation.image|storager:'xs'}>" height=120 width=120>
+            </div>
+
+            <label class="col-md-2 control-label">
+                板块背景图
+            </label>
+            <div class="col-md-2">
+                <img src="<{$widget.instantiation.background_image|storager:'xs'}>" height=120 width=120>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                板块链接
+            </label>
+            <div class="col-md-7">
+                <input type="text" name="link" value="<{$widget.instantiation.link}>"  class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">板块内容</label>
+            <{if $widget.type == '0'}>
+            <div class="col-md-10 J-data" id="J_data_0">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>广告图片</th>
+                        <th>广告说明</th>
+                        <th>链接地址</th>
+                        <th>排序</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <{foreach from=$widget.instantiation.data.pic  key=key item=item}>
+                    <tr>
+
+                        <td>
+                            <img src="<{$item.id|storager:'xs'}>" height=200 width=200>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="data[pic][<{$key}>][title]" value="<{$item.title}>"/>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="data[pic][<{$key}>][link]" value="<{$item.link}>"/>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="data[pic][<{$key}>][sort]" value="<{$item.sort|default:0}>"/>
+                        </td>
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                </table>
+                <hr>
+                <a href="javascript:;" class="btn btn-default" id="J_add_pic"><i class="fa fa-plus"></i> 添加</a>
+            </div>
+            <{elseif $widget.type == '1'}>
+            <div class="col-md-10 J-data" id="J_data_1">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>商品图片</th>
+                        <th>商品名称</th>
+                        <th>商品描述</th>
+                        <th>商品编号</th>
+                        <th>排序</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <{foreach from=$widget.instantiation.data.goods  key=key item=item}>
+                    <tr>
+                        <td>
+                            <{if !$item.custom_default_id}>
+                            <img src="<{$widget.instantiation.data.goods_list[$item.goods_id].image_default_id|storager:'xs'}>" height=120 width=120>
+                            <{else}>
+                            <img src="<{$item.custom_default_id|storager:'xs'}>" height=120 width=120>
+                            <{/if}>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="data[goods][<{$item.goods_id}>][name]" value="<{$item.name?$item.name:$widget.instantiation.data.goods_list[$item.goods_id].name}>" >
+                        </td>
+                        <td>
+                            <{input type="text" name="data[goods][{$item.goods_id}][brief]" value="{$item.brief}"}>
+                        </td>
+                        <td>
+                            <{$item.gid}>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-xsmall" name="data[goods][<{$item.goods_id}>][sort]" value="<{$item.sort|default:0}>">
+                        </td>
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                </table>
+            </div>
+            <{elseif $widget.type == '2'}>
+            <div class="col-md-10 J-data" id="J_data_2">
+                <{input type="code" name="data[customer]" value="{$widget.instantiation.data.customer}"}>
+            </div>
+            <{/if}>
+        </div>
+    </div>
+    </div>
+

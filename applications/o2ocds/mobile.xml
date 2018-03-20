@@ -1,0 +1,22 @@
+<site>
+    <module id='o2ocds' controller='mobile_o2ocds' >
+        <name>o2ocds</name>分销
+        <title>分销中心</title>
+        <disable>false</disable>
+    </module>
+    <module id='o2ocds' controller='mobile_passport' >
+        <name>cdspassport</name>
+        <title>分销</title>
+        <disable>false</disable>
+    </module>
+    <module id='o2ocds' controller='mobile_stats' >
+        <name>cdsstats</name>
+        <title>统计</title>
+        <disable>false</disable>
+    </module>
+    <module id='o2ocds' controller='mobile_qrrouter' >
+        <name>qrrouter</name>
+        <title>二维码入口</title>
+        <disable>false</disable>
+    </module>
+</site>

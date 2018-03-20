@@ -1,0 +1,5 @@
+<services>
+    <service id="ectools_payment.applications" optname="支付插件列表">
+        <class>integralmall_payment_integraldeduction</class>
+    </service>
+</services>

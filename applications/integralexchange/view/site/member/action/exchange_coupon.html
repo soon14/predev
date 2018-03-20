@@ -1,0 +1,56 @@
+<div class="page-header">
+    <h1>积分兑换优惠券
+        <small>Exchange</small>
+    </h1>
+</div>
+<div class="well clearfix">
+    <div class="row">
+        <div class="col-md-6">
+            <h4>当前积分额度</h4>
+            <h2 class="text-danger"><{$member.integral|number_format}></h2>
+        </div>
+        <div class="col-md-6">
+            <a href="<{link app=b2c ctl=site_member act=integral}>" class="btn btn-default pull-right">查看积分历史</a>
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <th>
+            优惠券名称
+        </th>
+        <th>
+            优惠券描述
+        </th>
+        <th>
+            优惠券有效期
+        </th>
+        <th>
+            优惠券兑换消耗积分
+        </th>
+        <th>
+            操作
+        </th>
+    </thead>
+    <tbody>
+        <{foreach from=$coupon_list item=item}>
+            <tr>
+                <td><{$item.cpns_name}>
+                    <{if $item['warning']}>
+                    <ul class="list-unstyled text-muted">
+                        <{foreach from=$item.warning item=warning}>
+                            <li><i class="glyphicon glyphicon-warning-sign text-warning"></i> <{$warning}></li>
+                        <{/foreach}>
+                    </ul>
+                    <{/if}>
+                </td>
+                <td><{$item.rule_description}></td>
+                <td><{$item.from_time|cdate}>~<{$item.to_time|cdate}></td>
+                <td><{$item.cpns_point|number_format}></td>
+                <td>
+                    <a href="<{link app=integralexchange ctl=site_exchange act=exchange_coupon args0=$item.cpns_id}>" class="btn <{if $item.warning}>btn-default<{else}>btn-success<{/if}>">兑换</a>
+                </td>
+            </tr>
+        <{/foreach}>
+    </tbody>
+</table>

@@ -1,0 +1,42 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title"><{if $cat.cid }>板块分类编辑<{else}>添加新板块分类<{/if}></h3>
+</div>
+<form method="post" action="index.php?app=widgets&ctl=admin_category&act=save" id='cat_form' class="form">
+    <div class="modal-body  form-horizontal">
+        <div class="form-body">
+            <{if $cat.cid }><input type="hidden" value="<{$cat.cid}>" name="cat[cid]" /><{/if}>
+            <div class="form-group">
+                <label class="col-md-3 control-label">父级分类</label>
+                <div class="col-md-5">
+                    <{input type='select' name='cat[parent_id]' value=$cat.parent_id required='true'  rows=$selectmaps valueColumn="cid" labelColumn="title"}>
+                    <span class="help-block">若要添加顶级分类，此项可不选择</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">分类名称
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-5">
+                    <input type="text" required=true value="<{$cat.title}>" name="cat[title]" vtype='required' class='form-control'/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">分类英文标识
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-5">
+                    <input type="text" required=true value="<{$cat.category_key}>" name="cat[category_key]" vtype='required' class='form-control'/>
+                    <span class="help-block">该名称必须为英文，且唯一</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">保存</button>
+    </div>
+</form>

@@ -1,0 +1,31 @@
+<iframe class="page-appmarket" src="" width="100%"  name="_desktop_appmarket_frame" frameborder=0 scrolling="auto"></iframe>
+<form  action="https://www.vmcshop.com/appmarket.html?desktop=1" method="post" target="_desktop_appmarket_frame" id="appmarket_goto_form">
+    <{foreach from=$local_apps item=item}>
+            <input type="hidden" name="local_apps[<{$item.app_id}>][status]" value="<{$item.status}>">
+            <input type="hidden" name="local_apps[<{$item.app_id}>][version]" value="<{$item.version}>">
+    <{/foreach}>
+    <input type="hidden" name="vmc_token" value="<{$vmc_token}>">
+    <input type="hidden" name="host_url" value="<{$host_url}>">
+</form>
+<script type="text/javascript">
+$(function(){
+    $('#appmarket_goto_form').submit();
+    $('.page-sidebar-menu .active').removeClass('active');
+    $('.hor-menu .nav .nav-appmarket').addClass('active').find('.font-red').removeClass('font-red').addClass('font-grey-cararra');
+    var timer = setInterval(function(){
+            if(!$('.page-appmarket').length){
+                $('.hor-menu .nav .nav-appmarket').removeClass('active').find('.font-grey-cararra').removeClass('font-grey-cararra').addClass('font-red');
+                clearInterval(timer);
+            }
+    },400);
+});
+
+</script>
+<style media="screen">
+    .page-content-wrapper .page-content{
+        padding: 0;
+    }
+    .page-appmarket{
+        min-height:inherit;
+    }
+</style>

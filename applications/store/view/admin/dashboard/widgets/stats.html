@@ -1,0 +1,78 @@
+<div class="row">
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="dashboard-stat purple-plum">
+			<div class="visual">
+				<i class="fa fa-globe"></i>
+			</div>
+			<div class="details">
+				<div class="number">
+					<{$goods_count|default:0|number_format}>
+				</div>
+				<div class="desc">
+					购买商品数量
+				</div>
+			</div>
+			<a class="more" href="javascript:void(0);">
+				某段时间售卖商品总件数 <i class="icon-info tooltips"></i>
+			</a>
+		</div>
+	</div>
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="dashboard-stat red-intense">
+			<div class="visual">
+				<i class="fa fa-shopping-cart"></i>
+			</div>
+			<div class="details">
+				<div class="number">
+					<{$order_count|default:0|number_format}>
+				</div>
+				<div class="desc">
+					购买量
+				</div>
+			</div>
+			<a class="more" href="javascript:void(0);">
+				某段时间交易完成单数 <i class="icon-info tooltips"></i>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 margin-bottom-10">
+		<div class="dashboard-stat blue-madison">
+			<div class="visual">
+				<i class="fa fa-bar-chart-o"></i>
+			</div>
+			<div class="details">
+				<div class="number">
+					<small>￥</small>
+					<{$total_order_money|cur}>
+				</div>
+				<div class="desc">
+					销售额
+				</div>
+			</div>
+			<a class="more" href="javascript:void(0);">
+				某段时间内交易完成单总金额 <i class="icon-info tooltips"></i>
+			</a>
+		</div>
+	</div>
+
+	<div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+		<div class="dashboard-stat green-haze">
+			<div class="visual">
+				<i class="fa fa-group fa-icon-medium"></i>
+			</div>
+			<div class="details">
+				<div class="number">
+					<small>￥</small>
+					<{$amount_avg|cur}>
+				</div>
+				<div class="desc">
+					客单价
+				</div>
+			</div>
+			<a class="more" href="javascript:void(0);">
+				某段时间交易单平均金额 <i class="icon-info tooltips"></i>
+			</a>
+		</div>
+	</div>
+</div>

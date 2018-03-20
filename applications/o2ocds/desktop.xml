@@ -1,0 +1,86 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="o2ocds">o2o分销管理</permission>
+        <permission display='true' id="o2ocds_setting">o2o分销配置</permission>
+        <permission display='true' id="o2ocds_invitation">邀请码管理</permission>
+        <permission display='true' id="o2ocds_qrcode">二维码列表</permission>
+        <permission display='true' id="o2ocds_add_qrcode">添加二维码</permission>
+        <permission display='true' id="o2ocds_edit_qrcode">编辑二维码</permission>
+        <permission display='true' id="o2ocds_delete_qrcode">删除二维码</permission>
+        <permission display='true' id="o2ocds_export_qrcode">导出二维码</permission>
+        <permission display='true' id="o2ocds_store">店铺列表 </permission>
+        <permission display='true' id="o2ocds_add_store">添加店铺 </permission>
+        <permission display='true' id="o2ocds_edit_store">编辑店铺 </permission>
+        <permission display='true' id="o2ocds_delete_store">删除店铺 </permission>
+        <permission display='true' id="o2ocds_enterprise">企业列表 </permission>
+        <permission display='true' id="o2ocds_add_enterprise">添加企业 </permission>
+        <permission display='true' id="o2ocds_edit_enterprise">编辑企业 </permission>
+        <permission display='true' id="o2ocds_delete_enterprise">删除企业 </permission>
+        <permission display='true' id="o2ocds_service_code">服务码管理 </permission>
+        <permission display='true' id="o2ocds_orderlog">分佣结算凭证 </permission>
+        <permission display='true' id="o2ocds_delete_orderlog">删除结算凭证 </permission>
+        <permission display='true' id="o2ocds_statement">财务结算单 </permission>
+        <permission display='true' id="o2ocds_statement_export">财务结算单导出 </permission>
+        <permission display='true' id="o2ocds_generate_statement">生成财务结算单 </permission>
+        <permission display='true' id="o2ocds_edit_statement">结算单查看/编辑 </permission>
+        <permission display="true" id="o2ocds_notice">查看公告列表</permission>
+        <permission display="true" id="o2ocds_notice_edit">添加/编辑公告</permission>
+        <permission display="true" id="o2ocds_notice_delete">删除公告</permission>
+        <permission display="true" id="o2ocds_notice_tag">公告标签</permission>
+        <permission display="true" id="o2ocds_report">分销相关报表导出</permission>
+    </permissions>
+    <panelgroup icon=" fa fa-share-alt" id="o2ocds" order="100">O2O分销设置</panelgroup>
+    <adminpanel action="index" controller="admin_setting" display="true" group="o2ocds_o2ocds" order='1' permission="o2ocds_setting">基础设置</adminpanel>
+    <adminpanel action="index" controller="admin_products" display="true" group="o2ocds_o2ocds" order='1' permission="o2ocds_setting">商品级分佣设置</adminpanel>
+    <adminpanel action="setting" controller="admin_service_code" display="true" group="o2ocds_o2ocds" order='1' permission="o2ocds_setting">服务码配置项</adminpanel>
+    <workground icon="fa fa-share-alt" id="o2ocds.workground" name="o2o分销" order="35">
+        <menugroup name="o2o分销管理">
+            <menu action='achieve' controller='admin_orderlog' display='true' order='180' permission='o2ocds_orderlog'>分佣凭证</menu>
+            <menu display='false' permission='o2ocds_delete_orderlog'>删除结算凭证</menu>
+        </menugroup>
+        <menugroup name="公告管理">
+            <menu action='index' controller='admin_notice' display='true' order='10' permission='o2ocds_notice'>公告管理</menu>
+            <menu action='edit' controller='admin_notice' display='false' order='11' permission='o2ocds_notice_edit'>公告编辑</menu>
+            <menu display='false' permission='o2ocds_notice_delete' order='12'>公告删除</menu>
+            <menu display='false' permission='o2ocds_notice_tag' order='13'>公告标签</menu>
+        </menugroup>
+        <menugroup name="财务结算单">
+            <menu action='index' controller='admin_statement' display='true' order='190' permission='o2ocds_statement'>财务结算单</menu>
+            <menu action='edit' controller='admin_statement' display='false' order='191' permission='o2ocds_edit_statement'>编辑财务结算单</menu>
+            <menu display='false' permission='o2ocds_generate_statement' order='192'>生成财务结算单</menu>
+            <menu display='false' permission='o2ocds_statement_export' order='192'>财务结算单导出</menu>
+        </menugroup>
+        <menugroup name="邀请码">
+            <menu action='index' controller='admin_invitation' display='true' order='20' permission='o2ocds_invitation'>邀请码列表</menu>
+            <menu action='qrcode' controller='admin_invitation' display='false' order='22' permission='o2ocds_invitation'>邀请码二维码显示</menu>
+        </menugroup>
+        <menugroup name="二维码">
+            <menu action='index' controller='admin_qrcode' display='true' order='30' permission='o2ocds_qrcode'>二维码列表</menu>
+            <menu action='edit' controller='admin_qrcode' display='false' order='31' permission='o2ocds_add_qrcode'>添加二维码</menu>
+            <menu display='false' permission='o2ocds_export_qrcode' order='32'>导出二维码</menu>
+            <menu display='false' permission='o2ocds_delete_qrcode' order='33'>删除二维码</menu>
+            <menu display='false' permission='o2ocds_edit_qrcode' order='34'>编辑二维码</menu>
+        </menugroup>
+        <menugroup name="店铺">
+            <menu action='index' controller='admin_store' display='true' order='40' permission='o2ocds_store'>店铺列表</menu>
+            <menu action='edit' controller='admin_store' display='false' order='41' permission='o2ocds_add_store'>添加店铺</menu>
+            <menu display='false' permission='o2ocds_edit_store' order='42'>编辑店铺</menu>
+            <menu display='false' permission='o2ocds_delete_store' order='43'>删除店铺</menu>
+        </menugroup>
+        <menugroup name="企业">
+            <menu action='index' controller='admin_enterprise' display='true' order='50' permission='o2ocds_enterprise'>企业列表</menu>
+            <menu action='edit' controller='admin_enterprise' display='false' order='51' permission='o2ocds_add_enterprise'>添加企业</menu>
+            <menu display='false' permission='o2ocds_edit_enterprise' order='52'>编辑企业</menu>
+            <menu display='false' permission='o2ocds_delete_enterprise' order='53'>删除企业</menu>
+        </menugroup>
+        <menugroup name="服务码">
+            <menu action='index' controller='admin_service_code' display='true' order='60' permission='o2ocds_service_code'>服务码列表</menu>
+        </menugroup>
+        <menugroup name="关系列表">
+            <menu action='index' controller='admin_relation' display='true' order='70' permission='o2ocds_relation'>关系列表</menu>
+        </menugroup>
+        <menugroup name="报表导出">
+            <menu action='index' controller='admin_report' display='true' order='260' permission='o2ocds_report'>报表导出</menu>
+        </menugroup>
+    </workground>
+</desktop>

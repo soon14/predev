@@ -1,0 +1,78 @@
+
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label"><span class="required" aria-required="true">*</span>所属分类</label>
+                <div class="col-md-5">
+                    <{input type='select' name='cid' value=$widgets.cid required='true'  rows=$selectmaps valueColumn="cid" labelColumn="title"}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">
+                    <span class="required" aria-required="true">*</span>
+                    板块模板中文名称
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="tmp_name" value="<{$widgets.tmp_name}>" required=true class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">
+                    <span class="required" aria-required="true">*</span>
+                    板块模板英文名称
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="code" value="<{$widgets.code}>" required=true class="form-control"/>
+                    <span class="help-inline">模块标识，全局唯一</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">
+                    <span class="required" aria-required="true">*</span>
+                    权重
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="weight" value="<{$widgets.weight}>" required=true class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">
+                    <span class="required" aria-required="true">*</span>
+                    板块类型
+                </label>
+                <div class="col-md-5">
+                    <select name="type" class="form-control" id="J_select_type">
+                        <option value="0" <{if $widgets.type == '0'}>selected<{/if}>>图文展示</option>
+                        <option value="1" <{if $widgets.type == '1'}>selected<{/if}>>商品展示</option>
+                        <option value="2" <{if $widgets.type == '2'}>selected<{/if}>>自定义代码</option>
+                        <option value="3" <{if $widgets.type == '3'}>selected<{/if}>>静态板块</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">
+                    <span class="required" aria-required="true">*</span>
+                    适用屏幕
+                </label>
+                <div class="col-md-5">
+                    <select name="screen" class="form-control">
+                        <option value="0" <{if $widgets.screen == '0'}>selected<{/if}>>PC</option>
+                        <option value="1" <{if $widgets.screen == '1'}>selected<{/if}>>移动</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="code_html_block">
+        <hr>
+        <div class="form form-horizontal">
+            <div class="form-body">
+                <div class="form-group">
+                    <label class="col-md-2 control-label">源码</label>
+                    <div class="col-md-10">
+                        <{input type="code" name="html_code" value="{$html_code}"}>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

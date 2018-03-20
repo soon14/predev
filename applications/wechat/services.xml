@@ -1,0 +1,44 @@
+<services>
+    <service id="desktop_finder.wechat_mdl_bind">
+        <class>wechat_finder_bind</class>
+    </service>
+    <service id="desktop_finder.wechat_mdl_xcxpage">
+        <class>wechat_finder_xcxpage</class>
+    </service>
+    <service id="desktop_finder.wechat_mdl_replyrule">
+        <class>wechat_finder_replyrule</class>
+    </service>
+    <service id="openapi.wechat" optname="openapi@微信相关">
+        <class>wechat_api</class>
+    </service>
+    <service id="openapi.xcxpage" optname="openapi@小程序页面">
+        <class>wechat_openapi_xcxpage</class>
+    </service>
+    <service id="openapi.wxjssdk" optname="openapi@微信jsapi">
+        <class>wechat_jssdk</class>
+    </service>
+    <service id="ectools_payment.applications" optname="支付插件列表">
+        <class>wechat_payment_applications_wxpay</class>
+        <class>wechat_payment_applications_wxpayinapp</class>
+        <class>wechat_payment_applications_wxpayinwxapp</class>
+    </service>
+    <service id="toauth.pam" optname="第三方信任登录列表">
+        <class>wechat_toauth_pam</class>
+        <class>wechat_toauth_wxapppam</class>
+    </service>
+
+    <service id="wechat.xcxwidgets">
+        <class>wechat_xcxwidgets</class>
+    </service>
+
+    <!-- <service id="mobile.router.dispatch">
+        <class orderby="50">wechat_services_router</class>
+    </service>
+    <service id="site.router.dispatch">
+        <class orderby="50">wechat_services_router</class>
+    </service> -->
+
+    <service id="b2c.order.delivery.send.finish" optname="发货操作完成触发">
+        <class orderby="40">wechat_services_sendfinish</class>
+    </service>
+</services>

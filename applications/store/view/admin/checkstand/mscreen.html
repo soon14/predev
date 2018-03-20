@@ -1,0 +1,200 @@
+<div class="alert alert-info">
+    <h4><{$storeInfo.store_name}></h4>
+    <div id="mscreen_console">
+
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-12">
+        <div id="goods_list_panel">
+            <table class="table table-striped table-hover">
+                <thead>
+                <tr class="heading">
+                    <th>#</th>
+                    <th>名称</th>
+                    <th>单价</th>
+                    <th>数量</th>
+                    <th>金额</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>&nbsp;</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="row">
+            <div class="col-xs-5" id="goods_list_btns">
+                <div class="well well-sm">
+                    <button class="icon-btn" data-act='p-prev'>
+                        <i class="glyphicon glyphicon-arrow-up"></i>
+
+                        <div>上页</div>
+                    </button>
+                    <button class="icon-btn" data-act='p-next'>
+                        <i class="glyphicon glyphicon-arrow-down"></i>
+
+                        <div>下页</div>
+                    </button>
+                    <button class="icon-btn" data-act='r-prev'>
+                        <i class="glyphicon glyphicon-chevron-up"></i>
+
+                        <div>上条</div>
+                    </button>
+                    <button class="icon-btn" data-act='r-next'>
+                        <i class="glyphicon glyphicon-chevron-down"></i>
+
+                        <div>下条</div>
+                    </button>
+                </div>
+                <div class="well well-sm">
+                    <button class="icon-btn" data-act='r-edit'>
+                        <i class="glyphicon font-grey-gallery glyphicon-edit"></i>
+
+                        <div>编辑</div>
+                    </button>
+                    <button class="icon-btn" data-act='r-delete'>
+                        <i class="glyphicon font-yellow-casablanca glyphicon-remove-circle"></i>
+
+                        <div>移除</div>
+                    </button>
+
+                    <button class="icon-btn" data-act='r-minus'>
+                        <i class="glyphicon font-red glyphicon-minus-sign"></i>
+
+                        <div>减少</div>
+                    </button>
+                    <button class="icon-btn" data-act='r-plus'>
+                        <i class="font-green glyphicon glyphicon-plus-sign"></i>
+
+                        <div>增加</div>
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-2">
+                <div class="well well-sm">
+                    <button id="show_promotions" class="icon-btn disabled">
+                        <i class="font-yellow glyphicon glyphicon-tags"></i>
+
+                        <div>优惠明细</div>
+                        <span class="badge badge-danger"></span>
+                    </button>
+                </div>
+            </div>
+            <div class="col-xs-5">
+                <div id="total_panel">
+                    <table class="table">
+                        <tbody>
+                        <tr>
+                            <td class="text-right h4">数量</td>
+                            <td class="text-left h3" data-bind="cart_result/goods_count">0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">总额</td>
+                            <td class="text-left" data-bind="total/cart_amount">0</td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">会员折扣</td>
+                            <td class="text-left font-red">- <strong data-bind="total/member_discount_amount">0</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">促销优惠</td>
+                            <td class="text-left font-red">-
+                                <strong data-bind="total/promotion_discount_amount">0</strong></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">运费</td>
+                            <td class="text-left font-green">+ <strong data-bind="total/cost_freight">0</strong>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="text-right h3">应付</td>
+                            <td class="text-left bg-green-seagreen h1">
+                                ¥<strong data-bind="total/order_total" id="final_amount_money"> 0
+                            </strong>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- begin chrome bridge -->
+<textarea id="on_pointofsale_event_area" class="hidden"></textarea>
+<script type="text/javascript">
+
+document.getElementById('on_pointofsale_event_area').addEventListener('onpointOfSale', function() {
+    var eventData = document.getElementById('on_pointofsale_event_area').innerText;
+    $('#mscreen_console').html(eventData);
+});
+
+</script>
+<!-- end chrome bridge -->

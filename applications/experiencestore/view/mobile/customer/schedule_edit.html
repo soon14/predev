@@ -1,0 +1,18 @@
+<ol class="breadcrumb">
+  <li><a href="<{link app=experiencestore ctl=mobile_activity act=subject}>">活动预约</a></li>
+  <li><a href="<{link app=experiencestore ctl=mobile_customer act=schedule_order}>">我的预约</a></li>
+  <li class="active">修改预约</li>
+</ol>
+<div class="page-header">
+    <div class="container">
+        <h1 class="clearfix">修改预约</h1>
+    </div>
+</div>
+<div class="schedule-edit-panel" id="schedule_edit_panel">
+
+</div>
+<script type="text/javascript">
+    $('#schedule_edit_panel').load("<{$schedule_edit_url}>",function(){
+        $('#schedule_edit_panel .schedule-form').append('<input type=hidden name=order_id value=<{$order_id}>>');
+    });
+</script>

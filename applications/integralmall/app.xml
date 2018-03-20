@@ -1,0 +1,13 @@
+<app>
+    <name>积分商城</name>
+    <description>积分商城体系,指定商品以固定积分兑换.</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <depends>
+        <app>integraldeduction</app>
+    </depends>
+    <version>1.0</version>
+</app>

@@ -1,0 +1,42 @@
+<services>
+
+    <service id="desktop_finder.site_mdl_seo">
+        <class>site_finder_seo</class>
+    </service>
+
+
+    <service id="app_content_detector">
+        <class>site_application_module</class>
+    </service>
+
+    <service id="view_compile_helper">
+        <class>site_view_compiler</class>
+    </service>
+
+    <service id="view_helper">
+        <class>site_view_helper</class>
+    </service>
+
+    <service id="html_input">
+        <class>site_view_input</class>
+    </service>
+
+
+    <service id="site_view_helper">
+        <class orderby="1">site_service_view_helper</class>
+    </service>
+
+    <service id="cachemgr_global_vary">
+        <class>site_service_cachevary</class>
+    </service>
+
+    <service id="site_service_seo">
+        <class>site_service_seo</class>
+    </service>
+
+    <!--渲染拦截-->
+    <service id="base_render_pre_display">
+        <class orderby="0">site_view_pre_render</class>
+    </service>
+
+</services>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+<meta charset="utf-8"/>
+<title><{$title|default:'singlepage'}></title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<{css app=desktop src="desktop-theme.min.css"}>
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+<!--[if lt IE 9]>
+<{script app=desktop  src="../com/global/plugins/respond.min.js"}>
+<{script app=desktop  src="../com/global/plugins/excanvas.min.js"}>
+<![endif]-->
+<{script app=desktop  src="desktop-script.min.js"}>
+<!-- END JAVASCRIPTS -->
+<link rel="shortcut icon" href="/favicon.ico"/>
+<style media="screen">
+	/*CSS FOR VMCSHOP*/
+	.table thead tr th,.table tbody tr td{
+		vertical-align:middle;
+	}
+</style>
+<script type="text/javascript">
+    window.is_singlepage = true;
+</script>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="page-full-width">
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+	<!-- BEGIN CONTENT -->
+	<div class="page-content-wrapper">
+		<div class="page-content" data-updatecontainer='default'>
+			<{$_PAGE_}>
+		</div>
+	</div>
+	<!-- END CONTENT -->
+</div>
+<!-- END CONTAINER -->
+<script type="text/javascript">
+if($('.page-header').length){
+	$('.page-header').insertBefore('.page-container');
+	$(document.body).addClass('page-header-fixed');
+}
+if($('.page-footer').length){
+	$('.page-footer').insertAfter('.page-container');
+	$(document.body).addClass('page-footer-fixed');
+}
+$(document.body).append($('.modal'));
+</script>
+</body>
+<!-- END BODY -->
+</html>

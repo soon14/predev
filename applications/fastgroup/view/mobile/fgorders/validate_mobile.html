@@ -1,0 +1,47 @@
+<div class="content">
+    <form id="fast_order_form" action="<{link app=fastgroup ctl=mobile_fastgroup act=order_list args0=validate_mobile }>" method="post">
+    <div class="content-padded">
+        <div  class="form-horizontal">
+            <input type="text" name="mobile" value="" placeholder="请输入手机号">
+            <button type="button" class="btn btn-block btn-primary btn-outlined btn-mobile-vcode">获取手机验证码</button>
+            <input type="text" name="vcode" value="" placeholder="请输入手机验证码">
+            <button type="submit" class="btn btn-submit btn-positive btn-block">
+                确认
+            </button>
+        </div>
+    </div>
+</form>
+</div>
+
+<script charset="utf-8">
+
+
+ //获得短信验证码
+ var _cutdown_sms = function(btn){
+     btn.addClass('disabled');
+     var cutdown = 120,btn_o_text = btn.text(),timer =
+     setInterval((function(){
+         btn.text('短信已发送,'+(cutdown--)+'秒后可重试');
+         if(cutdown<1){
+             clearInterval(timer);
+             btn.text(btn_o_text).removeClass('disabled');
+         }
+         return arguments.callee;
+     })(),1000);
+ };
+ $('#fast_order_form .btn-mobile-vcode').on('click',function(e){
+     var btn = $(this);
+     if(btn.hasClass('disabled'))return;
+     btn.addClass('disabled');
+     $.post('<{link app=fastgroup ctl=mobile_fastgroup act=get_vcode}>',{mobile:$('#fast_order_form input[name="mobile"]').val()},function(re){
+         if(re && re.error){
+             btn.removeClass('disabled');
+             Messagebox('error',re.error);
+         }
+         if(re && re.success){
+             _cutdown_sms(btn);
+         }
+     },'json');
+ });
+
+</script>

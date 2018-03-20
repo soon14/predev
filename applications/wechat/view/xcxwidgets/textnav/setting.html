@@ -1,0 +1,204 @@
+<!-- ############### 编辑区域 ############### -->
+<!-- 文字导航 -->
+<template id="widget-child-setting-textnav">
+    <div class="view-item-setting" :id="widget.name + '_setting_' + index">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{widget.title}}
+                <a type="button" type="button" class="icon icon-close pull-right" href="javascript:;" @click="closeEv"></a>
+            </div>
+            <div class="panel-body form-horizontal">
+                <ul class="nav nav-tabs">
+                    <li @click="viewCreate" :class="{'active': active_tab == 'create'}">
+                        <a :href="'#' + widget.name + '_create_' + index" data-toggle="tab">添加链接</a>
+                    </li>
+                    <li @click="viewList" :class="{'active': active_tab == 'list'}">
+                        <a :href="'#' + widget.name + '_list_' + index" data-toggle="tab">已加链接</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" :class="{'active': active_tab == 'create'}" :id="widget.name + '_create_' + index">
+                        <div class="form-group form-group-sm">
+                            <label>链接文字</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="链接文字" v-model="create.text">
+                            </div>
+                        </div>
+                        <design-setting-link :widget="widget" :index="index" :name="'create'" :ref="widget.name + '_link_create_' + index"></design-setting-link>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-success btn-xs" @click.stop="textnavAddEv">增加一项</button>
+                        </div>
+                    </div>
+                    <div class="tab-pane" :class="{'active': active_tab == 'list'}" :id="widget.name + '_list_' + index">
+                        <div class="list-group" v-if="widget.data.items.length > 0">
+                            <a href="javascript:;" class="list-group-item" v-for="(item, item_key) in widget.data.items" :item="item" :key="item_key" @click="textnavEditEv(item_key, item)" @click="textnavEditEv(item_key, item)" :class="{'list-group-item-warning': (edit_item !== false && edit_item == item_key)}">
+                                <span>{{item.text}}</span>
+                                <span class="pull-right">
+                                    <button type="button" class="btn btn-default btn-xs design-setting-btn" title="编辑此项"><i class="fa fa-cog"></i></button>
+                                    <button type="button" class="btn btn-default btn-xs" title="删除此项" @click.stop="textnavDelEv(item_key)"><i class="fa fa-trash"></i></button>
+                                </span>
+                            </a>
+                        </div>
+                        <div class="list-group" v-else>
+                            <a href="javascript:;" class="list-group-item" @click="viewCreate">
+                                <span>添加链接</span>
+                            </a>
+                        </div>
+                        <div v-show="(edit_item !== false)" style="margin-top: 20px;">
+                            <div class="form-group form-group-sm">
+                                <label>链接文字</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control" placeholder="链接文字" v-model="edit.text">
+                                </div>
+                            </div>
+                            <design-setting-link :widget="widget" :index="index" :name="'edit'" :ref="widget.name + '_link_edit_' + index"></design-setting-link>
+                            <div class="text-right">
+                                <button type="button" class="btn btn-warning btn-xs" @click.stop="textnavItemCancelEv">取消编辑</button>
+                                <button type="button" class="btn btn-success btn-xs" @click.stop="textnavItemEditEv">确认编辑</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <button type="button" class="btn btn-primary btn-xs" @click="closeEv">关闭</button>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+// --------------------------- 文字导航
+// 移除项目
+designStore.methods.textnavDelEv = function(vnode, item_index) {
+    return this.itemDelEv(vnode, item_index);
+};
+// 编辑项目
+designStore.methods.textnavItemEditEv = function(vnode, item_index, item) {
+    return this.childItemEditEv(vnode, item_index, item);
+};
+// 新增项目
+designStore.methods.textnavAddEv = function(vnode, item) {
+    return this.itemAddEv(vnode, item);
+};
+
+var widget_child_setting_textnav = Vue.extend({
+    props: ['widget', 'index'],
+    data: function() {
+        return {
+            active_tab: 'list',
+            edit_item: false,
+            edit: {
+                url: null,
+                text: null,
+                openType: null
+            },
+            create: {
+                url: null,
+                text: null,
+                openType: null
+            }
+        };
+    },
+    template: '#widget-child-setting-textnav',
+    methods: {
+        // 添加区域链接组件
+        createLink: function() {
+            var _k = this.widget.name + '_link_create_' + this.index;
+            return this.$refs[_k];
+        },
+        // 编辑区域链接组件
+        editLink: function() {
+            var _k = this.widget.name + '_link_edit_' + this.index;
+            return this.$refs[_k];
+        },
+        // 关闭
+        closeEv: function() {
+            this.textnavItemCancelEv();
+            return designStore.methods.closeEv(this);
+        },
+        // 删除
+        textnavDelEv: function(item_index) {
+            this.textnavItemCancelEv();
+            return designStore.methods.textnavDelEv(this, item_index);
+        },
+        // 编辑
+        textnavEditEv: function(item_index, item) {
+            this.edit_item = item_index;
+            this.edit = designStore.clone(item);
+            this.editLink().setUrl(this.edit.url);
+        },
+        // 取消编辑
+        textnavItemCancelEv: function() {
+            this.edit_item = false;
+            this.edit = {
+                url: null,
+                text: null,
+                openType: null
+            };
+            this.editLink().reinit();
+        },
+        // 提交编辑
+        textnavItemEditEv: function() {
+            if (!this.edit.text) {
+                Messagebox.warning('请输入链接文字！');
+                return false;
+            }
+            
+            var link = this.editLink().getUrl();
+            if (!link) {
+                return false;
+            }
+            this.edit.url = link.url;
+            this.edit.openType = link.openType;
+            if (!this.edit.url) {
+                Messagebox.warning('请设置链接地址！');
+                return false;
+            }
+
+            designStore.methods.textnavItemEditEv(this, this.edit_item, designStore.clone(this.edit));
+
+            this.textnavItemCancelEv();
+        },
+        // 增加
+        textnavAddEv: function() {
+            if (!this.create.text) {
+                Messagebox.warning('请输入链接文字！');
+                return false;
+            }
+
+            var link = this.createLink().getUrl();
+            if (!link) {
+                return false;
+            }
+            this.create.url = link.url;
+            this.create.openType = link.openType;
+            if (!this.create.url) {
+                Messagebox.warning('请设置链接地址！');
+                return false;
+            }
+
+            designStore.methods.textnavAddEv(this, designStore.clone(this.create));
+            this.create = {
+                url: null,
+                text: null,
+                openType: null
+            };
+
+            this.textnavItemCancelEv();
+            this.active_tab = 'list';
+            this.createLink().reinit();
+        },
+        // 显示添加
+        viewCreate: function() {
+            this.textnavItemCancelEv();
+            this.active_tab = 'create';
+        },
+        // 显示列表
+        viewList: function() {
+            this.textnavItemCancelEv();
+            this.active_tab = 'list';
+        }
+    },
+
+});
+</script>

@@ -1,0 +1,7 @@
+<cronentries>
+  <cron id="operatorlog_tasks_cleanlogs">
+    <description>删除后台操作日志数据</description>
+    <schedule>0 0 1 */1 *</schedule>
+    <enabled>true</enabled>
+  </cron>
+</cronentries>

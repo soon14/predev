@@ -1,0 +1,273 @@
+<h3 class="page-title">
+    <{if !$group.group_id}>添加<{else}>编辑<{/if}>会员分组
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=marketing&ctl=admin_group&act=index">会员分组列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if !$group.group_id}>添加<{else}>编辑<{/if}>会员分组</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=marketing&ctl=admin_group&act=save" method="post" >
+    <input type="hidden" name="group_id" value="<{$group.group_id}>">
+    <div class="form-horizontal">
+        <div class="form-body form">
+            <div class="form-group">
+                <label class="col-md-2 control-label">会员分组名称
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-4">
+                    <{input type='text' value=$group.name name='name' required='true'}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">会员分组说明
+                </label>
+                <div class="col-md-4">
+                    <{input type="textarea" class="form-control"  value=$group.description name="description" rows="3" }>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">交易时间
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-4">
+                    <{input type=time name="from_time" placehoder="开始时间" value=$group.from_time required="true"}>
+                    <{input type=time name="to_time" placehoder="结束时间" value=$group.to_time required="true"}>
+                </div>
+
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">交易状态
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-4">
+                    <select class="form-control" name="order_status">
+                        <option value="0" <{if $group.order_status=='0'}>selected<{/if}> >全部</option>
+                        <option value="1" <{if $group.order_status=='1'}>selected<{/if}>　>待付款</option>
+                        <option value="2" <{if $group.order_status=='2'}>selected<{/if}>>待发货</option>
+                        <option value="3" <{if $group.order_status=='3'}>selected<{/if}>>已发货</option>
+                        <option value="4" <{if $group.order_status=='4'}>selected<{/if}>>已作废</option>
+                        <option value="5" <{if $group.order_status=='5'}>selected<{/if}>>已完成</option>
+                    </select>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label class="col-md-2 control-label">满足以下条件
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-7 rule-c-tpl-extends">
+                    <div class="c-pane">
+                        <div class="c-pane">
+                            <select class="input-sm" name="conditions[match][type]" size="1">
+                                <!--<option value="any">任意一个条件</option>-->
+                                <option value="all" selected="">全部条件</option>
+                            </select>
+                            <select class="input-sm" name="conditions[match][value]" size="1">
+                                <!--<option value="0">不满足</option>-->
+                                <option value="1" selected="">满足</option>
+                            </select>
+                        <span class="btn btn-link" onclick="showConditions(this)">
+                            <i class="fa fa-plus"></i>新条件
+                        </span>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item root hide" data-position="-1">
+                                <select class="input-sm" onchange="makeConditions(this)" data-path="conditions" data-level="1" data-type="match">
+                                    <option value="">选择需要添加的条件</option>
+                                    <optgroup label="条件筛选">
+                                        <{foreach from=$condition key=key item=item}>
+                                        <option value="<{$key}>"><{$item.label}></option>
+                                        <{/foreach}>
+                                    </optgroup>
+                                </select>
+                                <span style="position:absolute;right:0;bottom:0;" class="btn btn-xs red" onclick="$(this).closest('.list-group-item').addClass('hide');">
+                                    <i class="fa fa-times"></i>
+                                </span>
+                            </li>
+                            <{foreach from=$group.conditions.conditions.match key=position item=item}>
+                            <li class="list-group-item" data-position="<{$position}>">
+                                <input type="hidden" name="conditions[conditions][match][<{$position}>][attribute]" value="<{$item.attribute}>">
+                                <{$condition[$item['attribute']]['label']}>
+                                <select class="input-sm" name="conditions[conditions][match][<{$position}>][operator]" size="1">
+                                    <{foreach from=$condition[$item['attribute']]['operator'] key=key item=c_item}>
+                                    <option value="<{$key}>" <{if $item.operator==$key}>selected<{/if}> ><{$c_item}></option>
+                                    <{/foreach}>
+                                </select>
+                                <input type="text" class="input-sm" name="conditions[conditions][match][<{$position}>][value]" required="true" value="<{$item.value}>">
+                                <span style="position:absolute;right:0;bottom:0;" class="btn btn-xs red" onclick="$(this).closest('.list-group-item').remove();">
+                                    <i class="fa fa-trash-o"></i>
+                                </span>
+                            </li>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">排除以下条件
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-7 rule-c-tpl-extends">
+                    <div class="c-pane">
+                        <div class="c-pane">
+                            <select class="input-sm" name="conditions[no_match][type]" size="1">
+                                <!--<option value="any">任意一个条件</option>-->
+                                <option value="all" selected="">全部条件</option>
+                            </select>
+                            <select class="input-sm" name="conditions[no_match][value]" size="1">
+                                <!--<option value="0">不满足</option>-->
+                                <option value="1" selected="">满足</option>
+                            </select>
+                        <span class="btn btn-link" onclick="showConditions(this)">
+                            <i class="fa fa-plus"></i>新条件
+                        </span>
+                        </div>
+                        <ul class="list-group">
+                            <li class="list-group-item root hide" data-position="-1">
+                                <select class="input-sm" onchange="makeConditions(this)" data-path="conditions" data-level="1" data-type="no_match">
+                                    <option value="">选择需要添加的条件</option>
+                                    <optgroup label="条件筛选">
+                                        <{foreach from=$condition key=key item=item}>
+                                        <option value="<{$key}>"><{$item.label}></option>
+                                        <{/foreach}>
+                                    </optgroup>
+                                </select>
+                                <span style="position:absolute;right:0;bottom:0;" class="btn btn-xs red" onclick="$(this).closest('.list-group-item').addClass('hide');">
+                                    <i class="fa fa-times"></i>
+                                </span>
+                            </li>
+                            <{foreach from=$group.conditions.conditions.no_match key=position item=item}>
+                            <li class="list-group-item" data-position="<{$position}>">
+                                <input type="hidden" name="conditions[conditions][no_match][<{$position}>][attribute]" value="<{$item.attribute}>">
+                                <{$condition[$item['attribute']]['label']}>
+                                <select class="input-sm" name="conditions[conditions][no_match][<{$position}>][operator]" size="1">
+                                    <{foreach from=$condition[$item['attribute']]['operator'] key=key item=c_item}>
+                                    <option value="<{$key}>" <{if $item.operator==$key}>selected<{/if}> ><{$c_item}></option>
+                                    <{/foreach}>
+                                </select>
+                                <input type="text" class="input-sm" name="conditions[conditions][no_match][<{$position}>][value]" required="true" value="<{$item.value}>">
+                                <span style="position:absolute;right:0;bottom:0;" class="btn btn-xs red" onclick="$(this).closest('.list-group-item').remove();">
+                                    <i class="fa fa-trash-o"></i>
+                                </span>
+                            </li>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <hr>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                    所属地区
+                    <span class="required" aria-required="true">*</span>
+                </label>
+
+                <div class="col-md-2 col-xs-6 area-select margin-top-10">
+                    <label class="label label-default handle-multiple">展开</label>&nbsp;
+                    <select  class="form-control input-small" multiple name="conditions[area][]">
+                        <{foreach from=$areas item=area}>
+                        <option value="<{$area.region_id}>" <{if $area.region_id|in_array:$group.conditions.area}>selected<{/if}>>
+                        <{$area.local_name}>
+                        </option>
+                        <{/foreach}>
+                    </select>
+                    <span class="help-block visible-lg-block"><kbd>ctrl</kbd> + 鼠标多选地区</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">营销渠道维度
+                </label>
+                <div class="col-md-3">
+                    <label class="control-label">
+                        <input type="checkbox" value="true" name="conditions[email_succ]" <{if $group.conditions.email_succ=='true'}>checked<{/if}> >近6个月成功发送过邮件的用户
+                    </label>
+                </div>
+                <div class="col-md-3">
+                    <label class="control-label">
+                        <input type="checkbox" value="true" name="conditions[sms_succ]" <{if $group.conditions.sms_succ=='true'}>checked<{/if}> >近6个月成功发送过短信的用户
+                    </label>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">包含以下分组
+                </label>
+                <div class="col-md-6">
+                    <{input type='object' object='group' base_filter=$base_filter multiple="true" callback_func="group_callback_func"}>
+                    <table class="table <{if !$extend_group}>hide<{/if}>" id="group_table">
+                        <thead>
+                            <th>操作</th>
+                            <th>分组名称</th>
+                            <th>描述</th>
+                        </thead>
+                        <tbody>
+                        <{include file='admin/group/ajax_group.html'}>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                        <a href="index.php?app=marketing&ctl=admin_group&act=index" class="btn default">返回</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>
+
+<script>
+    var showConditions = function(el){
+        $(el).closest('.c-pane').next('ul').find('.root').removeClass('hide');
+    };
+    var makeConditions = function(el){
+        var ul = $(el).closest('ul'),
+                root_li = $(el).closest('.root'),
+                position = ul.find('> li').length,
+                type=$(el).attr('data-type'),
+                new_item = $('<li class="list-group-item" data-position="'+position+'">加载中...</li>');
+        new_item.insertBefore(root_li);
+        new_item.load('index.php?app=marketing&ctl=admin_group&act=condition',{
+            'condition':$(el).val(),
+            'position':position,
+            'type':type
+        },function(){
+            $(el).closest('.root').addClass('hide');
+            $(el).get(0).selectedIndex = 0;
+        });
+    }
+
+    $('.area-select').on('click','.handle-multiple',function(){
+        var txt = $(this).text();
+        if(txt == '展开'){
+            $(this).text('收起');
+            $(this).parent().find('select').css('height',600);
+        }else{
+            $(this).text('展开');
+            $(this).parent().find('select').css('height','auto');
+        }
+    });
+
+    var group_callback_func = function(ids){
+        $('<table></table>').load('index.php?app=marketing&ctl=admin_group&act=ajax_group' ,ids ,function(){
+            $('#group_table').removeClass('hide');
+            $(this).find('tr').appendTo($('#group_table tbody'));
+        });
+    }
+
+</script>

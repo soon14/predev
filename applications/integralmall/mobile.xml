@@ -1,0 +1,14 @@
+<site>
+    <module controller='mobile_list'>
+        <name>integralmall</name>
+        <title>积分商城</title>
+    </module>
+    <module controller='mobile_detail'>
+        <name>integralmalldetail</name>
+        <title>积分商城兑换商品详情</title>
+    </module>
+    <module controller='mobile_exchange'>
+        <name>integralmallexchange</name>
+        <title>积分商城兑换确认</title>
+    </module>
+</site>

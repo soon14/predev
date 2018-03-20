@@ -1,0 +1,34 @@
+<h3 class="page-title">
+    服务码配置项
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=desktop&ctl=adminpanel">系统设置</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $qrcode.qrcode_id}>编辑<{else}>新建<{/if}>店铺详情</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=o2ocds&ctl=admin_service_code&act=setting" method="post" class="form">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group <{$item.class}> ">
+                <label class="col-md-3 control-label">核销订单获得积分</label>
+                <div class="col-md-2">
+                    <{input  required=true type=text name=servicecode_ratio value=$servicecode_ratio}>
+                </div>
+                <span class="help-block">% X 订单所获积分</span>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

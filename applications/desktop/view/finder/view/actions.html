@@ -1,0 +1,125 @@
+<div class="table-toolbar" id="finder_actions_<{$name}>">
+
+    <div class="row">
+        <{if $actions || $custom_actions || $use_buildin_filter}>
+        <div class="col-md-8">
+            <{if $custom_actions}>
+            <{foreach from=$custom_actions item=item key=key}>
+            <div class="btn-group">
+                    <a class="btn green<{if $item.group&&count($item.group)>0}> dropdown-toggle<{/if}>" <{if $item.group&&count($item.group)>0}> data-toggle="dropdown" aria-expanded="true"<{/if}>  <{foreach from=$item item=v key=k}> <{$k}>="<{if $k=='group'}>true<{else}><{$v}><{/if}>"<{/foreach}>>
+                            <{$item.label}>
+                            <{if $item.icon}>&nbsp;<i class="fa <{$item.icon}>"></i><{/if}>
+                            <{if $item.group&&count($item.group)>0}>
+                             &nbsp;<i class="fa fa-angle-down"></i>
+                            <{/if}>
+
+                    </a>
+                    <{if $item.group&&count($item.group)>0}>
+                       <ul class="dropdown-menu" role="menu">
+                            <{foreach from=$item.group item=item }>
+                              <{if $item.label=="_SPLIT_"}>
+                                <li class="divider"></li>
+                              <{else}>
+                                <li>
+                                    <a <{if !$item.href}>href="javascript:void(0);"<{/if}> <{foreach from=$item item=v key=k}> <{$k}>="<{$v}>"<{/foreach}>>
+                                       <span><{if $item.icon}><i class="fa <{$item.icon}>"></i><{/if}><{$item.label}></span>
+                                    </a>
+                                </li>
+                               <{/if}>
+                            <{/foreach}>
+                       </ul>
+                    <{/if}>
+            </div>
+            <{/foreach}>
+            <{/if}>
+            <{foreach from=$actions item=item key=key}>
+            <div class="btn-group">
+                    <a class="btn default<{if $item.group&&count($item.group)>0}> dropdown-toggle<{/if}>" <{if $item.group&&count($item.group)>0}> data-toggle="dropdown" aria-expanded="true"<{/if}>  <{foreach from=$item item=v key=k}> <{$k}>="<{if $k=='group'}>true<{else}><{$v}><{/if}>"<{/foreach}>>
+                            <{$item.label}>
+                            <{if $item.icon}>&nbsp;<i class="fa <{$item.icon}>"></i><{/if}>
+                            <{if $item.group&&count($item.group)>0}>
+                             &nbsp;<i class="fa fa-angle-down"></i>
+                            <{/if}>
+
+                    </a>
+                    <{if $item.group&&count($item.group)>0}>
+                       <ul class="dropdown-menu" role="menu">
+                            <{foreach from=$item.group item=item }>
+                              <{if $item.label=="_SPLIT_"}>
+                                <li class="divider"></li>
+                              <{else}>
+                                <li>
+                                    <a <{if !$item.href}>href="javascript:void(0);"<{/if}> <{foreach from=$item item=v key=k}> <{$k}>="<{$v}>"<{/foreach}>>
+                                       <span><{if $item.icon}><i class="fa <{$item.icon}>"></i><{/if}><{$item.label}></span>
+                                    </a>
+                                </li>
+                               <{/if}>
+                            <{/foreach}>
+                       </ul>
+                    <{/if}>
+            </div>
+            <{/foreach}>
+            <{if $use_buildin_filter}>
+            <a data-target="#finder_filter_modal_<{$name}>" data-toggle="modal" href="<{$url}>&action=filter" class="btn default filter-handle"><span>筛选</span> <i class="fa fa-filter"></i></a>
+            <{/if}>
+        </div>
+        <{/if}>
+        <{if $searchOptions}>
+        <div class="<{if $actions || $custom_actions || $use_buildin_filter}>col-md-4<{else}>col-md-12<{/if}>">
+
+                <div class="btn-group  filter-tip hide pull-right">
+                    <span class="btn btn-link"><i class="fa fa-lightbulb-o"></i>&nbsp;&nbsp;以下结果为筛选结果</span>
+                    <span class="btn btn-default filter-cancel"><i class="fa fa-times-circle"></i>&nbsp;取消筛选</span>
+                </div>
+                <div class="input-group pull-right finder-search" id="finder_search_<{$name}>">
+    					<div class="input-group-btn">
+    						<button type="button" class="btn default search-label dropdown-toggle" tabindex="-1" data-toggle="dropdown" aria-expanded="false">
+                                <span><{$__search_options_default_label}></span>
+                                <i class="fa fa-angle-down"></i>
+                            </button>
+    						<ul class="dropdown-menu" role="menu">
+    							<{foreach from=$searchOptions key=key item=item}>
+                                <li  data-key="<{$key}>" <{if $__search_options_default_label==$item}>class="active"<{/if}>>
+                                    <a href="javascript:;"><{$item}></a>
+                                </li>
+                                <{/foreach}>
+    						</ul>
+    					</div>
+                        <div class="input-icon right">
+                            <i class="fa fa-times-circle hide"></i>
+                            <input type="text" name="<{$key}>"  class="form-control search-input" required=true>
+                        </div>
+                        <span class="input-group-btn">
+                        <button class="btn default search-submit" type="button"><i class="fa fa-search"></i></button>
+    					</span>
+    		    </div>
+
+    </div>
+    <{/if}>
+
+</div><!--table-toobarend-->
+</div>
+<{if $use_buildin_filter}>
+<textarea id="finder_filter_label_tpl_<{$name}>" class="hide">
+<div class="btn-group">
+    <span class="btn default btn-xs">{label}</span>
+    <button type="button" class="remove btn blue-madison btn-xs" data-input-selector="{selector}"><i class="fa fa-close"></i></button>
+</div>
+</textarea>
+<div id="finder_filter_label_<{$name}>" class="hide"></div>
+
+<div class="modal fade modal-cached bs-modal-lg" id="finder_filter_modal_<{$name}>" role="dialog" aria-hidden="true">
+              <div class="modal-dialog modal-lg">
+                      <div class="modal-content">
+
+                      </div>
+              </div>
+</div>
+<{/if}>
+<div class="modal" id="finder_actions_modal_<{$name}>" role="dialog" aria-hidden="true">
+              <div class="modal-dialog">
+                      <div class="modal-content">
+
+                      </div>
+              </div>
+</div>

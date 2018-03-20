@@ -1,0 +1,111 @@
+<h3 class="page-title">
+        <{$subject.fg_title}>
+        <small><{$order_status_label}></small>
+</h3>
+<div class="form">
+    <div class="form-actions" id="fgorder_formactions_<{$fgorder.skey}>">
+        <{if $order.status == 'active' && ($order.pay_status == '1' || $order.pay_status == '2')}>
+        <button type='button' data-action="index.php?app=fastgroup&ctl=admin_fgorders&act=finish&p[0]=<{$fgorder.skey}>"  class="btn green" ><i class="fa fa-check"></i> 完成</button>
+        <{elseif $order.status == 'finish'}>
+        <div class="text-success">
+            订单已完成 <i class="fa fa-check fa-lg"></i>
+        </div>
+        <{elseif $order.status == 'active'}>
+        <button type='button' data-action="index.php?app=fastgroup&ctl=admin_fgorders&act=cancel&p[0]=<{$fgorder.skey}>" class="btn btn-default" >关闭订单</button>
+        <{else}>
+        <div class="text-danger">
+            订单已作废
+        </div>
+        <{/if}>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-12 col-sm-12">
+        <div class="portlet">
+            <div class="portlet-body">
+                <div class="table-responsive">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>货号</th>
+                                <th>条码</th>
+                                <th>名称</th>
+                                <!-- <th>销售价</th>
+                                <th>会员价</th> -->
+                                <th>成交价</th>
+                                <th>数量</th>
+                                <th>小计</th>
+                                <th>已发货数量</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <{foreach from=$order.items item=item name="item"}>
+                                <tr>
+                                    <td><{$item.bn}></td>
+                                    <td><{$item.barcode}></td>
+                                    <td>
+                                        <img class='img-thumbnail' src="<{$item.image_id|storager:'xs'}>" width=40 />
+                                        <{$item.name}>&nbsp;
+                                        <small><{$item.spec_info}></small>
+                                    </td>
+                                    <!-- <td><{$item.price|cur}></td>
+                                    <td><{$item.member_lv_price|cur}></td> -->
+                                    <td><{$item.buy_price|cur}></td>
+                                    <td><{$item.nums}></td>
+                                    <td><{$item.amount|cur}></td>
+                                    <td><{$item.sendnum}></td>
+                                </tr>
+                            <{/foreach}>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div> <!-- end col -->
+    <div class="col-md-6">
+        <div class="well">
+				<div class="row static-info align-reverse">
+                    <div class="col-md-9 name">
+						订单号:
+					</div>
+					<div class="col-md-3 value">
+						<a href="index.php?app=b2c&ctl=admin_order&act=detail&p[0]=<{$order.order_id}>" target="_blank"><{$order.order_id}></a>
+					</div>
+					<div class="col-md-9 name">
+						订单金额:
+					</div>
+					<div class="col-md-3 value">
+						<small>￥</small><big><{$order.order_total|cur}></big>
+					</div>
+                    <div class="col-md-9 name">
+						已付金额:
+					</div>
+					<div class="col-md-3 value">
+						<small>￥</small><big><{$order.payed|cur}></big>
+					</div>
+				</div>
+		</div>
+    </div>
+    <div class="col-md-3">
+        提货秘钥：
+        <{$fgorder.skey|barcode}>
+    </div>
+    <div class="col-md-3">
+        手机号：
+        <strong class="well well-sm"><{$fgorder.mobile}></strong>
+    </div>
+</div>
+<script type="text/javascript">
+    $('#fgorder_formactions_<{$fgorder.skey}> .btn').on('click',function(e){
+        var action = $(this).attr('data-action');
+        $.getJSON(action,function(re){
+            if(re.success){
+                window['update_finder_<{$env.get.finder_name}>']();
+                return Messagebox.success(re.success);
+            }
+            if(re.error){
+                return Messagebox.error(re.error);
+            }
+        });
+    });
+</script>

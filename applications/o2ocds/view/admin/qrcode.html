@@ -1,0 +1,23 @@
+<h3 class="page-title">
+    二维码域名配置
+</h3>
+<form action="index.php?app=o2ocds&ctl=admin_setting&act=qrcode" method="post" class="form">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group <{$item.class}> ">
+                <label class="col-md-3 control-label">域名</label>
+                <div class="col-md-4">
+                    <{input  required=true type=text name=domain value=$domain  }>
+                </div>
+                <span class="help-block">全域名地址https://www.xx.com</span>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

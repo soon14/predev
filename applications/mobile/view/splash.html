@@ -1,0 +1,35 @@
+<!--
+    页面跳转提示页
+    @status error 失败,success 成功
+-->
+<div class="content">
+    <div class="content-padded content-splash">
+    <{if $status=='error'}>
+    <i class="fa fa-times-circle-o fa-4x"></i>
+    <{assign var=splash_class value='danger'}>
+    <{else}>
+    <i class="fa fa-check-circle-o fa-4x"></i>
+    <{assign var=splash_class value='success'}>
+    <{/if}>
+    <p>
+        <{$msg}>
+    </p>
+    <{if $redirect}>
+    <a class="btn btn-block btn-outlined" target="_self" href="<{$redirect}>"><span id="redirect_timer">3</span>秒后自动跳转</a>
+    <script charset="utf-8">
+    $(function(){
+        var timer = 3,t=
+        setInterval(function() {
+            $('#redirect_timer').text(--timer);
+            if(timer<1){
+                clearInterval(t);
+                location = "<{$redirect}>";
+            }
+        }, 1000);
+    });
+    </script>
+    <{else}>
+    <a class="btn btn-block btn-outlined btn-splash-go-1" href="javascript:;" onclick="history.go(-1)" role="button">立即返回</a>
+    <{/if}>
+    </div>
+</div>

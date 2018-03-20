@@ -1,0 +1,27 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" onclick="location.reload()" aria-hidden="true">关闭</button>
+</div>
+<div class="become-wrap">
+    <div class="row">
+        <div class="" style="text-align:center">
+            <br>
+            <div class="become-title">
+                <h4>
+                    <{if $code.type == '0'}>
+                        邀请店铺
+                    <{elseif $code.type == '1'}>
+                        邀请业务员
+                    <{else}>
+                        邀请店员
+                    <{/if}>
+                </h4>
+            </div>
+            <div class="vcode-img">
+                <{$url|qrcode}>
+            </div>
+            <div class="become-title">
+                <h4><{$code.invitation_code}></h4>
+            </div>
+        </div>
+    </div>
+</div>

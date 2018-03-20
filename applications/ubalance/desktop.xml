@@ -1,0 +1,24 @@
+<desktop>
+    <permissions>
+        <permission id="ubalance" display='true'>余额概览</permission>
+        <permission id="ubalance_account" display='true'>查看账户</permission>
+        <permission id="ubalance_account_edit" display='true'>账户编辑</permission>
+        <permission id="ubalance_account_export" display='true'>账户导出</permission>
+        <permission id="ubalance_fundlog" display='true'>查看流水</permission>
+        <permission id="ubalance_fundlog_export" display='true'>导出流水</permission>
+        <permission id="ubalance_setting" display='true'>余额宝设置</permission>
+        <permisssion id="ubalance_recharge" display='true'>批量充值</permisssion>
+    </permissions>
+    <adminpanel action="balance_set" controller="admin_set" display='true' group="ectools_currency" order="31" permission='ubalance'>余额宝配置</adminpanel>
+    <workground name="余额宝" icon="fa fa-money" id="workground.ubalance" order='21'>
+        <menugroup name="会员余额管理">
+            <menu controller='admin_record' action='count' permission='ubalance' display='true' order='20'>数据概览</menu>
+            <menu controller='admin_account' action='index' permission='ubalance_account' display='true' order='21'>账户列表</menu>
+            <menu controller='admin_record' action='index' permission='ubalance_fundlog' display='true' order='22'>流水列表</menu>
+            <menu controller='admin_account' action='edit' permission='ubalance_account_edit' display='false' order='23'>账户编辑</menu>
+            <menu permission='ubalance_account_export' display='false' order='24'>账户导出</menu>
+            <menu permission='ubalance_fundlog_export' display='false' order='25'>导出流水</menu>
+            <menu permission='ubalance_setting' display='false' order='25'>余额宝设置</menu>
+        </menugroup>
+    </workground>
+</desktop>

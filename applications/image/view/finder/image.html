@@ -1,0 +1,23 @@
+<div class="row">
+	<div class="col-md-12">
+		<div class="well">
+			<dl>
+				<dt>原图</dt>
+				<ul class="list-unstyled">
+					<li><span class="label label-success"><{$image.storage}>存储</span></li>
+					<li><span class="label label-warning"><{$image.width}>x<{$image.height}> (宽x高)像素</span></li>
+					<li><a class="label label-default" href="<{$image.image_id|storager}>" target="_blank"><{$image.image_id|storager}></a></li>
+				</ul>
+				<dt>缩略L(大图)</dt>
+				<dd><a class="btn btn-default btn-xs" href="<{$image.image_id|storager:'l'}>" target="_blank"><{$image.image_id|storager:'l'}></a></dd>
+				<dt>缩略M(中图)</dt>
+				<dd><a class="btn btn-default btn-xs" href="<{$image.image_id|storager:'m'}>" target="_blank"><{$image.image_id|storager:'m'}></a></dd>
+				<dt>缩略S(小图)</dt>
+				<dd><a class="btn btn-default btn-xs" href="<{$image.image_id|storager:'s'}>" target="_blank"><{$image.image_id|storager:'s'}></a></dd>
+				<dt>缩略XS(更小图)</dt>
+				<dd><a class="btn btn-default btn-xs" href="<{$image.image_id|storager:'xs'}>" target="_blank"><{$image.image_id|storager:'xs'}></a></dd>
+			</dl>
+		</div>
+
+	</div>
+</div>

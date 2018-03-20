@@ -1,0 +1,96 @@
+<div class="passport-login-container">
+    <div class="panel panel-default login-panel">
+      <div class="panel-heading clearfix">
+          会员登录
+          <a class="btn btn-warning btn-xs pull-right" href="<{link app=sso ctl=site_sso act=signup args0=$forward}>">立即注册成为会员&raquo;</a>
+      </div>
+      <div class="panel-body">
+          <form id="member_login_form" class="form-horizontal" action="<{link app=sso ctl=site_sso act=do_login}>" method="post">
+              <!-- 登陆后跳转地址 -->
+              <input type="hidden" name="forward" value="<{$forward}>">
+              <div class="form-group">
+                  <label for="input_uname" class="col-md-2 control-label">账号</label>
+                  <div class="col-md-10">
+                    <input type="text" required="true" autocomplete='off' name="uname" class="form-control" id="input_uname" placeholder="手机号/邮箱/用户名">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="input_password" class="col-md-2 control-label">密码</label>
+                  <div class="col-md-10">
+                      <input name="password" style="display:none" disabled="disabled">
+                    <input type="password" required="true" name="password" class="form-control" id="input_password" placeholder="登录密码">
+                  </div>
+              </div>
+              <div class="form-group">
+                  <label for="input_vcode" class="col-md-2 control-label">验证码</label>
+                  <div class="col-md-5">
+                    <input name="vcode" style="display:none" disabled="disabled">
+                    <input type="text" required="true" name="vcode" class="form-control" id="input_password" placeholder="验证码">
+                  </div>
+                  <div class="col-md-5">
+                      <img src="<{link app=site ctl=vcode act=index args0='passport'}>" alt="验证码" />
+                      <button type="button" class="btn btn-link btn-sm" onclick="$(this).prev().prop('src',$(this).attr('data-src')+'?'+new Date().getTime())" data-src="<{link app=site ctl=vcode act=index args0='passport'}>" >更换验证码</button>
+                  </div>
+              </div>
+              <div class="form-group">
+                  <div class="col-md-offset-2 col-md-10">
+                    <button type="submit" data-loading-text="正在登录..." class="btn btn-danger">登录</button>
+                  </div>
+              </div>
+          </form>
+      </div>
+      <{if $toauth}>
+      <div class="panel-footer">
+            <ul class="list-inline oauth-login-list">
+              <{foreach from=$toauth item=item}>
+                  <li><a class="btn btn-xs btn-default btn-<{$item.login_type}>" href="<{$item.authorize_url|toauth_forward:$forward}>"><{$item.display_name}></a></li>
+              <{/foreach}>
+            </ul>
+      </div>
+      <{/if}>
+    </div>
+
+</div>
+
+
+
+
+<script>
+    /*
+    * 会员登录脚本
+    */
+
+    void function(login_form){
+        var alert_timer = 0;
+        //本地账户自动登录
+        login_form.find('input.autologin-checkbox').on('change',function(e){
+            if($(this).is(':checked')){
+                $.cookie('AUTO_LOGIN', 'REMEMBER30DAY', { expires: 30, path: '/' });
+            }else{
+                $.removeCookie('AUTO_LOGIN');
+            }
+        });
+
+        login_form.on('submit',function(e){
+            e.stopPropagation();
+            login_form.find('button[type=submit]').button('loading');
+            $.post(login_form.prop('action'),login_form.serialize(),function(re){
+                if(re.error){
+                    login_form.find('.alert-error').remove();
+                    login_form.append($('<div class="alert alert-danger">'+re.error+'</div>'));
+                    alert_timer = setTimeout(function(){
+                        clearTimeout(alert_timer);
+                        login_form.find('.alert-danger').fadeOut('fast',function(){
+                            $(this).remove();
+                        });
+                    },3000);
+                }
+                if(re.success){
+                    location = re.redirect;
+                }
+                login_form.find('button[type=submit]').button('reset');
+            },'json');
+            return false;
+        });
+    }($('#member_login_form'));
+</script>

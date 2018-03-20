@@ -1,0 +1,17 @@
+<app>
+    <name>快速采购</name>
+    <description>通过表格形式快速查询订购产品</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+
+    <version>1.0</version>
+    <license>http://www.vmcshop.com/license</license>
+
+    <depends>
+        <app>b2c</app>
+    </depends>
+
+</app>

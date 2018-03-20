@@ -1,0 +1,11 @@
+<services>
+    <service id="desktop_finder.community_mdl_user_lv">
+        <class>community_finder_userlv</class>
+    </service>
+    <service id="desktop_finder.community_mdl_blog">
+        <class>community_finder_blog</class>
+    </service>
+    <service id="desktop_finder.community_mdl_users">
+        <class>community_finder_users</class>
+    </service>
+</services>

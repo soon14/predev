@@ -1,0 +1,9 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="image">图片</permission>
+        <permission display='true' id="image_imageset">图片尺寸</permission>
+    </permissions>
+    <panelgroup icon="icon-picture" id="images" order="80">图片</panelgroup>
+    <adminpanel controller="admin_manage" display='true' group="image_images" order="6020" permission='image'>图片管理</adminpanel>
+    <adminpanel action="imageset" controller="admin_manage" display='true' group="image_images" order="6010" permission='image_imageset'>图片尺寸</adminpanel>
+</desktop>

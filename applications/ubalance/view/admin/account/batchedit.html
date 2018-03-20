@@ -1,0 +1,57 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">批量充值</h3>
+</div>
+<form  action="index.php?app=ubalance&ctl=admin_account&act=batch_save" method="post"  >
+    <div class="form">
+        <div class="form-horizontal">
+            <div class="form-body ">
+                <textarea name="filter" style="display:none"><{$filter}></textarea>
+                <input type="hidden" name="type" value="<{$type}>">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">充值金额
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-6">
+                        <div class="input-icon">
+                                <i class="fa fa-yen"></i>
+                                <input id="recharge_money" autocomplete="off" class="form-control" name="money" type="number" placeholder="<{$setting.recharge_limit.limit_minimum}> ~ <{$setting.recharge_limit.limit_maximum}>"/>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">获得额度
+                    </label>
+                    <div class="col-md-6">
+                        <input id="update_ubalance_val" readonly class="form-control"  type="text" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">充值备注
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-6">
+                        <textarea required class="form-control" name="memo" placeholder="备注信息" rows="1" >
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">确定</button>
+    </div>
+</form>
+<script type="text/javascript">
+$(function(){
+    var exchange = <{$setting.exchange_ratio|default:1}>;
+    $("#recharge_money").keyup(function(event) {
+        var recharge_money = $("#recharge_money").val();
+        if(isNaN(recharge_money)){
+            recharge_money = 0;
+        }
+        $("#update_ubalance_val").val(recharge_money * exchange);
+    });
+});
+</script>

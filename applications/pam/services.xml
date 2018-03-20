@@ -1,0 +1,8 @@
+<services>
+	<service id="passport">
+		<class>pam_passport_desktop_basic</class>
+	</service>
+	<service id="openapi.pam_callback" optname="openapi@登录认证相关">
+		<class>pam_callback</class>
+	</service>
+</services>

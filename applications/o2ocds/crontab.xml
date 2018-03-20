@@ -1,0 +1,7 @@
+<cronentries>
+    <cron id="o2ocds_tasks_statement">
+        <description>o2o分销自动结算</description>
+        <schedule>23 59 * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+</cronentries>

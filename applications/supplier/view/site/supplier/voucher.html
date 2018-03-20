@@ -1,0 +1,251 @@
+<{include file='site/supplier/layout/top.html' }>
+<{css src="../desktop/com/global/plugins/bootstrap-datepicker/css/datepicker3.css"}>
+<{css src="../desktop/com/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"}>
+<style media="screen">
+    .datetimepicker{
+        z-index: 3999!important;
+    }
+</style>
+<div class="my-main supplier-main">
+    <div class="row">
+        <div class="col-xs-2">
+            <{include file='site/supplier/layout/menu.html' }>
+        </div>
+
+        <div class="col-xs-10 my-page">
+            <div class="page-header clearfix">
+              <h1 class="pull-left">结算凭证 <small>Voucher</small></h1>
+               <button class="btn btn-default pull-right" data-toggle="modal" data-target="#export_modal" type="button">导出</button>
+            </div>
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-9">
+                        <form class="form-inline" action="<{link app=supplier ctl=site_supplier act=voucher args0=1 args1=$limit}>" method="get" id="voucher_filter_form">
+                            <div class="form-group">
+                                <p class="form-control-statics">
+                                    状态
+                                </p>
+                                <select class="form-control" name="filter[status]">
+                                    <option value="">所有状态</option>
+                                    <option value="ready" <{if $env.get.filter.status=='ready'}>selected<{/if}>>待结算</option>
+                                    <option value="process" <{if $env.get.filter.status=='process'}>selected<{/if}>>处理中</option>
+                                    <option value="succ" <{if $env.get.filter.status=='succ'}>selected<{/if}>>已确认</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <p class="form-control-statics">
+                                    单据创建时间
+                                </p>
+                                <input class="form-control datetime-picker" type="text" name="filter[from]" value="<{$env.get.filter.from}>" placeholder="最早">
+                                ～
+                                <input class="form-control datetime-picker" type="text" name="filter[to]" value="<{$env.get.filter.to}>" placeholder="最晚">
+                            </div>
+                            <div class="form-group">
+                                <p class="form-control-statics">
+                                    &nbsp;
+                                </p>
+                             <button class="btn btn-default btn-filter" type="submit"><i class="glyphicon glyphicon-filter"></i> 筛选</button>
+                             <{if $env.get.filter.status || $env.get.filter.from || $env.get.filter.to}>
+                             <a href="<{link app=supplier ctl=site_supplier act=voucher args0=$page args1=$limit}>" class="btn btn-default">取消筛选</a>
+                             <{/if}>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-md-3">
+                        <p class="form-control-static text-muted">
+                            共 <{$count}> 张凭证 <br>
+                        </p>
+                        合计金额：<i class="fa fa-yen"></i> <span class="text-danger"><{$count_subprice|cur}></span>
+                    </div>
+                </div>
+
+            </div>
+            <table class="table table-striped">
+                <tbody id="voucer_list_tbody">
+                    <{if !$voucher_list}>
+                    <tr>
+                        <td colspan="5">
+                            <div class="alert">
+                                暂无数据
+                            </div>
+                        </td>
+                    </tr>
+                    <{else}>
+                    <{foreach from=$voucher_list item=voucher name=fr_voucher}>
+                        <tr>
+                            <td>
+                                #<{$voucher.voucher_id}>
+                            </td>
+                            <td>
+                                <small>创建时间：<{$voucher.createtime|cdate}></small>
+                            </td>
+                            <td>
+                                <small>更新时间：<{$voucher.last_modify|cdate}></small>
+                            </td>
+                            <td>
+                                <a class="label label-default" href="<{link app=supplier ctl=site_supplier act=order_detail args0=$voucher.delivery_id}>" target="_blank">发货单#<{$voucher.delivery_id}></a>
+                            </td>
+                            <td>
+                                <{switch from=$voucher.status}>
+                                <{case value='ready'}>
+                                <span class="label label-primary">待结算</span>
+                                <{case value='process'}>
+                                <span class="label label-warning">处理中</span>
+                                <{case value='succ'}>
+                                <span class="label label-success">已确认</span>
+                                <{/switch}>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan=5>
+                                <table class="table">
+                                    <thead class="text-muted">
+                                        <th width="20%">
+                                            货号
+                                        </th>
+                                        <th width="8%">
+                                            图片
+                                        </th>
+                                        <th width="32%">
+                                            名称
+                                        </th>
+                                        <th width="12%">
+                                            规格
+                                        </th>
+                                        <th width="12%">
+                                            结算单价
+                                        </th>
+                                        <th width="6%">
+                                            数量
+                                        </th>
+                                        <th>
+                                            小记
+                                        </th>
+                                    </thead>
+                                    <tbody>
+                                        <{foreach from=$voucher_items[$voucher.voucher_id] item=item name=fr_voucher_item}>
+                                            <tr>
+                                                <td>
+                                                    <{$item.bn}>
+                                                </td>
+
+                                                <td>
+                                                    <img height="40" src="<{$item.image_id|storager:'xs'}>" alt="" />
+
+                                                </td>
+                                                <td>
+                                                    <{$item.name}>
+                                                </td>
+                                                <td>
+                                                    <{$item.spec_info}>
+                                                </td>
+                                                <td>
+                                                    <{$item.s_price|cur}>
+                                                </td>
+                                                <td>
+                                                    <{$item.s_num}>
+                                                </td>
+                                                <td>
+                                                    <{$item.s_subprice|cur}>
+                                                </td>
+                                            </tr>
+                                        <{/foreach}>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    <{/foreach}>
+                    <{/if}>
+                </tbody>
+                <{if $totalpage>1}>
+                <tfoot>
+                    <tr>
+                        <td colspan=3>
+                            <{pagers data=$pager}>
+                        </td>
+                        <td colspan=2 class="text-right">
+                            <div class="pagination pull-right">
+                                <select id="page_limit_sel" class="form-control">
+                                    <option value="10" data-action="<{link app=supplier ctl=site_supplier act=voucher args0=$page args1=10}>?<{$env.get|http_build_query}>">每页10条</option>
+                                    <option value="20" data-action="<{link app=supplier ctl=site_supplier act=voucher args0=$page args1=20}>?<{$env.get|http_build_query}>">每页20条</option>
+                                    <option value="50" data-action="<{link app=supplier ctl=site_supplier act=voucher args0=$page args1=50}>?<{$env.get|http_build_query}>">每页50条</option>
+                                    <option value="100" data-action="<{link app=supplier ctl=site_supplier act=voucher args0=$page args1=100}>?<{$env.get|http_build_query}>">每页100条</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+                <{/if}>
+
+            </table>
+        </div>
+    </div>
+</div>
+<!-- export form -->
+<div class="modal fade" id="export_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">批量导出</h4>
+            </div>
+            <div class="form">
+                <form action="<{link app=supplier ctl=site_supplier act=export_list}>" method="post" class="form-horizontal">
+                    <input type="hidden" name="export_object" value="voucher">
+                    <div class="modal-body">
+                        <div class="form-body">
+                            <div class="form-group">
+                                 <div class="col-md-2 control-label">
+                                     状态
+                                 </div>
+                                 <div class="col-md-3">
+                                     <select class="form-control" name="filter[status]">
+                                         <option value="">全部状态</option>
+                                         <option value="process">处理中</option>
+                                         <option value="succ">已确认</option>
+                                     </select>
+                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-2 control-label">
+                                    时间段
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control datetime-picker" type="text" name="filter[createtime|bthan]" value="" placeholder="最早">
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control datetime-picker" type="text" name="filter[createtime|lthan]" value="" placeholder="最晚">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">确认导出</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end export form -->
+<script type="text/javascript">
+    $('.datetime-picker').datetimepicker({
+        autoclose: true,
+        language:'zh-CN'
+    });
+    var page_limit_match = location.href.match(/-voucher-([\d]+?)-([\d]+?)-/);
+    if(page_limit_match && page_limit_match[2]){
+        $('#page_limit_sel option[value="'+page_limit_match[2]+'"]').prop('selected','selected');
+    }
+    $('#page_limit_sel').on('change',function(){
+        location = $(this.options[this.selectedIndex]).attr('data-action');
+    });
+    $('#export_modal form').on('submit',function(){
+        $('#export_modal').modal('hide');
+    });
+</script>

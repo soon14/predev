@@ -1,0 +1,37 @@
+<h3 class="page-title">
+			添加完全自定义页
+</h3>
+<div class="page-bar">
+				<ul class="page-breadcrumb">
+					<li>
+						<a href="<{link app=content ctl=admin_article act=index}>">文章列表</a>
+						<i class="fa fa-angle-right"></i>
+					</li>
+					<li>
+						<a href="javascript:;">添加完全自定义页</a>
+					</li>
+				</ul>
+</div>
+
+<form action="index.php?app=content&ctl=admin_article&act=save" method="post" id='article_form' class="form" >
+    <div class="form-horizontal">
+        <div class="form-body">
+			<div class="row">
+				<div class="col-md-4">
+					<{include file="admin/article/detail/basic.html"}>
+				</div>
+				<div class="col-md-8">
+                    <{input type="code" name="article[bodys][content]"  value=$article.bodys.content height=500}>
+				</div>
+			</div>
+
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-4 col-md-8">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>

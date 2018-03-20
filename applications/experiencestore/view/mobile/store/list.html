@@ -1,0 +1,18 @@
+<div class="content">
+    <div class="store-list">
+        <{foreach from=$store_list item=store}>
+        <a href="<{link app=experiencestore ctl=mobile_store act=detail args0=$store.id}>" class="btn btn-block store-item">
+            <h2><{$store.name}>
+                <span class="away-from pull-right" data-storelat="<{$store.lat}>" data-storelng="<{$store.lng}>">距您<i>xxxm</i></span>
+            </h2>
+            <ul>
+                <li><{$store.region|regionpart:'city'}>,<{$store.address}></li>
+                <li><{$store.phone}></li>
+                <{if $store.subject}>
+                <li><{$store.subject|count}>个活动在进行</li>
+                <{/if}>
+            </ul>
+        </a>
+        <{/foreach}>
+    </div>
+</div>

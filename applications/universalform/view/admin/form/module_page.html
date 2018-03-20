@@ -1,0 +1,72 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">添加新项</h3>
+</div>
+<form method="post" action="index.php?app=universalform&ctl=admin_form&act=save_module" id='cat_form' calss="">
+    <{if $form_id }><input type="hidden" name="form_id" value="<{$form_id}>"><{/if}>
+    <div class="modal-body form form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">名称
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-5">
+                    <input type="text" required=true  name="module_name"  class='form-control' />
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">字段输入类型
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-5">
+                    <select class="form-control" name='type' id="tyname">
+                        <option value="text">输入项</option>
+                        <option value="select">单选项</option>
+                        <option value="checkbox">多选项</option>
+                        <option value="date">日期选择器</option>
+                        <option value="region">地区选择器</option>
+                        <option value="image">单图上传器</option>
+                        <option value="images">多图上传器</option>
+                    </select>
+                    <div id="options_pane" class="hide">
+                        <input type="text" name="options" value="">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">是否可以为空
+                </label>
+                <div class="col-md-5">
+                    <select class="form-control" name="required">
+                        <option value="false">可以为空</option>
+                        <option value="true">不可为空（必填）</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">字段name
+                </label>
+                <div class="col-md-5">
+                    <input type="text" placeholder="不填写则系统自动生成"   name="column"  class='form-control' />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">保存</button>
+    </div>
+</form>
+<script charset="utf-8">
+    $('#options_pane input[name=options]').tagsInput({
+        'width': 'auto',
+        'defaultText':'新选项',
+    });
+    $('#tyname').on('change',function(){
+        if($(this).val() == 'select' || $(this).val() == 'checkbox'){
+            $('#options_pane').removeClass('hide');
+        }else{
+            $('#options_pane').addClass('hide');
+        }
+    });
+</script>

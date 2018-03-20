@@ -1,0 +1,15 @@
+<!-- 图文混合 -->
+<template id="widget-grouppresale">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-grouppresale :widget="widget" :index="index"></widget-child-grouppresale>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_grouppresale = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-grouppresale',
+    components: {
+        'widget-child-grouppresale': widget_child_grouppresale
+    }
+});
+</script>

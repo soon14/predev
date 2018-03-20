@@ -1,0 +1,19 @@
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <h3 class="modal-title">批量设置货品上、下架</h3>
+</div>
+<form action="index.php?app=productplus&ctl=admin_products&act=batch_save" method="post"  >
+    <div class="modal-body">
+            <textarea name="filter" style="display:none"><{$filter}></textarea>
+            <input type="hidden" name="type" value="marketable"/>
+            <select class="form-control" name="goods[marketable]">
+                <option value="true"> 上架 </option>
+                <option value="false"> 下架 </option>
+            </select>
+            <span class="help-block">批量上、下架 谨慎操作</span>
+    </div>
+    <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+            <button type="submit" class="btn blue">确定</button>
+    </div>
+</form>

@@ -1,0 +1,5 @@
+<services>
+    <service id="desktop_finder.adjustprices_mdl_plan">
+        <class>adjustprices_finder_plan</class>
+    </service>
+</services>

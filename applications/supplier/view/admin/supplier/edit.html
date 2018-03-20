@@ -1,0 +1,255 @@
+<h3 class="page-title"><{if $supplier.supplier_id }>编辑供应商<{else}>新供应商<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=supplier&ctl=admin_supplier&act=index">供应商列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $supplier.supplier_id }>编辑供应商<{else}>新供应商<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=supplier&ctl=admin_supplier&act=save" method="post" id='supplier_form' class="form" >
+    <{if $supplier.supplier_id }>
+        <input type="hidden" name="supplier[supplier_id]" value="<{$supplier.supplier_id}>">
+    <{/if}>
+    <div class="form form-horizontal">
+        <!-- begin form body -->
+        <div class="form-body">
+             <div class="form-group">
+                 <label class="col-md-2 control-label">
+                     供应商编码
+                     <span class="required" aria-required="true">*</span>
+                 </label>
+                 <div class="col-md-5">
+                     <input type="text" name="supplier[supplier_bn]" value="<{$supplier.supplier_bn}>" required=true class="form-control">
+                     <span class="help-block">
+                     供应商唯一编码,全系统不可重复 </span>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">
+                     供应商名称
+                     <span class="required" aria-required="true">*</span>
+                 </label>
+                 <div class="col-md-5">
+                     <input type="text" name="supplier[supplier_name]" value="<{$supplier.supplier_name}>" required=true class="form-control" >
+                     <span class="help-block">
+                     供应商名称,全系统不可重复 </span>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">地区</label>
+                 <div class="col-md-3">
+                     <{input type="region" name="supplier[supplier_region]" value=$supplier.supplier_region}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">地址</label>
+                 <div class="col-md-5">
+                     <{input type="text" name="supplier[supplier_address]" value=$supplier.supplier_address}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">联系人</label>
+                 <div class="col-md-3">
+                     <{input type="text" name="supplier[supplier_manager]" value=$supplier.supplier_manager}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">联系方式</label>
+                 <div class="col-md-5">
+                     <{input type="text" name="supplier[supplier_link1]" value=$supplier.supplier_link1}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">其他联系方式</label>
+                 <div class="col-md-5">
+                     <{input type="text" name="supplier[supplier_link2]" value=$supplier.supplier_link2}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">供应商备注</label>
+                 <div class="col-md-10">
+                     <{input type="html" height=500 name="supplier[supplier_description]" value=$supplier.supplier_description}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">合作状态</label>
+                 <div class="col-md-3">
+                     <select class="form-control" name="supplier[supplier_status]">
+                         <option value='0'>有效</option>
+                         <option value='1' <{if $supplier.supplier_statue == '1'}>selected<{/if}>>终止</option>
+                     </select>
+                 </div>
+             </div>
+             <hr>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">绑定会员账号</label>
+                 <div class="col-md-5">
+                     <button type="button" data-toggle="modal" data-target="#member_search_modal" class="btn btn-memsearch btn-link"><i class="fa fa-search"></i> 查找会员账号</button>
+                     <{if $supplier_member_account}>
+                     <div class="well well-sm clearfix">
+                         <button type="button" class="btn btn-xs pull-right remove-member-well"><i class="fa fa-trash"></i></button>
+                         <input type="hidden" name="supplier[member_id]" value="<{$supplier_member_account.member_id}>">
+                         <h5 class="pull-left"><{$supplier_member_account.login_account}></h5>
+                     </div>
+                     <{/if}>
+                 </div>
+                 <div class="col-md-5 col-md-offset-2 ">
+                     <div class="alert alert-info">
+                         绑定的会员账号,在前台具备供应商商品库存管理,订单发货权限。
+                     </div>
+                 </div>
+             </div>
+             <hr>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">绑定发货地点</label>
+                 <div class="col-md-5">
+                     <{input type="object" object="dlyplace@b2c" callback_func="dlyplace_select_callback01"}>
+                     <table class="object-dlyplace-row table">
+                         <tbody id="object_dlyplce_send" data-name="supplier[dlyplace_send]">
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">绑定退货地点</label>
+                 <div class="col-md-5">
+                     <{input type="object" object="dlyplace@b2c" callback_func="dlyplace_select_callback02"}>
+                     <table class="object-dlyplace-row table">
+                         <tbody id="object_dlyplce_reship" data-name="supplier[dlyplace_reship]">
+                         </tbody>
+                     </table>
+                 </div>
+             </div>
+         </div>
+         <!-- end form body -->
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>
+
+<div class="modal fade" id="member_search_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+        <h4 class="modal-title">查找会员账号</h4>
+      </div>
+      <div class="modal-body">
+          <div class="input-group">
+              <input type="text"  placeholder="请输入会员登录名(手机号\昵称\邮箱)查找" class="form-control member-search-ipt">
+                <span class="input-group-btn">
+                  <button class="btn btn-default member-search-btn" type="button"><i class="fa fa-search"></i></button>
+                </span>
+          </div><!-- /input-group -->
+          <div class="list-group member-search-result">
+
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+$(function(){
+    var search_btn = $('#member_search_modal .member-search-btn'),
+        search_ipt = $('#member_search_modal .member-search-ipt'),
+        search_result = $('#member_search_modal .member-search-result');
+    search_btn.on('click',function(e){
+        var s = $.trim(search_ipt.val());
+        if(!s||s == '')return search_result.empty();
+        search_btn.find('fa').removeClass('fa-search').addClass('fa-spinner fa-spin');
+        $.post('<{link app=supplier ctl=admin_supplier act=member_search}>',{
+            'account':s
+        },function(re){
+            search_btn.find('fa').removeClass('fa-spinner fa-spin').addClass('fa-search');
+            search_result.empty();
+            if(re){
+                $.each(re,function(idx,item){
+                    search_result.append('<a href="javascript:;" class="list-group-item" data-memberid="'+item.member_id+'">'+item.login_account+'</a>');
+                });
+            }
+        },'json');
+    });
+    var timer = 0;
+    search_ipt.on('keyup',function(){
+        clearTimeout(timer);
+        timer = setTimeout(function(){
+            search_btn.trigger('click');
+        },400);
+    });
+    search_ipt.on('keydown',function(e){
+        if(e.keyCode == 13){
+            clearTimeout(timer);
+            search_btn.trigger('click');
+        }
+    });
+    search_result.on('click','a[data-memberid]',function(e){
+        e.stopPropagation();
+        var login_account = $(this).text(),
+            member_id = $(this).attr('data-memberid');
+            btn_memsearch = $('#supplier_form .btn-memsearch');
+        btn_memsearch.next().remove();
+        $('<div class="well well-sm clearfix"></div>').insertAfter(btn_memsearch).append('<button type="button" class="btn btn-xs pull-right remove-member-well"><i class="fa fa-trash"></i></button><input type="hidden" name="supplier[member_id]" value="'+member_id+'"><h5 class="pull-left">'+login_account+'</h5>');
+        $('#member_search_modal').modal('hide');
+    });
+    $('#supplier_form').on('click','.remove-member-well',function(re){
+        $(this).closest('.well').remove();
+    });
+});
+
+</script>
+
+
+<script type="text/javascript">
+//发货地绑定
+$(function(){
+
+    dlyplace_select_callback01 = function(selected){
+        var dlyplace = [];
+        $.each(selected,function(k,v){
+            dlyplace.push(v.value);
+        });
+        _render(dlyplace,$('#object_dlyplce_send'));
+    };
+    dlyplace_select_callback02 = function(selected){
+        var dlyplace = [];
+        $.each(selected,function(k,v){
+            dlyplace.push(v.value);
+        });
+        _render(dlyplace,$('#object_dlyplce_reship'));
+    };
+    var _render = function(dlyplace_ids,tbody){
+        if(!dlyplace_ids.length)return;
+        $.post('<{link app=desktop ctl=finder act=object_row}>',{
+            'app':'b2c',
+            'model':'dlyplace',
+            'cols':'dp_id,dp_no,dp_title',
+            'name':$(tbody).attr('data-name'),
+            'filter':{dp_id:dlyplace_ids},
+            'pkey':'dp_id',
+        },function(re){
+            console.info(tbody);
+            $(tbody).empty().append(re);
+        });
+    }
+    <{if $supplier.dlyplace_send}>
+    _render([<{$supplier.dlyplace_send}>],$('#object_dlyplce_send'));
+    <{/if}>
+    <{if $supplier.dlyplace_reship}>
+    _render([<{$supplier.dlyplace_reship}>],$('#object_dlyplce_reship'));
+    <{/if}>
+});
+
+</script>

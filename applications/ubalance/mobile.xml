@@ -1,0 +1,8 @@
+<site>
+    <module controller='mobile_member' >
+        <name>ubalance</name>
+    </module>
+    <module controller='mobile_balancepay' >
+        <name>balancepay</name>
+    </module>
+</site>

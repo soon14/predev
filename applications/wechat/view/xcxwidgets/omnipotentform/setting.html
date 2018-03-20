@@ -1,0 +1,199 @@
+<!-- ############### 编辑区域 ############### -->
+<!-- 万能表单 -->
+<template id="widget-child-setting-omnipotentform">
+    <div class="view-item-setting" :id="widget.name + '_setting_' + index">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{widget.title}}
+                <a type="button" class="icon icon-close pull-right" href="javascript:;" @click="closeEv"></a>
+            </div>
+            <div class="panel-body form-horizontal">
+                <ul class="nav nav-tabs">
+                    <li @click="viewStyle" :class="{'active': (active_tab == 'style')}">
+                        <a :href="'#' + widget.name + '_style_' + index" data-toggle="tab">样式设置</a>
+                    </li>
+                    <li @click="viewFilter" :class="{'active': (active_tab == 'filter')}">
+                        <a :href="'#' + widget.name + '_filter_' + index" data-toggle="tab">筛选设置</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div class="tab-pane" :class="{'active': (active_tab == 'style')}" :id="widget.name + '_style_' + index">
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <div class="checkbox">
+                                    <label :for="'show_name_' + index">
+                                        <input type="checkbox" :id="'show_name_' + index" v-model="widget.data.is_show_form_name" :checked="widget.data.is_show_form_name"> 是否显示表单名称
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <div class="col-sm-offset-4 col-sm-8">
+                                <div class="checkbox">
+                                    <label :for="'is_center_' + index">
+                                        <input type="checkbox" :id="'is_center_' + index" v-model="widget.data.form_name_iscenter" :checked="widget.data.form_name_iscenter"> 表单名称是否居中
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- <div class="form-group form-group-sm">
+                            <label :for="'form_color_' + index" class="col-sm-4 control-label">表单名称颜色</label>
+                            <div class="col-sm-8">
+                                <input type="color" class="form-control" :id="'form_color_' + index" placeholder="表单名称颜色" v-model="widget.data.form_name_color">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'form_size_' + index" class="col-sm-4 control-label">表单名称大小</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="14" max="30" class="form-control" :id="'form_size_' + index" placeholder="表单名称大小" v-model="widget.data.form_name_size">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'form_size_' + index" class="col-sm-4 control-label">表单项文字大小</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="14" max="30" class="form-control" :id="'form_size_' + index" placeholder="表单项文字大小" v-model="widget.data.form_item_title_size">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'checkbox_color_' + index" class="col-sm-4 control-label">多选项颜色</label>
+                            <div class="col-sm-8">
+                                <input type="color" class="form-control" :id="'checkbox_color_' + index" placeholder="标题" v-model="widget.data.checkbox_color">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'btn_content_' + index" class="col-sm-4 control-label">按钮文案</label>
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" :id="'btn_content_' + index" placeholder="提交按钮文案" v-model="widget.data.btn_content">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'btn_width_' + index" class="col-sm-4 control-label">按钮宽度</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" min="50" :id="'btn_width_' + index" placeholder="提交按钮宽度" v-model="widget.data.btn_width">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'btn_height_' + index" class="col-sm-4 control-label">按钮高度</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" min="35" :id="'btn_height_' + index" placeholder="提交按钮高度" v-model="widget.data.btn_height">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'btn_radius_' + index" class="col-sm-4 control-label">按钮圆角</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control" min="0" :id="'btn_radius_' + index" placeholder="提交按钮高度" v-model="widget.data.btn_radius">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'btn_bgc_' + index" class="col-sm-4 control-label">按钮背景色</label>
+                            <div class="col-sm-8">
+                                <input type="color" class="form-control" :id="'btn_bgc_' + index" placeholder="提交按钮背景色" v-model="widget.data.btn_bgcolor">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'btn_border_color_' + index" class="col-sm-4 control-label">按钮边框颜色</label>
+                            <div class="col-sm-8">
+                                <input type="color" class="form-control" :id="'btn_border_color_' + index" placeholder="提交按钮边框颜色" v-model="widget.data.btn_border_color">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'btn_color_' + index" class="col-sm-4 control-label">按钮文字颜色</label>
+                            <div class="col-sm-8">
+                                <input type="color" class="form-control" :id="'btn_color_' + index" placeholder="提交按钮文字颜色" v-model="widget.data.btn_color">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label :for="'btn_size_' + index" class="col-sm-4 control-label">按钮文字大小</label>
+                            <div class="col-sm-8">
+                                <input type="number" min="14" class="form-control" :id="'btn_size_' + index" placeholder="提交按钮文字大小" v-model="widget.data.btn_fontSize">
+                            </div>
+                        </div>
+                        <div class="form-group form-group-sm">
+                            <label class="col-sm-4 control-label">按钮对齐方式</label>
+                            <div class="col-sm-8">
+                                <select class="form-control" :id="widget.name + '_type_' + index" v-model="widget.data.btn_align">
+                                    <option v-for="(type, type_key) in type_lists" v-bind:value="type_key">
+                                        {{type}}
+                                    </option>
+                                </select>
+                            </div>
+                        </div> -->
+                    </div>
+                    <div class="tab-pane" :class="{'active': (active_tab == 'filter')}" :id="widget.name + '_filter_' + index">
+                        <div class="text-right" style="margin-bottom: 5px;">
+                            <button type="button" class="btn btn-success btn-xs" @click="onFormUpdate">刷新表单</button>
+                        </div>
+                         <div >
+                            <design-form-single-selector :widget="widget" :index="index" :form_id="widget.data.filter[0]?widget.data.filter[0].form_id:false"></design-form-single-selector>
+                        </div>
+                        <div class="text-right">
+                            <button type="button" class="btn btn-success btn-xs" @click="onFormUpdate">刷新表单</button>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <button type="button" class="btn btn-primary btn-xs" @click="closeEv">关闭</button>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_child_setting_omnipotentform = Vue.extend({
+    props: ['widget', 'index'],
+    data: function() {
+        return {
+            active_tab: 'style',
+            edit_item: false,
+            edit: {
+                url: null,
+                image: {
+                    src: null,
+                    mode: 'widthFix'
+                }
+            },
+            create: {
+                disabled: false,
+                url: null,
+                image: {
+                    src: null,
+                    mode: 'widthFix'
+                }
+            },
+            type_lists: {
+                'left': '左对齐',
+                'center': '居中对齐',
+                'right': '右对齐',
+            },
+        };
+    },
+    template: '#widget-child-setting-omnipotentform',
+    methods: {
+        closeEv: function() {
+            return designStore.methods.closeEv(this);
+        },
+        onFormUpdate: function() {
+            return designStore.methods.onFormUpdate(this);
+        },
+        // 查看样式设置
+        viewStyle: function() {
+            this.active_tab = 'style';
+        },
+        // 查看筛选
+        viewFilter: function() {
+            this.active_tab = 'filter';
+        },
+        changeFilterType: function () {
+        },
+        // 
+        formChange: function(form_id) {
+            designStore.methods.setFilterFormId(this, form_id);
+        },
+        removeForm: function(form_key) {
+            designStore.methods.removeFilterFormId(this, form_key);
+        },
+    },
+    mounted: function() {
+    }
+});
+</script>

@@ -1,0 +1,32 @@
+<desktop>
+    <permissions>
+        <!--分佣管理-->
+        <permission display='true' id="commission">微分销管理</permission>
+    </permissions>
+    <panelgroup icon=" fa fa-share-alt" id="commission" order="100">微分销</panelgroup>
+    <adminpanel action="index" controller="admin_setting" display="true" group="commission_commission" order='1' permission="commission">
+        默认分佣设置
+    </adminpanel>
+    <adminpanel action="index" controller="admin_type" display="true" group="commission_commission" order='1' permission="commission">
+        类型分佣设置
+    </adminpanel>
+    <adminpanel action="index" controller="admin_products" display="true" group="commission_commission" order='1' permission="commission">
+        商品分佣设置
+    </adminpanel>
+    <workground icon="fa fa-share-alt" id="commission.workground" name="微分销" order="35">
+        <menugroup name="微分销管理">
+            <menu action='all_count' controller='admin_orderlog' display='true' order='160' permission='commission'>
+                分佣仪表盘
+            </menu>
+            <menu action='index' controller='admin_orderlog' display='true' order='170' permission='commission'>分佣记录统计
+            </menu>
+            <menu action='products' controller='admin_orderlog' display='true' order='180' permission='commission'>
+                分佣商品统计
+            </menu>
+            <menu action='index' controller='admin_cash' display='true' order='190' permission='commission'>提现申请
+            </menu>
+            <menu action='index' controller='admin_member' display='true' order='190' permission='commission'>分佣关系
+            </menu>
+        </menugroup>
+    </workground>
+</desktop>

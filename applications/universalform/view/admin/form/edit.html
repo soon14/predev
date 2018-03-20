@@ -1,0 +1,118 @@
+<h3 class="page-title"><{if $form.activity_id }>编辑拼团超级表单：<{$form.name}><{else}>超级表单<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=universalform&ctl=admin_form&act=index">超级表单列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $form.activity_id }>编辑超级表单<{else}>超级表单<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=universalform&ctl=admin_form&act=save" method="post" id='universalform_form' >
+    <{if $form.form_id }><input type="hidden" name="form_id" value="<{$form.form_id}>"><{/if}>
+    <div class=" form-horizontal">
+        <ul class="nav nav-tabs">
+            <li class="<{if $nav == 'basic'}>active<{/if}>">
+                <a href="#tab_edit_basic" data-toggle="tab">表单设置</a>
+            </li>
+            <li  class="<{if $nav == 'module' && $form.form_id}>active<{/if}>">
+                <a <{if $form.form_id}> href="#tab_edit_module"  data-toggle="tab"<{else}> href="javascript:;" <{/if}>>表单组件</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="tab_edit_basic" class="form-body tab-pane <{if $nav == 'basic'}>active<{/if}>">
+                <div class="col-md-10">
+                    <div class="form-group">
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">超级表单名称<span class="required" aria-required="true">*</span></label>
+                        <div class="col-md-4">
+                            <input type="text" name="name" value="<{$form.name}>" required='true' class="form-control" placeholder="">
+                            <span class="help-block"></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">是否需要验证手机
+                            <span class="required" aria-required="true">*</span></label>
+                        <div class="col-md-4">
+                            <label class="radio-inline"><input type="radio" name="vmobile" value="true" <{if $form.vmobile == 'true'}>checked<{/if}>>是</label>
+                            <label class="radio-inline"><input type="radio" name="vmobile" value="false" <{if $form.vmobile == 'false'}>checked<{/if}>>否</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">是否需要验证码
+                            <span class="required" aria-required="true">*</span></label>
+                        <div class="col-md-4">
+                            <label class="radio-inline"><input type="radio" name="vcode" value="true" <{if $form.vcode == 'true'}>checked<{/if}>>是</label>
+                            <label class="radio-inline"><input type="radio" name="vcode" value="false" <{if $form.vcode == 'false'}>checked<{/if}>>否</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">是否允许多次提交
+                            <span class="required" aria-required="true">*</span></label>
+                        <div class="col-md-4">
+                            <label class="radio-inline"><input type="radio" name="times_submit" value="true" <{if $form.times_submit == 'true'}>checked<{/if}>>是</label>
+                            <label class="radio-inline"><input type="radio" name="times_submit" value="false" <{if $form.times_submit == 'false'}>checked<{/if}>>否</label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label"></label>
+                        <div class="col-md-6">
+                            <button type="submit" data-redirect="<{link app=universalform ctl=admin_form act=edit}>&p[0]={form_id}" class="btn blue"><i class="fa fa-check"></i> 保存</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="tab_edit_module" class="form-body tab-pane <{if $nav == 'module'}>active<{/if}>">
+                <{include file='admin/form/module_map.html'}>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-6">
+            </div>
+        </div>
+    </div>
+</form>
+<div class="modal fade" id="member_module_edit" role="basic" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+        </div>
+    </div>
+</div>
+<script charset="utf-8">
+    /**
+     * 编辑表单提交
+     */
+    $('#universalform_form button[data-redirect]').on('click',function(e){
+        var find_required = false;
+        //定位到必填项,防止浏览器内部错误无提示
+        $.each($('#universalform_form input[required]'),function(i,ipt){
+            if(find_required)return;
+            if($.trim($(ipt).val()) == ''){
+                var tab = $('#goods_edit_form .nav-tabs li a[href$="#'+$(ipt).closest('.tab-pane').prop('id')+'"]');
+                tab.tab('show');
+                find_required = true;
+            }
+        });
+        var redirect = $(this).attr('data-redirect');
+        if(redirect.match(/form_id/)){
+            $('#universalform_form').data('ajax:success',function(re){
+                re = jsonDecode(re);
+                if(re.form_id){
+                    load_page(substitute(redirect,re));
+                }
+            });
+        }else{
+            $('<input type="hidden" name="redirect">').val(redirect)
+                    .appendTo($(this.form));
+        }
+
+
+    });
+</script>
+

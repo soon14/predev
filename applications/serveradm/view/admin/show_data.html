@@ -1,0 +1,30 @@
+<table width="100%">
+    <thead>
+        <tr bgcolor="#bdc7d8">
+           <th>Function Name</th>
+           <th>Calls</th>
+           <th title="Incl.Wall Time<br>(microsec)">iwt</th>
+           <th title="Excl.Wall Time<br>(microsec)">ewt</th>
+           <th title="Incl.MemUse<br>(bytes)">imu</th>
+           <th title="Excl.MemUse<br>(bytes)">emu</th>
+           <th title="Incl.PeakMemUse<br>(bytes)">ipmu</th>
+           <th title="Excl.PeakMemUse<br>(bytes)">epmu</th>
+           <th>cpu</th>
+        </tr>
+    </thead>
+    <tbody>
+        <{foreach from=$data item=item key=key}>
+            <tr  bgcolor="#e5e5e5">
+                <td><{$key}></td>
+                <td><{$item.ct}></td>
+                <td>i<{$item.wt}></td>
+                <td>e<{$item.wt}></td>
+                <td>i<{$item.mu}></td>
+                <td>e<{$item.mu}></td>
+                <td>i<{$item.pmu}></td>
+                <td>e<{$item.pmu}></td>
+                <td><{$item.cpu}></td>
+            </tr>
+        <{/foreach}>
+    </tbody>
+</table>

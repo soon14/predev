@@ -1,0 +1,12 @@
+<services>
+<!-- FINDER相关SERVICES BEGIN -->
+    <service id="desktop_finder.registercoupon_mdl_rule">
+        <class>registercoupon_finder_rule</class>
+    </service>
+    <!-- FINDER相关SERVICES END -->
+
+    <!-- 会员创建成功时-->
+    <service id="member.create_after">
+        <class>registercoupon_service_member_create</class>
+    </service>
+</services>

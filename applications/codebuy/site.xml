@@ -1,0 +1,6 @@
+<site>
+    <module controller='site_activity' id='codebuy'>
+        <name>codebuy</name>
+        <title>优购码</title>
+    </module>
+</site>

@@ -1,0 +1,223 @@
+<div class="row">
+    <div class="col-md-6">
+            <h3 class="page-title">微信小程序页面编辑</h3>
+            <a type="button" href="<{link app=wechat ctl=admin_xcxpage act=index}>" class="btn btn-xs btn-default" name="button">返回页面列表</a>
+    </div>
+    <div class="col-md-6 text-right well">
+        <div class="row">
+            <div class="col-md-5">
+                <select class="form-control input-medium" id="page_list_select">
+                    <{foreach from=$page_list item=item}>
+                    <option <{if $item.id==$env.get.p.0}>selected <{/if}> value="<{$item.id}>"><{$item.title}> [ <{$item.sno}> ]</option>
+                    <{/foreach}>
+                </select>
+            </div>
+            <div class="col-md-7">
+                <button type="button" id="btn_pub" class="btn btn-circle blue">正式发布</button>
+                <button type="button" id="btn_savedraft" class="btn btn-circle btn-default">
+                    <i class="fa fa-save"></i> 保存
+                </button>
+                <button type="button" id="btn_showqrcode" class="btn btn-circle btn-default">
+                    <i class="fa fa-qrcode"></i> 预览
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="xcxpage_form" data-action="<{link app=wechat ctl=admin_xcxpage act=save}>" method="post">
+    <div id="xcxpage_designs" @click="designsClick">
+        <{input type=hidden name="id" id="ipt_page_id" value=$data.id}>
+            <{input type=hidden name="widgets_draft" id="widgets_draft" value=$data.widgets_draft}>
+                <ul class="nav nav-tabs">
+                    <li class="<{if !$env.get.show_tab_widgets}>active<{/if}>">
+                        <a href="#tab_edit_base" data-toggle="tab">基本配置</a>
+                    </li>
+                    <li class="tab-edit-weidgets <{if $env.get.show_tab_widgets}>active<{/if}>">
+                        <a href="#tab_edit_widgets" data-toggle="tab">
+                            <i class="icon-puzzle"></i> 可视化页面管理
+                        </a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab_edit_base" class="tab-pane <{if !$env.get.show_tab_widgets}>active<{/if}>">
+                        <div class="form">
+                            <div class="form-horizontal">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">页面编号<span class="font-red">*</span></label>
+                                        <div class="col-md-4">
+                                            <{input autocomplete="off" class='ipt-sno' type=text style="text-transform:Lowercase" name=sno value=$data.sno}>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">标题<span class="font-red">*</span></label>
+                                        <div class="col-md-4">
+                                            <{input type=text v-model="title" name=title value=$data.title}>
+                                        </div>
+                                    </div>
+                                    <div class="form-group hidden">
+                                        <label class="col-md-2 control-label">背景色</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control" v-model="bg_hex" type="color" name="bg_hex" value="<{$data.bg_hex|default:'#FFFFFF'}>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">设为首页</label>
+                                        <div class="col-md-4">
+                                            <{input type=bool name=is_homepage value=$data.is_homepage}>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">顶部导航文字颜色</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="bar_title_hex" v-model="bar_title_hex">
+                                                <option value="#000000"<{if $data.bar_title_hex == '#000000'}> selected="selected"<{/if}>>黑色</option>
+                                                <option value="#ffffff"<{if $data.bar_title_hex == '#ffffff'}> selected="selected"<{/if}>>白色</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">顶部导航背景色</label>
+                                        <div class="col-md-4">
+                                            <input class="form-control" v-model="bar_bg_hex" type="color" name="bar_bg_hex" value="<{$data.bar_bg_hex|default:'#FFFFFF'}>">
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">顶部导航动画变化时间(单位：毫秒)</label>
+                                        <div class="col-md-4">
+                                            <{input type=number name=bar_animation_duration value=$data.bar_animation_duration|default:'400'}>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">顶部导航动画变化方式</label>
+                                        <div class="col-md-4">
+                                            <select class="form-control" name="bar_animation_func">
+                                                <option value="linear"<{if data.bar_animation_func == 'linear'}> selected="selected"<{/if}>>动画从头到尾的速度是相同的</option>
+                                                <option value="easeIn"<{if data.bar_animation_func == 'easeIn'}> selected="selected"<{/if}>>动画以低速开始</option>
+                                                <option value="easeOut"<{if data.bar_animation_func == 'easeOut'}> selected="selected"<{/if}>>动画以低速结束</option>
+                                                <option value="eseeInOut"<{if data.bar_animation_func == 'eseeInOut'}> selected="selected"<{/if}>>动画以低速开始和结束</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group">
+                                        <label class="col-md-2 control-label">版本号</label>
+                                        <div class="col-md-4">
+                                            <{input type=number name=version value=$data.version|default: '0.001' }>
+                                        </div>
+                                    </div>
+                                    <{if $data.updatetime}>
+                                        <div class="form-group">
+                                            <label class="col-md-2 control-label">草稿更新于</label>
+                                            <div class="col-md-4">
+                                                <p class="form-control-static">
+                                                    <{$data.updatetime|cdate}>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <{/if}>
+                                        <{if $data.last_pubtime}>
+                                            <div class="form-group">
+                                                <label class="col-md-2 control-label">最新发布于</label>
+                                                <div class="col-md-4">
+                                                    <p class="form-control-static">
+                                                        <{$data.last_pubtime|cdate}>
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        <{/if}>
+                                        <div class="form-group">
+                                            <div class="col-md-4 col-md-offset-2">
+                                                <button class="btn btn-primary" type="button" onclick="$('.tab-edit-weidgets a').click();">
+                                                    下一步
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="tab_edit_widgets" class="tab-pane <{if $env.get.show_tab_widgets}>active<{/if}>">
+                    <!-- page-design-view -->
+                        <div class="row" id="page-design-view">
+                        <!-- page-design-widgets-list -->
+                            <div class="col-md-3">
+                                <div class="portlet light bg-inverse design-widgets-list pull-rigth" id="page-design-widgets-list">
+                                    <div class="portlet-title">
+                                        <div class="caption">
+                                            <i class="fa fa-puzzle-piece"></i>挂件库
+                                        </div>
+                                    </div>
+                                    <div class="widgets-drag-box all-widgets-drag-box">
+                                        <widgets-list :widgets="xcx_widgets"></widgets-list>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- page-design-page-design -->
+                            <div class="col-md-4" id="page-design-page-design">
+                                <div class="xcxpage-design">
+                                    <div class="xcxpage-window">
+                                        <div class="xcxpage-header" :class="bar_title_hex=='#ffffff'?'changeBg':''" :style="{backgroundColor:bar_bg_hex}">
+                                            <nav>
+                                                <ul>
+                                                    <li>
+                                                        <a href="javascript:;" class="hidden"><i class="ico fa fa-angle-left"></i></a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="" :style="{color:bar_title_hex}">{{title}}</a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;" class="hidden"><i class="ico fa fa-ellipsis-h"></i></a>
+                                                    </li>
+                                                </ul>
+                                            </nav>
+                                        </div>
+                                        <page-design :widgets="currWidgets"></page-design>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- page-design-design-list -->
+                            <div class="col-md-3 col-md-offset-2">
+                                <div  v-show="!onSetting" class="panel panel-default widgets-drag-box my-widgets-drag-box design-widgets-list pull-left" id="page-design-design-list" style="width: 100%;">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">页面挂件概览</h3>
+                                    </div>
+                                    <design-list :widgets="currWidgets"></design-list>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+    </div>
+</form>
+<script type="text/javascript">
+    $('#page_list_select').on('change',function(e){
+        var page_id = $(this).val();
+        load_page('<{link app=wechat ctl=admin_xcxpage act=edit}>'+'&p[0]='+page_id);
+    });
+</script>
+<!-- 引入相关资源 -->
+<{include file='admin/xcxpage/bases.html'}>
+<!-- 引入设计基础组件 -->
+<{include file='xcxwidgets/__design/settings.base.html'}>
+<!-- 引入设计扩展组件 -->
+<{include file='xcxwidgets/__design/design.set.link.html'}>
+<{include file='xcxwidgets/__design/design.set.goods.html'}>
+<{include file='xcxwidgets/__design/design.set.form.html'}>
+<{include file='xcxwidgets/__design/design.set.article.html'}>
+<{include file='xcxwidgets/__design/design.set.activity.html'}>
+	<{include file='xcxwidgets/__design/design.set.grouppresale.html'}>
+<!-- 引入万能表单扩展组件 -->
+<{include file='xcxwidgets/__design/design.set.form_input.html'}>
+<!-- 引入widgets组件 -->
+<{foreach from=$data.widget_tpls item=tpl_items}>
+<{foreach from=$tpl_items item=item}>
+<{include file=$item}>
+<{/foreach}>
+<{/foreach}>
+<!-- 引入设计组件 -->
+<{include file='xcxwidgets/__design/settings.html'}>
+<{script src="wechat/xcxpage.design.js"}>

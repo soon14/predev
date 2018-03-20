@@ -1,0 +1,47 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">
+        <{if $area.region_id }>
+            地区编辑
+            <{else}>添加新地区
+        <{/if}>
+    </h3>
+</div>
+<form method="post" action="index.php?app=ectools&ctl=regions&act=save" id='region_form' calss="form">
+    <div class="modal-body  form-horizontal">
+        <div class="form-body">
+                    <input type="hidden" value="<{$area.package|default:'mainland'}>" name="region[package]" />
+                    <{if $area.region_id }>
+                        <input type="hidden" value="<{$area.region_id}>" name="region[region_id]" />
+                    <{/if}>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">父级地区</label>
+                        <div class="col-md-9">
+                            <{input app=ectools type="region" name="region[p_region]"  value=$p_region}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">地区名称<i class="text-danger">*</i></label>
+                        <div class="col-md-5">
+                            <{input class="form-control" type="text" name="region[local_name]" required='true' value=$area.local_name}>
+                            <span class='help-block'>父级地区不选择,代表地区为顶级地区</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 control-label">同级排名</label>
+                        <div class="col-md-5">
+                            <{if $area.region_id }>
+                            <{input class="form-control input-xsmall" type="number" name="region[ordernum]" required='true' value=$area.ordernum|default:0}>
+                            <{else}>
+                            <{input class="form-control input-xsmall" type="number" name="region[ordernum]" required='true' value=50}>
+                            <{/if}>
+                        </div>
+                    </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">保存</button>
+    </div>
+
+</form>

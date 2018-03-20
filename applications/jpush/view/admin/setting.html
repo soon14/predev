@@ -1,0 +1,33 @@
+<h3 class="page-title clearfix">
+    极光推送配置
+</h3>
+<hr>
+<form action="index.php?app=jpush&ctl=admin_setting&act=index" method="post" class="form" >
+    <div class="form-horizontal">
+        <div class="form-body">
+            <{foreach from=$setting item=item key=key}>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"><{$item.desc}></label>
+                    <div class="col-md-7">
+                        <{if $item.required}>
+                        <{input required=true type=$item.type name=$key value=$item.value|default:$item.default options=$item.options }>
+                        <{else}>
+                        <{input type=$item.type name=$key value=$item.value|default:$item.default options=$item.options }>
+                        <{/if}>
+                        <{if $item.helpinfo}>
+                            <span class="help-block"><{$item.helpinfo}></span>
+                        <{/if}>
+                    </div>
+                </div>
+            <{/foreach}>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                        <a href="<{link app=desktop ctl=adminpanel}>" class="btn default">返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

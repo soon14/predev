@@ -1,0 +1,59 @@
+<div class="row">
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat purple-plum">
+            <div class="visual">
+                <i class="fa fa-globe"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <{$total_amount_sum.0.total_amount_sum|default:0|number_format}>
+                </div>
+                <div class="desc">
+                    平台佣金总额
+                </div>
+            </div>
+            <a class="more" href="javascript:;">
+                某段时间全站产生的佣金总额 <i class="icon-info tooltips"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+        <div class="dashboard-stat red-intense">
+            <div class="visual">
+                <i class="fa fa-shopping-cart"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <{$total_orders_sum.0.total_orders_sum|default:0|number_format}>
+                </div>
+                <div class="desc">
+                    平台佣金单数
+                </div>
+            </div>
+            <a class="more" href="javascript:;">
+                某段时间平台产生了佣金的订单数 <i class="icon-info tooltips"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12 margin-bottom-10">
+        <div class="dashboard-stat blue-madison">
+            <div class="visual">
+                <i class="fa fa-bar-chart-o"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <small>￥</small>
+                    <{$amount_sum.0.amount_sum|cur}>
+                </div>
+                <div class="desc">
+                    可结算总额
+                </div>
+            </div>
+            <a class="more" href="javascript:;">
+                某段时间未结算的佣金总额 <i class="icon-info tooltips"></i>
+            </a>
+        </div>
+    </div>
+
+</div>

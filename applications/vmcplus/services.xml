@@ -1,0 +1,9 @@
+<services>
+    <service id="desktop.index" optname="DESKTOP桌面首页重写">
+        <class>vmcplus_desktop</class>
+    </service>
+    <service id="desktop.login.index" optname="DESKTOP桌面首页重写">
+        <class>vmcplus_desktoplogin</class>
+    </service>
+
+</services>

@@ -1,0 +1,193 @@
+<h3 class="page-title">供应商商品管理</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=supplier&ctl=admin_supplier&act=index">供应商列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="index.php?app=supplier&ctl=admin_supplier&act=edit&p[0]=<{$supplier.supplier_id}>"><span class="label label-danger"><{$supplier.supplier_name}> <small><{$supplier.supplier_bn}></small></span>
+                 <{$supplier.supplier_region|region}>,<{$supplier.supplier_address}>.
+                联系人：<{$supplier.supplier_manager}>,<{$supplier.supplier_link1}>,<{$supplier.supplier_link2}>
+            </a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">供应商商品管理</a>
+        </li>
+    </ul>
+</div>
+
+<div id="products_action">
+<div class="row">
+    <div class="col-md-6">
+        <div class="well bg-grey-steel">
+            <h4 style="position:relative;margin-top:-10px">加入需要与供应商绑定的货品</h4>
+            <div class="row">
+                <div class="col-md-7">
+                    <{input type="object" object="products@b2c" name="product_id" multiple="true" callback_func="products_sel_callback_func" placeholder="选择需要与供应商绑定的货品"}>
+                </div>
+                <div class="col-md-5">
+                    <div class="fileinput-button pull-right" data-toggle="tooltip" data-placement="top" data-container="body" data-original-title="格式：sku货号,进货价格">
+                        <button class="btn btn-default" name="button"><i class="fa fa-file-text"></i><i class="fa fa-spinner font-yellow fa-spin hidden"></i> 从CSV加入</button>
+                        <input class="csv_file_input" type="file"  multiple data-url="index.php?app=supplier&ctl=admin_relgoods&act=update_products_bycsv&supplier_id=<{$env.get.supplier_id}>" accept="text/csv">
+                    </div>
+            </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="alert alert-info">
+            <i class="fa fa-question-circle fa-3x pull-right"></i>
+            <ol>
+                <li>与供应商绑定的商品会自动拆分发货单</li>
+                <li>供应商可通过绑定会员账号在前台进行库存维护、发货操作</li>
+                <li>供应商发货后将生成供应商结算凭证</li>
+                <li>结算凭证将根据进货价生成</li>
+            </ol>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-1">
+        <button class="btn default btn-remove-sel" type="button">移除选中</button>
+    </div>
+    <div class="col-md-5">
+
+            <div class="input-group">
+                <div class="input-icon right">
+                    <i class="fa fa-times-circle hide" onclick="$('#filter_products_list_input').val('');filter_products_list();"></i>
+                    <input type="text"  id="filter_products_list_input" placeholder="名称/商品编号/货号/关键词搜索与供应商绑定的商品" class="form-control search-input" required="true">
+                </div>
+                <span class="input-group-btn">
+                <button class="btn default " type="button" onclick="filter_products_list()"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+
+    </div>
+</div>
+</div>
+<form id="products_list">
+    <{include file='admin/relgoods/items.html'}>
+</form>
+<script type="text/javascript">
+$('.fileinput-button').tooltip();
+    var supplier_id = "<{$env.get.supplier_id}>";
+    var refresh_products_list = function(re){
+        if(re.error){
+            return Messagebox.error(re.error);
+        }
+        load_page('<{link ctl=admin_relgoods app=supplier act=index}>&p[0]='+$('#products_list input:hidden[name=page]').val()+'&in_page=true&supplier_id=<{$env.get.supplier_id}>',$('#products_list'),{},function(){
+            $('.badge-glist-count').text($('#products_list input:hidden[name=products_count]').val());
+        });
+    }
+
+    var filter_products_list = function(){
+        load_page('<{link ctl=admin_relgoods app=supplier act=index}>&p[0]=1&p[2]='+$('#filter_products_list_input').val()+'&in_page=true&supplier_id=<{$env.get.supplier_id}>',$('#products_list'),{},function(){
+            if($.trim($('#filter_products_list_input').val()) == ''){
+                $('#filter_products_list_input').prev('.fa').addClass('hide');
+            }else{
+                $('#filter_products_list_input').prev('.fa').removeClass('hide');
+            }
+        });
+    }
+    $('#filter_products_list_input').on('keyup',function(e){
+        if(e.keyCode == 13){
+            filter_products_list();
+        }
+    });
+    $('#filter_products_list_input').on('blur',function(e){
+        if($(this).val() == ''){
+            filter_products_list();
+        }
+    });
+
+    var products_sel_callback_func = function(re_obj){
+        $.post('<{link ctl=admin_relgoods app=supplier act=update_products}>&supplier_id='+supplier_id,re_obj,refresh_products_list,'json');
+    };
+    var products_unsel_callback_func = function(re_obj){
+        $.post('<{link ctl=admin_relgoods app=supplier act=update_products}>&p[0]=delete&supplier_id='+supplier_id,re_obj,refresh_products_list,'json');
+    }
+    $('#products_list').on('change','input.sel-handle',function(){
+        $('#products_list tbody input:checkbox[name^="product_id"]').attr('checked',this.checked);
+    });
+    $('#products_list').on('click','.btn-remove',function(){
+        $.post('<{link ctl=admin_relgoods app=supplier act=update_products}>&p[1]=delete&supplier_id='+supplier_id,{product_id:[$(this).closest('tr').find('input:checkbox[name^="product_id"]').val()]},refresh_products_list,'json');
+    });
+    $('#products_action .btn-remove-sel').on('click',function(){
+        if(!$('#products_list tbody input[name^="product_id"]:checked').length){
+            return Messagebox.warning('未选中商品');
+        }
+        bootbox.confirm('确认移除选中？',function(flag){
+            if(!flag)return;
+            $.post('<{link ctl=admin_relgoods app=supplier act=update_products}>&p[0]=delete&supplier_id='+supplier_id,$('#products_list').serialize(),refresh_products_list,'json');
+        });
+    });
+
+        $('#products_list').on('focus','input.edit-col',function(e){
+            $(this).data('v',$(this).val());
+            this.select();
+        });
+        $('#products_list').on('blur','input.edit-col',function(e){
+            var edit_input = $(this),current_val = edit_input.val();
+            if(current_val == edit_input.data('v'))return;
+            if(isNaN(current_val))return;
+            var post_data = {
+                'id':edit_input.attr('data-itemid'),
+                'product_id':edit_input.attr('data-productid')
+            };
+            post_data[edit_input.prop('name')] = edit_input.val();
+            $.post("<{link app=supplier ctl=admin_relgoods act=update_item}>&supplier_id="+supplier_id,post_data,function(re){
+                if(re && ('success' in re)){
+                    edit_input.data('v',edit_input.val());
+                    edit_input.val('已修改').removeClass('font-red').fadeOut(function(){
+                        edit_input.val(edit_input.data('v'));
+                    }).fadeIn();
+                }else{
+                    edit_input.val('失败').addClass('font-red').fadeOut(function(){
+                        edit_input.val(edit_input.data('v')).removeClass('font-red');
+                    }).fadeIn();
+                }
+            },'json');
+        });
+
+
+
+    /**
+     * CSV导入
+     */
+     $('.csv_file_input').fileupload({
+         add:function(e,data){
+             var target_input = $(e.target).addClass('hidden');
+             var button = target_input.prev('button');
+             button.find('.fa-file-text').addClass('hidden');
+             button.find('.fa-spin').removeClass('hidden');
+             data.submit();
+         },
+         progress:function(e){
+             //dosometing
+         },
+         progressall:function(e){
+             //dosometing
+         },
+         done:function(e,data){
+             var target_input = $(e.target).removeClass('hidden');
+             var button = target_input.prev('button');
+             button.find('.fa-file-text').removeClass('hidden');
+             button.find('.fa-spin').addClass('hidden');
+             try{
+                 var re = $.parseJSON(data.result);
+                 if(re.success){
+                     Messagebox.success(data.files[0].name+'上传成功');
+                 }else{
+                    return Messagebox.warning(data.files[0].name+'上传失败');
+                 }
+                 refresh_products_list(re);
+             }catch(e){
+                 console.error(e);
+             }
+
+         }
+     });
+</script>

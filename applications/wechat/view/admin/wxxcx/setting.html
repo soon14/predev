@@ -1,0 +1,39 @@
+<h3 class="page-title clearfix">
+    <img src="https://mp.weixin.qq.com/debug/wxadoc/gitbook/images/icon_note_logo@2x.png" alt="微信小程序" height="40"/> 微信小程序基本配置
+</h3>
+<hr>
+<form action="index.php?app=wechat&ctl=admin_wxxcx&act=setting" method="post" class="form" >
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">AppID(小程序ID)</label>
+                <div class="col-md-7">
+                    <{input required=true type=text name=appid value=$env.conf.wechat.wxxcx_appid}>
+                    <span class="help-block">可从微信公众平台-小程序后台 &raquo; 设置 &raquo; 开发设置 中获得 </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">AppSecret(小程序密钥)</label>
+                <div class="col-md-7">
+                    <{input required=true type=text name=appsecret value=$env.conf.wechat.wxxcx_appsecret}>
+                    <span class="help-block">可从微信公众平台-小程序后台 &raquo; 设置 &raquo; 开发设置 中获得 </span>
+                </div>
+            </div>
+            <!-- <div class="form-group">
+                <label class="col-md-3 control-label">是否开启微信扫一扫路由自动转化</label>
+                <div class="col-md-7">
+                    <{input required=true type=bool name=autorouter value=$env.conf.wechat.wxxcx_autorouter}>
+                    <span class="help-block">开启后,当微信扫码到H5网页地址（商品详情页）,将自动打开小程序对应页面</span>
+                </div>
+            </div> -->
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-3 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                        <a href="javascript:history.go(-1);" class="btn default">返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

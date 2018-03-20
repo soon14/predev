@@ -1,0 +1,109 @@
+<div class="page-header clearfix">
+  <h1 class="pull-left">售后服务处理 <small>#<{$req_detail.request_id}> </small>
+  </h1>
+  <a class="btn btn-default pull-right" href="<{link app=aftersales ctl=site_member act=request}>">
+      <i class="glyphicon glyphicon-th-list"></i>
+      返回列表
+  </a>
+</div>
+<{if $delivery && $delivery.status}>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+
+            <{switch from=$req_detail.status}>
+                <{case value='1'}>
+                <span class="label label-default">申请中</span>
+                <{case value='2'}>
+                <span class="label label-danger">被拒绝</span>
+                <{case value='3'}>
+                <{if $delivery.logistics_no}>
+                    <span class="label label-success">退货处理中</span>
+                <{else}>
+                    <span class="label label-info">已接受申请,请完善物流信息</span>
+                <{/if}>
+                <{case value='4'}>
+                <span class="label label-success">退款处理中</span>
+                <{case value='5'}>
+                <span class="label label-success">处理完成</span>
+            <{/switch}>
+
+        </div>
+        <div class="panel-body">
+            <{$req_detail.remarks}>
+        </div>
+    </div>
+    <div class="panel <{if $delivery.logistics_no}>panel-default<{else}>panel-info<{/if}>">
+        <{if $delivery.logistics_no}>
+        <div class="panel-heading">物流信息</div>
+        <{else}>
+        <div class="panel-heading">填写退货物流信息</div>
+        <{/if}>
+        <table class="table">
+            <{foreach from=$delivery.delivery_items item=item}>
+            <tr>
+                <td>
+                    <img width=50 class="img-thumbnail" src="<{$item.image_id|storager:'s'}>" alt="<{$item.name}>" />
+                </td>
+                <td>
+                    <{$item.name}><{$item.spec_info}><br><small class="text-muted"><{$item.bn}></small>
+                </td>
+                <td>
+                    x <{$item.sendnum}>
+                </td>
+            </tr>
+            <{/foreach}>
+        </table>
+        <div class="panel-body">
+                <div class="well">
+                    快递至：
+                    <{$delivery.consignee.area|region}>,<{$delivery.consignee.addr}>.
+                    <{if $delivery.consignee.zip}>,邮编:<{$delivery.consignee.zip}><{/if}>
+                    <{if $delivery.consignee.mobile}>,手机:<{$delivery.consignee.mobile}><{/if}>
+                    <{if $delivery.consignee.tel}>,固话:<{$delivery.consignee.tel}><{/if}>
+                    <{if $delivery.consignee.email}>,Email:<{$delivery.consignee.email}><{/if}>
+                </div>
+            <{if $delivery.logistics_no}>
+            <ul class="list-group">
+                <li class="list-group-item">快递运单号：<{$delivery.logistics_no}></li>
+            </ul>
+            <{else}>
+            <form  class="form-horizontal" action="<{link app=aftersales ctl=site_member act=update_delivery}>" method="post" >
+                <input type="hidden" name="request_id" value="<{$req_detail.request_id}>">
+                <input type="hidden" name="delivery[delivery_id]" value="<{$delivery.delivery_id}>">
+                <div class="form-group" data-extend="req_type">
+                    <label  class="col-xs-2 control-label">物流公司<span class="text-danger">*</span></label>
+                    <div class="col-xs-5">
+                        <{input type="select" id="dlycorp_select" required="true" name="delivery[dlycorp_id]" rows=$dlycorp_list labelColumn='name' valueColumn='corp_id'}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label  class="col-xs-2 control-label">快递运单号<span class="text-danger">*</span></label>
+                    <div class="col-xs-5">
+                      <{input type="text" required="true" name="delivery[logistics_no]" placeholder="快递单号" }>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <div class="col-xs-5 col-xs-offset-2">
+                      <button type="submit" class="btn btn-primary">提交</button>
+                    </div>
+                </div>
+            </form>
+            <script type="text/javascript">
+                $('#dlycorp_select').append('<option value="-1">其他</option>');
+            </script>
+            <{/if}>
+        </div>
+    </div>
+<{else}>
+<{if $req_detail.status=='1'}>
+<div class="alert alert-success">
+    售后请求提交成功,正在进行审核
+</div>
+<{elseif $req_detail.status=='2'}>
+<div class="alert alert-warning">
+    <p>售后请求提交被拒绝</p>
+</div>
+<{/if}>
+
+<{/if}>

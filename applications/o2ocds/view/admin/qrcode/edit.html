@@ -1,0 +1,200 @@
+<h3 class="page-title">
+    <{if $qrcode.qrcode_id}>编辑<{else}>新建<{/if}>二维码
+    <{if $qrcode.qrcode_id}>
+         <{$qrcode.prefix}><{$qrcode.qrcode}>
+    <{/if}>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=o2ocds&amp;ctl=admin_qrcode&amp;act=index">二维码列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $qrcode.qrcode_id}>编辑<{else}>新建<{/if}>二维码</a>
+        </li>
+    </ul>
+</div>
+<form method="post" action="index.php?app=o2ocds&ctl=admin_qrcode&act=save"  class="form">
+    <input type="hidden" name="qrcode_id" value="<{$qrcode.qrcode_id}>">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">批次号</label>
+                <div class="col-md-4">
+                    <{if $qrcode.qrcode_id}>
+                    <p class="form-control-static">
+                        <{$qrcode.prefix}>
+                    </p>
+                        <{else}>
+                            <input type="text" name="prefix" class="form-control" value="<{$qrcode.prefix}>">
+                    <{/if}>
+
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">所属企业
+                </label>
+                <div class="col-md-4">
+                    <{if !$enterprise.enterprise_id}>
+                    <{input type="object"   object="enterprise" base_filter="status=1" name="enterprise_id"  callback_func="select_enterprise" placeholder="选择企业"}>
+                    <table class="object-collection-rows table">
+                        <thead class="<{if !$enterprise.enterprise_id}>hidden<{/if}>">
+                        <tr>
+                            <td></td>
+                            <td>企业名称</td>
+                        </tr>
+                        </thead>
+                        <tbody id="enterprise_row">
+                            <tr class="object-row" data-id="25">
+                                <td></td>
+                                <td><{$enterprise.name}></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <{else}>
+                        <p class="form-control-static">
+                            <{$enterprise.name}>
+                        </p>
+                    <{/if}>
+
+                </div>
+            </div>
+            <{if $qrcode.qrcode_id}>
+                <!--<div class="form-group">
+                <label class="col-md-2 control-label">所属店铺
+                </label>
+                <div class="col-md-4">
+                    <{if !$store.store_id}>
+                    <{input type="object" object="store" base_filter="status=1" name="store_id"  callback_func="select_store" placeholder="选择店铺"}>
+                    <table class="object-collection-rows table">
+                        <thead class="hidden">
+                        <tr>
+                            <td></td>
+                            <td>店铺名称</td>
+                        </tr>
+                        </thead>
+                        <tbody id="store_row">
+                        <tr class="object-row" data-id="25">
+                            <td></td>
+                            <td><{$store.name}></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    <{else}>
+                    <p class="form-control-static">
+                        <{$store.name}>
+                    </p>
+                    <{/if}>
+                </div>
+            </div>-->
+            <{/if}>
+            <div class="form-group">
+                <label class="col-md-2 control-label">备注
+                </label>
+                <div class="col-md-4">
+                    <{input type=textarea rows=2 name="remark" value=$qrcode.remark}>
+                </div>
+            </div>
+            <{if !$qrcode.qrcode_id}>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">生成数量
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-1">
+                        <input type="number" name="number" min="1" class="form-control" value="1">
+                    </div>
+                </div>
+            <{/if}>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-9">
+                    <button data-action="index.php?app=o2ocds&ctl=admin_qrcode&act=save" type="submit" class="btn blue b-save">
+                            保存
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    $(function(){
+        select_enterprise = function (selected) {
+            var cids = [];
+            $.each(selected, function (k, v) {
+                cids.push(v.value);
+            });
+            _render(cids);
+        };
+        var _render = function (cids) {
+            if(!cids.length)return;
+
+            $.post('<{link app=o2ocds ctl=finder act=object_row}>',{
+                'app_name':'o2ocds',
+                'model':'enterprise',
+                'cols':'enterprise_id,name',
+                'name':"enterprise_id",
+                'pkey':'enterprise_id',
+                'filter':{enterprise_id:cids}
+            },function(re){
+                $('#enterprise_row').html(re);
+                var tmp = [];
+                $($.grep($('#enterprise_row tr'),function(tr,i){
+                    var cid = $(tr).attr('data-id');
+                    if($.inArray(cid,tmp)>-1){
+                        return true;
+                    }else{
+                        tmp.push(cid);
+                    }
+                })).remove();
+            });
+            $('#enterprise_row').closest('table').find('thead').removeClass('hidden');
+        };
+
+        select_store = function (selected) {
+            var cids = [];
+            $.each(selected, function (k, v) {
+                cids.push(v.value);
+            });
+            store_render(cids);
+        };
+        var store_render = function (cids) {
+            if(!cids.length)return;
+
+            $.post('<{link app=o2ocds ctl=finder act=object_row}>',{
+                'app_name':'o2ocds',
+                'model':'store',
+                'cols':'store_id,name',
+                'name':"store_id",
+                'pkey':'store_id',
+                'filter':{store_id:cids}
+            },function(re){
+                $('#store_row').html(re);
+                var tmp = [];
+                $($.grep($('#store_row tr'),function(tr,i){
+                    var cid = $(tr).attr('data-id');
+                    if($.inArray(cid,tmp)>-1){
+                        return true;
+                    }else{
+                        tmp.push(cid);
+                    }
+                })).remove();
+            });
+            $('#store_row').closest('table').find('thead').removeClass('hidden');
+        };
+        <!--<{if $qrcode.enterprise_id}>
+            var ecids = [];
+            ecids.push("<{$qrcode.enterprise_id}>");
+            _render(ecids);
+            <{/if}>
+        <{if $qrcode.store_id}>
+            var scids = [];
+            scids.push("<{$qrcode.store_id}>");
+            store_render(scids);
+            <{/if}>-->
+    });
+
+</script>

@@ -1,0 +1,185 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 产品列表 - 子组件 -->
+<template id="widget-child-goodslist">
+    <!--
+    title 标题
+    show_title 是否显示标题
+    with_panel 是否显示panel
+    type 显示类型 swiper gallery grid tower list
+    card_style card方式显示
+    swiper_height 是否显示间距
+    swiper_item_margin 分列样式
+    filter 筛选条件
+    orderby 排序方式
+    limit 获取数量
+    show_product_title 是否显示产品标题
+    show_product_price 是否显示产品价格
+    show_product_brief 是否显示产品介绍
+    -->
+    <section class="widget-box widget-goodslist " :class="{
+             'widget-goodslist-swiper': widget.data.type == 'swiper',
+             'widget-goodslist-gallery': widget.data.type == 'gallery',
+             'widget-goodslist-grid': widget.data.type == 'grid',
+             'widget-goodslist-tower': widget.data.type == 'tower',
+             'widget-goodslist-list': widget.data.type == 'list',
+             'weui-panel': widget.data.with_panel,
+             'with-title': widget.data.show_title
+             }">
+        <div class="goodslist-title" :class="{'weui-panel__hd': widget.data.with_panel}" v-if="widget.data.show_title">{{widget.data.title}}</div>
+        <div class="goodslist-body" :class="{'weui-panel__bd': widget.data.with_panel}" v-if="widget.data.items.length > 0">
+            <ul v-if="widget.data.type == 'list'" :class="{'widget-goodslist-swiper-scrollviewbox': (widget.data.type == 'swiper'), 'col-3': (widget.data.type == 'swiper')}">
+                <li v-for="(goods, goods_key) in widget.data.items" :goods_key="goods_key">
+                    <a href="" class="weui-media-box weui-media-box_appmsg co-item">
+                        <span class="weui-media-box__hd weui-media-box__hd_in-appmsg g-image">
+                            <img :src="goods.image" />
+                        </span>
+                        <p class="weui-media-box__bd">
+                            <span v-if="widget.data.show_product_title" class="weui-media-box__desc g-name">{{goods.name}}</span>
+                            <span v-if="widget.data.show_product_brief" class="weui-media-box__desc co-inline co-brief">{{goods.brief}}</span>
+                            <em v-if="widget.data.show_product_price" class="weui-media-box__desc co-inline">
+                                <span class="g-price">￥{{goods.product.buy_price}}</span>
+                            </em>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+            <ul v-else-if="widget.data.type == 'swiper'" :class="{'widget-goodslist-swiper-scrollviewbox': (widget.data.type == 'swiper'), 'col-3': (widget.data.type == 'swiper')}">
+
+               <li v-if="widget.data.show_product_title&&widget.data.show_product_brief&&widget.data.show_product_price" v-for="(goods, goods_key) in widget.data.items" :goods_key="goods_key"  :style="{'margin': (widget.data.type == 'swiper' ? (widget.data.swiper_item_margin|| 20) + 'px' : '160px'),'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-60) + 'px' : '100px')}">
+                    <a href="" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-60) + 'px' : '100px')}">
+                        <span class="g-image"  :style="{'height': (widget.data.type == 'swiper' ? (widget.data.swiper_height-60) + 'px' : '100px'),'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-60 || 100) + 'px' : '100px')}">
+                            <img :src="goods.image"/>
+                        </span>
+                        <span v-if="widget.data.show_product_title" class="g-name" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-60) + 'px' : '100px')}">{{goods.name}}</span>
+                        <span v-if="widget.data.show_product_brief" class="g-brief" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-60) + 'px' : '100px')}">{{goods.brief}}</span>
+                        <span v-if="widget.data.show_product_price" class="g-price" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-60) + 'px' : '100px')}">￥{{goods.product.buy_price}}</span>
+                    </a>
+                </li>
+                <li v-if="!widget.data.show_product_title&&!widget.data.show_product_brief&&!widget.data.show_product_price" v-for="(goods, goods_key) in widget.data.items" :goods_key="goods_key"  :style="{'margin': (widget.data.type == 'swiper' ? (widget.data.swiper_item_margin|| 20) + 'px' : '160px'),'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height) + 'px' : '160px')}">
+                    <a href="" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height) + 'px' : '160px')}">
+                        <span class="g-image" :style="{'height': (widget.data.type == 'swiper' ? (widget.data.swiper_height) + 'px' : '120px'),'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height || 160) + 'px' : '160px')}">
+                            <img :src="goods.image"/>
+                        </span>
+                      
+                    </a>
+                </li>
+                <li v-if="(!widget.data.show_product_title&&!widget.data.show_product_brief&&widget.data.show_product_price)||(!widget.data.show_product_title&&widget.data.show_product_brief&&!widget.data.show_product_price)||(widget.data.show_product_title&&!widget.data.show_product_brief&&!widget.data.show_product_price)" v-for="(goods, goods_key) in widget.data.items" :goods_key="goods_key"  :style="{'margin': (widget.data.type == 'swiper' ? (widget.data.swiper_item_margin|| 20) + 'px' : '160px'),'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-20) + 'px' : '140px')}">
+                    <a href="" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-20) + 'px' : '140px')}">
+                        <span class="g-image"  :style="{'height': (widget.data.type == 'swiper' ? (widget.data.swiper_height-20) + 'px' : '140px'),'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-20 || 140) + 'px' : '120px')}">
+                            <img :src="goods.image"/>
+                        </span>
+                        <span v-if="widget.data.show_product_title" class="g-name" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-20) + 'px' : '140px')}">{{goods.name}}</span>
+                        <span v-if="widget.data.show_product_brief" class="g-brief" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-20) + 'px' : '140px')}">{{goods.brief}}</span>
+                        <span v-if="widget.data.show_product_price" class="g-price" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-20) + 'px' : '140px')}">￥{{goods.product.buy_price}}</span>
+                    </a>
+                </li>
+                <li v-if="(!widget.data.show_product_title&&widget.data.show_product_brief&&widget.data.show_product_price)||(widget.data.show_product_title&&!widget.data.show_product_brief&&widget.data.show_product_price)||(widget.data.show_product_title&&widget.data.show_product_brief&&!widget.data.show_product_price)" v-for="(goods, goods_key) in widget.data.items" :goods_key="goods_key"  :style="{'margin': (widget.data.type == 'swiper' ? (widget.data.swiper_item_margin|| 20) + 'px' : '160px'),'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-40) + 'px' : '120px')}">
+                    <a href="" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-40) + 'px' : '120px')}">
+                        <span class="g-image"  :style="{'height': (widget.data.type == 'swiper' ? (widget.data.swiper_height-40) + 'px' : '120px'),'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-40 || 120) + 'px' : '120px')}">
+                            <img :src="goods.image"/>
+                        </span>
+                        <span v-if="widget.data.show_product_title" class="g-name" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-40) + 'px' : '120px')}">{{goods.name}}</span>
+                        <span v-if="widget.data.show_product_brief" class="g-brief" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-40) + 'px' : '120px')}">{{goods.brief}}</span>
+                        <span v-if="widget.data.show_product_price" class="g-price" :style="{'width': (widget.data.type == 'swiper' ? (widget.data.swiper_height-40) + 'px' : '120px')}">￥{{goods.product.buy_price}}</span>
+                    </a>
+                </li>
+            </ul>
+            <ul v-else :class="{'widget-goodslist-swiper-scrollviewbox': (widget.data.type == 'swiper'), 'col-3': (widget.data.type == 'swiper')}">
+                <li v-for="(goods, goods_key) in widget.data.items" :goods_key="goods_key" :class="{last:(widget.data.type == 'grid'&&goods_key==(widget.data.items.length-1)&&widget.data.items.length%2==1)}">
+                    <a href="">
+                        <span class="g-image">
+                            <img :src="goods.image" />
+                        </span>
+                        <span v-if="widget.data.show_product_title" class="g-name">{{goods.name}}</span>
+                        <span v-if="widget.data.show_product_brief" class="g-brief">{{goods.brief}}</span>
+                        <span v-if="widget.data.show_product_price" class="g-price">￥{{goods.product.buy_price}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="goodslist-body" :class="{'weui-panel__bd': widget.data.with_panel}" v-else>
+            <ul v-if="widget.data.type == 'list'" :class="{'widget-goodslist-swiper-scrollviewbox': (widget.data.type == 'swiper'), 'col-3': (widget.data.type == 'swiper')}">
+                <li>
+                    <a href="" class="weui-media-box weui-media-box_appmsg co-item">
+                        <span class="weui-media-box__hd weui-media-box__hd_in-appmsg g-image">
+                            <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" />
+                        </span>
+                        <p class="weui-media-box__bd">
+                            <span v-if="widget.data.show_product_title" class="weui-media-box__desc g-name">请设置筛选</span>
+                            <span v-if="widget.data.show_product_brief" class="weui-media-box__desc co-inline co-brief">...</span>
+                            <em v-if="widget.data.show_product_price" class="weui-media-box__desc co-inline">
+                                <span class="g-price">￥00.00</span>
+                            </em>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+            <ul v-else :class="{'widget-goodslist-swiper-scrollviewbox': (widget.data.type == 'swiper'), 'col-3': (widget.data.type == 'swiper')}">
+                <li>
+                    <a href="">
+                        <span class="g-image">
+                            <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" />
+                        </span>
+                        <span v-if="widget.data.show_product_title" class="g-name">请设置筛选</span>
+                        <span v-if="widget.data.show_product_brief" class="g-brief">...</span>
+                        <span v-if="widget.data.show_product_price" class="g-price">￥00.00</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+</template>
+<script type="text/javascript">
+// --------------------------- 产品列表
+// 更新产品列表
+designStore.methods.initFilter = function(vnode) {
+    if (!this.root.page.currWidgets[vnode.index].data.filter_type) {
+        this.root.page.currWidgets[vnode.index].data.filter_type = 'tag_name';
+    }
+    if (!this.root.page.currWidgets[vnode.index].data.filter) {
+        this.root.page.currWidgets[vnode.index].data.filter = {
+            tag_name: '首页推荐'
+        };
+    }
+};
+// 更新产品列表
+designStore.methods.onGoodsUpdate = function(vnode) {
+    var _widget = this.root.page.currWidgets[vnode.index].data;
+
+    var _t = this;
+    var api_data = {
+        'page_index': 1,
+        'page_size': (_widget.limit || 9),
+    };
+    if (_widget.filter) {
+        if (!_widget.filter_type) {
+            _widget.filter_type = 'tag_name';
+        }
+        if(!_widget.filter[_widget.filter_type]){
+            _widget.filter_type = 'tag_name';
+            _widget.filter[_widget.filter_type] = '首页推荐';
+        }
+        api_data['filter[' + _widget.filter_type + ']'] = _widget.filter[_widget.filter_type];
+        // for (var key in _widget.filter) {
+        //     api_data['filter[' + key + ']'] = _widget.filter[key];
+        // }
+    }
+    _t.root.page.currWidgets[vnode.index].data.items = [];
+    axios.get(designStore.gallery_remote, {
+            params: api_data
+        })
+        .then(function(response) {
+            if (!response.data || !response.data.data.goods_list)
+                return false;
+            _t.root.page.currWidgets[vnode.index].data.items = response.data.data.goods_list;
+        });
+};
+var widget_child_goodslist = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-goodslist',
+    created: function() {
+        designStore.methods.initFilter(this);
+        return designStore.methods.onGoodsUpdate(this);
+    }
+});
+</script>

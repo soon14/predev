@@ -1,0 +1,36 @@
+<div id="goodstore_sel_<{$params.store_domid}>" class="form-inline pull-left">
+    <input id="finderStoreFilterInput" type="hidden" name="<{$params.name}>" value="<{$params.value}>">
+    <select class="form-control">
+        <option value="-1">
+            <{if $params.divider}>
+                <{$params.divider}>
+            <{else}>
+                请选择店铺
+            <{/if}>
+        </option>
+        <{foreach from=$params['storeInfos'] item=storeInfo}>
+            <option value="<{$storeInfo.store_id}>"><{$storeInfo.store_name}></option>
+        <{/foreach}>
+    </select>
+</div>
+<script type="text/javascript">
+    $(function(){
+        var goodstore_callback = function(store_id){
+            <{if $params.callback}>
+                try{
+                    <{$params.callback}>(store_id);
+                }catch(e){}
+            <{/if}>
+        };
+
+        $('#goodstore_sel_<{$params.store_domid}>').on('change', 'select', function () {
+            var selected_value = $(this).val();
+            if (selected_value == '-1') {
+                selected_value = '';
+            }
+
+            $('#finderStoreFilterInput').val(selected_value);
+            goodstore_callback(selected_value);
+        });
+    });
+</script>

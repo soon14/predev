@@ -1,0 +1,123 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>小票</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <style type="text/css">
+        body{padding:0;margin:0;color:#000;font-size:10px}ul{list-style:none;padding:0;margin:0}p{margin:0;padding:0}.fl{float:left}.fr{float:right}.receipt-wrap{margin:0 auto;height:auto;min-width:290px;background-color:#fff;padding: 10px 15px;}.receipt-wrap .shop-logo{text-align:center;}.receipt-wrap .shop-info{padding:5px 0;font-weight:700}.receipt-wrap .shop-info p{line-height:16px}.receipt-wrap .product-list{font-size:10px;height:auto;overflow:hidden}.receipt-wrap .product-list .pl-ul{width:100%}.receipt-wrap .product-list .pl-ul .item{width:100%;float:left;padding:2px 0;border-bottom:1px solid #bbb}.receipt-wrap .product-list .pl-ul .item .item-main{width:100%;overflow:hidden}.receipt-wrap .product-list .pl-ul .item .item-main li{float:left}.receipt-wrap .product-list .pl-ul .item .item-main .item-info{width:58%;padding-right:10px}.receipt-wrap .product-list .pl-ul .item .item-main .item-info p{line-height:16px;white-space:nowrap}.receipt-wrap .product-list .pl-ul .item .item-main .item-num{width:17%;text-align:left;line-height:16px}.receipt-wrap .product-list .pl-ul .item .item-main .item-price{width:21%;text-align:right;line-height:16px}.receipt-wrap .product-list .pl-ul .total{padding:2px 0;float:left;width:100%}.receipt-wrap .product-list .pl-ul .total .pl60{padding-left:30px}.receipt-wrap .product-list .pl-ul .total .discount{display:block;font-size:10px;margin:0;line-height:20px;width: 100%;overflow: hidden;}.receipt-wrap .product-list .pl-ul .total .sum{font-size:10px;font-weight:700;line-height:24px;margin:0}.receipt-wrap .trade-info{padding:2px 0;border-top:4px solid #d3d3d3;border-bottom:4px solid #d3d3d3}.receipt-wrap .trade-info .pay-info p{line-height:20px}.receipt-wrap .trade-info .tax-info{padding:5px 0;line-height:24px}.receipt-wrap .trade-info .tax-info ul{overflow:hidden;width:100%}.receipt-wrap .trade-info .tax-info ul li{float:left}.receipt-wrap .trade-info .tax-info ul .tax-rate{width:48%}.receipt-wrap .trade-info .tax-info ul .tax-total{width:28%}.receipt-wrap .trade-info .tax-info ul .taxs{width:24%}.receipt-wrap .trade-info .detail-list{padding-right:20px;overflow:hidden}.receipt-wrap .trade-info .detail-list li{float:left;width:100%;border-bottom:1px solid #bbb;line-height:20px;position:relative;overflow: hidden;}.receipt-wrap .trade-info .detail-list li .fl{}.receipt-wrap .trade-info .served-by{font-size:10px;padding:5px 0}.receipt-wrap .trade-info .barcode{text-align:center;margin-top:5px;}.receipt-wrap .trade-info .barcode p{padding:2px 0}.receipt-wrap .provision-notice{font-size:10px;}.receipt-wrap .provision-notice .head{padding:5px 0}.receipt-wrap .provision-notice p{line-height:16px}.receipt-wrap .qrcode{margin-top:5px;text-align:center}.receipt-wrap .qrcode p{font-weight:700;font-size:10px}.abnormal-warp .abnormal-code,.abnormal-warp .pay-code,.certificate-warp .abnormal-code,.certificate-warp .pay-code{text-align:center;margin-bottom:10px}.abnormal-warp .abnormal-code h1,.abnormal-warp .pay-code h1,.certificate-warp .abnormal-code h1,.certificate-warp .pay-code h1{font-size:10px;font-weight:700;margin:0 0 10px 0}.abnormal-warp .abnormal-code p,.abnormal-warp .pay-code p,.certificate-warp .abnormal-code p,.certificate-warp .pay-code p{padding:5px 0}.abnormal-warp .already-paid,.certificate-warp .already-paid{margin-top:30px}.abnormal-warp .already-paid .head,.certificate-warp .already-paid .head{font-size:10px;color:#717171;margin:8px 0}.abnormal-warp .already-paid .payway-list,.certificate-warp .already-paid .payway-list{padding-right:20px;overflow:hidden;}.abnormal-warp .already-paid .payway-list .item,.certificate-warp .already-paid .payway-list .item{width:100%;float:left;padding:15px 0 10px 0;border-bottom:1px solid #bbb;overflow:hidden}.abnormal-warp .already-paid .payway-list .item .fl,.certificate-warp .already-paid .payway-list .item .fl{width:77%}.abnormal-warp .already-paid .payway-list .item .fr,.certificate-warp .already-paid .payway-list .item .fr{width:23%}.abnormal-warp .already-paid .payway-list .item p,.certificate-warp .already-paid .payway-list .item p{font-size:10px}.abnormal-warp .already-paid .payway-list .item:last-child,.certificate-warp .already-paid .payway-list .item:last-child{border-bottom:0}.abnormal-warp .already-paid .foot,.certificate-warp .already-paid .foot{font-size:10px;color:#000;margin:8px 0}.abnormal-warp .trade-info,.certificate-warp .trade-info{padding:0}.abnormal-warp .alert-warning,.certificate-warp .alert-warning{text-align:center;font-weight:700;font-size:12px;margin-top:10px;margin-bottom:0}.abnormal-warp .qrcode,.certificate-warp .qrcode{margin-top:25px}
+
+        .receipt-wrap .shop-logo img{
+            max-width: 100%;
+            max-height: 100%;
+        }
+        .receipt-wrap .qrcode .qrcode-warp{
+            width: 80%;
+            overflow: hidden;
+            margin:0 auto;
+        }
+        .receipt-wrap .qrcode .qrcode-warp .fl{
+            width: 40%;
+        }
+        .receipt-wrap .qrcode .qrcode-warp .fr{
+            width: 40%;
+        }
+        .receipt-wrap .qrcode .qrcode-warp img{
+            width: 100%;
+        }
+        .user-info{
+            padding: 5px 0;
+            border-bottom: 4px solid #d3d3d3;
+        }
+        .user-info p{
+            height: 20px;
+            line-height: 20px;
+        }
+        .receipt-wrap{
+            min-width: 240px;
+        }
+        .receipt-wrap .trade-info .barcode img{
+            width: 100%;
+        }
+        .discount .fl{width: 50%;}
+        .receipt-wrap:nth-child(2) .qrcode,.receipt-wrap:nth-child(3) .qrcode{
+            display: none;
+        }
+        .receipt-wrap:first-child{
+            padding-top: 0;
+        }
+    </style>
+</head>
+<body>
+<{foreach from=array(0,1,2) item=vo}>
+<div class="receipt-wrap">
+    <div class="shop-info">
+        <p style="font-size:14px;">店铺名称:<{$orderStoreInfo['store_name']}></p>
+        <p>地址: <{$orderStoreInfo['store_address']}></p>
+        <p>联系电话: <{$orderStoreInfo['store_contact']}></p>
+    </div>
+    <h5 style="margin:0;font-size:16px;"><center>
+        <{if $orderInfo['pay_status']!=1}>
+        未支付
+        <{/if}>
+        <{if $get.renew}>
+        (补打)
+        <{/if}>
+
+    </center></h5>
+    <div class="product-list">
+        <ul class="pl-ul">
+            <{foreach from=$orderItemInfos item=orderItemInfo}>
+            <li class="item">
+                <ul class="item-main">
+                    <li class="item-info">
+                        <p><{$orderItemInfo['bn']}></p>
+                        <p><{$orderItemInfo['name']}></p>
+                    </li>
+                    <li class="item-num">X<{$orderItemInfo['nums']}></li>
+                    <li class="item-price"><{$orderItemInfo['amount']|cur}></li>
+                </ul>
+            </li>
+            <{/foreach}>
+            <li class="total">
+                <div class="discount">
+                    <div class="fl">优惠= <{($orderInfo['memberlv_discount'] + $orderInfo['pmt_goods'] + $orderInfo['pmt_order'])|cur}></div>
+                    <div class="fl">行邮税额: <{$across_fee['taxes']|cur}></div>
+                </div>
+                <!-- if 跨境商品 -->
+                <{if $across_fee}>
+                <p>运费:<span><{$orderInfo['cost_freight']|cur}></span>(保税商品不开发票)</p>
+                <{/if}>
+                <p class="sum">合计: <span><{$orderInfo.quantity}>件</span><span class="pl30">合计金额:<{$orderInfo['order_total']|cur}></span></p>
+            </li>
+        </ul>
+    </div>
+    <div class="trade-info">
+        <div class="pay-info">
+
+            <p>订单号 = <{$orderInfo['order_id']}></p>
+        </div>
+        <ul class="detail-list">
+            <li>
+                <div>时间:<span><{$orderInfo['createtime']|cdate:"FDATE_FTIME"}></span></div>
+            </li>
+            <li>
+                <div class="fl">营业员:<span><{$orderOpInfo['name']}>(<{$orderOpInfo['op_no']}>)</span></div>
+                <div class="fl" style="padding-left:5px;">收银员:<span><{$billOpInfo['name']}>(<{$billOpInfo['op_no']}>)</span></div>
+            </li>
+        </ul>
+        <!-- <p class="served-by">You&nbsp;&nbsp;were&nbsp;&nbsp;served&nbsp;&nbsp;by&nbsp;&nbsp;<span><{$paybillsInfo['bill_']}></span></p> -->
+        <div class="barcode">
+            <!-- 小票条形码 -->
+            <{$orderInfo['order_id']|barcode:"40"}>
+        </div>
+    </div>
+
+</div>
+<{/foreach}>
+</body>
+</html>
+<script charset="utf-8">
+    self.focus();
+    self.print();
+</script>

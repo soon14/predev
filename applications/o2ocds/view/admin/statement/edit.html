@@ -1,0 +1,283 @@
+<h3 class="page-title clearfix">
+    财务结算单 <small>#<{$statement.statement_id}></small>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=o2ocds&ctl=admin_statement&act=index">结算单列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">财务结算单明细</a>
+        </li>
+    </ul>
+</div>
+
+<ul class="nav nav-tabs nav-tabs-lg">
+    <li class="active">
+        <a href="#tab_1" data-toggle="tab">
+            结算单基本信息
+        </a>
+    </li>
+    <li>
+        <a href="#tab_2" data-toggle="tab">
+            结算凭证 <span class="badge bg-gallery" id="achieve_all_price_badge"></span>
+        </a>
+    </li>
+</ul>
+<div class="tab-content">
+    <div class="tab-pane active" id="tab_1">
+        <form action="index.php?app=o2ocds&ctl=admin_statement&act=update&p[0]=<{$statement.statement_id}>" method="post" id='statement_form' class="form" >
+            <input type="hidden" name="statement[statement_id]" value="<{$statement.statement_id}>">
+            <div class="form form-horizontal">
+                <!-- begin form body -->
+                <div class="form-body">
+
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">
+                             结算单状态
+                         </label>
+                         <div class="col-md-5">
+                             <div class="form-control-static">
+                                 <{switch from=$statement.status}>
+                                 <{case value='noconfirm'}>
+                                 <span class="label label-warning">等待确认</span>
+                                 <{case value='ready'}>
+                                  <span class="label label-warning">准备处理</span>
+                                 <{case value='process'}>
+                                 <span class="label label-warning">处理中</span>
+                                 <{case value='succ'}>
+                                 <span class="label label-success">已结算</span>
+                                 <{/switch}>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">
+                             <{if $statement.relation_type == 'store'}>
+                             店铺
+                             <{else}>
+                             企业
+                             <{/if}>
+                         </label>
+                         <div class="col-md-10">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            名称
+                                        </th>
+                                        <th>
+                                            编号
+                                        </th>
+                                        <th>
+                                            地址
+                                        </th>
+                                        <th>
+                                            联系人
+                                        </th>
+                                        <th>
+                                            联系方式
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <{$o2ocds.name}>
+                                        </td>
+                                        <td>
+                                            <{if $statement.relation_type == 'store'}>
+                                                <{$o2ocds.sno}>
+                                            <{else}>
+                                                <{$o2ocds.eno}>
+                                            <{/if}>
+                                        </td>
+                                        <td>
+                                            <{$o2ocds.area|region}>
+                                            <{$o2ocds.addr}>
+                                        </td>
+                                        <td>
+                                            <{$o2ocds.director_name}>
+                                        </td>
+                                        <td>
+                                            <{$o2ocds.mobile}>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                         </div>
+                     </div>
+
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">收款人</label>
+                         <div class="col-md-3">
+                             <input type="text" name="statement[payee]" value="<{$statement.payee|default:$o2ocds.account_name}>" class="form-control">
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">收款银行</label>
+                         <div class="col-md-5">
+                             <input type="text" name="statement[payee_bank]" value="<{$statement.payee_bank|default:$o2ocds.bank}>" class="form-control">
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">收款账户</label>
+                         <div class="col-md-5">
+                             <input type="text" name="statement[payee_account]" value="<{$statement.payee_account|default:$o2ocds.account}>" class="form-control">
+                         </div>
+                     </div>
+                     <hr>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">付款人</label>
+                         <div class="col-md-3">
+                             <input type="text" name="statement[payer]" value="<{$statement.payer}>" class="form-control">
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">付款银行</label>
+                         <div class="col-md-5">
+                             <input type="text" name="statement[payer_bank]" value="<{$statement.payer_bank}>" class="form-control">
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">付款账户</label>
+                         <div class="col-md-5">
+                             <input type="text" name="statement[payer_account]" value="<{$statement.payer_account}>" class="form-control">
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">付款金额 <span class="required" aria-required="true">*</span></label>
+                         <div class="col-md-3">
+                             <input type="text" required="true"  name="statement[money]" value="<{$statement.money|cur}>" class="form-control">
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">支付平台流水号</label>
+                         <div class="col-md-5">
+                             <input type="text" name="statement[out_trade_no]" value="<{$statement.out_trade_no}>" class="form-control">
+                         </div>
+                     </div>
+
+                     <hr>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">备注</label>
+                         <div class="col-md-5">
+                             <{if $statement.memo}>
+                                 <div class="well">
+                                     <{$statement.memo}>
+                                 </div>
+                             <{/if}>
+                             <{input type="textarea" name="statement[memo]" placeholder="新备注" }>
+                         </div>
+                     </div>
+                     <hr>
+                     <{if $statement.status != 'succ'}>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">结算状态</label>
+                         <div class="col-md-2">
+                             <select class="form-control" name="statement[status]">
+                                 <option value="noconfirm" <{if $statement.status == 'noconfirm'}>selected<{/if}>>待确认</option>
+                                 <option value="ready" <{if $statement.status == 'ready'}>selected<{/if}>>待结算</option>
+                                 <option value="process" <{if $statement.status == 'process'}>selected<{/if}>>处理中</option>
+                                 <option value="succ" <{if $statement.status == 'succ'}>selected<{/if}>>已结算</option>
+                             </select>
+                         </div>
+                     </div>
+                     <{/if}>
+                 </div>
+                 <!-- end form body -->
+                <div class="form-actions">
+                    <div class="row">
+                            <div class="col-md-offset-2 col-md-9">
+                                <button type="submit" class="btn blue">保存</button>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="tab-pane" id="tab_2">
+        <{assign var=s_allprice value=0}>
+        <{foreach from=$achieve_list item=achieve}>
+            <div class="panel panel-default">
+                <div class="panel-heading clearfix">
+                    <h3 class="panel-title pull-left">
+                        #<small><{$achieve.achieve_id}></small>
+                        <small>,创建时间:<{$achieve.createtime|cdate}> ,
+                        最后更新时间:<{$achieve.last_modify|cdate}></small>
+                    </h3>
+                    <div class="pull-right">
+                        <{switch from=$achieve.status}>
+                        <{case value='succ'}>
+                        <span class="label label-success">已确认</span>
+                        <{case value='ready'}>
+                        <span class="label bg-blue">待结算</span>
+                        <{case value='process'}>
+                        <span class="label bg-yellow">待结算</span>
+                        <{case value='cancel'}>
+                        <span class="label label-success">已取消</span>
+                        <{/switch}>
+                    </div>
+                </div>
+                <table  class="table">
+                    <thead>
+                        <tr>
+                            <th>货号</th>
+                            <th>图片</th>
+                            <th>名称</th>
+                            <th>规格</th>
+                            <th>零售价</th>
+                            <th>成交价</th>
+                            <th>分佣比例</th>
+                            <th>单件分佣</th>
+                            <th>应结算数量</th>
+                            <th>小计</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <{assign var=s_totalprice value=0}>
+                        <{foreach from=$achieve.items item=item}>
+                        <tr>
+                            <td><{$item.bn}></td>
+                            <td>
+                                <img class='img-thumbnail' src="<{$item.image_id|storager:'xs'}>" width=40 />
+                            </td>
+                            <td><{$item.name}></td>
+                            <td><{$item.spec_info}></td>
+                            <td><{$item.price|cur}></td>
+                            <td><{$item.buy_price|cur}></td>
+                            <td><{$item.o2ocds[$achieve.type][0]}></td>
+                            <td><{$item.o2ocds_items[$achieve.type]/$item.nums|cur}></td>
+                            <td><{$item.nums}></td>
+                            <td><{$item.o2ocds_items[$achieve.type]|cur}></td>
+                        </tr>
+                        <{assign var=s_totalprice value=$s_totalprice+$item.o2ocds_items[$achieve.type]}>
+                        <{/foreach}>
+                    </tbody>
+                    <tfoot class="hidden">
+                        <tr>
+                            <td colspan="5">
+
+                            </td>
+                            <td colspan="2" class="text-right">
+                                合计：<{$s_totalprice|cur}>
+                                <{assign var=s_allprice value=$s_allprice+$s_totalprice}>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        <{/foreach}>
+        <div class="well">
+            <h3 class="text-right">
+                <small>应结算合计：</small><i class="fa fa-yen"></i> <{$s_allprice|cur}>
+            </h3>
+        </div>
+    </div>
+    <!-- tab_2 end -->
+</div>
+<script type="text/javascript">
+    $('#achieve_all_price_badge').text("<{$s_allprice|cur}>");
+</script>

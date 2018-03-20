@@ -1,0 +1,22 @@
+<site>
+    <module controller='mobile_list'>
+        <name>gblist</name>
+        <title>拼团列表</title>
+        <disable>false</disable>
+    </module>
+    <module controller='mobile_product'>
+        <name>gbitem</name>
+        <title>商品详细页</title>
+        <disable>false</disable>
+    </module>
+    <module controller='mobile_checkout'>
+        <name>gbcheckout</name>
+        <title>订单确认页</title>
+        <disable>false</disable>
+    </module>
+    <module controller='mobile_member'>
+        <name>gbmember</name>
+        <title>会员拼团中心</title>
+        <disable>false</disable>
+    </module>
+</site>

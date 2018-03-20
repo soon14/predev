@@ -1,0 +1,22 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="preselling_sales">预售单</permission>
+        <permission display='true' id="preselling_activity">预售活动</permission>
+        <permission display='true' id="preselling_order">预售单</permission>
+        <permission display='true' id="preselling_participate_member">参与用户列表</permission>
+    </permissions>
+
+    <workground icon="fa fa-hourglass-start" id="preselling.wrokground" name="预售" order="45">
+        <menugroup name="预售活动">
+            <menu action='add' controller='admin_index' display='false' order='10' permission='preselling_activity'>添加预售活动</menu>
+            <menu action='edit' controller='admin_index' display='false' order='11' permission='preselling_activity'>编辑预售活动</menu>
+            <menu action='index' controller='admin_index' display='true' order='20' permission='preselling_activity'>预售活动列表</menu>
+        </menugroup>
+        <menugroup name="预售单">
+            <menu action='index' controller='admin_order' display='true' order='21'  permission='preselling_order'>预售单列表</menu>
+        </menugroup>
+        <menugroup name="参与用户列表">
+            <menu action='index' controller='admin_member' display='true' order='30' permission='preselling_participate_member'>预售参与用户列表</menu>
+        </menugroup>
+    </workground>
+</desktop>

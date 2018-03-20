@@ -1,0 +1,19 @@
+<services>
+    <service id="b2c.goods.save">
+        <class >solr_service_savegoods</class>
+    </service>
+    <service id="b2c.goods.delete">
+        <class >solr_service_deletegoods</class>
+    </service>
+    <service id="b2c.product.delete">
+        <class >solr_service_deleteproduct</class>
+    </service>
+
+    <service id="b2c.goods.list.search">
+        <class >solr_service_searchgoods</class>
+    </service>
+
+    <service id="openapi.search" optname="openapi@搜索引擎">
+        <class>solr_openapi_search</class>
+    </service>
+</services>

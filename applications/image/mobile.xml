@@ -1,0 +1,8 @@
+<site>
+    <module controller='mobile_manage' id='image'>
+        <name>imagemanage</name>
+        <title>图片上传</title>
+        <disable>false</disable>
+    </module>
+
+</site>

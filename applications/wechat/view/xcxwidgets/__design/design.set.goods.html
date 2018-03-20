@@ -1,0 +1,928 @@
+<!-- 设计面板 - 选择商品多选 -->
+<template id="design-goods-multi-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-12">
+            <div class="goods-multi-select-box" :id="widget.name + '_select_goods_multi_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectGoods($event)">
+                        <i class="fa fa-list-alt"></i> 选择商品
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_goods_multi_selected_' + index">
+                            <tr v-for="(good, good_key) in goods">
+                                <td><a href="javascript:;" @click.stop="removeGood(good_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{good.name}}</td>
+                                <td>{{good.gid}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" :id="widget.name + '_select_goods_multi_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!-- 设计面板 - 选择分类 -->
+<template id="design-cat-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-12">
+            <div class="cat-select-box" :id="widget.name + '_select_cat_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectCat($event)">
+                        <i class="fa fa-list-alt"></i> 选择分类
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_cat_selected_' + index">
+                            <tr v-for="(cat, cat_key) in cats">
+                                <td><a href="javascript:;" @click.stop="removeCat(cat_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{cat.cat_name}}</td>
+                                <td>{{cat.cat_id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" :id="widget.name + '_select_cat_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!-- 设计面板 - 选择品牌 -->
+<template id="design-brand-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-12">
+            <div class="brand-select-box" :id="widget.name + '_select_brand_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectBrand($event)">
+                        <i class="fa fa-list-alt"></i> 选择品牌
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_brand_selected_' + index">
+                            <tr v-for="(brand, brand_key) in brands">
+                                <td><a href="javascript:;" @click.stop="removeBrand(brand_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{brand.brand_name}}</td>
+                                <td>{{brand.brand_id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" :id="widget.name + '_select_brand_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!-- 设计面板 - 选择标签 -->
+<template id="design-tag-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-12">
+            <div class="tag-select-box" :id="widget.name + '_select_tag_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectTag($event)">
+                        <i class="fa fa-list-alt"></i> 选择标签
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_tag_selected_' + index">
+                            <tr v-for="(tag, tag_key) in tags">
+                                <td><a href="javascript:;" @click.stop="removeTag(tag_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{tag.tag_name}}</td>
+                                <td>{{tag.tag_id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" :id="widget.name + '_select_tag_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!-- 设计面板 - 选择集合 -->
+<template id="design-collect-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-12">
+            <div class="collect-select-box" :id="widget.name + '_select_collect_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectCollect($event)">
+                        <i class="fa fa-list-alt"></i> 选择集合
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    商品数量
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_collect_selected_' + index">
+                            <tr v-for="(collect, collect_key) in collects">
+                                <td><a href="javascript:;" @click.stop="removeCollect(collect_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{collect.collection_name}}</td>
+                                <td>{{collect.goods_count}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" :id="widget.name + '_select_collect_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+// 设置产品筛选
+// 
+designStore.methods.setFilterGoodsId = function(vnode, goods_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.goods_id = goods_id;
+    // this.root.page.currWidgets[vnode.index].data.filter = {
+    //     goods_id: goods_id
+    // };
+};
+designStore.methods.removeFilterGoodsId = function(vnode, good_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.goods_id.splice(good_key, 1);
+};
+// 
+designStore.methods.setFilterCatId = function(vnode, cat_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.cat_id = cat_id;
+    // this.root.page.currWidgets[vnode.index].data.filter = {
+    //     cat_id: cat_id
+    // };
+};
+designStore.methods.removeFilterCatId = function(vnode, cat_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.cat_id.splice(cat_key, 1);
+};
+// 
+designStore.methods.setFilterBrandId = function(vnode, brand_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.brand_id = brand_id;
+    // this.root.page.currWidgets[vnode.index].data.filter = {
+    //     brand_id: brand_id
+    // };
+};
+designStore.methods.removeFilterBrandId = function(vnode, brand_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.brand_id.splice(brand_key, 1);
+};
+// 
+designStore.methods.setFilterTagName = function(vnode, tag_name) {
+    this.root.page.currWidgets[vnode.index].data.filter.tag_name = tag_name;
+    // this.root.page.currWidgets[vnode.index].data.filter = {
+    //     tag_name: tag_name
+    // };
+};
+designStore.methods.removeFilterTagId = function(vnode, tag_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.tag_name.splice(tag_key, 1);
+};
+// 
+designStore.methods.setFilterCollectId = function(vnode, collection_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.collection_id = collection_id;
+    // this.root.page.currWidgets[vnode.index].data.filter = {
+    //     collection_id: collection_id
+    // };
+};
+designStore.methods.removeFilterCollectId = function(vnode, collect_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.collection_id.splice(collect_key, 1);
+};
+
+// 设计面板 - 选择商品多选
+var design_goods_multi_selector = Vue.extend({
+    props: ['widget', 'index', 'goods_id'],
+    data: function() {
+        return {
+            goods: {}
+        };
+    },
+    template: '#design-goods-multi-selector',
+    methods: {
+        //
+        listGoods: function(goods_id) {
+            this.goods = {};
+            if (!goods_id) return;
+            var t = this;
+            axios.post(designStore.goodsRowRemoteUrl, {
+                    goods_id: goods_id
+                })
+                .then(function(response) {
+                    if (!response.data)
+                        return false;
+                    t.goods = response.data;
+                });
+        },
+        // 选择商品
+        onSelectGoods: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.goods-multi-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_goods_multi_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onGoodsSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load(designStore.goodsRemoteUrl, function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeGood: function(good_key) {
+            this.goods.splice(good_key, 1);
+            this.$parent.removeGood(good_key);
+        },
+        // 已改变
+        onGoodsSelected: function(selected) {
+            var goods_id = this.goods_id ? designStore.clone(this.goods_id) : [];
+            if(!(goods_id instanceof Array)){
+                var tmp = goods_id;
+                goods_id = [tmp];
+            }
+            this.goods = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!goods_id || goods_id.indexOf(selected[n].value) < 0) {
+                        goods_id.push(selected[n].value);
+                    }
+                }
+            }
+            this.listGoods(goods_id);
+            this.$parent.goodsChange(goods_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.goods_id) this.listGoods(this.goods_id);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-goods-multi-selector', design_goods_multi_selector);
+
+// 设计面板 - 选择分类
+var design_cat_selector = Vue.extend({
+    props: ['widget', 'index', 'cat_id'],
+    data: function() {
+        return {
+            cats: {}
+        };
+    },
+    template: '#design-cat-selector',
+    methods: {
+        //
+        listCats: function(cat_id) {
+            this.cats = {};
+            if (!cat_id) return;
+            var t = this;
+            axios.post(designStore.catRowRemoteUrl, {
+                    cat_id: cat_id
+                })
+                .then(function(response) {
+                    if (!response.data)
+                        return false;
+                    t.cats = response.data;
+                });
+        },
+        // 选择分类
+        onSelectCat: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.cat-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_cat_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onCatSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load(designStore.catRemoteUrl, function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeCat: function(cat_key) {
+            this.cats.splice(cat_key, 1);
+            this.$parent.removeCat(cat_key);
+        },
+        // 已改变
+        onCatSelected: function(selected) {
+            var cat_id = this.cat_id ? designStore.clone(this.cat_id) : [];
+            if(!(cat_id instanceof Array)){
+                var tmp = cat_id;
+                cat_id = [tmp];
+            }
+            this.cats = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!cat_id || cat_id.indexOf(selected[n].value) < 0) {
+                        cat_id.push(selected[n].value);
+                    }
+                }
+            }
+            this.listCats(cat_id);
+            this.$parent.catChange(cat_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.cat_id) this.listCats(this.cat_id);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-cat-selector', design_cat_selector);
+
+// 设计面板 - 选择品牌
+var design_brand_selector = Vue.extend({
+    props: ['widget', 'index', 'brand_id'],
+    data: function() {
+        return {
+            brands: {}
+        };
+    },
+    template: '#design-brand-selector',
+    methods: {
+        //
+        listBrands: function(brand_id) {
+            this.brands = {};
+            if (!brand_id) return;
+            var t = this;
+            axios.post(designStore.brandRowRemoteUrl, {
+                    brand_id: brand_id
+                })
+                .then(function(response) {
+                    if (!response.data)
+                        return false;
+                    t.brands = response.data;
+                });
+        },
+        // 选择商品
+        onSelectBrand: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.brand-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_brand_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onBrandSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load(designStore.brandRemoteUrl, function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeBrand: function(brand_key) {
+            this.brands.splice(brand_key, 1);
+            this.$parent.removeBrand(brand_key);
+        },
+        // 已改变
+        onBrandSelected: function(selected) {
+            var brand_id = this.brand_id ? designStore.clone(this.brand_id) : [];
+            if(!(brand_id instanceof Array)){
+                var tmp = brand_id;
+                brand_id = [tmp];
+            }
+            this.brands = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!brand_id || brand_id.indexOf(selected[n].value) < 0) {
+                        brand_id.push(selected[n].value);
+                    }
+                }
+            }
+            this.listBrands(brand_id);
+            this.$parent.brandChange(brand_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.brand_id) this.listBrands(this.brand_id);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-brand-selector', design_brand_selector);
+
+// 设计面板 - 选择标签
+var design_tag_selector = Vue.extend({
+    props: ['widget', 'index', 'tag_name'],
+    data: function() {
+        return {
+            tags: {}
+        };
+    },
+    template: '#design-tag-selector',
+    methods: {
+        //
+        listTag: function(tag_name) {
+            this.tag = {};
+            if (!tag_name) return;
+            var t = this;
+            axios.post(designStore.tagRowRemoteUrl, {
+                    tag_name: tag_name
+                })
+                .then(function(response) {
+                    if (!response.data)
+                        return false;
+                    t.tags = response.data;
+                });
+        },
+        // 选择商品
+        onSelectTag: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.tag-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_tag_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onTagSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load(designStore.tagRemoteUrl, function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeTag: function(tag_key) {
+            this.tags.splice(tag_key, 1);
+            this.$parent.removeTag(tag_key);
+        },
+        // 已改变
+        onTagSelected: function(selected) {
+            var tag_name = this.tag_name ? designStore.clone(this.tag_name) : [];
+            if(!(tag_name instanceof Array)){
+                var tmp = tag_name;
+                tag_name = [tmp];
+            }
+            this.tags = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!tag_name || tag_name.indexOf(selected[n].value) < 0) {
+                        tag_name.push(selected[n].value);
+                    }
+                }
+            }
+            this.listTag(tag_name);
+            this.$parent.tagChange(tag_name);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.tag_name) this.listTag(this.tag_name);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-tag-selector', design_tag_selector);
+
+// 设计面板 - 选择集合
+var design_collect_selector = Vue.extend({
+    props: ['widget', 'index', 'collection_id'],
+    data: function() {
+        return {
+            collects: {}
+        };
+    },
+    template: '#design-collect-selector',
+    methods: {
+        //
+        listCollects: function(collect_id) {
+            this.collects = {};
+            if (!collect_id) return;
+            var t = this;
+            axios.post(designStore.collectRowRemoteUrl, {
+                    collect_id: collect_id
+                })
+                .then(function(response) {
+                    if (!response.data)
+                        return false;
+                    t.collects = response.data;
+                });
+        },
+        // 选择商品
+        onSelectCollect: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.collect-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_collect_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onCollectSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load(designStore.goodsCollectRemoteUrl, function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeCollect: function(collect_key) {
+            this.collects.splice(collect_key, 1);
+            this.$parent.removeCollect(collect_key);
+        },
+        // 已改变
+        onCollectSelected: function(selected) {
+            var collection_id = this.collection_id ? designStore.clone(this.collection_id) : [];
+            if(!(collection_id instanceof Array)){
+                var tmp = collection_id;
+                collection_id = [tmp];
+            }
+            this.collects = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!collection_id || collection_id.indexOf(selected[n].value) < 0) {
+                        collection_id.push(selected[n].value);
+                    }
+                }
+            }
+            this.listCollects(collection_id);
+            this.$parent.collectChange(collection_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.collection_id) this.listCollects(this.collection_id);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-collect-selector', design_collect_selector);
+</script>

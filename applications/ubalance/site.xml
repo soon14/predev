@@ -1,0 +1,9 @@
+<site>
+    <module controller='site_member' >
+        <name>ubalance</name>
+    </module>
+    <module controller='site_balancepay' >
+        <name>balancepay</name>
+    </module>
+
+</site>

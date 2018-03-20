@@ -1,0 +1,19 @@
+<{foreach from=$store_list key=k item=storeInfo}>
+<tr>
+    <td>
+        <button class="btn btn-xs default"  onclick="$(this).closest('tr').remove();" type="button">
+            <i class="fa fa-trash-o"></i>
+        </button>
+    </td>
+    <td>
+        <input type="hidden" name="store[]" value="<{$storeInfo.store_id}>">
+        <{$storeInfo.store_name}>
+    </td>
+    <td>
+        <{$storeInfo.store_bn}>
+    </td>
+    <td>
+        <{$storeInfo.store_concat}>
+    </td>
+</tr>
+<{/foreach}>

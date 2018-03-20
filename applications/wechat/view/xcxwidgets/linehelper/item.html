@@ -1,0 +1,15 @@
+<!-- 辅助线条 -->
+<template id="widget-linehelper">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-linehelper :widget="widget" :index="index"></widget-child-linehelper>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_linehelper = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-linehelper',
+    components: {
+        'widget-child-linehelper': widget_child_linehelper
+    }
+});
+</script>

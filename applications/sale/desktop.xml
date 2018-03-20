@@ -1,0 +1,14 @@
+<desktop>
+    <permissions>
+        <!--商品-->
+        <permission display='true' id="sale">商品预约</permission>
+    </permissions>
+    <workground icon="icon-diamond" id="b2c.wrokground.sale" name="营销" order="10">
+        <menugroup name="商品预约">
+            <menu action='add' controller='admin_index' display='false' order='10' permission='sale'>添加预约</menu>
+            <menu action='edit' controller='admin_index' display='false' order='11' permission='sale'>编辑预约</menu>
+            <menu action='index' controller='admin_index' display='true' order='20' permission='sale'>预约活动列表</menu>
+            <menu action='index' controller='admin_reserve' display='false' order='20' permission='sale'>预约列表</menu>
+        </menugroup>
+    </workground>
+</desktop>

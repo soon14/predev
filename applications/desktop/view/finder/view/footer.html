@@ -1,0 +1,548 @@
+<form id="finder_form_<{$name}>" action='index.php?<{$query}>' method='post'></form>
+<style media="screen">
+	#finder_body_<{$name}> .table-scrollable{
+		overflow-y: auto;
+	}
+	#finder_body_<{$name}> .table-scrollable td,#finder_body_<{$name}> .table-scrollable th{
+		white-space: nowrap;
+	}
+	#finder_body_<{$name}> .detail-row td{
+		white-space: normal;
+	}
+	#finder_body_<{$name}> .detail-row td.row-container{
+		padding: 0;
+	}
+	#finder_body_<{$name}> .detail-row td .row-wrap{
+		position: relative;
+		z-index: 2;
+		margin-top: -5px;
+		padding:10px;
+		border-width: 5px;
+		border-style: solid;
+		background-color: #fff!important;
+	}
+	#finder_body_<{$name}> tbody tr.active td{
+		background-color:#fcf8e3;
+		color:rgb(51, 51, 51);
+	}
+
+	#finder_body_<{$name}>  thead .order-able{
+		cursor:pointer;
+	}
+	#finder_body_<{$name}> .detail-row td{
+		background:#fff;
+	}
+	#finder_body_<{$name}> td .btn-group .btn{
+		margin-right: 0;
+	}
+	#finder_body_<{$name}> .finder-pager .pagination li{
+		float: left;
+	}
+	#finder_body_<{$name}> .finder-pager .pagination .form-control{
+		display: inline;
+		float: left;
+		width: 70px!important;
+		text-align: center;
+		height: auto;
+		padding: 5px 0;
+		border-left: none;
+		border-right: none;
+	}
+	<{if $object_select_model}>
+	#finder_body_<{$name}> .table tbody td{
+		padding:4px 8px;
+		cursor:pointer;
+	}
+	<{/if}>
+</style>
+
+<script charset="utf-8">
+!function(){
+
+		var finder = {
+			title:$('#finder_title_<{$name}>'),
+			body:$('#finder_body_<{$name}>'),
+			actions:$('#finder_actions_<{$name}>'),
+			search:$('#finder_search_<{$name}>'),
+			form:$('#finder_form_<{$name}>')
+		};
+
+
+		// var finder_name = '<{$name}>';
+		// if(!('FINDER_CACHE' in window))
+		// window['FINDER_CACHE'] = {};
+
+		var _fc_set = function(k,v){
+			return finder.body.data(k,v);
+			//  window['FINDER_CACHE'][finder_name][k] = v;
+			//  return window['FINDER_CACHE'][finder_name][k];
+		}
+		var _fc_get = function(k){
+			return finder.body.data(k);
+			//  if(k in window['FINDER_CACHE'][finder_name])
+			//  return window['FINDER_CACHE'][finder_name][k];
+			//  return false;
+		}
+		var _fc_remove = function(k){
+			return finder.body.removeData(k);
+			// if(k in window['FINDER_CACHE'][finder_name])
+			//  delete(window['FINDER_CACHE'][finder_name][k]);
+		}
+
+		//同步数据统计到头部
+		var sync_title = (function(){
+				finder['title'].find('small').html(finder['body'].find('.col-md-5 div').html());
+				return arguments.callee;
+		})();
+		//监听table滚动
+		var table_scroll_listener_timer = 0;
+		var table_scroll_listener = function(e){
+			clearTimeout(table_scroll_listener_timer);
+			table_scroll_listener_timer = setTimeout(function(){
+				//监听执行开始
+				//聚焦detail-row
+				finder['body'].find('tr.detail-row:not(".hidden") .row-wrap').animate({'margin-left':finder['body'].find('.table-scrollable').scrollLeft()});
+
+			},100);
+		};
+
+	 	//关闭筛选
+		finder['actions'].find('.filter-cancel').on('click',function(){
+			$('#finder_filter_modal_<{$name}> form').get(0).reset();
+			window['update_finder_<{$name}>']();
+		});
+		//排序
+		finder['body'].on('click','thead .order-able',function(){
+
+			var order_by = $(this).attr('data-key');
+			var order_type = order_type = $(this).find('.fa-sort-desc').length?'asc':'desc';
+			if($(this).find('.fa-sort-asc').length){
+				var clean_order = true;
+			}
+			if(clean_order){
+				//_fc_remove('current_orderby');
+				_fc_set('current_orderby',order_by+'::'+'normal');
+			}else{
+				_fc_set('current_orderby',order_by+'::'+order_type);
+			}
+			window['update_finder_<{$name}>']();
+		});
+
+		//数据项详情
+		var detail_show_log = {};
+		finder['body'].on('click','tbody td:has([data-detail])',function(){
+
+				var handle = $(this).find('[data-detail]'),
+					tr = $(handle).closest('tr'),
+					item_id = tr.attr('item-id'),
+					detail_row =tr.next('tr.detail-row');
+
+				if(!detail_row.length){
+					tr.addClass('bg-grey-steel');
+					detail_row = $('<tr class="detail-row"><td class="row-container" colspan='+tr.find('td').length+'><div class="row-wrap bg-grey-steel"><i class="fa fa-spinner fa-spin"></i></div></td></tr>');
+					detail_row.insertAfter(tr);
+					$(handle).removeClass('fa-plus-square').addClass('fa-minus-square');
+					detail_row.find('.row-wrap').load($(handle).attr('data-detail')+'&finder_name=<{$name}>').width(finder['body'].width()-32);
+					detail_show_log[item_id] = true;
+				}else{
+					if($(handle).hasClass('fa-minus-square')){
+						detail_row.addClass('hidden');
+						tr.removeClass('bg-grey-steel');
+						detail_show_log[item_id] = false;
+						$(handle).removeClass('fa-minus-square').addClass('fa-plus-square');
+					}else{
+						detail_row.removeClass('hidden');
+						tr.addClass('bg-grey-steel');
+						detail_show_log[item_id] = true;
+						$(handle).removeClass('fa-plus-square').addClass('fa-minus-square');
+					}
+				}
+				table_scroll_listener();
+		});
+		//detail-row 滚屏
+		finder['body'].on('resize',function(){
+			$(this).find('.row-wrap').width(finder['body'].width()-32);
+		});
+
+		finder['body'].find('.table-scrollable').scroll(table_scroll_listener);
+		//筛选项label
+		$('#finder_filter_label_<{$name}>').on('click','.remove',function(){
+				var selector = $(this).attr('data-input-selector');
+				$(selector).val('');
+				window['update_finder_<{$name}>']();
+		});
+
+		//筛选和搜索的提示切换
+		var toggle_filter_tip = function(absolute_params){
+			var _get_label = function(n){
+					var el = $(n.rel);
+					if(el.attr('data-label')){
+						return el.attr('data-label');
+					}else{
+						return el.closest('.filter-item').find('dt').text();
+					}
+
+			};
+			var _get_label_value = function(n){
+				 	var el = n.rel;
+
+					switch (el.tagName.toLowerCase()) {
+						case 'select':
+						return el.options[el.selectedIndex].label;
+						default:
+						//地区输入兼容
+						if(n.value.match(/mainland:([\s\S]+):([\d]+)/)){
+							return n.value.match(/mainland:([\s\S]+):([\d]+)/)[1];
+						}else{
+							return n.value;
+						}
+
+					}
+			};
+			var show = absolute_params.length;
+			$('#finder_filter_label_<{$name}>').empty();
+			if(show){
+				finder['actions'].find('.filter-handle').removeClass('default').addClass('blue-madison');
+				finder['actions'].find('.filter-handle span').text('编辑筛选项');
+				finder['actions'].find('.filter-tip').removeClass('hide');
+				finder['actions'].find('.finder-search').addClass('hide');
+				finder['actions'].find('.finder-search .search-input').val('');
+				finder['actions'].find('.finder-search .fa-times-circle').addClass('hide');
+				$.each(absolute_params,function(i,n){
+					var _selector = '#finder_filter_modal_<{$name}> form [name=\''+n.name+'\']';
+					var obj = {label:_get_label(n)+'：'+_get_label_value(n),selector:_selector};
+					var html = substitute($('#finder_filter_label_tpl_<{$name}>').val(),obj);
+					$('#finder_filter_label_<{$name}>').append(html);
+				});
+				$('#finder_filter_label_<{$name}>').removeClass('hide');
+			}else{
+				finder['actions'].find('.filter-handle').removeClass('blue-madison').addClass('default');
+				finder['actions'].find('.filter-handle span').text('筛选');
+				finder['actions'].find('.filter-tip').addClass('hide');
+				finder['actions'].find('.finder-search').removeClass('hide');
+				$('#finder_filter_label_<{$name}>').addClass('hide');
+			}
+
+			return show;
+		}
+
+
+		//统一刷新
+		window['update_finder_<{$name}>'] = function(params_obj){
+
+			var action = finder['form'].attr('action');
+			var page = _fc_get('current_page');
+			var orderby = _fc_get('current_orderby');
+			if(page){
+				action+="&page="+page;
+			}
+			if(orderby){
+				orderby = orderby.split('::');
+				action+='&_finder[orderBy]='+orderby[0]+'&_finder[orderType]='+orderby[1];
+			}
+
+			//filter merge
+			var filter_els = $('#finder_filter_modal_<{$name}>')
+			.find('select,:radio,:checkbox,textarea,input');
+			var filter_params = filter_els.serializeArray();
+			var absolute_filter_params = (function(){
+				var _return = [];
+				$.each(filter_els,function(i,el){
+					if(!!el.value && !!el.name){
+						_return.push({
+							'name':el.name,
+							'value':el.value,
+							'rel':el
+						});
+					}
+				});
+				return _return;
+			})();
+
+			toggle_filter_tip(absolute_filter_params);
+			if(filter_params.length){
+				finder['form'].empty();
+				if(typeof params_obj!='object')params_obj = [];
+				params_obj = filter_params.concat(params_obj);
+			}
+
+			if(params_obj && params_obj.length){
+				$.each(params_obj,function(i,kv){
+					if(!kv.value){
+						finder['form'].find('input[name="'+kv.name+'"]').remove();
+					}else{
+						var input_hidden = finder['form'].find('input[name="'+kv.name+'"]');
+						if(!input_hidden.length){
+								input_hidden = $('<input type="hidden"/>');
+								input_hidden.attr(kv).appendTo(finder['form']);
+						}else{
+								input_hidden.val(kv.value);
+						}
+					}
+
+				});
+			}
+			var post_params = finder['form'].serialize();
+
+			load_page(action+' #finder_body_<{$name}> .body-content',
+				finder['body'],post_params,
+				function(){
+					//同步头信息
+					sync_title();
+					//展开已打开的详细
+					finder.body.find('tr[item-id]').filter(function(idx,item){
+						return detail_show_log[$(item).attr('item-id')];
+					}).find('td:has([data-detail])').trigger('click');
+					//重新绑定table 滚动监听
+					finder.body.find('.table-scrollable').scroll(table_scroll_listener);
+				});
+
+		};
+		//窗口关闭
+		$('#finder_actions_modal_<{$name}>,#finder_column_setting_modal_<{$name}>').on('hidden.bs.modal',function(){
+			window['update_finder_<{$name}>']();
+		});
+		//plismit
+		$('#finder_title_<{$name}> .dropdown-menu li[data-limit]').on('click',function(){
+			$('#finder_title_<{$name}> .dropdown-menu li[data-limit]').removeClass('active');
+			$(this).addClass('active');
+			$.post(finder['form'].attr('action'),{plimit:$(this).attr('data-limit')},function(){
+				window['update_finder_<{$name}>']();
+			});
+		});
+		//确认筛选
+		$('#finder_filter_modal_<{$name}>').on('click','.modal-footer .b-submit',function(e){
+				$('#finder_filter_modal_<{$name}>').modal('hide');
+				window['update_finder_<{$name}>']();
+		});
+
+		//单选
+
+		finder['body'].on('change','tbody tr :checkbox',function(e){
+				if(e)e.stopPropagation();
+				var checked = $(this).is(':checked');
+				$(this).closest('tr')[checked?'addClass':'removeClass']("active");
+				if(finder['body'].find('tbody tr :checked').length>0 &&  finder['body'].find('tbody tr :checked').length == finder['body'].find('tbody tr :checkbox').length){
+					finder['body'].find('thead :checkbox').prop('checked',true);
+				}else{
+					finder['body'].find('thead :checkbox').prop('checked',false);
+				}
+		});
+
+		finder['body'].on('change','tbody tr :radio',function(e){
+				if(e)e.stopPropagation();
+				var checked = $(this).is(':checked');
+				$(this).closest('tbody').find('tr').removeClass('active');
+				$(this).closest('tr')[checked?'addClass':'removeClass']("active");
+		});
+
+
+		//全选
+		finder['body'].on('change','thead :checkbox',function(e){
+				if(e)e.stopPropagation();
+				var set = $(this).attr('data-set'),checked = $(this).is(':checked');
+				finder['body'].find('tbody tr :checkbox').prop('checked',checked).trigger('change');
+		});
+		//checkbox 滑选
+		var first_mousedown_checkbox = false;
+		finder['body'].on('mousedown',function(e){
+			$(this).data('event_state',e.type);
+			first_mousedown_checkbox = false;
+		});
+		finder['body'].on('mouseup',function(e){
+			$(this).removeData('event_state');
+		});
+		finder['body'].on('mouseleave',function(e){
+			$(this).removeData('event_state');
+		});
+		finder['body'].on('mousemove','tbody tr .checkbox-col',function(e){
+			if(finder['body'].data('event_state')!='mousedown')return;
+			var target = $(this).find(':checkbox');
+			if($(target).attr('disabled'))return;
+			if(!first_mousedown_checkbox){
+				first_mousedown_checkbox = $(target).attr('checked',!$(target).is(':checked')).trigger('change');
+				return;
+			}
+			$(target).attr('checked',$(first_mousedown_checkbox).is(':checked')).trigger('change');
+			return;
+		});
+
+
+		//工具栏按钮
+		finder['actions'].find('a[data-submit]').click(function(e){
+			e.stopPropagation();
+			var checked = finder['body'].find('tbody tr :checked');
+			var query = checked.serializeArray();
+
+			if(!checked.length){
+				toastr.warning('请先选择需要操作的数据项','操作提醒');
+				return false;
+			}
+
+			if($(this).attr('data-confirm') && !confirm($(this).attr('data-confirm')))return;
+
+			BlockLoading({
+					target: finder['body'],
+					animate: true
+				});
+			var action = $(this).attr('data-submit');
+			var target_modal = $(this).attr('data-target');
+
+
+			if(!target_modal){
+				 $.post(action,query,function(re){
+
+					UnblockLoading(finder['body']);
+					try{re = $.parseJSON(re)}catch(e){}
+					if(typeof re === 'object' && re.error){
+						return Messagebox.error(re.error,'出错了');
+					}
+					Messagebox.success('执行成功','成功');
+					window['update_finder_<{$name}>']();
+				});
+				return false;
+			}
+
+			if(target_modal == '_ACTION_MODAL_'){
+				target_modal = '#finder_actions_modal_<{$name}>';
+			}
+			var load_target = $(target_modal).find('.modal-content');
+
+			load_target.load(action,query,function(){
+					UnblockLoading(finder['body']);
+					$(target_modal).modal();
+			});
+
+		});
+		//工具栏按钮，当前结果操作
+		finder['actions'].find('a[data-submit-result]').click(function(e){
+			e.stopPropagation();
+			if(!finder['body'].find('tbody tr').length){
+				toastr.warning('没有数据可导出','操作提醒');
+				return false;
+			}
+			var filter_params = finder['body'].find('.body-content').attr('data-filter-params');
+			if($(this).attr('data-confirm') && !confirm($(this).attr('data-confirm')))return;
+			var query = $.parseJSON(filter_params);
+			BlockLoading({
+					target: finder['body'],
+					animate: true
+				});
+			var action = $(this).attr('data-submit-result');
+			var target_modal = $(this).attr('data-target');
+			if(!target_modal){
+				 $.post(action,query,function(re){
+
+					UnblockLoading(finder['body']);
+					try{re = $.parseJSON(re)}catch(e){}
+					if(typeof re === 'object' && re.error){
+						return Messagebox.error(re.error,'出错了');
+					}
+					Messagebox.success('执行成功','成功');
+					window['update_finder_<{$name}>']();
+				});
+				return false;
+			}
+
+			if(target_modal == '_ACTION_MODAL_'){
+				target_modal = '#finder_actions_modal_<{$name}>';
+			}
+			var load_target = $(target_modal).find('.modal-content');
+
+			load_target.load(action,query,function(){
+					UnblockLoading(finder['body']);
+					$(target_modal).modal();
+			});
+
+		});
+
+		//搜索项切换
+		finder['search'].on('click','.dropdown-menu li',function(){
+			var search_input = finder['search'].find('.search-input'),
+				search_label = finder['search'].find('.search-label span');
+			finder['form'].find('input[name="'+search_input.attr('name')+'"]').remove();
+			search_input.val('');
+			search_input.attr('name',$(this).attr('data-key'));
+			$(this).parent('ul').find('li').removeClass('active');
+			$(this).addClass('active');
+			search_label.text($(this).text());
+			if('localStorage' in window){
+				//保持搜索习惯到客户端
+				localStorage['desktop_finder_<{$name}>_search_cache'] = $(this).attr('data-key');
+			}
+		});
+		if('localStorage' in window && localStorage['desktop_finder_<{$name}>_search_cache']){
+			var data_key = localStorage['desktop_finder_<{$name}>_search_cache'];
+			finder['search'].find('.dropdown-menu li[data-key="'+data_key+'"]').click();//设置默认
+		}else{
+			finder['search'].find('.dropdown-menu li.active').click();//设置默认
+		}
+
+		//提交搜索
+		finder['search'].find('.search-submit').on('click',function(){
+			if($.trim($('#finder_search_<{$name}> .search-input').val()) == ''){
+				//return	toastr.warning('请输入搜索内容','操作提醒');
+				finder['search'].find('.fa-times-circle').addClass('hide');
+			}else{
+				finder['search'].find('.fa-times-circle').removeClass('hide');
+			}
+			window['update_finder_<{$name}>'](finder['search'].find('.search-input').serializeArray());
+
+		});
+		//回车搜索
+		finder['search'].find('.search-input').keyup(function(e){
+			if(e.keyCode==13)$('#finder_search_<{$name}> .search-submit').click();
+		});
+		//取消搜索
+		finder['search'].find('.fa-times-circle').click(function(e){
+			finder['search'].find('.search-input').val('');
+			finder['search'].find('.search-submit').click();
+			$(this).addClass('hide');
+		});
+		//翻页
+		finder['body'].on('click','.finder-pager a[data-go]',function(e){
+				e.stopPropagation();
+				_fc_set('current_page',$(this).attr('data-go'));
+				window['update_finder_<{$name}>']();
+		});
+		finder['body'].on('focus','.finder-pager .page-current-val',function(e){
+				$(this).select();
+		});
+		finder['body'].on('blur','.finder-pager .page-current-val',function(e){
+				var ipt = $(this),page_total = ipt.attr('data-total'),page_current = ipt.attr('data-current');
+				ipt.val(parseInt($.trim(ipt.val())));
+				if(isNaN(ipt.val())){
+					ipt.val(page_current);
+				}
+				if(ipt.val()>page_total){
+					ipt.val(page_total);
+				}
+				if(page_current == ipt.val()){
+					return true;
+				}
+				_fc_set('current_page',ipt.val());
+				window['update_finder_<{$name}>']();
+		});
+		finder['body'].on('keydown','.finder-pager .page-current-val',function(e){
+				if(e.keyCode == 13){
+					$(this).trigger('blur',e);
+				}
+		});
+
+
+
+
+
+		// if((finder_name in window['FINDER_CACHE'])){
+		// 	window['update_finder_<{$name}>']();
+		// }else{
+		// 	window['FINDER_CACHE'][finder_name] = {};
+		// }
+
+}();
+
+
+
+
+
+</script>

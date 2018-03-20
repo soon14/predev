@@ -1,0 +1,118 @@
+<div class="table-toolbar">
+    <div class="btn-group">
+        <a class="btn green" data-target="#member_module_edit" data-toggle="modal" label="添加组件" icon="fa-plus" href="index.php?app=universalform&ctl=admin_form&act=module_page&p[0]=<{$form.form_id}>">
+            添加组件&nbsp;<i class="fa fa-plus"></i>
+        </a>
+    </div>
+</div>
+
+<div id="form_module" class="table-scrollable">
+        <table class="table table-hover">
+            <thead>
+            <th width="10%">
+                启用
+            </th>
+            <th width="50%">
+                名称类型
+            </th>
+            <th>
+                排序
+            </th>
+            <th>
+                操作
+            </th>
+            </thead>
+            <tbody>
+            <{foreach from=$form.modules item=item name="item" key='row'}>
+            <tr>
+                <td>
+                    <{if $item.show == "false"}>
+                    <a class="text-default" href="index.php?app=universalform&ctl=admin_form&act=show_module&p[0]=<{$item.module_id}>&p[1]=<{$form.form_id}>" target="_command"><i class="fa fa-square-o"></i> 已禁用</a>
+                    <{else}>
+                    <a class="text-success" href="index.php?app=universalform&ctl=admin_form&act=hidden_module&p[0]=<{$item.module_id}>&p[1]=<{$form.form_id}>" target="_command"><i class="fa fa-check-square"></i> 已启用</a>
+                    <{/if}>
+                </td>
+                <td>
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            <{if $item.required eq 'true'}><em>*</em> <{/if}><{$item.module_name}>
+						</span>
+                        <{if $item.type =='date'}>
+                        <input value='日期选择器' class="form-control" type='text' />
+                        <{/if}>
+                        <{if $item.type =='text'}>
+                        <{input class="inputstyle" name='' }>
+                        <{/if}>
+                        <{if $item.type =='region'}>
+                        <select class="form-control"><option>地区选择项</option></select>
+                        <{/if}>
+                        <{if $item.type =='image'}>
+                        <input type="file">
+                        <{/if}>
+                        <{if $item.type =='images'}>
+                        <input type="file" style="width: 446px" id="ptlFile" contenteditable="false"/>
+                        <{/if}>
+                        <{if $item.type =='select'}>
+                        <select class="form-control" name='$row'>
+                            <{foreach from=$item.option item=option name="option"  }>
+                            <option value='<{$option}>'><{$option}></option>
+                            <{/foreach}>
+                        </select>
+                        <{/if}>
+                        <{if $item.type =='checkbox'}>
+                        <{foreach from=$item.option item=checkbox name="checkbox" }>
+                            <input type='checkbox' name="<{$checkbox.id}>[]"><label><{$checkbox}></label>
+                        <{/foreach}>
+                        <{/if}>
+                    </div>
+                </td>
+                <td>
+                    <input class="form-control input-sm m_order" type="text" size="3" name="m_order" data-moduleid="<{$item.module_id}>" value="<{$item.m_order}>">
+                </td>
+                <td>
+                    <a href="index.php?app=universalform&ctl=admin_form&act=module_edit&p[0]=<{$item.module_id}>" class="btn btn-default btn-sm" data-target="#member_module_edit" data-toggle="modal"><i class="fa fa-edit"></i> 编辑</a>
+                    <button type="button" data-action="index.php?app=universalform&ctl=admin_form&act=remove&p[0]=<{$item.module_id}>" class="btn btn-default btn-sm delete"> <i class="fa fa-trash"></i> 删除</button>
+                </td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+<script charset="utf-8">
+    !function(){
+        var update_order_timer = 0;
+        //排序
+        $('#form_module').on('blur','input.m_order',function(){
+            var edit_input = $(this),current_val = edit_input.val();
+            if(current_val == edit_input.data('v'))return;
+            var post_data = {
+                'module_id':edit_input.attr('data-moduleid'),
+            };
+            post_data[edit_input.prop('name')] = edit_input.val();
+            $.post("/index.php/console/index.php?app=universalform&ctl=admin_form&act=quick_update",post_data,function(re){
+                if(re.success){
+                    edit_input.data('v',edit_input.val());
+                    edit_input.val('已修改').fadeOut(function(){
+                        edit_input.val(edit_input.data('v'));
+                    }).fadeIn();
+                }
+            },'json');
+        });
+        //删除
+        $('#form_module').on('click','button.delete',function(e){
+            e.stopPropagation();
+            if(!confirm('确认？'))return;
+            var tr = $(this).closest('tr');
+            var action = $(this).attr('data-action');
+            $.getJSON(action,function(re){
+                jsonCommond(re);
+                tr.fadeOut('fast',function(){
+                    tr.remove();
+                });
+            });
+        });
+
+    }();
+
+
+</script>

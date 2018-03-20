@@ -1,0 +1,15 @@
+<!-- 辅助空白 -->
+<template id="widget-videos">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-videos :widget="widget" :index="index"></widget-child-videos>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_videos = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-videos',
+    components: {
+        'widget-child-videos': widget_child_videos
+    }
+});
+</script>

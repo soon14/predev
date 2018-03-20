@@ -1,0 +1,60 @@
+<div class="content">
+    <ul class="table-view">
+    <{if $bill.status == 'succ' || $bill.status == 'progress'}>
+    <li class="table-view-cell media text-success">
+        <span class="fa fa-check media-object pull-left"></span>
+        <div class="media-body">
+            <{if $bill.pay_object == 'order'}>订单<{/if}>支付成功
+            <p>
+                <{$bill.last_modify|cdate}>
+            </p>
+        </div>
+    </li>
+    <li class="table-view-cell">
+        成功支付金额
+        <p class="pull-right text-danger">
+            <small>￥</small><strong><{$bill.money|cur}></strong>
+        </p>
+    </li>
+    <{else}>
+    <li class="table-view-cell media text-danger">
+            <span class="fa fa-times media-object pull-left"></span>
+            <div class="media-body">
+                <{if $bill.pay_object == 'order'}>订单<{/if}>支付失败
+                <p>
+                    <{$bill.last_modify|cdate}>
+                </p>
+            </div>
+    </li>
+    <{/if}>
+    <{if $bill.pay_object == 'order'}>
+    <li class="table-view-divider"></li>
+    <li class="table-view-cell">
+        订单号
+        <p class="pull-right">
+            <{$order.order_id}>
+        </p>
+    </li>
+    <li class="table-view-cell">
+        订单应付
+        <p class="pull-right">
+            <small>￥</small><strong><{$order.order_total|cur}></strong>
+        </p>
+    </li>
+    <li class="table-view-cell">
+        收货人
+        <p class="pull-right">
+            <{$order.consignee.name}>,<{$order.consignee.mobile}>,
+            <{$order.consignee.area|region}><{$order.consignee.addr}>
+        </p>
+    </li>
+    <{/if}>
+    </ul>
+    <div class="content-padded">
+        <{if $bill.pay_object == 'order'}>
+            <a class="btn btn-block btn-outlined" href="<{link app=b2c ctl=mobile_order act=detail args0=$order.order_id}>">查看订单详情</a>
+        <{else}>
+            <a class="btn btn-block btn-outlined" href="<{link app=b2c ctl=mobile_order act=detail args0=$order.order_id}>">返回会员中心</a>
+        <{/if}>
+    </div>
+</div>

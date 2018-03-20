@@ -1,0 +1,114 @@
+<div class="product-spec-options" id="J_package_tab">
+    <dl class="dl-horizontal">
+        <dt>套餐</dt>
+        <dd>
+            <ul class="list-inline ps-opt-sel">
+            <{foreach from=$package item=item key=key}>
+                <li>
+                <a href="javascript:;" data-package-id="<{$key}>" data-fastbuy-url="<{link app=package ctl=site_package act=fastbuy args0=$item.id args1=$data_detail.product.product_id args2=1}>" data-url="<{link app=package ctl=site_package act=add args0=$item.id args1=$data_detail.product.product_id args2=1}>">
+                <{$item.name}>
+                <div>￥<{$item.total_package_price|cur}>省<{$item.total_price - $item.total_package_price|cur}>元</div>
+                </a>
+                </li>
+            <{/foreach}>
+            </ul>
+        </dd>
+    </dl>
+</div>
+<div class="row" id="J_package_panel">
+<{foreach from=$package item=item key=key}>
+    <div id="J_package_<{$key}>" class="J-package hide">
+        <{foreach from=$item.package_goods item=package_goods key=goods_id name=package_goods}>
+        <div class="col-md-3 J-package-goods">
+            <a href="<{link app=b2c ctl=site_product act=index arg0=$package_goods.product|key}>" class="thumbnail">
+                <img src="<{$package_goods.image_default_id|storager:'s'}>" alt="<{$package_goods.name}>" class="img-responsive J-package-goods-img"/>
+            </a>
+            <p><{$package_goods.name}></p>
+            <div class="spec-list">
+                <ul class="list-inline">
+                <{foreach from=$package_goods.product item=product key=product_id}>
+                    <{if $product.image_id}>
+                    <li data-toggle="tooltip" data-placement="top" title="<{$product.spec_info}>">
+                        <a href="javascript:;" data-src="<{$product.image_id|storager:'s'}>" class="J-package-goods-spec thumbnail" style="margin-bottom:3px;" data-product="<{$product.goods_id}>s<{$product.product_id}>">
+                        <img width="17px" src="<{$product.image_id|storager:'s'}>" alt="<{$product.name}>" />
+                        </a>
+                    </li>
+                    <{/if}>
+                <{/foreach}>
+                </ul>
+            </div>
+        </div>
+        <{if $env.foreach.package_goods.iteration%4 == 0}>
+        <div class="clearfix"></div>
+        <{/if}>
+        <{/foreach}>
+    </div>
+<{/foreach}>
+</div>
+<div class="product-page-cart">
+    <div class="product-quantity input-group" style="width:150px;" data-minibuy="<{$data_detail.minibuy}>">
+        <div class="spinner-buttons input-group-btn">
+            <button type="button" class="btn btn-default">
+            -
+            </button>
+        </div>
+        <input type="text" class="spinner-input form-control"  value=1>
+        <div class="spinner-buttons input-group-btn">
+            <button type="button" class="btn btn-default">
+            +
+            </button>
+        </div>
+    </div>
+    <hr>
+    <a class="btn btn-danger btn-lg btn-buy" href="<{link app=b2c ctl=site_cart act=add args0=$data_detail.product.product_id args1=1}>" id="J_package_buy" data-url="<{link app=b2c ctl=site_cart act=add args0=$data_detail.product.product_id args1=1}>">加入购物车</a>
+    <a class="btn btn-success btn-lg btn-buy" href="<{link app=b2c ctl=site_cart act=fastbuy args0=$data_detail.product.product_id args1=1}>" id="J_package_fastbuy" data-url="<{link app=b2c ctl=site_cart act=fastbuy args0=$data_detail.product.product_id args1=1}>">立即购买</a>
+    <a class="btn btn-link btn-lg favorite-button" href='<{link app=b2c ctl=site_member act=favorite args0=add args1=$data_detail.goods_id}>'>
+        <i class="glyphicon glyphicon-heart-empty"></i>
+        <small>Favorite<em></em></small>
+    </a>
+</div>
+<script>
+(function(){
+    var package_tab = $('#J_package_tab'),
+        package_panel = $('#J_package_panel'),
+        buy_btn = $('#J_package_buy'),
+        buy_fast = $('#J_package_fastbuy'),
+        fastbuy_btn = $('#J_package_fastbuy');
+    $('#J_package_tab a').on('click',function(e){
+        e.preventDefault();
+        var $el = $(this),
+            package_id = $el.data('package-id'),
+            packages = $('#J_package_'+package_id);
+        if($el.parent('li').hasClass('current')){
+            $el.parent('li').removeClass('current').find('i').remove();
+            buy_btn.attr('href',buy_btn.data('url'));
+            buy_fast.attr('href',buy_fast.data('url'));
+            packages.addClass('hide');
+            return true;
+        }
+        package_tab.find('.current').removeClass('current').find('i').remove();
+        package_panel.find('.J-package').addClass('hide');
+        buy_btn.attr('href',$el.data('url'));
+        buy_fast.attr('href',$el.data('fastbuy-url'));
+        $el.parent('li').addClass('current').append('<i class="check glyphicon glyphicon-ok-sign"></i>');
+        packages.removeClass('hide');
+    });
+    $('[data-toggle="tooltip"]').tooltip();
+    $('.J-package-goods-spec').on('click',function(e){
+        e.preventDefault();
+        var $el = $(this),
+            package_goods = $el.parents('.J-package-goods'),
+            tmpId = [],
+            url = buy_btn.attr('href').split('?'),
+            fast_url = buy_fast.attr('href').split('?');
+        package_goods.data('product',$el.data('product')).find('.J-package-goods-img').attr('src',$el.data('src'));
+        $.each($el.parents('.J-package').find('.J-package-goods'),function(i,v){
+            if($(v).data('product')){
+                tmpId.push($(v).data('product'));
+            }
+        });
+        buy_btn.attr('href',url[0]+'?product='+tmpId.join(','));
+        buy_fast.attr('href',fast_url[0]+'?product='+tmpId.join(','));
+    });
+})();
+</script>

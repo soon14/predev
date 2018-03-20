@@ -1,0 +1,182 @@
+<div class="row" id="dashboard_filter_panel">
+	<div class="col-md-3">
+		<h3 class="page-title">
+			门店仪表盘
+			<small>观察 & 分析</small>
+		</h3>
+	</div>
+	<div class="col-md-3">
+		<button type="button" class="btn btn-default pull-left">从</button>
+		<{input type="time" name="dashboard_from" value=$dashboard_from}>
+	</div>
+	<div class="col-md-3">
+		<button type="button" class="btn btn-default pull-left">至</button>
+		<{input type="time" name="dashboard_to" value=$dashboard_to}>
+	</div>
+	<div class="col-md-3">
+		<{if $show_select_store_btn == true}>
+			<!--选择店铺按钮-->
+			<div class="pull-left">
+				<{input type="object" object="store@store" callback_func="select_store_callback_func"}>
+			</div>
+			<!--选中店铺id隐藏域-->
+			<input id="store_id_input" type="hidden">
+		<{/if}>
+
+		<div class="btn-group from-to pull-left">
+			<button class="btn btn-default sub-btn" id="store_dashboard_refresh_btn" type="button"><i class="fa fa-refresh"></i> 刷新</button>
+			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+				<i class="fa fa-angle-down"></i>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li data-ftrange="<{$from_arr.w}>~<{$tody}>">
+					<a href="javascript:;">最近一周</a>
+				</li>
+				<li data-ftrange="<{$from_arr.m}>~<{$tody}>">
+					<a href="javascript:;">最近一个月</a>
+				</li>
+				<li data-ftrange="<{$from_arr.q}>~<{$tody}>">
+					<a href="javascript:;">最近一季度</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="page-bar hidden-xs">
+	<ul class="page-breadcrumb">
+		<li>
+			<!-- <i class="fa fa-clock-o"></i> -->
+			<a href="javascript:;"><{$store_info.store_name|default:'所有门店'}></a>
+		</li>
+		<{if $cached_time}>
+		<li>数据最后缓存时间：<{$cached_time|cdate:'SDATE_FTIME'}></li>
+		<{/if}>
+	</ul>
+</div>
+<div class="diswell">
+	<div class="row">
+		<div class="col-md-12">
+			<{foreach from=$widgets.top item=widgets_top}>
+			<{if !$widgets_top.title}>
+			<{$widgets_top.html}>
+			<{else}>
+			<div class="portlet box widget <{$widgets_top.classname|default:'grey-silver'}>">
+				<div class="portlet-title">
+					<{$widgets_top.title}>
+				</div>
+				<div class="widget-body">
+					<{$widgets_top.html}>
+				</div>
+			</div>
+			<{/if}>
+			<{/foreach}>
+		</div>
+		<div class="col-md-6">
+			<{foreach from=$widgets.left item=widgets_left}>
+			<{if !$widgets_left.title}>
+			<{$widgets_left.html}>
+			<{else}>
+			<div class="portlet box widget <{$widgets_top.classname|default:'grey-silver'}>">
+				<div class="portlet-title">
+					<{$widgets_left.title}>
+				</div>
+				<div class="portlet-body widget-body">
+					<{$widgets_left.html}>
+				</div>
+			</div>
+			<{/if}>
+			<{/foreach}>
+		</div>
+		<div class="col-md-6">
+			<{foreach from=$widgets.right item=widgets_right}>
+			<{if !$widgets_right.title}>
+			<{$widgets_right.html}>
+			<{else}>
+			<div class="portlet box widget <{$widgets_top.classname|default:'grey-silver'}>">
+				<div class="portlet-title">
+					<{$widgets_right.title}>
+				</div>
+				<div class="portlet-body widget-body">
+					<{$widgets_right.html}>
+				</div>
+			</div>
+			<{/if}>
+			<{/foreach}>
+		</div>
+		<div class="col-md-12">
+			<{foreach from=$widgets.bottom item=widgets_bottom}>
+			<{if !$widgets_bottom.title}>
+			<{$widgets_bottom.html}>
+			<{else}>
+			<div class="portlet box widget <{$widgets_top.classname|default:'grey-silver'}>">
+				<div class="portlet-title">
+					<{$widgets_bottom.title}>
+				</div>
+				<div class="portlet-body widget-body">
+					<{$widgets_bottom.html}>
+				</div>
+			</div>
+			<{/if}>
+			<{/foreach}>
+		</div>
+	</div>
+</div>
+
+<!---->
+<div class="modal hide" id="select_store_modal" role="dialog" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+				<h3 class="modal-title">选择店铺</h3>
+			</div>
+			<div class="modal-body"></div>
+			<div class="modal-footer"></div>
+		</div>
+	</div>
+</div>
+
+<script charset="utf-8">
+	var from_input = $('input[name=dashboard_from]');
+	var to_input = $('input[name=dashboard_to]');
+	var store_id_input = $('#store_id_input');
+
+	!function () {
+		$('input[name=dashboard_from],input[name=dashboard_to]').on('keydown', function (e) {
+			if (e.keyCode == 13) {
+				$('.from-to .sub-btn').click();
+			}
+		});
+
+		$('#store_dashboard_refresh_btn').on('click', function () {
+			var load_params = 'f=' + from_input.val() + '&t=' + to_input.val() + '&store_id=' + store_id_input.val();
+			load_page('<{link app=store ctl=admin_store_dashboard act=index}>', false, load_params);
+		});
+
+		$('.from-to li[data-ftrange]').on('click', function () {
+			var range = $(this).attr('data-ftrange').split('~');
+			var load_params = 'f=' + range[0] + '&t=' + range[1] + '&store_id=' + store_id_input.val();
+			load_page('<{link app=store ctl=admin_store_dashboard act=index}>', false, load_params);
+		});
+	}();
+
+	$(function () {
+		//页面载入完成后更改选择店铺按钮的样式
+		var obj_dashboard_filter_panel = $('#dashboard_filter_panel');
+		var obj_object_select = obj_dashboard_filter_panel.find('.input-group[id^=object_select]');
+		if(obj_object_select.length > 0){
+			var obj_select_btn = $('<button class="btn btn-default" type="button" style="margin-right: 5px;">选择查看店铺数据</button>');
+			obj_object_select.html(obj_select_btn);
+		}
+	});
+
+	/**
+	 * 选择店铺以后回调
+	 * 把选中的店铺id写入隐藏域
+	 */
+	var select_store_callback_func = function (select_store) {
+		var store_id = select_store['0'].value;
+		store_id_input.val(store_id);
+        $("#store_dashboard_refresh_btn").trigger('click');
+	};
+</script>

@@ -1,0 +1,38 @@
+<services>
+
+    <service id="desktop_finder.fastgroup_mdl_subject">
+        <class>fastgroup_finder_subject</class>
+    </service>
+    <service id="desktop_finder.fastgroup_mdl_fgorders">
+        <class>fastgroup_finder_fgorders</class>
+    </service>
+
+
+
+    <!--订单付款完成时触发-->
+    <service id="ectools.bill.payment.order.succ" optname="订单支付完成处理">
+        <class orderby="60">fastgroup_services_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.payment.order.progress" optname="订单支付到担保方完成处理">
+        <class orderby="60">fastgroup_services_order_payfinish</class>
+    </service>
+
+    <service id="ectools.bill.payment.b2c.order.succ" optname="订单支付完成处理">
+        <class orderby="60">fastgroup_services_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.payment.b2c.order.progress" optname="订单支付到担保方完成处理">
+        <class orderby="60">fastgroup_services_order_payfinish</class>
+    </service>
+
+    <!--订单完成时触发-->
+    <service id="b2c.order.end.finish" optname="订单归档完成时触发">
+        <class orderby="60">fastgroup_services_order_endfinish</class>
+    </service>
+    <service id="b2c.order.cancel.finish" optname="订单作废完成时触发">
+        <class orderby="60">fastgroup_services_order_cancelfinish</class>
+    </service>
+
+    <service id="b2c.messenger.actions">
+        <class>fastgroup_messenger_fastgroup</class>
+    </service>
+</services>

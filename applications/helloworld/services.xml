@@ -1,0 +1,28 @@
+<services>
+<!-- 订单相关SERVICES BEGIN-->
+
+    <service id="b2c.order.create.finish" optname="订单创建完成时触发">
+        <class orderby="50">helloworld_services_order_finish</class>
+    </service>
+
+    <service id="ectools.bill.payment.order.succ" optname="订单支付完成处理">
+        <class orderby="50">helloworld_services_order_succ</class>
+    </service>
+
+<!-- 订单相关SERVICES END -->
+
+    <!-- FINDER相关SERVICES BEGIN -->
+
+    <service id="desktop_finder.helloworld_mdl_hello">
+        <class>helloworld_services_finder_hello</class>
+    </service>
+
+    <!-- FINDER相关SERVICES END -->
+
+<!-- openapi define begin-->
+    <service id="openapi.helloworld">
+        <class>helloworld_openapi_hello</class>
+    </service>
+<!-- openapi define end-->
+
+</services>

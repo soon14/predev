@@ -1,0 +1,8 @@
+<services>
+	<service id="desktop_finder.image_mdl_image">
+		<class>image_finder_image</class>
+	</service>
+	<service id="openapi.storager">
+		<class>image_openapi_storager</class>
+	</service>
+</services>

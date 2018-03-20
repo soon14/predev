@@ -1,0 +1,23 @@
+<services>
+    <service id="desktop_finder.importexport_mdl_task">
+        <class>importexport_finder_task</class>
+    </service>
+    <service id="importexport.b2c_mdl_members">
+        <class>importexport_data_b2c_members</class>
+    </service>
+    <service id="importexport.b2c_mdl_goods">
+        <class>importexport_data_b2c_goods</class>
+    </service>
+    <service id="importexport.b2c_mdl_orders">
+        <class>importexport_data_b2c_orders</class>
+    </service>
+    <service id="importexport.b2c_mdl_stock">
+        <class>importexport_data_b2c_stock</class>
+    </service>
+    <service id="importexport.b2c_mdl_delivery">
+        <class>importexport_data_b2c_delivery</class>
+    </service>
+    <service id="importexport.ectools_mdl_bills">
+        <class>importexport_data_ectools_bills</class>
+    </service>
+</services>

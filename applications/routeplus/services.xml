@@ -1,0 +1,18 @@
+<services>
+    <service id="desktop_finder.routeplus_mdl_statics">
+        <class>routeplus_finder_statics</class>
+    </service>
+
+    <service id="site.parse_route_static_dispatch">
+        <class>routeplus_service_statics</class>
+    </service>
+    <service id="site.parse_route_static_genurl">
+        <class>routeplus_service_statics</class>
+    </service>
+    <service id="mobile.parse_route_static_dispatch">
+        <class>routeplus_service_statics</class>
+    </service>
+    <service id="mobile.parse_route_static_genurl">
+        <class>routeplus_service_statics</class>
+    </service>
+</services>

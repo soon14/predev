@@ -1,0 +1,11 @@
+<desktop>
+    <permissions>
+        <permission display="true" id="materiallib_mange">素材库</permission>
+    </permissions>
+    <workground icon="fa fa-file-picture-o" id="materiallib.workground" name="素材库" order="">
+        <menugroup name="素材库管理">
+            <menu action='index' controller='admin_material' display='true' order='180' permission='materiallib_mange'>素材库管理</menu>
+            <menu action='image_main' controller='admin_material' display='false' order='180' permission='materiallib_mange'>图片列表</menu>
+        </menugroup>
+    </workground>
+</desktop>

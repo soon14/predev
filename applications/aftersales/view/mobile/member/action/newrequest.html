@@ -1,0 +1,173 @@
+<ul class="table-view">
+    <li class="table-view-cell">
+        <a href="#request_tip_modal" class="navigate-right">
+            售后须知
+        </a>
+    </li>
+    <div class="table-view-divider">
+        售后服务商品
+    </div>
+    <li class="table-view-cell tvc-reset-padding media">
+        <img class="img-thumbnail media-object pull-left" width=50  src="<{$request_item.image_id|storager:'xs'}>" alt="<{$request_item.name}>" />
+        <div class="media-body">
+            <p>
+                <{$request_item.name}>
+                <{$request_item.spec_info}><br><strong>￥<{$request_item.buy_price|cur}></strong>
+            </p>
+            <p class="pull-right">
+                已发货数量：<span class="badge"><{$request_item.sendnum}></span>
+            </p>
+        </div>
+    </li>
+</ul>
+
+<div id="request_tip_modal" class="modal">
+  <header class="bar bar-nav">
+    <a class="icon icon-close pull-right" href="#request_tip_modal"></a>
+    <h1 class="title">售后须知</h1>
+  </header>
+  <div class="content">
+      <div class="content-padded">
+          <{$gtype_assrule}>
+          <{$env.conf.aftersales.default_assrule}>
+      </div>
+  </div>
+</div>
+<iframe  src="about:blank" class="hidden" name="new_request_frame"></iframe>
+<form target="new_request_frame" class="form-horizontal content-form" action="<{link app=aftersales ctl=mobile_member act=newrequest args0=$order.order_id args1=$request_item.product_id args2='save'}>" method="post" id="ass_newrequest_form">
+    <input type="hidden" name="request[req_type]" value="1">
+    <div class="content-padded">
+        <div data-extend="req_type" >
+            <h5>退货数量(最多：<{$request_item.nums-$request_quantity}>)</h5>
+            <input type="number" pattern="[0-9]" max=<{$request_item.nums-$request_quantity}> min=1 name="product_return_num" value="1">
+        </div>
+        <div data-extend="req_type" >
+            <p>
+                <{$env.conf.aftersales.return_item_helpinfo}>
+            </p>
+        </div>
+    </div>
+    <ul class="table-view">
+        <li class="table-view-cell">
+            <{input type="textarea" required="true" name="request[description]" placeholder="售后问题描述" rows=3}>
+        </li>
+        <li class="table-view-divider">照片</li>
+        <li class="table-view-cell tvc-reset-padding">
+            <div class="five-images-upload">
+                <div class="upload-item">
+                    <div class="img-preview">
+
+                    </div>
+                    <input type="file" accept="imgae/*">
+                    <input type="hidden" name="image[]" value="">
+                    <i class="fa fa-plus"></i>
+                </div>
+                <div class="upload-item">
+                    <div class="img-preview">
+
+                    </div>
+                    <input type="file" accept="imgae/*">
+                    <input type="hidden" name="image[]" value="">
+                    <i class="fa fa-plus"></i>
+                </div>
+                <div class="upload-item">
+                    <div class="img-preview">
+
+                    </div>
+                    <input type="file" accept="imgae/*">
+                    <input type="hidden" name="image[]" value="">
+                    <i class="fa fa-plus"></i>
+                </div>
+                <div class="upload-item">
+                    <div class="img-preview">
+
+                    </div>
+                    <input type="file" accept="imgae/*">
+                    <input type="hidden" name="image[]" value="">
+                    <i class="fa fa-plus"></i>
+                </div>
+                <div class="upload-item">
+                    <div class="img-preview">
+
+                    </div>
+                    <input type="file" accept="image/*">
+                    <input type="hidden" name="image[]" value="">
+                    <i class="fa fa-plus"></i>
+                </div>
+            </div>
+        </li>
+    </ul>
+    <div class="content-padded">
+        <button type="submit" class="btn btn-block btn-primary">提交申请</button>
+    </div>
+</form>
+<{script src="lrz/lrz.bundle.js"}>
+<script type="text/javascript">
+    //图片上传
+    $(function(){
+        $('.five-images-upload input[type=file]').on('change',function(e){
+            var upload_container = $(this).closest('.upload-item');
+            upload_container.find('.fa').removeClass('fa-plus')
+            .removeClass('hidden').addClass('fa-spinner fa-spin');
+            lrz(this.files[0],{
+                width:400,
+                quality:1
+            }).then(function(rst){
+                //console.info(rst);
+                upload_container.find('.img-preview').empty().append($('<img src="'+rst.base64+'">'));
+                upload_container.find('input[type=hidden]').val(rst.base64);
+                return rst;
+            }).catch(function(err){
+                Messagebox('error',err);
+            }).always(function(){
+                upload_container.find('.fa').addClass('hidden');
+            });
+
+        });
+
+    });
+</script>
+
+<script type="text/javascript">
+     //提交处理
+     $('#ass_newrequest_form').on('submit',function(e){
+         var sub_btn = $($(this).find('button[type=submit]'));
+         sub_btn.text('正在提交').prop('disabled','disabled');
+         $('iframe[name=new_request_frame]').on('load',function(){
+             $(this).off('load',arguments.callee);
+             sub_btn.text('提交申请').removeProp('disabled');
+             try{
+                 var response = $(this.contentWindow.document.body.innerHTML).text();
+                 response = $.parseJSON(response);
+             }catch(e){
+                 try{
+                     var response = this.contentWindow.document.body.innerHTML;
+                         response = $.parseJSON(response);
+                 }catch(e){
+
+                 }
+             }
+             if(typeof(response)!='object'){
+                 alert('提交失败!请稍后重试');
+                 return false;
+             }
+             if('fipt_idx' in response){
+                 //上传错误
+                 var error_info = $('<span class="span-info dropup text-danger"><span class="caret"></span>'+response.error+'</span>'),ipt = $('.request-image').eq(response.fipt_idx);
+                 error_info.insertAfter(ipt);
+                 return setTimeout(function(){
+                     error_info.fadeOut(function(){
+                         error_info.remove();
+                     });
+                 },5000);
+                 return false;
+             }
+             if('error' in response){
+                 //其他异常
+                 alert('提交失败!'+response.error);
+                 return false;
+             }
+             location = "<{link app=aftersales ctl=mobile_member act=request}>";
+         });
+     });
+</script>

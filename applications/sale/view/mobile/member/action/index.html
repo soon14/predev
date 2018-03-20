@@ -1,0 +1,38 @@
+<ul class="table-view">
+    <li class="table-view-divider">
+        我的预约
+    </li>
+</ul>
+<ul class="table-view tv-integral-log">
+    <{foreach from=$reserve item=item}>
+    <li class="table-view-cell media">
+        <a href="<{link app=b2c ctl=mobile_product act=index args0=$item.product_id}>" class="navigate-right">
+            <div class="media-body">
+                <{$item.name}>
+                <p>
+                    ￥<{$item.price|cur}>
+                </p>
+                <p>
+                    活动名称：<{$item.sale_name}>
+                </p>
+                <p>
+                    预约时间：<{$item.createtime|cdate}>
+                </p>
+                <p>
+                    <div class="text-warning">
+                        <{if $item.status == "1"}>
+                        已结束
+                        <{elseif $item.start > $now}>
+                        预约成功等待开售
+                        <{elseif $item.start < $now && $item.end > $now}>
+                        正在抢购
+                        <{elseif $item.end < $now}>
+                        已结束
+                        <{/if}>
+                    </div>
+                </p>
+            </div>
+        </a>
+    </li>
+    <{/foreach}>
+</ul>

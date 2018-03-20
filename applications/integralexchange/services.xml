@@ -1,0 +1,8 @@
+<services>
+    <service id="b2c.member_menu_extends">
+        <class>integralexchange_mmenuextend</class>
+    </service>
+    <service id="b2c.member_menu_m_extends">
+        <class>integralexchange_mmenuextendm</class>
+    </service>
+</services>

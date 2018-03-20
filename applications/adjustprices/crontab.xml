@@ -1,0 +1,13 @@
+<!--该xml文件用来定义系统定时执行任务-->
+<cronentries>
+    <!-- @arrtibute  定时任务处理类 -->
+    <cron id="adjustprices_crontab_watch">
+        <!-- @value 任务名称 -->
+        <description>计划调价任务观察器</description>
+        <!-- @value 默认运行频率,定时语法同Linux crontab 定时语法 -->
+        <schedule>*/1 * * * *</schedule>
+        <!-- @value  默认开启 -->
+        <enabled>true</enabled>
+    </cron>
+
+</cronentries>

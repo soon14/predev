@@ -1,0 +1,9 @@
+<form action="index.php?app=wechat&ctl=admin_menu&act=save&p[0]=<{$env.get.p.0}>" method="post" class="form form-body">
+自定义菜单数据:
+<{input type="code" name="menu_data"  value=$menu_data height=500 mode='text/javascript'}>
+<div class="form-actions">
+    <div class="form-group">
+        <button type="submit" class="btn blue" id="save_replyrule">保存规则</button>
+    </div>
+</div>
+</form>

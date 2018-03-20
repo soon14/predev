@@ -1,0 +1,168 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">
+        <{$app_info.app_name}>[<{if $set_hook.hook_id }>编辑HOOK服务<{else}>添加HOOK服务<{/if}>]
+    </h3>
+</div>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=vmcconnect&ctl=admin_hooks&act=index&p[0]=<{$app_id}>">应用HOOK管理</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $set_hook.hook_id }>编辑HOOK服务<{else}>添加HOOK服务<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form method="post" action="index.php?app=vmcconnect&ctl=admin_hooks&act=save&p[0]=<{$app_id}>&p[1]=<{$hook_id}>" calss="form">
+    <input type="hidden" name="app_id" value="<{$set_hook.app_id}>">
+    <input type="hidden" name="hook_id" value="<{$set_hook.hook_id}>">
+    <div class="modal-body form-horizontal">
+        <div class="form-body">
+            <{if $set_hook.hook_id }>
+            <div class="form-group">
+                <label class="col-md-3 control-label">hook_key</label>
+                <div class="col-md-3">
+                    <code><{$set_hook.hook_id}></code>
+                </div>
+            </div>
+            <{/if}>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="hook_set_hook_name">
+                    HOOK服务名称
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="hook_set_hook_name" name="hook_sets[hook_name]" value="<{$set_hook.hook_name}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="hook_set_hook_url">
+                    HOOK服务URL
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-8">
+                    <input type="text" class="form-control" id="hook_set_hook_url" name="hook_sets[hook_url]" value="<{$set_hook.hook_url}>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="hook_set_hook_url">
+                    HOOK预警号码
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="hook_set_hook_phone" name="hook_sets[hook_phone]" value="<{$set_hook.hook_alert_phone ? $set_hook.hook_alert_phone : $hook_alert_phone }>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="hook_set_hook_msg_tpl">
+                    消息模版
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-3">
+                    <{if $hook_msgs}>
+                    <{foreach from=$hook_msgs item=tpl key=key}>
+                    <label for="hook_set_app_com_tpl_<{$key}>" class="control-label">
+                        <input id="hook_set_hook_msg_tpl_<{$key}>" name="hook_sets[hook_msg_tpl]" value="<{$key}>" type="radio"<{if $set_hook.hook_msg_tpl == $key}> checked<{/if}>>
+                               <{$tpl}>
+                    </label>
+                    <{/foreach}>
+                    <{/if}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="hook_set_app_name">
+                    服务启用状态
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-7">
+                    <label for="hook_set_hook_status_1" class="control-label">
+                        <input id="app_set_app_status_1" name="hook_sets[hook_status]" value="1" type="radio"<{if $set_hook.hook_status}> checked<{/if}>>
+                               <span class="text-success">启用服务</span>
+                    </label>
+                    <label for="hook_set_hook_status_0" class="control-label">
+                        <input id="app_set_app_status_0" name="hook_sets[hook_status]" value="0" type="radio"<{if !$set_hook.hook_status}> checked<{/if}>>
+                               <span class="text-danger">禁用服务</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="hook_set_hook_order">
+                    服务排序
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-3">
+                    <input type="text" class="form-control" id="hook_set_hook_order" name="hook_sets[hook_order]" value="<{$set_hook.hook_order}>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-3 control-label">可用HOOK<span class="required" aria-required="true">*</span></label>
+                <div class="col-md-8">
+                    <{if $app_allow_hooks}>
+                    <label for="select_all" class="control-label">
+                        <input name="select_all" id="select_all" type="checkbox">
+                        <span class="text-danger">全选</span>
+                    </label>
+                    <{foreach from=$app_allow_hooks item=api key=key}>
+                    <div>
+                        <label for="hook_item_cat_<{$key}>" class="control-label">
+                            <input name="hook_item_cat_<{$key}>" id="hook_item_cat_<{$key}>" value="<{$key}>" type="checkbox">
+                            <{$api.name}><span class="text-success">点击全选子项目</span>
+                        </label>
+                        <br />
+                        <{if $api.items}>
+                        <{foreach from=$api.items item=item key=item_key}>
+                        <label for="hook_set_hook_items_<{$item_key}>" class="control-label">
+                            <input id="hook_set_hook_items_<{$item_key}>" name="hook_sets[hook_items][<{$item_key}>]" value="<{$item_key}>" data-rel="<{$key}>" type="checkbox"<{if $hook_allow_items && in_array($item_key,$hook_allow_items)}> checked<{/if}>>
+                                   <{$item}><code>&lt;<{$item_key}>&gt;</code>
+                        </label>
+                        <{/foreach}>
+                        <{/if}>
+                        <hr />
+                    </div>
+                    <{/foreach}>
+                    <{/if}>
+                </div>
+            </div>
+            <hr>
+            <div class="form-group">
+                <label class="col-md-3 control-label" for="edit_hook_addon">
+                    附加参数
+                </label>
+                <div class="col-md-8">
+                    <{input type="code" required="true" height="400" name="hook_sets[hook_addon]" id="edit_hook_addon" value=$set_hook.hook_addon mode='text/javascript'}>
+                    <span class="help-block">
+                        请填写json格式
+                    </span>
+                </div>
+            </div>
+            
+
+        </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+        <a type="button" class="btn default" href="index.php?app=vmcconnect&ctl=admin_apps&act=index">返回</a>
+        <button type="submit" class="btn blue">保存</button>
+    </div>
+
+
+</form>
+
+
+<script type="text/javascript">
+    $(function () {
+        $("input[name^='hook_item_cat_']").click(function () {
+            $("input[id^='hook_set_hook_items_'][data-rel='" + $(this).val() + "']").prop('checked', $(this).prop('checked'));
+        });
+        $("input#select_all").click(function () {
+            $("input[id^='hook_set_hook_items_']").prop('checked', $(this).prop('checked'));
+        });
+    });
+</script>

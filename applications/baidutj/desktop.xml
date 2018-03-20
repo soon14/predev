@@ -1,0 +1,7 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="baidutj">百度统计-电商分析</permission>
+    </permissions>
+    <panelgroup icon=" fa fa-paw" id="baidutj" order="99">百度统计</panelgroup>
+    <adminpanel action="index" controller="admin_setting" display="true" group="baidutj_baidutj" order='1' permission="baidutj">百度统计配置</adminpanel>
+</desktop>

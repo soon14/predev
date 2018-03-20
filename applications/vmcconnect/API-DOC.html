@@ -1,0 +1,5659 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>API-DOC</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+<style type="text/css">
+.highlight  { background: #ffffff; }
+.highlight .c { color: #999988; font-style: italic } /* Comment */
+.highlight .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.highlight .k { font-weight: bold } /* Keyword */
+.highlight .o { font-weight: bold } /* Operator */
+.highlight .cm { color: #999988; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #999999; font-weight: bold } /* Comment.Preproc */
+.highlight .c1 { color: #999988; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #999999; font-weight: bold; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #000000; background-color: #ffdddd } /* Generic.Deleted */
+.highlight .gd .x { color: #000000; background-color: #ffaaaa } /* Generic.Deleted.Specific */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #aa0000 } /* Generic.Error */
+.highlight .gh { color: #999999 } /* Generic.Heading */
+.highlight .gi { color: #000000; background-color: #ddffdd } /* Generic.Inserted */
+.highlight .gi .x { color: #000000; background-color: #aaffaa } /* Generic.Inserted.Specific */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #555555 } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #aaaaaa } /* Generic.Subheading */
+.highlight .gt { color: #aa0000 } /* Generic.Traceback */
+.highlight .kc { font-weight: bold } /* Keyword.Constant */
+.highlight .kd { font-weight: bold } /* Keyword.Declaration */
+.highlight .kp { font-weight: bold } /* Keyword.Pseudo */
+.highlight .kr { font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #445588; font-weight: bold } /* Keyword.Type */
+.highlight .m { color: #009999 } /* Literal.Number */
+.highlight .s { color: #d14 } /* Literal.String */
+.highlight .na { color: #008080 } /* Name.Attribute */
+.highlight .nb { color: #0086B3 } /* Name.Builtin */
+.highlight .nc { color: #445588; font-weight: bold } /* Name.Class */
+.highlight .no { color: #008080 } /* Name.Constant */
+.highlight .ni { color: #800080 } /* Name.Entity */
+.highlight .ne { color: #990000; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #990000; font-weight: bold } /* Name.Function */
+.highlight .nn { color: #555555 } /* Name.Namespace */
+.highlight .nt { color: #000080 } /* Name.Tag */
+.highlight .nv { color: #008080 } /* Name.Variable */
+.highlight .ow { font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #009999 } /* Literal.Number.Float */
+.highlight .mh { color: #009999 } /* Literal.Number.Hex */
+.highlight .mi { color: #009999 } /* Literal.Number.Integer */
+.highlight .mo { color: #009999 } /* Literal.Number.Oct */
+.highlight .sb { color: #d14 } /* Literal.String.Backtick */
+.highlight .sc { color: #d14 } /* Literal.String.Char */
+.highlight .sd { color: #d14 } /* Literal.String.Doc */
+.highlight .s2 { color: #d14 } /* Literal.String.Double */
+.highlight .se { color: #d14 } /* Literal.String.Escape */
+.highlight .sh { color: #d14 } /* Literal.String.Heredoc */
+.highlight .si { color: #d14 } /* Literal.String.Interpol */
+.highlight .sx { color: #d14 } /* Literal.String.Other */
+.highlight .sr { color: #009926 } /* Literal.String.Regex */
+.highlight .s1 { color: #d14 } /* Literal.String.Single */
+.highlight .ss { color: #990073 } /* Literal.String.Symbol */
+.highlight .bp { color: #999999 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #008080 } /* Name.Variable.Class */
+.highlight .vg { color: #008080 } /* Name.Variable.Global */
+.highlight .vi { color: #008080 } /* Name.Variable.Instance */
+.highlight .il { color: #009999 } /* Literal.Number.Integer.Long */
+.pl-c {
+    color: #969896;
+}
+
+.pl-c1,.pl-mdh,.pl-mm,.pl-mp,.pl-mr,.pl-s1 .pl-v,.pl-s3,.pl-sc,.pl-sv {
+    color: #0086b3;
+}
+
+.pl-e,.pl-en {
+    color: #795da3;
+}
+
+.pl-s1 .pl-s2,.pl-smi,.pl-smp,.pl-stj,.pl-vo,.pl-vpf {
+    color: #333;
+}
+
+.pl-ent {
+    color: #63a35c;
+}
+
+.pl-k,.pl-s,.pl-st {
+    color: #a71d5d;
+}
+
+.pl-pds,.pl-s1,.pl-s1 .pl-pse .pl-s2,.pl-sr,.pl-sr .pl-cce,.pl-sr .pl-sra,.pl-sr .pl-sre,.pl-src,.pl-v {
+    color: #df5000;
+}
+
+.pl-id {
+    color: #b52a1d;
+}
+
+.pl-ii {
+    background-color: #b52a1d;
+    color: #f8f8f8;
+}
+
+.pl-sr .pl-cce {
+    color: #63a35c;
+    font-weight: bold;
+}
+
+.pl-ml {
+    color: #693a17;
+}
+
+.pl-mh,.pl-mh .pl-en,.pl-ms {
+    color: #1d3e81;
+    font-weight: bold;
+}
+
+.pl-mq {
+    color: #008080;
+}
+
+.pl-mi {
+    color: #333;
+    font-style: italic;
+}
+
+.pl-mb {
+    color: #333;
+    font-weight: bold;
+}
+
+.pl-md,.pl-mdhf {
+    background-color: #ffecec;
+    color: #bd2c00;
+}
+
+.pl-mdht,.pl-mi1 {
+    background-color: #eaffea;
+    color: #55a532;
+}
+
+.pl-mdr {
+    color: #795da3;
+    font-weight: bold;
+}
+
+.pl-mo {
+    color: #1d3e81;
+}
+.task-list {
+padding-left:10px;
+margin-bottom:0;
+}
+
+.task-list li {
+    margin-left: 20px;
+}
+
+.task-list-item {
+list-style-type:none;
+padding-left:10px;
+}
+
+.task-list-item label {
+font-weight:400;
+}
+
+.task-list-item.enabled label {
+cursor:pointer;
+}
+
+.task-list-item+.task-list-item {
+margin-top:3px;
+}
+
+.task-list-item-checkbox {
+display:inline-block;
+margin-left:-20px;
+margin-right:3px;
+vertical-align:1px;
+}
+</style>
+</head>
+<body>
+<h1>VMCConnect API 说明</h1>
+<p><a name="MENU"></a><br>
+<a href="#API%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83">1.API开发规范</a></p>
+<p><a href="#HOOK%E5%BC%80%E5%8F%91%E8%A7%84%E8%8C%83">2.HOOK开发规范</a></p>
+<p><a href="#API-category-%E7%B1%BB%E7%9B%AE">3.API-category-类目</a></p>
+<p><a href="#API-goodattrs-%E5%95%86%E5%93%81%E7%B1%BB%E5%9E%8B">4.API-goodattrs-商品类型</a></p>
+<p><a href="#API-goods-%E5%95%86%E5%93%81">5.API-goods-商品</a></p>
+<p><a href="#API-order-%E8%AE%A2%E5%8D%95">6.API-order-订单</a></p>
+<p><a href="#API-pay-%E6%94%AF%E4%BB%98">7.API-pay-支付</a></p>
+<p><a href="#API-distribution-%E9%85%8D%E9%80%81">8.API-distribution-配送</a></p>
+<p><a href="#API-delivery-%E7%89%A9%E6%B5%81">9.API-delivery-物流</a></p>
+<p><a href="#API-areas-%E5%9C%B0%E5%9D%80%E5%BA%93">10.API-areas-地址库</a></p>
+<p><a href="#API-refundapply-%E9%80%80%E6%AC%BE">11.API-refundapply-退款</a></p>
+<p><a href="#API-system-%E7%B3%BB%E7%BB%9F">12.API-system-系统</a></p>
+<p><a href="#HOOK-category-%E5%88%86%E7%B1%BB">13.HOOK-category-分类</a></p>
+<p><a href="#HOOK-goods-%E5%95%86%E5%93%81">14.HOOK-goods-商品</a></p>
+<p><a href="#HOOK-products-%E4%BA%A7%E5%93%81">15.HOOK-products-产品</a></p>
+<p><a href="#HOOK-order-%E8%AE%A2%E5%8D%95">16.HOOK-order-订单</a></p>
+<p><a href="#HOOK-biils-%E6%94%AF%E4%BB%98">17.HOOK-biils-支付</a></p>
+<p><a href="#HOOK-delivery-%E9%80%80%E9%80%81%E8%B4%A7">18.HOOK-delivery-退送货</a></p>
+<p><a href="#HOOK-stock-%E5%BA%93%E5%AD%98">19.HOOK-stock-库存</a><br>
+<a name="API开发规范"></a></p>
+<h2>一、 API开发规范 <a href="#MENU">返回目录</a></h2>
+<h3>1.) 服务入口</h3>
+<p><a href="http://dev.vmc.com/openapi/vmcconnect/json">http://dev.vmc.com/openapi/vmcconnect/json</a> <a href="http://demo.vmcshop.com/openapi/vmcconnect/json">点击访问</a></p>
+<h3>2.) 调用参数</h3>
+<h4>1. 系统级参数</h4>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_key</td>
+<td>String</td>
+<td>是</td>
+<td>应用的app_key</td>
+</tr>
+<tr>
+<td>sign</td>
+<td>String</td>
+<td>是</td>
+<td>签名</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>String</td>
+<td>是</td>
+<td>时间戳，格式为yyyy-MM-ddHH:mm:ss，例如：2017-05-01 12:22:22。API服务端允许客户端请求时间误差为6分钟</td>
+</tr>
+<tr>
+<td>method</td>
+<td>String</td>
+<td>是</td>
+<td>API接口名称</td>
+</tr>
+<tr>
+<td>tpl</td>
+<td>String</td>
+<td>否</td>
+<td>命令模版</td>
+</tr>
+<tr>
+<td>format</td>
+<td>String</td>
+<td>否</td>
+<td>输出类型 可选 json 和 xml</td>
+</tr>
+<tr>
+<td>v</td>
+<td>String</td>
+<td>否</td>
+<td>版本 暂时只支持1.0</td>
+</tr></tbody></table>
+<h4>2. 应用级参数</h4>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>示例值</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td></td>
+<td>设置需要返回的字段列表，字段之间用","分隔。</td>
+</tr></tbody></table>
+<p><strong>参数拼接规范，json方式组装</strong></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>描述</th>
+<th>示例值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vmc_param_json</td>
+<td>String</td>
+<td>标准json 类型,而且是按照字母先后顺序排序的</td>
+<td><pre>{<br>"date_type":1,<br>"end_date":"2017-05-09",<br>"fields":"order_id, createtime, last_modified, status",<br>"order_state":1,<br>"page":1,<br>"page_size":50,<br>"sort_type":1,<br>"start_date":"2017-05-02"<br>}</pre></td>
+</tr></tbody></table>
+<p><a name="API签名"></a></p>
+<h4>3. API签名</h4>
+<p>调用API时需要对请求参数进行签名，VMCConnect服务器端会验证请求参数是否合法。</p>
+<p><strong>加密规则</strong></p>
+<p>1.所有请求参数按照字母先后顺序排列</p>
+<p>例如：将access_token,app_key,method,timestamp,v 排序为access_token,app_key,method,timestamp,v1</p>
+<p>2.把所有参数名和参数值进行拼装</p>
+<p>例如：access_tokenxxxapp_keyxxxmethodxxxxxxtimestampxxxxxxvx</p>
+<p>3.把app_secret夹在字符串的两端</p>
+<p>例如：appSecret+XXXX+appSecret</p>
+<p>4.使用MD5进行加密，再转化成大写</p>
+<p>调用360buy.order.search，假设app_key=1 appSecret=sZ8q6tUWgC7taL0y</p>
+<p><strong>① 输入参数</strong></p>
+<pre>v=1.0
+method=vmc.warecats.get
+app_key=1
+vmc_param_json=
+{
+	"fields":"order_id, createtime, last_modified, status",
+	"start_date":"2017-05-02"
+	"end_date":"2017-05-09",
+	"date_type":1,
+	"order_state":1,
+	"page":1,
+	"page_size":50,
+	"sort_type":1,
+}
+timestamp=2017-05-01 12:00:00
+</pre>
+<p><strong>② 把参数按照字母顺序排列</strong></p>
+<pre>app_key=1
+method=vmc.warecats.get
+timestamp=2017-05-01 12:00:00
+v=1.0
+vmc_param_json=
+{
+	"date_type":1,
+	"end_date":"2017-05-09",
+	"fields":"order_id, createtime, last_modified, status",
+	"order_state":1,
+	"page":1,
+	"page_size":50,
+	"sort_type":1,
+	"start_date":"2017-05-02"
+}
+</pre>
+<p><strong>③ 连接参数名与参数值，并在首尾加上appSecret</strong></p>
+<pre>sZ8q6tUWgC7taL0yapp_key1methodvmc.warecats.gettimestamp2017-05-01 12:00:00v1.0vmc_param_json{"date_type":1,"end_date":"2017-05-09","fields":"order_id, createtime, last_modified, status","order_state":1,"page":1,"page_size":50,"sort_type":1,"start_date":"2017-05-02"}sZ8q6tUWgC7taL0y
+</pre>
+<p><strong>注：</strong></p>
+<p><em>以上字符串不允许有跨行，粘贴时请特别注意，除日期和时间中间的空格之外，不允许在其它位置出现空格。</em></p>
+<p><em>时间戳 timestamp 最好就填写当前时间的前几分钟（必须在6分钟之内）</em></p>
+<p><a name="HOOK开发规范"></a></p>
+<h2>二、 HOOK开发规范 <a href="#MENU">返回目录</a></h2>
+<h3>1.) 提交接收HOOK的URL</h3>
+<p>提交接收HOOK服务的URL，用来接收HOOK，HOOK服务将会在各类事件后以POST方式提交数据至URL</p>
+<h3>2.) 提交参数</h3>
+<h4>1. 系统级参数</h4>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>app_key</td>
+<td>String</td>
+<td>是</td>
+<td>应用的app_key</td>
+</tr>
+<tr>
+<td>sign</td>
+<td>String</td>
+<td>是</td>
+<td>签名</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>String</td>
+<td>是</td>
+<td>时间戳，格式为yyyy-MM-ddHH:mm:ss，例如：2017-05-01 12:22:22。API服务端允许客户端请求时间误差为6分钟</td>
+</tr>
+<tr>
+<td>method</td>
+<td>String</td>
+<td>是</td>
+<td>HOOK消息名称</td>
+</tr></tbody></table>
+<h4>2. 消息级参数</h4>
+<p><strong>参数拼接规范，json方式组装</strong></p>
+<table>
+<thead>
+<tr>
+<th>名称</th>
+<th>类型</th>
+<th>描述</th>
+<th>示例值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vmc_method_json</td>
+<td>String</td>
+<td>标准json 类型,而且是按照字母先后顺序排序的</td>
+<td><pre>{<br>"cat_id":1,<br>"cat_name":"test",<br>"p_order":0,<br>"parent_id":0<br>}</pre></td>
+</tr></tbody></table>
+<h4>3. HOOK签名</h4>
+<p>系统POST至URL时带签名数据，应用请自行判断有效性。</p>
+<p><strong>加密规则 <a href="#API%E7%AD%BE%E5%90%8D">同API签名</a></strong></p>
+<p><a name="API-category-类目"></a></p>
+<h2>三、 API-category-类目 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.category.write.add">vmc.category.write.add</a></td>
+<td>添加分类</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.category.write.delete">vmc.category.write.delete</a></td>
+<td>删除分类</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.category.write.update">vmc.category.write.update</a></td>
+<td>更新分类</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.category.read.getAll">vmc.category.read.getAll</a></td>
+<td>获取所有类目信息</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.category.read.getFront">vmc.category.read.getFront</a></td>
+<td>获取前台展示的分类</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.category.read.findById">vmc.category.read.findById</a></td>
+<td>获取单个类目信息</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.category.read.findByPId">vmc.category.read.findByPId</a></td>
+<td>查找子类目列表</td>
+</tr></tbody></table>
+<p><a name="api.vmc.category.write.add"></a><br>
+<strong>1.) vmc.category.write.add 添加分类</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_pid</td>
+<td>int</td>
+<td>是</td>
+<td>所属分类</td>
+</tr>
+<tr>
+<td>category_name</td>
+<td>String</td>
+<td>是</td>
+<td>分类名称</td>
+</tr>
+<tr>
+<td>category_order</td>
+<td>int</td>
+<td>否</td>
+<td>排序</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>新分类编号</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>创建时间</td>
+</tr></tbody></table>
+<p><a name="api.vmc.category.write.delete"></a><br>
+<strong>2.) vmc.category.write.delete 删除分类</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>int</td>
+<td>是</td>
+<td>要删除分类的编号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>已删除分类的编号</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>删除时间</td>
+</tr></tbody></table>
+<p><a name="api.vmc.category.write.update"></a><br>
+<strong>3.) vmc.category.write.update 更新分类</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>int</td>
+<td>是</td>
+<td>要编辑分类编号</td>
+</tr>
+<tr>
+<td>category_pid</td>
+<td>int</td>
+<td>是</td>
+<td>所属分类</td>
+</tr>
+<tr>
+<td>category_name</td>
+<td>String</td>
+<td>是</td>
+<td>分类名称</td>
+</tr>
+<tr>
+<td>category_order</td>
+<td>int</td>
+<td>是</td>
+<td>排序</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>分类编号</td>
+</tr>
+<tr>
+<td>modified</td>
+<td>修改时间</td>
+</tr></tbody></table>
+<p><a name="api.vmc.category.read.getAll"></a><br>
+<strong>4.) vmc.category.read.getAll 获取所有类目信息</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>page</td>
+<td>int</td>
+<td>是</td>
+<td>所在分页</td>
+</tr>
+<tr>
+<td>page_size</td>
+<td>int</td>
+<td>是</td>
+<td>每页显示数量</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>分类编号</td>
+</tr>
+<tr>
+<td>category_pid</td>
+<td>所属分类</td>
+</tr>
+<tr>
+<td>category_path</td>
+<td>分类路径</td>
+</tr>
+<tr>
+<td>category_name</td>
+<td>分类名称</td>
+</tr>
+<tr>
+<td>category_order</td>
+<td>排序</td>
+</tr>
+<tr>
+<td>visible</td>
+<td>前台是否可见</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>创建时间</td>
+</tr></tbody></table>
+<p><a name="api.vmc.category.read.getFront"></a><br>
+<strong>5.) vmc.category.read.getFront 获取前台展示的分类</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>page</td>
+<td>int</td>
+<td>是</td>
+<td>所在分页</td>
+</tr>
+<tr>
+<td>page_size</td>
+<td>int</td>
+<td>是</td>
+<td>每页显示数量</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>分类编号</td>
+</tr>
+<tr>
+<td>category_pid</td>
+<td>所属分类</td>
+</tr>
+<tr>
+<td>category_path</td>
+<td>分类路径</td>
+</tr>
+<tr>
+<td>category_name</td>
+<td>分类名称</td>
+</tr>
+<tr>
+<td>category_order</td>
+<td>排序</td>
+</tr>
+<tr>
+<td>visible</td>
+<td>前台是否可见</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>创建时间</td>
+</tr></tbody></table>
+<p><a name="api.vmc.category.read.findById"></a><br>
+<strong>6.) vmc.category.read.findById 获取单个类目信息</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>category_id</td>
+<td>int</td>
+<td>是</td>
+<td>分类编号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>分类编号</td>
+</tr>
+<tr>
+<td>category_pid</td>
+<td>所属分类</td>
+</tr>
+<tr>
+<td>category_path</td>
+<td>分类路径</td>
+</tr>
+<tr>
+<td>category_name</td>
+<td>分类名称</td>
+</tr>
+<tr>
+<td>category_order</td>
+<td>排序</td>
+</tr>
+<tr>
+<td>visible</td>
+<td>前台是否可见</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>创建时间</td>
+</tr></tbody></table>
+<p><a name="api.vmc.category.read.findByPId"></a><br>
+<strong>7.) vmc.category.read.findByPId 查找子类目列表</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>category_pid</td>
+<td>int</td>
+<td>是</td>
+<td>所属分类</td>
+</tr>
+<tr>
+<td>page</td>
+<td>int</td>
+<td>是</td>
+<td>所在分页</td>
+</tr>
+<tr>
+<td>page_size</td>
+<td>int</td>
+<td>是</td>
+<td>每页显示数量</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>分类编号</td>
+</tr>
+<tr>
+<td>category_pid</td>
+<td>所属分类</td>
+</tr>
+<tr>
+<td>category_path</td>
+<td>分类路径</td>
+</tr>
+<tr>
+<td>category_name</td>
+<td>分类名称</td>
+</tr>
+<tr>
+<td>category_order</td>
+<td>排序</td>
+</tr>
+<tr>
+<td>visible</td>
+<td>前台是否可见</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>创建时间</td>
+</tr></tbody></table>
+<p><a name="API-goodattrs-商品类型"></a></p>
+<h2>四、 API-goodattrs-商品类型 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.goodattrs.read.get">vmc.goodattrs.read.get</a></td>
+<td>获取商品类型列表</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.goodattrs.read.valuesByAttrId">vmc.goodattrs.read.valuesByAttrId</a></td>
+<td>获取商品类型属性</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goodattrs.read.get"></a><br>
+<strong>1.) vmc.goodattrs.read.get 获取商品类型列表</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>page</td>
+<td>int</td>
+<td>是</td>
+<td>所在分页</td>
+</tr>
+<tr>
+<td>page_size</td>
+<td>int</td>
+<td>是</td>
+<td>每页显示数量</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type_id</td>
+<td>类型序号</td>
+</tr>
+<tr>
+<td>type_name</td>
+<td>类型名称</td>
+</tr>
+<tr>
+<td>type_params</td>
+<td>参数表结构(序列化) array(参数组名=&gt;array(参数名1=&gt;别名1</td>
+</tr>
+<tr>
+<td>assrule</td>
+<td>说明</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goodattrs.read.valuesByAttrId"></a><br>
+<strong>2.) vmc.goodattrs.read.valuesByAttrId 获取商品类型属性</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>type_id</td>
+<td>int</td>
+<td>是</td>
+<td>类型序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>type_id</td>
+<td>类型序号</td>
+</tr>
+<tr>
+<td>type_name</td>
+<td>类型名称</td>
+</tr>
+<tr>
+<td>type_params</td>
+<td>参数表结构(序列化)</td>
+</tr>
+<tr>
+<td>assrule</td>
+<td>说明</td>
+</tr>
+<tr>
+<td>props</td>
+<td>类型属性</td>
+</tr></tbody></table>
+<p><a name="API-goods-商品"></a></p>
+<h2>五、 API-goods-商品 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.goods.write.add">vmc.goods.write.add</a></td>
+<td>新增商品</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.goods.write.update">vmc.goods.write.update</a></td>
+<td>修改商品</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.goods.write.upOrDown">vmc.goods.write.upOrDown</a></td>
+<td>商品上下架</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.goods.read.byId">vmc.goods.read.byId</a></td>
+<td>获取单个商品</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.goods.sku.read.findSkuById">vmc.goods.sku.read.findSkuById</a></td>
+<td>获取单个SKU</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.goods.sku.stock.read.find">vmc.goods.sku.stock.read.find</a></td>
+<td>获取sku库存信息</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.goods.sku.stock.write.update">vmc.goods.sku.stock.write.update</a></td>
+<td>设置sku库存</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goods.write.add"></a><br>
+<strong>1.) vmc.goods.write.add 新增商品</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goods_gid</td>
+<td>String</td>
+<td>否</td>
+<td>商品编号</td>
+</tr>
+<tr>
+<td>goods_name</td>
+<td>String</td>
+<td>是</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td>goods_brief</td>
+<td>String</td>
+<td>否</td>
+<td>商品简介</td>
+</tr>
+<tr>
+<td>category_id</td>
+<td>int</td>
+<td>是</td>
+<td>类型序号</td>
+</tr>
+<tr>
+<td>ext_cat</td>
+<td>int</td>
+<td>否</td>
+<td>扩展分类</td>
+</tr>
+<tr>
+<td>marketable</td>
+<td>bool</td>
+<td>否</td>
+<td>是否上架</td>
+</tr>
+<tr>
+<td>description</td>
+<td>String</td>
+<td>否</td>
+<td>详细介绍</td>
+</tr>
+<tr>
+<td>brand</td>
+<td>int</td>
+<td>否</td>
+<td>品牌</td>
+</tr>
+<tr>
+<td>bn</td>
+<td>String</td>
+<td>是</td>
+<td>货号 - 无多规格：为当前商品的值，有多规格：当规格未设置此值时使用</td>
+</tr>
+<tr>
+<td>barcode</td>
+<td>String</td>
+<td>否</td>
+<td>条码 (同上)</td>
+</tr>
+<tr>
+<td>price</td>
+<td>decimal</td>
+<td>否</td>
+<td>销售价 (同上)</td>
+</tr>
+<tr>
+<td>mktprice</td>
+<td>decimal</td>
+<td>否</td>
+<td>市场价 (同上)</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>decimal</td>
+<td>否</td>
+<td>重量 (同上)</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>String</td>
+<td>否</td>
+<td>单位 (同上)</td>
+</tr>
+<tr>
+<td>spec</td>
+<td>String</td>
+<td>否</td>
+<td>规格 (同上)</td>
+</tr>
+<tr>
+<td>images</td>
+<td>String</td>
+<td>否</td>
+<td>图片</td>
+</tr>
+<tr>
+<td>default_img</td>
+<td>String</td>
+<td>否</td>
+<td>默认图片</td>
+</tr>
+<tr>
+<td>seo_title</td>
+<td>String</td>
+<td>否</td>
+<td>seo标题</td>
+</tr>
+<tr>
+<td>seo_keywords</td>
+<td>String</td>
+<td>否</td>
+<td>seo关键词</td>
+</tr>
+<tr>
+<td>seo_description</td>
+<td>String</td>
+<td>否</td>
+<td>seo简介</td>
+</tr>
+<tr>
+<td>keywords</td>
+<td>String</td>
+<td>否</td>
+<td>产品关键词，多个用逗号“,”分割，或者使用数组</td>
+</tr>
+<tr>
+<td>nostore_sell</td>
+<td>bool</td>
+<td>否</td>
+<td>是否忽略库存销售</td>
+</tr>
+<tr>
+<td>gain_score</td>
+<td>int</td>
+<td>否</td>
+<td>积分</td>
+</tr>
+<tr>
+<td>type</td>
+<td>int</td>
+<td>否</td>
+<td>产品类型</td>
+</tr>
+<tr>
+<td>type_props</td>
+<td>Array</td>
+<td>否</td>
+<td>商品类型 扩展属性</td>
+</tr>
+<tr>
+<td>type_params</td>
+<td>Array</td>
+<td>否</td>
+<td>商品类型 商品参数表</td>
+</tr>
+<tr>
+<td>goods_type</td>
+<td>String</td>
+<td>否</td>
+<td>销售类型 (normal:普通商品,bind:捆绑商品,gift:赠品)</td>
+</tr>
+<tr>
+<td>specs</td>
+<td>Array</td>
+<td>否</td>
+<td>规格列表</td>
+</tr>
+<tr>
+<td>products</td>
+<td>Array</td>
+<td>否</td>
+<td>产品列表</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goods.write.add.params"></a><br>
+** specs 规格列表 **</p>
+<p>Key为规格名称，值为规格具体数据</p>
+<p><strong>例</strong></p>
+<pre>array (
+  '颜色' =&gt; 
+  array (
+    0 =&gt; '黑色',
+    1 =&gt; '白色',
+  ),
+  '尺码' =&gt; 
+  array (
+    0 =&gt; 'S',
+    1 =&gt; 'M',
+  ),
+)
+</pre>
+<p>** products 产品列表 **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>spec</td>
+<td>规格具体值</td>
+</tr>
+<tr>
+<td>bn</td>
+<td>货号sku_id</td>
+</tr>
+<tr>
+<td>barcode</td>
+<td>条码</td>
+</tr>
+<tr>
+<td>price</td>
+<td>销售价格</td>
+</tr>
+<tr>
+<td>mktprice</td>
+<td>市场价</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>单位重量</td>
+</tr>
+<tr>
+<td>unit</td>
+<td>单位</td>
+</tr>
+<tr>
+<td>marketable</td>
+<td>是否上架销售</td>
+</tr>
+<tr>
+<td>name</td>
+<td>产品名称</td>
+</tr>
+<tr>
+<td>is_default</td>
+<td>默认产品</td>
+</tr></tbody></table>
+<p><strong>例</strong></p>
+<pre>array (
+  0 =&gt; 
+  array (
+    'spec' =&gt; 
+    array (
+      0 =&gt; '黑色',
+      1 =&gt; 'S',
+    ),
+    'image' =&gt; '5911bbb3Na397d8eb',
+    'bn' =&gt; 'test-bn-01',
+    'barcode' =&gt; 'barcode-001',
+    'price' =&gt; 1100,
+    'mktprice' =&gt; 1200,
+    'weight' =&gt; 1300,
+    'unit' =&gt; '件',
+    'marketable' =&gt; true,
+    'is_default' =&gt; true,
+  ),
+  1 =&gt; 
+  array (
+    'spec' =&gt; 
+    array (
+      0 =&gt; '白色',
+      1 =&gt; 'S',
+    ),
+    'image' =&gt; '5911bbbdNca037b83',
+    'bn' =&gt; 'test-bn-02',
+    'barcode' =&gt; 'barcode-001',
+    'price' =&gt; 1100,
+    'mktprice' =&gt; 1200,
+    'weight' =&gt; 1300,
+    'unit' =&gt; '件',
+    'marketable' =&gt; true,
+    'is_default' =&gt; true,
+  ),
+  2 =&gt; 
+  array (
+    'spec' =&gt; 
+    array (
+      0 =&gt; '黑色',
+      1 =&gt; 'M',
+    ),
+    'image' =&gt; '59130e4cNa6d07fe0',
+    'bn' =&gt; 'test-bn-03',
+    'barcode' =&gt; 'barcode-001',
+    'price' =&gt; 1100,
+    'mktprice' =&gt; 1200,
+    'weight' =&gt; 1300,
+    'unit' =&gt; '件',
+    'marketable' =&gt; true,
+    'is_default' =&gt; true,
+  ),
+  3 =&gt; 
+  array (
+    'spec' =&gt; 
+    array (
+      0 =&gt; '白色',
+      1 =&gt; 'M',
+    ),
+    'image' =&gt; '59130edbN396f5dc4',
+    'bn' =&gt; 'test-bn-04',
+    'barcode' =&gt; 'barcode-001',
+    'price' =&gt; 1100,
+    'mktprice' =&gt; 1200,
+    'weight' =&gt; 1300,
+    'unit' =&gt; '件',
+    'marketable' =&gt; true,
+    'is_default' =&gt; true,
+  ),
+)
+</pre>
+<p>** type_props 产品列表 **<br>
+数组，每个值代表所选的值<br>
+<strong>例</strong></p>
+<pre>array (
+  0 =&gt; 1,
+  1 =&gt; 5,
+  2 =&gt; 22,
+)
+</pre>
+<p>** type_params 产品列表 **<br>
+数组，每个值代表所选的值<br>
+<strong>例</strong></p>
+<pre>array (
+  'AA' =&gt; 
+  array (
+    'a01' =&gt; 'a-1',
+    'a02' =&gt; 'a-2',
+    'a03' =&gt; 'a-3',
+  ),
+  'BB' =&gt; 
+  array (
+    'b01' =&gt; 'b-1',
+    'b02' =&gt; 'b-2',
+    'b03' =&gt; 'b-3',
+  ),
+)
+</pre>
+<p>** images 产品图片列表 **<br>
+键为图片名称，值为图片byte数据<br>
+<strong>例</strong></p>
+<pre>array (
+  '001.jpg' =&gt; byte[],
+  '001.jpg' =&gt; byte[],
+  '001.jpg' =&gt; byte[],
+  '001.jpg' =&gt; byte[],
+)
+</pre>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>create_time</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goods.write.update"></a><br>
+<strong>2.) vmc.goods.write.update 修改商品</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#api.vmc.goods.write.add">参照新增商品</a></p>
+<p>需要增加参数<br>
+字段 | 类型 | 是否必须 | 描述<br>
+------------ | ------------- | ------------- | -------------<br>
+goods_id | int | 是 | 商品ID序号</p>
+<p><a href="#api.vmc.goods.write.add.params">参数说明，参见添加商品</a><br>
+** products 中需要增加 products_id 参数 products_id 为产品编号 **</p>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>修改时间</td>
+</tr>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goods.write.upOrDown"></a><br>
+<strong>3.) vmc.goods.write.upOrDown 商品上下架</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goods_id</td>
+<td>int</td>
+<td>是</td>
+<td>商品ID序号</td>
+</tr>
+<tr>
+<td>op_type</td>
+<td>int</td>
+<td>是</td>
+<td>0：下架, 1：上架</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>修改时间</td>
+</tr>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goods.read.byId"></a><br>
+<strong>4.) vmc.goods.read.byId 获取单个商品</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>goods_id</td>
+<td>int</td>
+<td>是</td>
+<td>商品ID序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr>
+<tr>
+<td>goods_gid</td>
+<td>商品编号</td>
+</tr>
+<tr>
+<td>goods_name</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td>goods_category</td>
+<td>商品分类信息</td>
+</tr>
+<tr>
+<td>goods_brand</td>
+<td>商品品牌信息</td>
+</tr>
+<tr>
+<td>goods_brief</td>
+<td>商品简介</td>
+</tr>
+<tr>
+<td>marketable</td>
+<td>是否上架</td>
+</tr>
+<tr>
+<td>description</td>
+<td>详细介绍</td>
+</tr>
+<tr>
+<td>specs</td>
+<td>规格列表</td>
+</tr>
+<tr>
+<td>products</td>
+<td>产品列表</td>
+</tr>
+<tr>
+<td>goods_type</td>
+<td>产品类型</td>
+</tr>
+<tr>
+<td>goods_type</td>
+<td>类型详细数据</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goods.sku.read.findSkuById"></a><br>
+<strong>5.) vmc.goods.sku.read.findSkuById 获取单个SKU</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>sku_id</td>
+<td>String</td>
+<td>是</td>
+<td>sku-id</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>product_id</td>
+<td>产品ID序号</td>
+</tr>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr>
+<tr>
+<td>sku_id</td>
+<td>sku_id</td>
+</tr>
+<tr>
+<td>product_barcode</td>
+<td>条码</td>
+</tr>
+<tr>
+<td>product_name</td>
+<td>产品名称</td>
+</tr>
+<tr>
+<td>product_price</td>
+<td>产品售价</td>
+</tr>
+<tr>
+<td>product_mktprice</td>
+<td>市场价</td>
+</tr>
+<tr>
+<td>product_weight</td>
+<td>单位重量</td>
+</tr>
+<tr>
+<td>product_unit</td>
+<td>单位</td>
+</tr>
+<tr>
+<td>spec_info</td>
+<td>规格信息</td>
+</tr>
+<tr>
+<td>spec_desc</td>
+<td>规格信息</td>
+</tr>
+<tr>
+<td>marketable</td>
+<td>是否上架</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goods.sku.stock.read.find"></a><br>
+<strong>6.) vmc.goods.sku.stock.read.find 获取sku库存信息</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>sku_id</td>
+<td>String</td>
+<td>是</td>
+<td>sku-id(多个用逗号“,”分割，或传数组)</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stock_id</td>
+<td>库存ID序号</td>
+</tr>
+<tr>
+<td>product_name</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td>sku_id</td>
+<td>sku_id</td>
+</tr>
+<tr>
+<td>product_barcode</td>
+<td>条码</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>库存数量</td>
+</tr></tbody></table>
+<p><a name="api.vmc.goods.sku.stock.write.update"></a><br>
+<strong>7.) vmc.goods.sku.stock.write.update 设置sku库存</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>sku_id</td>
+<td>String</td>
+<td>是</td>
+<td>sku-id</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>int</td>
+<td>是</td>
+<td>库存数量</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr></tbody></table>
+<p><a name="API-order-订单"></a></p>
+<h2>六、 API-order-订单 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.order.read.getbyId">vmc.order.read.getbyId</a></td>
+<td>获取单个订单</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.read.search">vmc.order.read.search</a></td>
+<td>订单检索</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.read.notPayOrderInfo">vmc.order.read.notPayOrderInfo</a></td>
+<td>批量查询未付款订单</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.read.notPayOrderById">vmc.order.read.notPayOrderById</a></td>
+<td>未付款订单单条记录查询</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.read.remarkByOrderId">vmc.order.read.remarkByOrderId</a></td>
+<td>查询商家备注</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.write.remarkUpdate">vmc.order.write.remarkUpdate</a></td>
+<td>商家订单备注修改</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.bill.write.pay">vmc.order.bill.write.pay</a></td>
+<td>订单付款</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.bill.write.refund">vmc.order.bill.write.refund</a></td>
+<td>订单退款</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.delivery.write.send">vmc.order.delivery.write.send</a></td>
+<td>订单发货</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.delivery.write.reship">vmc.order.delivery.write.reship</a></td>
+<td>订单退货</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.write.cancel">vmc.order.write.cancel</a></td>
+<td>订单作废</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.order.write.end">vmc.order.write.end</a></td>
+<td>订单归档完成</td>
+</tr></tbody></table>
+<p><a name="api.vmc.order.read.getbyId"></a><br>
+<strong>1.) vmc.order.read.getbyId 获取单个订单</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单编号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a name="vmc.order.read.getbyId.fields"></a></p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>订单号</td>
+</tr>
+<tr>
+<td>createtime</td>
+<td>下单时间</td>
+</tr>
+<tr>
+<td>last_modified</td>
+<td>最后更新时间</td>
+</tr>
+<tr>
+<td>status</td>
+<td>订单状态 (active:活动订单，dead:已作废,finish:已完成)</td>
+</tr>
+<tr>
+<td>confirm</td>
+<td>确认状态</td>
+</tr>
+<tr>
+<td>pay_status</td>
+<td>付款状态 (0:未支付,1:已支付,2:已付款至到担保方,3:部分付款,4:部分退款,5:全额退款)</td>
+</tr>
+<tr>
+<td>payed</td>
+<td>订单已支付金额</td>
+</tr>
+<tr>
+<td>is_cod</td>
+<td>是否是货到付款订单</td>
+</tr>
+<tr>
+<td>need_shipping</td>
+<td>是否需要运输\发货</td>
+</tr>
+<tr>
+<td>ship_status</td>
+<td>发货状态 (0:未发货,1:已发货,2:部分发货,3:部分退货,4:已退货)</td>
+</tr>
+<tr>
+<td>pay_app</td>
+<td>支付方式</td>
+</tr>
+<tr>
+<td>dlytype_id</td>
+<td>配送方式</td>
+</tr>
+<tr>
+<td>member_id</td>
+<td>会员用户名</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>订单商品总重量（克）</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>订单包含商品数量</td>
+</tr>
+<tr>
+<td>need_invoice</td>
+<td>是否要开发票</td>
+</tr>
+<tr>
+<td>invoice_title</td>
+<td>发票抬头</td>
+</tr>
+<tr>
+<td>finally_cart_amount</td>
+<td>商品优惠后总金额</td>
+</tr>
+<tr>
+<td>cost_freight</td>
+<td>配送费用</td>
+</tr>
+<tr>
+<td>cost_protect</td>
+<td>保价费</td>
+</tr>
+<tr>
+<td>cost_payment</td>
+<td>支付手续费</td>
+</tr>
+<tr>
+<td>cost_tax</td>
+<td>订单营业税费</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>订单支付货币</td>
+</tr>
+<tr>
+<td>cur_rate</td>
+<td>订单支付货币汇率</td>
+</tr>
+<tr>
+<td>memberlv_discount</td>
+<td>会员身份优惠金额</td>
+</tr>
+<tr>
+<td>pmt_goods</td>
+<td>商品促销优惠金额</td>
+</tr>
+<tr>
+<td>pmt_order</td>
+<td>订单促销优惠金额</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>订单创建时附言</td>
+</tr>
+<tr>
+<td>remarks</td>
+<td>订单管理员备注</td>
+</tr>
+<tr>
+<td>addon</td>
+<td>订单附属信息(序列化)</td>
+</tr>
+<tr>
+<td>items</td>
+<td>产品明细</td>
+</tr>
+<tr>
+<td>consignee</td>
+<td>收货人信息</td>
+</tr></tbody></table>
+<p>** items - 产品明细 **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>item_id</td>
+<td>订单明细ID</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>订单ID</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>货品ID</td>
+</tr>
+<tr>
+<td>releted_product_id</td>
+<td>订单内相关货品ID</td>
+</tr>
+<tr>
+<td>goods_id</td>
+<td>商品ID</td>
+</tr>
+<tr>
+<td>bn</td>
+<td>明细商品货号SKU-ID</td>
+</tr>
+<tr>
+<td>barcode</td>
+<td>条码</td>
+</tr>
+<tr>
+<td>name</td>
+<td>明细商品的名称</td>
+</tr>
+<tr>
+<td>spec_info</td>
+<td>商品规格描述</td>
+</tr>
+<tr>
+<td>cost</td>
+<td>明细商品的成本</td>
+</tr>
+<tr>
+<td>price</td>
+<td>销售价</td>
+</tr>
+<tr>
+<td>member_lv_price</td>
+<td>会员价</td>
+</tr>
+<tr>
+<td>buy_price</td>
+<td>成交价</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>成交价x数量</td>
+</tr>
+<tr>
+<td>score</td>
+<td>明细商品积分</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>明细商品重量</td>
+</tr>
+<tr>
+<td>nums</td>
+<td>明细商品购买数量</td>
+</tr>
+<tr>
+<td>sendnum</td>
+<td>明细商品发货数量</td>
+</tr>
+<tr>
+<td>addon</td>
+<td>明细商品的规格属性</td>
+</tr>
+<tr>
+<td>item_type</td>
+<td>明细商品类型 (product:商品,pkg:捆绑商品,gift:赠品商品,adjunct:配件商品)</td>
+</tr></tbody></table>
+<p>** consignee - 收货人信息 **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>姓名</td>
+</tr>
+<tr>
+<td>area</td>
+<td>地区</td>
+</tr>
+<tr>
+<td>addr</td>
+<td>地址</td>
+</tr>
+<tr>
+<td>zip</td>
+<td>邮编</td>
+</tr>
+<tr>
+<td>tel</td>
+<td>电话</td>
+</tr>
+<tr>
+<td>email</td>
+<td>邮箱</td>
+</tr>
+<tr>
+<td>mobile</td>
+<td>手机</td>
+</tr></tbody></table>
+<p><a name="api.vmc.order.read.search"></a><br>
+<strong>2.) vmc.order.read.search 订单检索</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>int</td>
+<td>是</td>
+<td>开始日期</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>int</td>
+<td>是</td>
+<td>结束日期</td>
+</tr>
+<tr>
+<td>page</td>
+<td>int</td>
+<td>是</td>
+<td>所在分页</td>
+</tr>
+<tr>
+<td>page_size</td>
+<td>int</td>
+<td>是</td>
+<td>每页显示数量</td>
+</tr>
+<tr>
+<td>order_state</td>
+<td>int</td>
+<td>是</td>
+<td>订单状态 (1:待付款,2:待发货,3:已发货,9:已完成,99:已作废)</td>
+</tr>
+<tr>
+<td>sort_type</td>
+<td>int</td>
+<td>是</td>
+<td>排序方式 (0:降序,1:升序)</td>
+</tr>
+<tr>
+<td>date_type</td>
+<td>int</td>
+<td>是</td>
+<td>日期方式 (0:订单创建时间查询,1:按修改时间查询)</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#vmc.order.read.getbyId.fields">参照订单返回结果信息</a></p>
+<p><a name="api.vmc.order.read.notPayOrderInfo"></a><br>
+<strong>3.) vmc.order.read.notPayOrderInfo 批量查询未付款订单</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>start_date</td>
+<td>date</td>
+<td>否</td>
+<td>开始日期</td>
+</tr>
+<tr>
+<td>end_date</td>
+<td>date</td>
+<td>否</td>
+<td>结束日期</td>
+</tr>
+<tr>
+<td>page</td>
+<td>int</td>
+<td>否</td>
+<td>所在分页</td>
+</tr>
+<tr>
+<td>page_size</td>
+<td>int</td>
+<td>否</td>
+<td>每页显示数量</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#vmc.order.read.getbyId.fields">参照订单返回结果信息</a></p>
+<p><a name="api.vmc.order.read.notPayOrderById"></a><br>
+<strong>4.) vmc.order.read.notPayOrderById 未付款订单单条记录查询</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单ID序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#vmc.order.read.getbyId.fields">参照订单返回结果信息</a></p>
+<p><a name="api.vmc.order.read.remarkByOrderId"></a><br>
+<strong>5.) vmc.order.read.remarkByOrderId 查询商家备注</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单ID序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>remarks</td>
+<td>商家备注</td>
+</tr></tbody></table>
+<p><a name="api.vmc.order.write.remarkUpdate"></a><br>
+<strong>6.) vmc.order.write.remarkUpdate 商家订单备注修改</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单ID序号</td>
+</tr>
+<tr>
+<td>remarks</td>
+<td>String</td>
+<td>是</td>
+<td>备注内容</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>订单ID序号</td>
+</tr></tbody></table>
+<p><a name="api.vmc.order.bill.write.pay"></a><br>
+<strong>7.) vmc.order.bill.write.pay 订单付款</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单ID序号</td>
+</tr>
+<tr>
+<td>pay_money</td>
+<td>decima</td>
+<td>是</td>
+<td>支付货币金额</td>
+</tr>
+<tr>
+<td>pay_mode</td>
+<td>String</td>
+<td>是</td>
+<td>付款方式 (online:在线支付,offline:线下支付,deposit:预存款支付)</td>
+</tr>
+<tr>
+<td>pay_app_id</td>
+<td>String</td>
+<td>是</td>
+<td>支付应用程序</td>
+</tr>
+<tr>
+<td>payee_account</td>
+<td>String</td>
+<td>是</td>
+<td>收款者账户</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>订单ID序号</td>
+</tr></tbody></table>
+<p><a name="api.vmc.order.bill.write.refund"></a><br>
+<strong>8.) vmc.order.bill.write.refund 订单退款</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单ID序号</td>
+</tr>
+<tr>
+<td>pay_mode</td>
+<td>String</td>
+<td>是</td>
+<td>付款方式 (online:在线支付,offline:线下支付,deposit:预存款支付)</td>
+</tr>
+<tr>
+<td>pay_app_id</td>
+<td>String</td>
+<td>是</td>
+<td>支付应用程序</td>
+</tr>
+<tr>
+<td>payee_account</td>
+<td>String</td>
+<td>是</td>
+<td>收款者账户</td>
+</tr>
+<tr>
+<td>payee_bank</td>
+<td>String</td>
+<td>是</td>
+<td>收款者银行</td>
+</tr>
+<tr>
+<td>out_trade_no</td>
+<td>String</td>
+<td>是</td>
+<td>支付平台流水号</td>
+</tr>
+<tr>
+<td>pay_fee</td>
+<td>int</td>
+<td>是</td>
+<td>支付手续费</td>
+</tr>
+<tr>
+<td>payer_bank</td>
+<td>String</td>
+<td>是</td>
+<td>付款者银行</td>
+</tr>
+<tr>
+<td>payer_account</td>
+<td>String</td>
+<td>是</td>
+<td>付款者账户</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>String</td>
+<td>是</td>
+<td>备注</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>订单ID序号</td>
+</tr></tbody></table>
+<p><a name="api.vmc.order.delivery.write.send"></a><br>
+<strong>9.) vmc.order.delivery.write.send 订单发货</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单ID序号</td>
+</tr>
+<tr>
+<td>dlycorp_id</td>
+<td>int</td>
+<td>是</td>
+<td>物流公司</td>
+</tr>
+<tr>
+<td>dlyplace_id</td>
+<td>int</td>
+<td>是</td>
+<td>发货地点</td>
+</tr>
+<tr>
+<td>send_router</td>
+<td>String</td>
+<td>是</td>
+<td>发货类型 (selfwarehouse:自营仓发货',cbeselfwarehouse:跨境自营仓发货,tpwarehouse:第三方仓发货,cbetpwarehouse:跨境第三方仓发货,pos:门店收银台发货,storedelivery:门店自配送,warehouse2store:自营仓发门店,return:客户退回)</td>
+</tr>
+<tr>
+<td>logistics_no</td>
+<td>String</td>
+<td>是</td>
+<td>物流单号</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>String</td>
+<td>是</td>
+<td>备注</td>
+</tr>
+<tr>
+<td>send</td>
+<td>Array</td>
+<td>是</td>
+<td>货品列表 array( 9=&gt;3); key为ITEM-ID 值为发货数量</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>订单ID序号</td>
+</tr>
+<tr>
+<td>logistics_no</td>
+<td>发货单单号</td>
+</tr>
+<tr>
+<td>delivery_id</td>
+<td>货单流水号</td>
+</tr>
+<tr>
+<td>delivery_type</td>
+<td>业务类型</td>
+</tr>
+<tr>
+<td>send_router</td>
+<td>发货类型</td>
+</tr>
+<tr>
+<td>consignor</td>
+<td>发货人信息</td>
+</tr>
+<tr>
+<td>consignee</td>
+<td>收货人信息</td>
+</tr>
+<tr>
+<td>status</td>
+<td>发货单状态</td>
+</tr></tbody></table>
+<p><a name="api.vmc.order.delivery.write.reship"></a><br>
+<strong>10.) vmc.order.delivery.write.reship 订单退货</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单ID序号</td>
+</tr>
+<tr>
+<td>dlycorp_id</td>
+<td>int</td>
+<td>是</td>
+<td>物流公司</td>
+</tr>
+<tr>
+<td>dlyplace_id</td>
+<td>int</td>
+<td>是</td>
+<td>退货地点</td>
+</tr>
+<tr>
+<td>send_router</td>
+<td>String</td>
+<td>是</td>
+<td>发货类型 (selfwarehouse:自营仓发货',cbeselfwarehouse:跨境自营仓发货,tpwarehouse:第三方仓发货,cbetpwarehouse:跨境第三方仓发货,pos:门店收银台发货,storedelivery:门店自配送,warehouse2store:自营仓发门店,return:客户退回)</td>
+</tr>
+<tr>
+<td>logistics_no</td>
+<td>String</td>
+<td>是</td>
+<td>物流单号</td>
+</tr>
+<tr>
+<td>cost_freight</td>
+<td>decima</td>
+<td>是</td>
+<td>物流费用</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>String</td>
+<td>是</td>
+<td>备注</td>
+</tr>
+<tr>
+<td>send</td>
+<td>Array</td>
+<td>是</td>
+<td>货品列表 array( 9=&gt;3); key为ITEM-ID 值为发货数量</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>订单ID序号</td>
+</tr>
+<tr>
+<td>logistics_no</td>
+<td>发货单单号</td>
+</tr>
+<tr>
+<td>delivery_id</td>
+<td>货单流水号</td>
+</tr>
+<tr>
+<td>delivery_type</td>
+<td>业务类型</td>
+</tr>
+<tr>
+<td>send_router</td>
+<td>发货类型</td>
+</tr>
+<tr>
+<td>consignor</td>
+<td>发货人信息</td>
+</tr>
+<tr>
+<td>consignee</td>
+<td>收货人信息</td>
+</tr>
+<tr>
+<td>status</td>
+<td>退货单状态</td>
+</tr>
+<tr>
+<td>confirm</td>
+<td>退货单是否已确认</td>
+</tr></tbody></table>
+<p><a name="api.vmc.order.write.cancel"></a><br>
+<strong>11.) vmc.order.write.cancel 订单作废</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单ID序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>订单ID序号</td>
+</tr></tbody></table>
+<p><a name="api.vmc.order.write.end"></a><br>
+<strong>12.) vmc.order.write.end 订单归档完成</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>是</td>
+<td>订单ID序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>订单ID序号</td>
+</tr></tbody></table>
+<p><a name="API-pay-支付"></a></p>
+<h2>七、 API-pay-支付 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.pay.read.get">vmc.pay.read.get</a></td>
+<td>查询支付方式</td>
+</tr></tbody></table>
+<p><a name="api.vmc.pay.read.get"></a><br>
+<strong>1.) vmc.pay.read.get 查询支付方式</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>支付应用名称</td>
+</tr>
+<tr>
+<td>version</td>
+<td>应用版本</td>
+</tr>
+<tr>
+<td>platform_allow</td>
+<td>支持平台</td>
+</tr>
+<tr>
+<td>app_id</td>
+<td>支付方式ID号</td>
+</tr>
+<tr>
+<td>display_name</td>
+<td>支付方式名称</td>
+</tr>
+<tr>
+<td>order_num</td>
+<td>排序</td>
+</tr>
+<tr>
+<td>app_class</td>
+<td>ectools支付方式方法名</td>
+</tr>
+<tr>
+<td>description</td>
+<td>描述</td>
+</tr>
+<tr>
+<td>status</td>
+<td>是否开启</td>
+</tr>
+<tr>
+<td>pay_fee</td>
+<td>支付费用</td>
+</tr></tbody></table>
+<p><a name="API-distribution-配送"></a></p>
+<h2>八、 API-distribution-配送 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.distribution.read.get">vmc.distribution.read.get</a></td>
+<td>查询配送方式</td>
+</tr></tbody></table>
+<p><a name="api.vmc.distribution.read.get"></a><br>
+<strong>1.) vmc.distribution.read.get 查询配送方式</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>real_type</td>
+<td>配送名称</td>
+</tr>
+<tr>
+<td>type</td>
+<td>配送方式</td>
+</tr></tbody></table>
+<p><a name="API-delivery-配送"></a></p>
+<h2>九、 API-delivery-配送 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.delivery.write.add">vmc.delivery.write.add</a></td>
+<td>添加物流公司</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.delivery.write.edit">vmc.delivery.write.edit</a></td>
+<td>编辑物流公司</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.delivery.write.delete">vmc.delivery.write.delete</a></td>
+<td>删除物流公司</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.delivery.read.get">vmc.delivery.read.get</a></td>
+<td>获取物流公司</td>
+</tr></tbody></table>
+<p><a name="api.vmc.delivery.write.add"></a><br>
+<strong>1.) vmc.delivery.write.add 添加物流公司</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>corp_name</td>
+<td>int</td>
+<td>是</td>
+<td>物流公司名称</td>
+</tr>
+<tr>
+<td>corp_code</td>
+<td>String</td>
+<td>是</td>
+<td>物流公司代码</td>
+</tr>
+<tr>
+<td>website</td>
+<td>String</td>
+<td>否</td>
+<td>物流公司官网</td>
+</tr>
+<tr>
+<td>request_url</td>
+<td>String</td>
+<td>否</td>
+<td>包裹查询网址</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>create_time</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>物流公司ID</td>
+</tr></tbody></table>
+<p><a name="api.vmc.delivery.write.edit"></a><br>
+<strong>2.) vmc.delivery.write.edit 编辑物流公司</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>corp_id</td>
+<td>int</td>
+<td>是</td>
+<td>物流公司ID</td>
+</tr>
+<tr>
+<td>corp_name</td>
+<td>String</td>
+<td>是</td>
+<td>物流公司名称</td>
+</tr>
+<tr>
+<td>corp_code</td>
+<td>String</td>
+<td>是</td>
+<td>物流公司代码</td>
+</tr>
+<tr>
+<td>website</td>
+<td>String</td>
+<td>否</td>
+<td>物流公司官网</td>
+</tr>
+<tr>
+<td>request_url</td>
+<td>String</td>
+<td>否</td>
+<td>包裹查询网址</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>corp_id</td>
+<td>物流公司ID</td>
+</tr></tbody></table>
+<p><a name="api.vmc.delivery.write.delete"></a><br>
+<strong>3.) vmc.delivery.write.delete 删除物流公司</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>corp_id</td>
+<td>int</td>
+<td>是</td>
+<td>物流公司ID</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>corp_id</td>
+<td>物流公司ID</td>
+</tr></tbody></table>
+<p><a name="api.vmc.delivery.read.get"></a><br>
+<strong>4.) vmc.delivery.read.get 获取物流公司</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>corp_id</td>
+<td>物流公司ID</td>
+</tr>
+<tr>
+<td>corp_name</td>
+<td>物流公司名称</td>
+</tr>
+<tr>
+<td>corp_code</td>
+<td>物流公司代码</td>
+</tr>
+<tr>
+<td>website</td>
+<td>物流公司官网</td>
+</tr>
+<tr>
+<td>request_url</td>
+<td>包裹查询网址</td>
+</tr></tbody></table>
+<p><a name="API-areas-地址库"></a></p>
+<h2>十、 API-areas-地址库 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.areas.read.province.get">vmc.areas.read.province.get</a></td>
+<td>获取省级地址列表</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.areas.read.city.get">vmc.areas.read.city.get</a></td>
+<td>获取市级信息列表</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.areas.read.county.get">vmc.areas.read.county.get</a></td>
+<td>获取区县级信息列表</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.areas.read.town.get">vmc.areas.read.town.get</a></td>
+<td>获取乡镇级信息列表</td>
+</tr></tbody></table>
+<p><a name="api.vmc.areas.read.province.get"></a><br>
+<strong>1.) vmc.areas.read.province.get 获取省级地址列表</strong>*</p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr></tbody></table>
+<p><a name="api.vmc.areas.read.province.get.fields"></a></p>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>area_id</td>
+<td>区域序号</td>
+</tr>
+<tr>
+<td>area_name</td>
+<td>地区名称</td>
+</tr>
+<tr>
+<td>area_package</td>
+<td>地区包的类别, 中国/外国等. 中国大陆的编号目前为mainland</td>
+</tr>
+<tr>
+<td>area_pid</td>
+<td>上一级地区的序号</td>
+</tr>
+<tr>
+<td>area_path</td>
+<td>序号层级排列结构</td>
+</tr></tbody></table>
+<p><a name="api.vmc.areas.read.city.get"></a><br>
+<strong>2.) vmc.areas.read.city.get 获取市级信息列表</strong>*</p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>area_pid</td>
+<td>int</td>
+<td>是</td>
+<td>上一级地区的序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#api.vmc.areas.read.province.get.fields">参照获取省级地址列表返回结果</a></p>
+<p><a name="api.vmc.areas.read.county.get"></a><br>
+<strong>3.) vmc.areas.read.county.get 获取区县级信息列表</strong>*</p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>area_pid</td>
+<td>int</td>
+<td>是</td>
+<td>上一级地区的序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#api.vmc.areas.read.province.get.fields">参照获取省级地址列表返回结果</a></p>
+<p><a name="api.vmc.areas.read.town.get"></a><br>
+<strong>4.) vmc.areas.read.town.get 获取乡镇级信息列表</strong>*</p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>area_pid</td>
+<td>int</td>
+<td>是</td>
+<td>上一级地区的序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#api.vmc.areas.read.province.get.fields">参照获取省级地址列表返回结果</a></p>
+<p><a name="API-refundapply-退款"></a></p>
+<h2>十一、 API-refundapply-退款 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.refundapply.read.queryPageList">vmc.refundapply.read.queryPageList</a></td>
+<td>退款审核单列表查询</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.refundapply.read.queryById">vmc.refundapply.read.queryById</a></td>
+<td>根据Id查询退款审核单</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.refundapply.read.getWaitRefundNum">vmc.refundapply.read.getWaitRefundNum</a></td>
+<td>待处理退款单数查询</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.refundapply.write.replyRefund">vmc.refundapply.write.replyRefund</a></td>
+<td>审核退款单</td>
+</tr></tbody></table>
+<p><a name="api.vmc.refundapply.read.queryPageList"></a><br>
+<strong>1.) vmc.refundapply.read.queryPageList 退款审核单列表查询</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>ids</td>
+<td>String</td>
+<td>否</td>
+<td>ID,多个用,分割</td>
+</tr>
+<tr>
+<td>status</td>
+<td>int</td>
+<td>否</td>
+<td>上一级地区的序号 (0:全部,1:准备中,9:支付成功,99:作废)</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>否</td>
+<td>相关订单</td>
+</tr>
+<tr>
+<td>member_id</td>
+<td>int</td>
+<td>否</td>
+<td>相关会员</td>
+</tr>
+<tr>
+<td>create_start_date</td>
+<td>date</td>
+<td>否</td>
+<td>创建时间开始</td>
+</tr>
+<tr>
+<td>create_end_date</td>
+<td>date</td>
+<td>否</td>
+<td>创建时间结束</td>
+</tr>
+<tr>
+<td>modify_start_date</td>
+<td>date</td>
+<td>否</td>
+<td>更新时间开始</td>
+</tr>
+<tr>
+<td>modify_end_date</td>
+<td>date</td>
+<td>否</td>
+<td>更新时间结束</td>
+</tr>
+<tr>
+<td>page</td>
+<td>int</td>
+<td>否</td>
+<td>所在分页</td>
+</tr>
+<tr>
+<td>page_size</td>
+<td>int</td>
+<td>否</td>
+<td>每页显示数量</td>
+</tr></tbody></table>
+<p><a name="vmc.refundapply.read.queryPageList.fields"></a></p>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bill_id</td>
+<td>账单流水号</td>
+</tr>
+<tr>
+<td>money</td>
+<td>支付货币金额</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>货币</td>
+</tr>
+<tr>
+<td>cur_rate</td>
+<td>货币汇率</td>
+</tr>
+<tr>
+<td>member_id</td>
+<td>相关会员</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>相关订单</td>
+</tr>
+<tr>
+<td>pay_mode</td>
+<td>付款方式 (online:在线支付,offline:线下支付,deposit:预存款支付)</td>
+</tr>
+<tr>
+<td>payee_account</td>
+<td>收款者账户</td>
+</tr>
+<tr>
+<td>payee_bank</td>
+<td>收款者银行</td>
+</tr>
+<tr>
+<td>payer_account</td>
+<td>付款者账户</td>
+</tr>
+<tr>
+<td>payer_bank</td>
+<td>付款者银行</td>
+</tr>
+<tr>
+<td>pay_app_id</td>
+<td>支付应用程序</td>
+</tr>
+<tr>
+<td>pay_fee</td>
+<td>支付手续费</td>
+</tr>
+<tr>
+<td>out_trade_no</td>
+<td>支付平台流水号</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>备注</td>
+</tr>
+<tr>
+<td>createtime</td>
+<td>支付单创建时间</td>
+</tr>
+<tr>
+<td>last_modify</td>
+<td>最后更新时间</td>
+</tr></tbody></table>
+<p><a name="api.vmc.refundapply.read.queryById"></a><br>
+<strong>2.) vmc.refundapply.read.queryById 根据Id查询退款审核单</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fields</td>
+<td>String</td>
+<td>否</td>
+<td>需要返回的字段</td>
+</tr>
+<tr>
+<td>bill_id</td>
+<td>int</td>
+<td>是</td>
+<td>上一级地区的序号</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#vmc.refundapply.read.queryPageList.fields">参照退款审核单列表查询返回结果</a></p>
+<p><a name="api.vmc.refundapply.read.getWaitRefundNum"></a><br>
+<strong>3.) vmc.refundapply.read.getWaitRefundNum 待处理退款单数查询</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无</td>
+<td></td>
+<td></td>
+<td></td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>total</td>
+<td>数量</td>
+</tr></tbody></table>
+<p><a name="api.vmc.refundapply.write.replyRefund"></a><br>
+<strong>4.) vmc.refundapply.write.replyRefund 审核退款单</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bill_id</td>
+<td>String</td>
+<td>是</td>
+<td>账单流水号</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>int</td>
+<td>否</td>
+<td>相关订单</td>
+</tr>
+<tr>
+<td>pay_app_id</td>
+<td>String</td>
+<td>是</td>
+<td>支付应用程序</td>
+</tr>
+<tr>
+<td>payer_account</td>
+<td>String</td>
+<td>是</td>
+<td>付款者账户</td>
+</tr>
+<tr>
+<td>payer_bank</td>
+<td>String</td>
+<td>是</td>
+<td>付款者银行</td>
+</tr>
+<tr>
+<td>out_trade_no</td>
+<td>String</td>
+<td>是</td>
+<td>支付平台流水号</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>String</td>
+<td>否</td>
+<td>备注</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>modified</td>
+<td>更新时间</td>
+</tr>
+<tr>
+<td>bill_id</td>
+<td>账单流水号</td>
+</tr></tbody></table>
+<p><a name="API-system-系统"></a></p>
+<h2>十二、 API-system-系统 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#api.vmc.system.ping">vmc.system.ping</a></td>
+<td>PING</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.system.read.setting.info">vmc.system.read.setting.info</a></td>
+<td>查询基本信息</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.system.read.setting.pc">vmc.system.read.setting.pc</a></td>
+<td>查询PC版基本信息</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.system.read.setting.mobile">vmc.system.read.setting.mobile</a></td>
+<td>查询手机版基本信息</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.system.returnaddress.read.get">vmc.system.returnaddress.read.get</a></td>
+<td>查询退货地址列表</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.system.returnaddress.read.getdef">vmc.system.returnaddress.read.getdef</a></td>
+<td>查询默认退货地址</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.system.shipaddress.read.get">vmc.system.shipaddress.read.get</a></td>
+<td>查询发货地址列</td>
+</tr>
+<tr>
+<td><a href="#api.vmc.system.shipaddress.read.getdef">vmc.system.shipaddress.read.getdef</a></td>
+<td>查询默认发货地址</td>
+</tr></tbody></table>
+<p><a name="api.vmc.system.ping"></a><br>
+<strong>1.) vmc.system.ping PING</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>msg</td>
+<td>String</td>
+<td>否</td>
+<td>消息</td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>msg</td>
+<td>如有传入msg则返回传入msg，否则返回ping</td>
+</tr></tbody></table>
+<p><a name="api.vmc.system.read.setting.info"></a><br>
+<strong>2.) vmc.system.read.setting.info 查询基本信息</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无</td>
+<td></td>
+<td></td>
+<td></td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><strong>返回结果有说明</strong>*</p>
+<p><a name="api.vmc.system.read.setting.pc"></a><br>
+<strong>3.) vmc.system.read.setting.pc 查询PC版基本信息</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无</td>
+<td></td>
+<td></td>
+<td></td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><strong>返回结果有说明</strong>*</p>
+<p><a name="api.vmc.system.read.setting.mobile"></a><br>
+<strong>4.) vmc.system.read.setting.mobile 查询手机版基本信息</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无</td>
+<td></td>
+<td></td>
+<td></td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><strong>返回结果有说明</strong>*</p>
+<p><a name="api.vmc.system.returnaddress.read.get"></a><br>
+<strong>5.) vmc.system.returnaddress.read.get 查询退货地址列表</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无</td>
+<td></td>
+<td></td>
+<td></td>
+</tr></tbody></table>
+<p><a name="api.vmc.system.returnaddress.read.get.fields"></a></p>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dp_id</td>
+<td>地点ID</td>
+</tr>
+<tr>
+<td>dp_no</td>
+<td>编号</td>
+</tr>
+<tr>
+<td>dp_type</td>
+<td>地点类型 (warehouse:仓库,store:门店,tpwarehouse:第三方仓库)</td>
+</tr>
+<tr>
+<td>dp_type_var</td>
+<td>地点类型</td>
+</tr>
+<tr>
+<td>dp_title</td>
+<td>地点名称</td>
+</tr>
+<tr>
+<td>consignor_name</td>
+<td>联系人</td>
+</tr>
+<tr>
+<td>consignor_area</td>
+<td>所在地区</td>
+</tr>
+<tr>
+<td>consignor_addr</td>
+<td>详细地址</td>
+</tr>
+<tr>
+<td>consignor_zip</td>
+<td>邮编</td>
+</tr>
+<tr>
+<td>consignor_tel</td>
+<td>联系电话</td>
+</tr>
+<tr>
+<td>consignor_mobile</td>
+<td>联系人手机</td>
+</tr>
+<tr>
+<td>consignor_email</td>
+<td>联系人Email</td>
+</tr>
+<tr>
+<td>is_default</td>
+<td>是否是默认发货地</td>
+</tr>
+<tr>
+<td>is_default_reship</td>
+<td>是否是默认退货地</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>备注</td>
+</tr></tbody></table>
+<p><a name="api.vmc.system.returnaddress.read.getdef"></a><br>
+<strong>6.) vmc.system.returnaddress.read.getdef 查询默认退货地址</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无</td>
+<td></td>
+<td></td>
+<td></td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#api.vmc.system.returnaddress.read.get.fields">参照查询退货地址列表返回结果</a></p>
+<p><a name="api.vmc.system.shipaddress.read.get"></a><br>
+<strong>7.) vmc.system.shipaddress.read.get 查询发货地址列</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无</td>
+<td></td>
+<td></td>
+<td></td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#api.vmc.system.returnaddress.read.get.fields">参照查询退货地址列表返回结果</a></p>
+<p><a name="api.vmc.system.shipaddress.read.getdef"></a><br>
+<strong>8.) vmc.system.shipaddress.read.getdef 查询默认发货地址</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>是否必须</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>无</td>
+<td></td>
+<td></td>
+<td></td>
+</tr></tbody></table>
+<blockquote>
+</blockquote>
+<pre><code>返回结果
+</code></pre>
+<p><a href="#api.vmc.system.returnaddress.read.get.fields">参照查询退货地址列表返回结果</a></p>
+<p><a name="HOOK-category-分类"></a></p>
+<h2>十四、 HOOK-category-分类 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#hook.vmc.category.save">vmc.category.save</a></td>
+<td>添加分类</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.category.remove">vmc.category.remove</a></td>
+<td>移除分类</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.category.save"></a><br>
+<strong>1.) vmc.category.save 添加分类</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>分类ID</td>
+</tr>
+<tr>
+<td>category_pid</td>
+<td>所属分类</td>
+</tr>
+<tr>
+<td>category_name</td>
+<td>分类名称</td>
+</tr>
+<tr>
+<td>visible</td>
+<td>前台是否可见</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.category.remove"></a><br>
+<strong>2.) vmc.category.remove 移除分类</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>category_id</td>
+<td>地点ID</td>
+</tr></tbody></table>
+<p><a name="HOOK-goods-商品"></a></p>
+<h2>十四、 HOOK-goods-商品 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#hook.vmc.goods.create">vmc.goods.create</a></td>
+<td>创建商品</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.goods.update">vmc.goods.update</a></td>
+<td>更新商品</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.goods.delete">vmc.goods.delete</a></td>
+<td>删除商品</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.goods.create"></a><br>
+<strong>1.) vmc.goods.create 创建商品</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr>
+<tr>
+<td>goods_gid</td>
+<td>商品编号</td>
+</tr>
+<tr>
+<td>goods_name</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td>type_id</td>
+<td>产品类型</td>
+</tr>
+<tr>
+<td>category_id</td>
+<td>商品分类信息</td>
+</tr>
+<tr>
+<td>brand_id</td>
+<td>商品品牌信息</td>
+</tr>
+<tr>
+<td>market_able</td>
+<td>是否上架销售</td>
+</tr>
+<tr>
+<td>goods_profile</td>
+<td>商品简介</td>
+</tr>
+<tr>
+<td>goods_content</td>
+<td>详细介绍</td>
+</tr>
+<tr>
+<td>specs</td>
+<td>规格列表</td>
+</tr>
+<tr>
+<td>profile_(1-50)</td>
+<td>产品类型信息</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.goods.update"></a><br>
+<strong>2.) vmc.goods.update 更新商品</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>filter</td>
+<td>筛选条件</td>
+</tr>
+<tr>
+<td>goods</td>
+<td>修改内容</td>
+</tr></tbody></table>
+<p>** filter **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goods_id</td>
+<td>商品ID</td>
+</tr></tbody></table>
+<p>** goods **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr>
+<tr>
+<td>goods_gid</td>
+<td>商品编号</td>
+</tr>
+<tr>
+<td>goods_name</td>
+<td>商品名称</td>
+</tr>
+<tr>
+<td>type_id</td>
+<td>产品类型</td>
+</tr>
+<tr>
+<td>category_id</td>
+<td>商品分类信息</td>
+</tr>
+<tr>
+<td>brand_id</td>
+<td>商品品牌信息</td>
+</tr>
+<tr>
+<td>market_able</td>
+<td>是否上架销售</td>
+</tr>
+<tr>
+<td>goods_profile</td>
+<td>商品简介</td>
+</tr>
+<tr>
+<td>goods_content</td>
+<td>详细介绍</td>
+</tr>
+<tr>
+<td>specs</td>
+<td>规格列表</td>
+</tr>
+<tr>
+<td>profile_(1-50)</td>
+<td>产品类型信息</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.goods.delete"></a><br>
+<strong>3.) vmc.goods.delete 删除商品</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr></tbody></table>
+<p><a name="HOOK-products-产品"></a></p>
+<h2>十五、 HOOK-products-产品 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#hook.vmc.products.create">vmc.products.create</a></td>
+<td>创建产品</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.products.update">vmc.products.update</a></td>
+<td>更新产品</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.products.delete">vmc.products.delete</a></td>
+<td>删除产品</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.products.create"></a><br>
+<strong>1.) vmc.products.create 创建产品</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>产品ID序号</td>
+</tr>
+<tr>
+<td>sku_id</td>
+<td>sku_id</td>
+</tr>
+<tr>
+<td>product_code</td>
+<td>条码</td>
+</tr>
+<tr>
+<td>product_name</td>
+<td>产品名称</td>
+</tr>
+<tr>
+<td>product_price</td>
+<td>产品售价</td>
+</tr>
+<tr>
+<td>mkt_price</td>
+<td>市场价</td>
+</tr>
+<tr>
+<td>product_weight</td>
+<td>单位重量</td>
+</tr>
+<tr>
+<td>product_unit</td>
+<td>单位</td>
+</tr>
+<tr>
+<td>spec_info</td>
+<td>规格信息</td>
+</tr>
+<tr>
+<td>spec_desc</td>
+<td>规格信息</td>
+</tr>
+<tr>
+<td>is_default</td>
+<td>默认产品</td>
+</tr>
+<tr>
+<td>marketable</td>
+<td>是否上架</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.products.update"></a><br>
+<strong>2.) vmc.products.update 更新产品</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>filter</td>
+<td>筛选条件</td>
+</tr>
+<tr>
+<td>products</td>
+<td>修改内容</td>
+</tr></tbody></table>
+<p>** filter **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>product_id</td>
+<td>产品ID</td>
+</tr></tbody></table>
+<p>** products **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>goods_id</td>
+<td>商品ID序号</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>产品ID序号</td>
+</tr>
+<tr>
+<td>sku_id</td>
+<td>sku_id</td>
+</tr>
+<tr>
+<td>product_code</td>
+<td>条码</td>
+</tr>
+<tr>
+<td>product_name</td>
+<td>产品名称</td>
+</tr>
+<tr>
+<td>product_price</td>
+<td>产品售价</td>
+</tr>
+<tr>
+<td>mkt_price</td>
+<td>市场价</td>
+</tr>
+<tr>
+<td>product_weight</td>
+<td>单位重量</td>
+</tr>
+<tr>
+<td>product_unit</td>
+<td>单位</td>
+</tr>
+<tr>
+<td>spec_info</td>
+<td>规格信息</td>
+</tr>
+<tr>
+<td>spec_desc</td>
+<td>规格信息</td>
+</tr>
+<tr>
+<td>is_default</td>
+<td>默认产品</td>
+</tr>
+<tr>
+<td>marketable</td>
+<td>是否上架</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.products.delete"></a><br>
+<strong>3.) vmc.products.delete 删除产品</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>product_id</td>
+<td>产品ID序号</td>
+</tr></tbody></table>
+<p><a name="HOOK-order-订单"></a></p>
+<h2>十六、 HOOK-order-订单 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#hook.vmc.order.create">vmc.order.create</a></td>
+<td>订单创建完成时触发</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.order.cancel">vmc.order.cancel</a></td>
+<td>订单作废完成时触发</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.order.end">vmc.order.end</a></td>
+<td>订单归档完成时触发</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.order.create"></a><br>
+<strong>1.) vmc.order.create 订单创建完成时触发</strong></p>
+<p><a name="hook.vmc.order.create.fields"></a></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>order_id</td>
+<td>订单号</td>
+</tr>
+<tr>
+<td>createtime</td>
+<td>下单时间</td>
+</tr>
+<tr>
+<td>last_modified</td>
+<td>最后更新时间</td>
+</tr>
+<tr>
+<td>status</td>
+<td>订单状态 (active:活动订单，dead:已作废,finish:已完成)</td>
+</tr>
+<tr>
+<td>confirm</td>
+<td>确认状态</td>
+</tr>
+<tr>
+<td>pay_status</td>
+<td>付款状态 (0:未支付,1:已支付,2:已付款至到担保方,3:部分付款,4:部分退款,5:全额退款)</td>
+</tr>
+<tr>
+<td>payed</td>
+<td>订单已支付金额</td>
+</tr>
+<tr>
+<td>is_cod</td>
+<td>是否是货到付款订单</td>
+</tr>
+<tr>
+<td>need_shipping</td>
+<td>是否需要运输\发货</td>
+</tr>
+<tr>
+<td>ship_status</td>
+<td>发货状态 (0:未发货,1:已发货,2:部分发货,3:部分退货,4:已退货)</td>
+</tr>
+<tr>
+<td>pay_app</td>
+<td>支付方式</td>
+</tr>
+<tr>
+<td>dlytype_id</td>
+<td>配送方式</td>
+</tr>
+<tr>
+<td>member_id</td>
+<td>会员用户名</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>订单商品总重量（克）</td>
+</tr>
+<tr>
+<td>quantity</td>
+<td>订单包含商品数量</td>
+</tr>
+<tr>
+<td>need_invoice</td>
+<td>是否要开发票</td>
+</tr>
+<tr>
+<td>invoice_title</td>
+<td>发票抬头</td>
+</tr>
+<tr>
+<td>finally_cart_amount</td>
+<td>商品优惠后总金额</td>
+</tr>
+<tr>
+<td>cost_freight</td>
+<td>配送费用</td>
+</tr>
+<tr>
+<td>cost_protect</td>
+<td>保价费</td>
+</tr>
+<tr>
+<td>cost_payment</td>
+<td>支付手续费</td>
+</tr>
+<tr>
+<td>cost_tax</td>
+<td>订单营业税费</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>订单支付货币</td>
+</tr>
+<tr>
+<td>cur_rate</td>
+<td>订单支付货币汇率</td>
+</tr>
+<tr>
+<td>memberlv_discount</td>
+<td>会员身份优惠金额</td>
+</tr>
+<tr>
+<td>pmt_goods</td>
+<td>商品促销优惠金额</td>
+</tr>
+<tr>
+<td>pmt_order</td>
+<td>订单促销优惠金额</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>订单创建时附言</td>
+</tr>
+<tr>
+<td>remarks</td>
+<td>订单管理员备注</td>
+</tr>
+<tr>
+<td>addon</td>
+<td>订单附属信息(序列化)</td>
+</tr>
+<tr>
+<td>items</td>
+<td>产品明细</td>
+</tr>
+<tr>
+<td>consignee</td>
+<td>收货人信息</td>
+</tr></tbody></table>
+<p>** items - 产品明细 **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>item_id</td>
+<td>订单明细ID</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>订单ID</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>货品ID</td>
+</tr>
+<tr>
+<td>releted_product_id</td>
+<td>订单内相关货品ID</td>
+</tr>
+<tr>
+<td>goods_id</td>
+<td>商品ID</td>
+</tr>
+<tr>
+<td>bn</td>
+<td>明细商品货号SKU-ID</td>
+</tr>
+<tr>
+<td>barcode</td>
+<td>条码</td>
+</tr>
+<tr>
+<td>name</td>
+<td>明细商品的名称</td>
+</tr>
+<tr>
+<td>spec_info</td>
+<td>商品规格描述</td>
+</tr>
+<tr>
+<td>cost</td>
+<td>明细商品的成本</td>
+</tr>
+<tr>
+<td>price</td>
+<td>销售价</td>
+</tr>
+<tr>
+<td>member_lv_price</td>
+<td>会员价</td>
+</tr>
+<tr>
+<td>buy_price</td>
+<td>成交价</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>成交价x数量</td>
+</tr>
+<tr>
+<td>score</td>
+<td>明细商品积分</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>明细商品重量</td>
+</tr>
+<tr>
+<td>nums</td>
+<td>明细商品购买数量</td>
+</tr>
+<tr>
+<td>sendnum</td>
+<td>明细商品发货数量</td>
+</tr>
+<tr>
+<td>addon</td>
+<td>明细商品的规格属性</td>
+</tr>
+<tr>
+<td>item_type</td>
+<td>明细商品类型 (product:商品,pkg:捆绑商品,gift:赠品商品,adjunct:配件商品)</td>
+</tr></tbody></table>
+<p>** consignee - 收货人信息 **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>姓名</td>
+</tr>
+<tr>
+<td>area</td>
+<td>地区</td>
+</tr>
+<tr>
+<td>addr</td>
+<td>地址</td>
+</tr>
+<tr>
+<td>zip</td>
+<td>邮编</td>
+</tr>
+<tr>
+<td>tel</td>
+<td>电话</td>
+</tr>
+<tr>
+<td>email</td>
+<td>邮箱</td>
+</tr>
+<tr>
+<td>mobile</td>
+<td>手机</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.order.cancel"></a><br>
+<strong>2.) vmc.order.cancel 订单作废完成时触发</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.order.create.fields">参照订单创建完成时触发</a></p>
+<p><a name="hook.vmc.order.end"></a><br>
+<strong>3.) vmc.order.end 订单归档完成时触发</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.order.create.fields">参照订单创建完成时触发</a></p>
+<p><a name="HOOK-biils-支付"></a></p>
+<h2>十七、 HOOK-biils-支付 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#hook.vmc.biils.payment.succ">vmc.biils.payment.succ</a></td>
+<td>订单支付完成</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.biils.payment.progress">vmc.biils.payment.progress</a></td>
+<td>订单支付到担保方完成</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.biils.refund.succ">vmc.biils.refund.succ</a></td>
+<td>订单退款完成</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.biils.refund.progress">vmc.biils.refund.progress</a></td>
+<td>订单退款到担保方完成</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.biils.payment.succ"></a><br>
+<strong>1.) vmc.biils.payment.succ 订单支付完成</strong></p>
+<p><a name="hook.vmc.biils.payment.succ.fields"></a></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bill_id</td>
+<td>账单流水号</td>
+</tr>
+<tr>
+<td>money</td>
+<td>支付货币金额</td>
+</tr>
+<tr>
+<td>bill_type</td>
+<td>单据类型 (payment:付款,refund:退款)</td>
+</tr>
+<tr>
+<td>pay_object</td>
+<td>业务对象 (order:订单,recharge:充值)</td>
+</tr>
+<tr>
+<td>currency</td>
+<td>货币</td>
+</tr>
+<tr>
+<td>cur_rate</td>
+<td>货币汇率</td>
+</tr>
+<tr>
+<td>member_id</td>
+<td>相关会员</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>相关订单</td>
+</tr>
+<tr>
+<td>pay_mode</td>
+<td>付款方式 (online:在线支付,offline:线下支付,deposit:预存款支付)</td>
+</tr>
+<tr>
+<td>payee_account</td>
+<td>收款者账户</td>
+</tr>
+<tr>
+<td>payee_bank</td>
+<td>收款者银行</td>
+</tr>
+<tr>
+<td>payer_account</td>
+<td>付款者账户</td>
+</tr>
+<tr>
+<td>payer_bank</td>
+<td>付款者银行</td>
+</tr>
+<tr>
+<td>pay_app_id</td>
+<td>支付应用程序</td>
+</tr>
+<tr>
+<td>pay_fee</td>
+<td>支付手续费</td>
+</tr>
+<tr>
+<td>out_trade_no</td>
+<td>支付平台流水号</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>备注</td>
+</tr>
+<tr>
+<td>createtime</td>
+<td>支付单创建时间</td>
+</tr>
+<tr>
+<td>last_modify</td>
+<td>最后更新时间</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.biils.payment.progress"></a><br>
+<strong>2.) vmc.biils.payment.progress 订单支付到担保方完成</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.biils.payment.succ.fields">参照订单支付完成</a></p>
+<p><a name="hook.vmc.biils.refund.succ"></a><br>
+<strong>3.) vmc.biils.refund.succ 订单退款完成</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.biils.payment.succ.fields">参照订单支付完成</a></p>
+<p><a name="hook.vmc.biils.refund.progress"></a><br>
+<strong>4.) vmc.biils.refund.progress 订单退款到担保方完成</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.biils.payment.succ.fields">参照订单支付完成</a></p>
+<p><a name="HOOK-delivery-退送货"></a></p>
+<h2>十八、 HOOK-delivery-退送货 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#hook.vmc.delivery.send.create">vmc.delivery.send.create</a></td>
+<td>发货单据创建完成</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.delivery.send.update">vmc.delivery.send.update</a></td>
+<td>后台发货单据更新</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.delivery.send.finish">vmc.delivery.send.finish</a></td>
+<td>发货操作完成</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.delivery.reship.create">vmc.delivery.reship.create</a></td>
+<td>退货单据创建完成</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.delivery.reship.update">vmc.delivery.reship.update</a></td>
+<td>退货单据更新</td>
+</tr>
+<tr>
+<td><a href="#hook.vmc.delivery.reship.finish">vmc.delivery.reship.finish</a></td>
+<td>退货单据操作完成</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.delivery.send.create"></a><br>
+<strong>1.) vmc.delivery.send.create 发货单据创建完成</strong></p>
+<p><a name="hook.vmc.delivery.send.create.fields"></a></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>delivery_id</td>
+<td>货单流水号</td>
+</tr>
+<tr>
+<td>order_id</td>
+<td>相关订单</td>
+</tr>
+<tr>
+<td>delivery_type</td>
+<td>业务类型 (send:商家发货,reship:客户退货)</td>
+</tr>
+<tr>
+<td>member_id</td>
+<td>相关会员</td>
+</tr>
+<tr>
+<td>dlycorp_id</td>
+<td>物流公司</td>
+</tr>
+<tr>
+<td>dlyplace_id</td>
+<td>发(退)货地点</td>
+</tr>
+<tr>
+<td>send_router</td>
+<td>发货类型 发货类型 (selfwarehouse:自营仓发货',cbeselfwarehouse:跨境自营仓发货,tpwarehouse:第三方仓发货,cbetpwarehouse:跨境第三方仓发货,pos:门店收银台发货,storedelivery:门店自配送,warehouse2store:自营仓发门店,return:客户退回)</td>
+</tr>
+<tr>
+<td>logistics_no</td>
+<td>物流单号</td>
+</tr>
+<tr>
+<td>cost_freight</td>
+<td>物流费用</td>
+</tr>
+<tr>
+<td>status</td>
+<td>状态 (ready:单据成功创建,executing:执行中,succ:已被确认,cancel:已取消)</td>
+</tr>
+<tr>
+<td>memo</td>
+<td>备注</td>
+</tr>
+<tr>
+<td>createtime</td>
+<td>创建时间</td>
+</tr>
+<tr>
+<td>consignor</td>
+<td>发货信息</td>
+</tr>
+<tr>
+<td>consignee</td>
+<td>配送信息</td>
+</tr>
+<tr>
+<td>delivery_items</td>
+<td>货单详细项目</td>
+</tr>
+<tr>
+<td>memberlv_discount</td>
+<td>会员身份优惠总金额</td>
+</tr>
+<tr>
+<td>pmt_goods</td>
+<td>商品促销优惠总金额</td>
+</tr>
+<tr>
+<td>pmt_order</td>
+<td>订单促销优惠总金额</td>
+</tr>
+<tr>
+<td>order_total</td>
+<td>订单应付总金额</td>
+</tr>
+<tr>
+<td>finally_cart_amount</td>
+<td>商品优惠后总金额</td>
+</tr>
+<tr>
+<td>need_invoice</td>
+<td>是否要开发票</td>
+</tr>
+<tr>
+<td>invoice_title</td>
+<td>发票抬头</td>
+</tr>
+<tr>
+<td>invoice_addon</td>
+<td>发票扩展信息</td>
+</tr></tbody></table>
+<p>** consignor **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>联系人</td>
+</tr>
+<tr>
+<td>area</td>
+<td>所在地区</td>
+</tr>
+<tr>
+<td>addr</td>
+<td>详细地址</td>
+</tr>
+<tr>
+<td>zip</td>
+<td>邮编</td>
+</tr>
+<tr>
+<td>tel</td>
+<td>联系电话</td>
+</tr>
+<tr>
+<td>mobile</td>
+<td>联系人手机</td>
+</tr>
+<tr>
+<td>email</td>
+<td>联系人Email</td>
+</tr></tbody></table>
+<p>** consignee **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>name</td>
+<td>联系人</td>
+</tr>
+<tr>
+<td>area</td>
+<td>所在地区</td>
+</tr>
+<tr>
+<td>addr</td>
+<td>详细地址</td>
+</tr>
+<tr>
+<td>zip</td>
+<td>邮编</td>
+</tr>
+<tr>
+<td>tel</td>
+<td>联系电话</td>
+</tr>
+<tr>
+<td>mobile</td>
+<td>联系人手机</td>
+</tr>
+<tr>
+<td>email</td>
+<td>联系人Email</td>
+</tr></tbody></table>
+<p>** delivery_items **</p>
+<table>
+<thead>
+<tr>
+<th>字段</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>item_id</td>
+<td>序号</td>
+</tr>
+<tr>
+<td>order_item_id</td>
+<td>原始订单明细项目编号</td>
+</tr>
+<tr>
+<td>delivery_id</td>
+<td>发货单号</td>
+</tr>
+<tr>
+<td>item_type</td>
+<td>明细项货物类型 (product:商品,pkg:捆绑商品,gift:赠品商品,adjunct:配件商品)</td>
+</tr>
+<tr>
+<td>product_id</td>
+<td>货品ID</td>
+</tr>
+<tr>
+<td>goods_id</td>
+<td>商品ID</td>
+</tr>
+<tr>
+<td>bn</td>
+<td>明细商品货号</td>
+</tr>
+<tr>
+<td>spec_info</td>
+<td>商品规格描述</td>
+</tr>
+<tr>
+<td>weight</td>
+<td>重量</td>
+</tr>
+<tr>
+<td>name</td>
+<td>明细商品的名称</td>
+</tr>
+<tr>
+<td>sendnum</td>
+<td>实际发货数量</td>
+</tr>
+<tr>
+<td>price</td>
+<td>销售价</td>
+</tr>
+<tr>
+<td>member_lv_price</td>
+<td>会员价</td>
+</tr>
+<tr>
+<td>buy_price</td>
+<td>成交价</td>
+</tr>
+<tr>
+<td>amount</td>
+<td>明细商品总额(成交价x数量)</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.delivery.send.update"></a><br>
+<strong>2.) vmc.delivery.send.update 后台发货单据更新</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.delivery.send.create.fields">参照发货单据创建完成</a></p>
+<p><a name="hook.vmc.delivery.send.finish"></a><br>
+<strong>3.) vmc.delivery.send.finish 发货操作完成</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.delivery.send.create.fields">参照发货单据创建完成</a></p>
+<p><a name="hook.vmc.delivery.reship.create"></a><br>
+<strong>4.) vmc.delivery.reship.create 退货单据创建完成</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.delivery.send.create.fields">参照发货单据创建完成</a></p>
+<p><a name="hook.vmc.delivery.reship.update"></a><br>
+<strong>5.) vmc.delivery.reship.update 退货单据更新</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.delivery.send.create.fields">参照发货单据创建完成</a></p>
+<p><a name="hook.vmc.delivery.reship.finish"></a><br>
+<strong>6.) vmc.delivery.reship.finish 退货单据操作完成</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p><a href="#hook.vmc.delivery.send.create.fields">参照发货单据创建完成</a></p>
+<p><a name="HOOK-stock-库存"></a></p>
+<h2>十九、 HOOK-stock-库存 <a href="#MENU">返回目录</a></h2>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>类型</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#hook.vmc.stock.update">vmc.stock.update</a></td>
+<td>更新库存</td>
+</tr></tbody></table>
+<p><a name="hook.vmc.stock.update"></a><br>
+<strong>1.) vmc.stock.update 更新库存</strong></p>
+<blockquote>
+</blockquote>
+<pre><code>应用级别输入参数
+</code></pre>
+<p>** 返回数组，数组key为sku-id，值为最新库存 **</p>
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

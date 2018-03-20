@@ -1,0 +1,14 @@
+<{if $extend_group}>
+<{foreach from=$extend_group item=item}>
+<tr>
+    <td>
+        <button onclick="$(this).closest('tr').fadeOut(function(){$(this).remove();});" type="button" class="btn btn-xs default">
+        <i class="fa fa-trash-o"></i>
+        </button>
+        <input type="hidden" name="conditions[group_id][]" value="<{$item.group_id}>">
+    </td>
+    <td><{$item.name}></td>
+    <td><{$item.description}></td>
+</tr>
+<{/foreach}>
+<{/if}>

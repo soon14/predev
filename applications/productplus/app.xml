@@ -1,0 +1,14 @@
+<app>
+    <name>货品管理加强</name>
+    <description>强化规格货品管理</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.0.1</version>
+    <license>http://www.vmcshop.com/license</license>
+    <depends>
+        <app>b2c</app>
+    </depends>
+</app>

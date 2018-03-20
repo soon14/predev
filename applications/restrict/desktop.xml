@@ -1,0 +1,13 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="restrict">限购管理</permission>
+    </permissions>
+
+    <workground icon="icon-present" id="b2c.wrokground.sale" name="营销" order="10">
+        <menugroup name="限购管理">
+            <menu action='index' controller='admin_restrict' display='true' order='10' permission='restrict'>限购管理</menu>
+            <menu action='edit' controller='admin_restrict' display='false' order='10' permission='restrict'>限购添加</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

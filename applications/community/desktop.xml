@@ -1,0 +1,16 @@
+<desktop>
+    <permissions>
+        <permission id="community">社区</permission>
+    </permissions>
+    <workground icon="fa fa-star" id="community.wrokground" name="社区" order="55">
+        <menugroup name="社区">
+            <menu controller='admin_blog' action='index' permission='community' display='true' order='280'>主题列表</menu>
+            <menu controller='admin_blog' action='edit' permission='community' display='false' order='280'>主题编辑</menu>
+        </menugroup>
+        <menugroup name="用户">
+            <menu controller='admin_user' action='index' permission='community' display='true' order='280'>用户列表</menu>
+            <menu controller='admin_user_lv' action='index' permission='community' display='true' order='280'>用户等级</menu>
+            <menu controller='admin_user_lv' action='addnew' permission='community' display='false' order='280'>用户等级编辑</menu>
+        </menugroup>
+    </workground>
+</desktop>

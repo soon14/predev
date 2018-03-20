@@ -1,0 +1,24 @@
+<{if $area}>
+<{foreach from=$area item=item key=iLoop name="item"}>
+<tr data-pregionid="<{$env.post.regionId}>" data-path="<{$item.region_path}>">
+  <td class="area-name" data-regionid="<{$item.region_id}>">
+      <div style="padding-left:<{$item.step*$item.step*10}>px">
+          <{if $item.child_count>0}>
+          <i class="fa fa-plus-square-o" id="<{$item.region_id}>"></i>
+          <{else}>
+          <i class="fa fa-minus-square-o" id="<{$item.region_id}>"></i>
+          <{/if}>
+          <strong><{$item.local_name}></strong>
+      </div>
+ </td>
+  <td>
+      <input class="form-control input-sm" type="number" size="5"  name="p_order[<{$item.region_id}>]" value="<{$item.ordernum|default:0}>"  >
+  </td>
+  <td>
+      <a data-target="#area_edit" data-toggle="modal" href="index.php?app=ectools&ctl=regions&act=edit&p[0]=<{$item.region_id}>&p[1]=<{$item.p_region_id}>" class="btn btn-xs btn-default"><i class="fa fa-edit"></i> 编辑</a>
+      <button type="button" data-areaname="<{$item.local_name}>"  data-action="index.php?app=ectools&ctl=regions&act=toRemoveArea&p[0]=<{$item.region_id}>" class="btn btn-xs btn-default area-del"><i class="fa fa-trash-o"></i> 删除</button>
+      <a data-target="#area_edit" data-toggle="modal" href="index.php?app=ectools&ctl=regions&act=edit&p[0]=false&p[1]=<{$item.region_id}>" class="btn btn-xs btn-default"><i class="fa fa-plus"></i> 添加子地区</a>
+  </td>
+</tr>
+<{/foreach}>
+<{/if}>

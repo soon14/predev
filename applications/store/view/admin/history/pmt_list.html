@@ -1,0 +1,50 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">优惠明细</h3>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-12">
+            <table class="table table-striped table-hover">
+                <tr>
+                    <th>促销作用于</th>
+                    <th>促销分类</th>
+                    <th>促销说明</th>
+                    <th>促销优惠金额</th>
+                </tr>
+                <{foreach from=$promotions item=pmt}>
+                <tr>
+                    <td>
+                        <{if $pmt.pmt_type == 'order'}>
+                        订单
+                        <{else}>
+                        商品
+                        <{/if}>
+                    </td>
+                    <td><{$pmt.pmt_tag}></td>
+                    <td>
+                        <strong><{$pmt.pmt_description}></strong>
+                        <p>
+                            <{$pmt.pmt_solution}>
+                        </p>
+                    </td>
+                    <td>
+                        <{if $pmt.pmt_save>0}>
+									<span class="text-danger">
+										<small>￥</small><{$pmt.pmt_save|cur}>
+									</span>
+                        <{/if}>
+                    </td>
+                </tr>
+                <{/foreach}>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="row">
+        <!-- <div class="col-xs-6">
+            <button type="button" class="btn btn-block btn-lg default" data-dismiss="modal">关闭</button>
+        </div> -->
+    </div>
+</div>

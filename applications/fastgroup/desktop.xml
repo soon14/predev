@@ -1,0 +1,17 @@
+<desktop>
+    <permissions>
+        <permission id="fastgroup" display='true'>快团管理</permission>
+    </permissions>
+    <workground name="快团" icon=" fa fa-cube" id="workground.fastgroup" order='68'>
+        <menugroup name="快团活动管理">
+            <menu controller='admin_subject' action='index' permission='fastgroup' display='true' order='1'>团购活动</menu>
+            <menu controller='admin_subject' action='edit' permission='fastgroup' display='false' order='2'>团购活动编辑</menu>
+            <menu controller='admin_subject' action='save' permission='fastgroup' display='false' order='3'>团购活动保存</menu>
+        </menugroup>
+        <menugroup name="快团活动订购纪录">
+            <menu controller='admin_fgorders' action='index' permission='fastgroup' display='true' order='1'>订购纪录</menu>
+            <menu controller='admin_fgorders' action='detail' permission='fastgroup' display='false' order='2'>订购纪录查看</menu>
+            <menu controller='admin_fgorders' action='confirm' permission='fastgroup' display='false' order='3'>订购确认</menu>
+        </menugroup>
+    </workground>
+</desktop>

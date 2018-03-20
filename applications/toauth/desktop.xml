@@ -1,0 +1,7 @@
+<desktop>
+    <permissions>
+        <!--物流-->
+        <permission display='true' id="toauth">第三方信任登录</permission>
+    </permissions>
+    <adminpanel group="b2c_shop" controller="admin_setting" action="index" permission='toauth' order="100" display='true'>第三方信任登录</adminpanel>
+</desktop>

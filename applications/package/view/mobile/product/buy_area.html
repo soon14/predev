@@ -1,0 +1,11 @@
+<{if !$is_login}>
+    <a href="<{link app=b2c ctl=mobile_passport act=login}>" class="btn btn-positive pull-right">登陆后可使用优购码优先购买</a>
+<{else}>
+<span id="J_codebuy" class="pull-right">
+</span>
+<script>
+(function(){
+    $('#J_codebuy').load('<{link app=codebuy ctl=mobile_activity act=check_code}>',{'product_id':<{$data_detail.product.product_id}>,'activity_id':<{$activity.id}>,'goods_id':<{$data_detail.goods_id}>});
+})();
+</script>
+<{/if}>

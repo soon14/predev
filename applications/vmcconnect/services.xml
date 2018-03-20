@@ -1,0 +1,148 @@
+<services>
+    
+    <service id="desktop_finder.vmcconnect_mdl_apps">
+        <class>vmcconnect_finder_apps</class>
+    </service>
+    
+    <service id="desktop_finder.vmcconnect_mdl_hooks">
+        <class>vmcconnect_finder_hooks</class>
+    </service>
+    
+    <service id="desktop_finder.vmcconnect_mdl_apilogs">
+        <class>vmcconnect_finder_apilogs</class>
+    </service>
+    
+    <service id="desktop_finder.vmcconnect_mdl_hooktasks">
+        <class>vmcconnect_finder_hooktasks</class>
+    </service>
+    
+    <service id="desktop_finder.vmcconnect_mdl_hooktask_items">
+        <class>vmcconnect_finder_hooktask_items</class>
+    </service>
+    
+    <service id="openapi.vmcconnect" optname="openapi@vmcconnect">
+        <class>vmcconnect_api_router</class>
+    </service>
+    
+    <!-- ####################### 日志 ####################### -->
+    <service id="vmcconnect.log.setting">
+        <class>vmcconnect_logs_setting</class>
+    </service>
+    
+    <service id="vmcconnect.log.app">
+        <class>vmcconnect_logs_app</class>
+    </service>
+    
+    <service id="vmcconnect.log.api">
+        <class>vmcconnect_logs_api</class>
+    </service>
+    
+    <service id="vmcconnect.log.hook">
+        <class>vmcconnect_logs_hook</class>
+    </service>
+
+    <!-- ######## 队列 ######## -->
+    <service id="vmcconnect.queue.warning" optname="队列执行失败时预警">
+        <class orderby="50">vmcconnect_services_queue_warning</class>
+    </service>
+    
+    <!-- ####################### 服务 ####################### -->
+    <!-- ######## category ######## -->
+    <service id="b2c.cat.save" optname="添加分类">
+        <class orderby="100">vmcconnect_services_category_save</class>
+    </service>
+    
+    <service id="b2c.cat.remove" optname="移除分类">
+        <class orderby="100">vmcconnect_services_category_remove</class>
+    </service>
+    
+    <!-- ######## goods ######## -->
+    <service id="b2c.goods.create" optname="创建商品">
+        <class orderby="100">vmcconnect_services_goods_create</class>
+    </service>
+    
+    <service id="b2c.goods.update" optname="更新商品">
+        <class orderby="100">vmcconnect_services_goods_update</class>
+    </service>
+    
+    <service id="b2c.goods.delete" optname="删除商品">
+        <class orderby="50">vmcconnect_services_goods_delete</class>
+    </service>
+    
+    <!-- ######## 库存 ######## -->
+    <service id="b2c.stock.update" optname="更新库存">
+        <class orderby="50">vmcconnect_services_stock_update</class>
+    </service>
+    
+    <!-- ######## products ######## -->
+    <service id="b2c.products.create" optname="创建产品">
+        <class orderby="100">vmcconnect_services_products_create</class>
+    </service>
+    
+    <service id="b2c.products.update" optname="更新产品">
+        <class orderby="100">vmcconnect_services_products_update</class>
+    </service>
+    
+    <service id="b2c.products.delete" optname="删除产品">
+        <class orderby="100">vmcconnect_services_products_delete</class>
+    </service>
+    
+    <!-- ######## order ######## -->
+    <service id="b2c.order.create.finish" optname="订单创建完成时触发">
+        <class orderby="30">vmcconnect_services_order_create</class>
+    </service>
+    <service id="b2c.order.cancel.finish" optname="订单作废完成时触发">
+        <class orderby="30">vmcconnect_services_order_cancel</class>
+    </service>
+    <service id="b2c.order.end.finish" optname="订单归档完成时触发">
+        <class orderby="30">vmcconnect_services_order_end</class>
+    </service>
+    
+    <!-- ######## 财务 ######## -->
+    <!-- 收款 -->
+    <service id="ectools.bill.payment.b2c.order.succ" optname="订单支付完成处理">
+        <class orderby="100">vmcconnect_services_biils_payment_succ</class>
+    </service>
+    
+    <service id="ectools.bill.payment.b2c.order.progress" optname="订单支付到担保方完成处理">
+        <class orderby="100">vmcconnect_services_biils_payment_progress</class>
+    </service>
+    
+    <!-- 退款 -->
+    <service id="ectools.bill.refund.b2c.order.succ" optname="订单退款完成处理">
+        <class orderby="100">vmcconnect_services_biils_refund_succ</class>
+    </service>
+    
+    <service id="ectools.bill.refund.b2c.order.progress" optname="订单退款到担保方完成处理">
+        <class orderby="100">vmcconnect_services_biils_refund_progress</class>
+    </service>
+    
+    
+    <!-- ######## 物流 ######## -->
+    <!-- 订单发货单据流程 -->
+    <service id="b2c.order.delivery.send.create" optname="发货单据创建完成触发">
+        <class orderby="100">vmcconnect_services_delivery_send_create</class>
+    </service>
+    
+    <service id="b2c.order.delivery.send.update" optname="后台发货单据更新触发">
+        <class orderby="100">vmcconnect_services_delivery_send_update</class>
+    </service>
+    
+    <service id="b2c.order.delivery.send.finish" optname="发货操作完成触发">
+        <class orderby="100">vmcconnect_services_delivery_send_finish</class>
+    </service>
+    
+    <!-- 退货 -->
+    <service id="b2c.order.delivery.reship.create" optname="退货单据创建完成触发">
+        <class orderby="100">vmcconnect_services_delivery_reship_create</class>
+    </service>
+    
+    <service id="b2c.order.delivery.reship.update" optname="退货单据更新时触发">
+        <class orderby="100">vmcconnect_services_delivery_reship_update</class>
+    </service>
+    
+    <service id="b2c.order.delivery.reship.finish" optname="退货单据操作完成触发">
+        <class orderby="100">vmcconnect_services_delivery_reship_finish</class>
+    </service>
+    
+</services>

@@ -1,0 +1,6 @@
+<root>
+    <register act="edit" ctl="admin_statics" module="order" param="url">
+        <operate_type>自定义URL编辑</operate_type>
+        <template>编辑 %s</template>
+    </register>
+</root>

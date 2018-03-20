@@ -1,0 +1,48 @@
+<div class="page-header">
+  <h1>售后服务申请 <small>Services  Request</small></h1>
+</div>
+<div class="list-unstyled row order-process-bar">
+    <div class="col-xs-3 active"><div class="well well-sm">选择需服务商品 &raquo;</div></div>
+    <div class="col-xs-3"><div class="well well-sm">填写申请表 &raquo;</div></div>
+    <div class="col-xs-3"><div class="well well-sm">客服处理 &raquo;</div></div>
+    <div class="col-xs-3"><div class="well well-sm">服务承诺兑现 <i class="glyphicon glyphicon-heart"></i></div></div>
+</div>
+<{if $order_list}>
+<div class="my-orders-list">
+    <{foreach from=$order_list item=order}>
+        <table class="table mo-list-items table-bordered status-<{$order.status}>">
+            <thead>
+                <tr class="text-nowrap">
+                    <th>
+                        <ul class="list-inline">
+                            <li>订单：<strong><{$order.order_id}></strong></li>
+                            <li>下单时间：<{$order.createtime|cdate}></li>
+                        </ul>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <{foreach from=$order_items_group[$order.order_id] item=item name=oig}>
+                        <{if $request_items[$order.order_id][$item.product_id]>=$item.nums}>
+                        <{continue}>
+                        <{/if}>
+                                <a style="position:relative;display:inline-block" data-toggle="tooltip" data-placement="right" href="<{link app=aftersales ctl=site_member act=newrequest args0=$order.order_id args1=$item.product_id}>" data-original-title="<{$item.name}><{if $item.spec_info}>-<{$item.spec_info}><{/if}>">
+                                <img width=100 class="img-thumbnail" src="<{$item.image_id|storager:'xs'}>" alt="<{$item.name}>" />
+                                <button style="position:absolute;right:5px;bottom:5px;" type="button" name="button" class="btn btn-xs btn-success" >申请</button>
+                                </a>
+                        <{/foreach}>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    <{/foreach}>
+</div>
+<{pagers data=$pager}>
+<{else}>
+<br>
+<div class="alert alert-info">
+    <h2>暂无可申请售后的商品</h2>
+</div>
+<{/if}>

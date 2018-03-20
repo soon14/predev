@@ -1,0 +1,6 @@
+<site>
+    <module controller='mobile_fastgroup'>
+        <name>fgroup</name>
+        <title>快团</title>
+    </module>
+</site>

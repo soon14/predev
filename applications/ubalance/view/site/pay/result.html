@@ -1,0 +1,49 @@
+<ol class="breadcrumb">
+    <li><a href="<{link app=site ctl=index}>">首页</a></li>
+    <li><a href="<{link app=b2c ctl=site_member}>">会员中心</a></li>
+    <li><a href="<{link app=ubalance ctl=site_member}>"><{$env.conf.ubalance.name}></a></li>
+    <li class="active"><{$env.conf.ubalance.name}>充值结果</li>
+</ol>
+<{if $bill.status == 'succ' || $bill.status == 'progress'}>
+<div class="page-header text-success">
+    <h1>
+        <i class="glyphicon glyphicon-ok-circle"></i>
+        支付成功
+    </h1>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                成功支付金额
+            </th>
+            <th>
+                <{$env.conf.ubalance.name}>额度增加
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>
+                <{$bill.money|cur}>
+            </td>
+            <td>
+                <{$bill.money*$env.conf.ubalance.exchange_ratio|number_format:'3'}>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<{else}>
+<div class="page-header text-danger">
+    <h1>
+        <i class="glyphicon glyphicon-close-circle"></i>
+        支付失败
+    </h1>
+</div>
+<{/if}>
+<div class="alert alert-warning">
+    注意：我们不会以任何方式，包括但不限于电话、短信、QQ、微信、邮件 等形式以支付相关问题为由与您主动取得联系。
+</div>
+<p>
+    <a class="btn btn-default" href="<{link app=ubalance ctl=site_member}>">确认</a>
+</p>

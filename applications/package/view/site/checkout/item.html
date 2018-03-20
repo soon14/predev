@@ -1,0 +1,31 @@
+<{foreach from=$cart_result.objects.package item=object}>
+<{if $object.disabled=='true'}><{continue;}><{/if}>
+<li class="list-group-item">
+  <div class="row">
+        <div class="col-xs-12">
+          <h5><{$object.params.package_name}></a></h5>
+        </div>
+  </div>
+</li>
+<{foreach from=$object.params.package_goods item=package_goods}>
+<li class="list-group-item">
+  <div class="row">
+        <div class="col-xs-2">
+          <a href="<{link app=b2c ctl=site_product args0=$package_goods.product_id}>">
+              <img class="img-thumbnail" src="<{$package_goods.image_id|storager:'s'}>" alt="<{$package_goods.name}>" />
+          </a>
+        </div>
+        <div class="col-xs-10">
+          <a class="text-muted" href="<{link app=b2c ctl=site_product args0=$package_goods.product_id}>"><{$package_goods.name}>
+          <small>
+              <{$package_goods.spec_info}>
+          </small>
+          </a>
+          <br>
+          <strong class="text-danger"><{$package_goods.package_price|cur}></strong>
+          <span class="text-muted">x <{$package_goods.quantity*$object.quantity}></span>
+        </div>
+  </div>
+</li>
+<{/foreach}>
+<{/foreach}>

@@ -1,0 +1,8 @@
+<span class="label label-default hide">源码编辑器</span>
+<{input type="textarea" value=$value name=$name  style="display:none;" id="{$id}_textarea"}>
+<iframe  id="<{$id}>_frame" style="border:1px #e9e9e9 solid;" height="<{$height|default:200}>"  width="<{$width|default:'100%'}>" scrolling="auto"  frameborder="0" src="index.php?app=desktop&ctl=default&act=syntax_highlighter&id=<{$id}>&height=<{$height|default:200}><{if $mode}>&mode=<{$mode}><{/if}>" allowtransparency="true"></iframe>
+<script>
+    $("#<{$id}>_textarea").closest('form').on('submit',function(){
+        $("#<{$id}>_textarea").val(document.getElementById('<{$id}>_frame').contentWindow.code_editor.getValue());
+    });
+</script>

@@ -1,0 +1,67 @@
+<!-- ############### 编辑区域 ############### -->
+<template id="widget-child-setting-searchbar">
+    <div class="view-item-setting" :id="widget.name + '_setting_' + index">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{widget.title}}
+                <a type="button" class="icon icon-close pull-right" href="javascript:;" @click="closeEv"></a>
+            </div>
+            <div class="panel-body form-horizontal">
+                <div class="form-group form-group-sm">
+                    <div class="col-sm-offset-4 col-sm-8">
+                        <div class="checkbox">
+                            <label :for="widget.name + '_show_scan_' + index">
+                                <input type="checkbox" :id="widget.name + '_show_scan_' + index" v-model="widget.data.show_scan" :checked="widget.data.show_scan"> 是否显示扫码图标
+                            </label>
+                            <label :for="widget.name + '_fixed_' + index">
+                                <input type="checkbox" :id="widget.name + '_fixed_' + index" v-model="widget.data.fixed" :checked="widget.data.fixed"> 固定在顶部
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label :for="widget.name + '_background_' + index" class="col-sm-4 control-label">背景色</label>
+                    <div class="col-sm-8">
+                        <input type="color" class="form-control" :id="widget.name + '_background_' + index" placeholder="背景色" v-model="widget.data.background" :value="widget.data.background">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label :for="widget.name + '_ipt_background_' + index" class="col-sm-4 control-label">输入框背景色</label>
+                    <div class="col-sm-8">
+                        <input type="color" class="form-control" :id="widget.name + '_ipt_background_' + index" placeholder="输入框背景色" v-model="widget.data.ipt_background" :value="widget.data.ipt_background">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label :for="widget.name + '_input_val_' + index" class="col-sm-4 control-label">默认值</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" :id="widget.name + '_input_val_' + index" placeholder="默认值" v-model="widget.data.input_val" :value="widget.data.input_val">
+                    </div>
+                </div>
+                <div class="form-group form-group-sm">
+                    <label :for="widget.name + '_placeholder_' + index" class="col-sm-4 control-label">占位文字</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control" :id="widget.name + '_placeholder_' + index" placeholder="占位文字" v-model="widget.data.placeholder" :value="widget.data.placeholder">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <button type="button" class="btn btn-primary btn-xs" @click="closeEv">关闭</button>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_child_setting_searchbar = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-setting-searchbar',
+    methods: {
+        closeEv: function() {
+            return designStore.methods.closeEv(this);
+        }
+    },
+    created: function() {
+        this.widget.data.background = this.widget.data.background ? this.widget.data.background : '';
+        this.widget.data.ipt_background = this.widget.data.ipt_background ? this.widget.data.ipt_background : '#EFEFF4';
+    }
+});
+</script>

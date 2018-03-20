@@ -1,0 +1,106 @@
+<{if !$env.get.finder_name}>
+<h3 class="page-title">
+    <{if $statics}>编辑
+        <{else}>添加
+            <{/if}>自定义URL
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=routeplus&ctl=admin_statics&act=index">自定义URL列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">
+                <{if $statics}>编辑
+                    <{else}>添加
+                        <{/if}>自定义URL</a>
+        </li>
+    </ul>
+</div>
+<{/if}>
+<form method="post" id="routeplus_statics_form_<{$env.get.id}>" class="form" action="index.php?app=routeplus&ctl=admin_statics&act=edit">
+	<{if $statics.id}><{input type='hidden' name='id' value=$statics.id}><{/if}>
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">原始URL
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-10">
+                    <div class="input-group margin-bottom-5">
+                        <div class="input-group-addon"><{$base_url}><{$app_url_map['site']}></div>
+                        <input type="text" name="url" value="<{$statics.url}>" class="form-control has-mirror" required="true">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon"><{$base_url}><{$app_url_map['mobile']}>/</div>
+                        <input type="text" readonly="true" value="<{$statics.url}>" class="form-control" data-mirror="url" >
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">自定义URL
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-10">
+                    <div class="input-group margin-bottom-5">
+                        <div class="input-group-addon"><{$base_url}><{$app_url_map['site']}></div>
+                        <input type="text" name="custom_url" value="<{$statics.custom_url}>" class="form-control has-mirror" required="true">
+                    </div>
+                    <div class="input-group">
+                        <div class="input-group-addon"><{$base_url}><{$app_url_map['mobile']}>/</div>
+                        <input  type="text" readonly=true value="<{$statics.custom_url}>" class="form-control" data-mirror="custom_url">
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-10 col-md-offset-2">
+                    <div class="radio-inline">
+                      <label>
+                        <input type="radio" name="enable"  value="true" <{if $statics.enable!='false'}>checked<{/if}>>
+                        立即生效
+                      </label>
+                    </div>
+                    <div class="radio-inline">
+                      <label>
+                        <input type="radio" name="enable"  value="false" <{if $statics.enable=='false'}>checked<{/if}>>
+                        不生效
+                      </label>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">备注
+                </label>
+                <div class="col-md-10">
+                    <input type="text" name="mark" value="<{$statics.mark}>" class="form-control">
+                </div>
+            </div>
+			<div class="form-actions">
+				<div class="row">
+					<div class="col-md-offset-2 col-md-10">
+						<button type="submit" class="btn blue">保存</button>
+                        <{if !$env.get.finder_name}>
+						<a href="index.php?app=routeplus&ctl=admin_statics&act=index" class="btn default">返回</a>
+                        <{/if}>
+					</div>
+				</div>
+			</div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(function(){
+        var form = $('#routeplus_statics_form_<{$env.get.id}>');
+        form.find('.has-mirror').on('keyup',function(e){
+            form.find('input[data-mirror="'+$(this).attr('name')+'"]').val($(this).val());
+        });
+        <{if $env.get.finder_name}>
+        form.data('ajax:success',function(){
+            window['update_finder_<{$env.get.finder_name}>']();
+        });
+        <{/if}>
+
+    });
+</script>

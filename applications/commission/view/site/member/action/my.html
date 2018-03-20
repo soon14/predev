@@ -1,0 +1,134 @@
+<link rel="stylesheet" href="../themes/pc/default/statics/bootstrap-datetimepicker.css">
+<script src="../themes/pc/default/statics/bootstrap-datetimepicker.js"></script>
+<script src="../themes/pc/default/statics/bootstrap-datetimepicker.zh-CN.js"></script>
+
+<div class="order-processing-title">
+    <div class="page-header">
+        <h1>我的分佣</h1>
+    </div>
+</div>
+<div class="relation-block clearfix">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>关系</th>
+                <th>账户</th>
+                <th>等级</th>
+                <th>分成佣金(闪币)</th>
+            </tr>
+        </thead>
+        <tbody>
+        <{if $parent}>
+            <tr>
+                <td>
+                    上级
+                </td>
+                <td>
+                    <{$parent.login_account}>
+                </td>
+                <td>
+                    <{$parent.levelname}>
+                </td>
+                <td>
+
+                </td>
+            </tr>
+        <{/if}>
+        <{if $children}>
+            <{foreach from=$children item=child}>
+            <tr>
+                <td>
+                    下级
+                </td>
+                <td>
+                    <{$child.login_account}>
+                </td>
+                <td>
+                    <{$child.levelname}>
+                </td>
+                <td>
+                    <{$child.bring_commission|to_coin}>
+                </td>
+            </tr>
+            <{/foreach}>
+        <{/if}>
+        </tbody>
+    </table>
+</div>
+<div class="fenyong-rules">
+    <div class="panel panel-default">
+        <div class="panel-heading">分佣规则</div>
+        <div class="panel-body">
+            <{$commission_rule}>
+        </div>
+    </div>
+</div>
+
+<div class="fenyong-notes-block clearfix">
+    <div class="panel panel-default">
+        <div class="panel-heading">分佣记录统计</div>
+        <div class="panel-body">
+            <form class="form-inline">
+                <div class="form-group">
+                    <label for="dashboard_from">从</label>
+                    <input class="form-control form_datetime" type="text"  name="dashboard_from" id="dashboard_from" value="<{$dashboard_from}>">
+                    <!-- <{input type="time" name="dashboard_to" value=$dashboard_to}> -->
+                </div>
+                <div class="form-group">
+                    <label for="dashboard_to">至</label>
+                    <input class="form-control form_datetime" type="text" name="dashboard_to" id="dashboard_to" value="<{$dashboard_to}>">
+                    <!-- <{input type="time" name="dashboard_from" value=$dashboard_from}> -->
+                </div>
+                <script>
+                    $(".form_datetime").datetimepicker({
+                        format: 'yyyy-mm-dd hh:ii',
+                        autoclose: true
+                    });
+                </script>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-refresh" aria-hidden="true"></span> 刷新</button>
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="javascript:$('input[name=dashboard_from]').val('<{$current_time_w}>');">最近一周</a></li>
+                        <li><a href="javascript:$('input[name=dashboard_from]').val('<{$current_time_m}>');">最近一个月</a></li>
+                        <li><a href="javascript:$('input[name=dashboard_from]').val('<{$current_time_q}>');">最近一季度</a></li>
+                    </ul>
+                </div>
+            </form>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>订单号</th>
+                    <th>佣金(闪币)</th>
+                    <th>结算状态</th>
+                </tr>
+            </thead>
+            <tbody>
+                <{foreach from=$orderlog item=list}>
+                    <tr>
+                        <td><{$list.createtime|cdate}></td>
+                        <td><{$list.order_id}></td>
+                        <td><{$list.achieve_fund|to_coin}></td>
+                        <td><span class="<{if $list.settle_status eq '0'}>no-settle-accounts<{else}>already-settle-accounts<{/if}>"> <{$list.settle_status|settle}> </span></td>
+                    </tr>
+                <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+    <{pagers data=$pager}>
+</div>
+<script>
+    $(function(){
+        $(document.body).addClass('fenyong-body');
+        $(".input-group").children('.input-group-btn').children('.date-set').children('i').removeClass('fa fa-clock-o');
+        $(".input-group").children('.input-group-btn').children('.date-set').children('i').addClass('glyphicon glyphicon-time');
+    });
+</script>
+
+
+

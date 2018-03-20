@@ -1,0 +1,7 @@
+<site>
+	<module id='commission' controller='mobile_member' >
+        <name>commission</name>
+        <title>分佣系统</title>
+        <disable>false</disable>
+    </module>
+</site>

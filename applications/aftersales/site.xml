@@ -1,0 +1,7 @@
+<site>
+	<module id='aftersales' controller='site_member' >
+        <name>aftersales</name>
+        <title>会员中心售后服务</title>
+        <disable>false</disable>
+    </module>
+</site>

@@ -1,0 +1,14 @@
+<app>
+    <name>服务器管理</name>
+    <description>提供基础的服务器信息查看和调试工具</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.0</version>
+    <license>http://www.vmcshop.com/license</license>
+    <depends>
+        <app>base</app>
+    </depends>
+</app>

@@ -1,0 +1,118 @@
+<div class="banding-content-block">
+    <div class="content-padded">
+        <{if $member_info.bank_account}>
+            <div class="have-account-block">
+                <div class="cash-account-name"><h4 class="purple">现有提现账户</h4></div>
+                <div class="have-account">
+        			<p>
+        				<img src="/../themes/shanyaohui/images/cmb.png" alt="">
+        				<span><{$member_info.bank_type}></span>
+        				<span>尾号:&nbsp;<{$member_info.bank_account}></span>
+        				<span>&nbsp;&nbsp;&nbsp;持卡人:&nbsp;</span>
+        				<span><{$member_info.account_name}></span>
+        			</p>
+                </div>
+            </div>
+        <{/if}>
+        <form onsubmit="return checkForm()">
+		    <section data-am-widget="accordion" class="am-accordion am-accordion-default" data-am-accordion='{ "multiple": true }'>
+                <div class="am-accordion-item">
+                    <h4 class="am-accordion-title">选择账户类型</h4>
+                    <div class="am-accordion-bd am-collapse ">
+                    <div id="back_popover" class="popover" style="top:124px;">
+                        <ul class="table-view">
+                            <li class="table-view-cell" data-value="alipay"><{$bank['alipay']}></li>
+                            <{foreach from=$bank['bank_list'] item=bank}>
+                                <li class="table-view-cell" data-value="<{$bank.bank_code}>"><{$bank.bank_name}></li>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                    <a href="#back_popover">
+                        <input type="hidden" id="bank_type">
+                        <input type="text" id="bank_type_value">
+                    </a>
+                    </div>
+                </div>
+		    </section>
+			 <input type="text" id="bank_account" placeholder="请输入账户账号">
+			 <input type="text" id="account_name" placeholder="请输入账户姓名">
+             <input type="text" name="vcode" placeholder="请输入手机验证码" required="true" id="vcode">
+             <input type="button" class="btn btn-default btn-block" id="btn" value="获取验证码" required="true">
+             <button class="btn btn-primary btn-block" >保存</button>
+		</form>
+	</div>
+</div>
+<script>
+	$(document.body).addClass('banding-body');
+
+    $('#bank_type').val('alipay');
+    $('#bank_type_value').val('支付宝');
+
+    $('#back_popover').on('click','.table-view-cell',function(){
+        $('#back_popover,.backdrop').hide();
+        $('#bank_type').val($(this).data('value'));
+        $('#bank_type_value').val($(this).text());
+    });
+
+    $('[href="#back_popover"]').on('click',function(){
+        $('.backdrop').show();
+    })
+
+    //发送验证码请求
+    $('#btn').on('click',function(e){
+        var btn = $(this);
+        if(btn.attr('disabled'))return;
+        btn.attr('disabled','true');
+        $.post('<{link app=commission ctl=mobile_member act=send_vcode_sms}>',function(re){
+            if(re && re.error){
+                btn.removeAttr('disabled');
+                Messagebox('error',re.error);return false;
+            }
+            if(re && re.success){
+                _cutdown_sms(btn);
+            }
+        },'json');
+    });
+
+    //获得短信验证码
+    var _cutdown_sms = function(btn){
+        var cutdown = 120,btn_o_text = btn.val(),timer =
+                setInterval((function(){
+                    btn.val('再次发送'+(cutdown--)+'秒');
+                    if(cutdown<1){
+                        clearInterval(timer);
+                        btn.val(btn_o_text).removeAttr('disabled');
+                    }
+                    return arguments.callee;
+                })(),1000);
+    };
+
+    //提交表单
+    function checkForm(){
+        var bank_type = $("#bank_type").val();
+        if($("#bank_account").val()){
+            var bank_account = $("#bank_account").val();
+        }else{
+            Messagebox('error',"请填写账号");return false;
+        }
+        if($("#account_name").val()){
+            var account_name = $("#account_name").val();
+        }else{
+            Messagebox('error',"请填写账户姓名");return false;
+        }
+
+        $.post('<{link app=commission ctl=mobile_member act=bank}>',
+                {bank_type:bank_type ,bank_account :bank_account ,account_name :account_name ,vcode:$('#vcode').val()},
+                function(re){
+                    if(re && re.error){
+                        $('#btn').removeAttr('disabled');
+                        Messagebox('error',re.error);return false;
+                    }
+                    if(re && re.success){
+                        window.location.href="<{link app=commission ctl=mobile_member act=cash}>";
+                    }
+                } ,'json');
+        return false;
+    }
+
+</script>

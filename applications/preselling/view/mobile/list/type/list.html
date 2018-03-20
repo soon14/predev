@@ -1,0 +1,27 @@
+<{if !$data_list}>
+<div class="content-padded content-splash">
+    <i class="fa fa-inbox fa-5x"></i>
+    <p>
+        暂无结果
+    </p>
+</div>
+<{else}>
+<ul class="table-view">
+    <{foreach from=$data_list item=item name="gdl"}>
+    <li class="table-view-cell media">
+        <a class='g-link' href="<{link app=preselling ctl=mobile_product args1=$item.activity_id}>">
+            <div class="media-object pull-left g-image-left">
+                <img src="<{$item.product.image_id|storager:'s'}>" data-original="<{$item.product.image_id|storager:'s'}>"  alt="<{$item.product.name}>">
+            </div>
+            <div class="g-info media-body">
+                <h4 class="g-name">
+                    <{$item.product.name}>
+                </h4>
+                <p>预售截止倒计时：<{$item.surplus_balance_time}></p>
+                <p>预售价格<{$item[conditions][$item[product_id]][presell_price]|cur}></p>
+            </div>
+        </a>
+    </li>
+    <{/foreach}>
+</ul>
+<{/if}>

@@ -1,0 +1,104 @@
+<!-- 此页面是后台管理界面 页面的class及元素定义依赖 bootstrap UI框架 -->
+<h3 class="page-title"><{if $hello.hello_id }>编辑问候<{else}>新问候<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=helloworld&ctl=admin_hello&act=index">问候列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $hello.hello_id }>编辑问候<{else}>新问候<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=helloworld&ctl=admin_hello&act=save" method="post" id='hello_form' class="form" >
+    <{if $hello.hello_id }>
+        <input type="hidden" name="hello_id" value="<{$hello.hello_id}>">
+    <{/if}>
+    <div class="form form-horizontal">
+        <!-- begin form body -->
+        <div class="form-body">
+             <div class="form-group">
+                 <label class="col-md-2 control-label">
+                     Label1
+                     <span class="required" aria-required="true">*</span>
+                 </label>
+                 <div class="col-md-5">
+                     <input type="text" name="label1_name" value="<{$hello.label1}>" required=true class="form-control" placeholder="请输入Label1">
+                     <span class="help-block">
+                     Label1，不能有重复 </span>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">
+                     Label2
+                     <span class="required" aria-required="true">*</span>
+                 </label>
+                 <div class="col-md-5">
+                     <input type="text" name="hello[label1]" value="<{$hello.label1}>" required=true class="form-control" placeholder="请输入Label1">
+                     <span class="help-block">
+                     Label1，不能有重复 </span>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">Label2</label>
+                 <div class="col-md-5">
+                     <!--SMARTY UI组件： 图片选择器 -->
+                     <{input type="image" width=180 height=90 tag="图片TAG" name="hello[label2]" value=$hello.label2}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">Label3</label>
+                 <div class="col-md-5">
+                     <!--SMARTY UI组件： 国家\国旗选择 -->
+                     <{input type="country" name="hello[label3]" value=$hello.label3}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">Label4</label>
+                 <div class="col-md-5">
+                     <!--SMARTY UI组件： 普通输入框 -->
+                     <{input type="text" name="hello[label4]" value=$hello.label4}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">Label4</label>
+                 <div class="col-md-5">
+                     <!--SMARTY UI组件： textarea输入框 -->
+                     <{input type="textarea" name="hello[label4]" value=$hello.label4}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">Label5</label>
+                 <div class="col-md-5">
+                     <!--SMARTY UI组件： HTML编辑器 -->
+                     <{input type="html" height=500 name="hello[label5]" value=$hello.label4}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">Label6</label>
+                 <div class="col-md-5">
+                     <!--SMARTY UI组件： 代码编辑器 -->
+                     <{input type="code"  name="hello[label6]" value=$hello.label6}>
+                     <!-- <{* input type="code"  name="hello[label6]" value=$hello.label6 mode='text/javascript' *}> -->
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">Label7</label>
+                 <div class="col-md-5">
+                     <!--SMARTY UI组件： 日起时间选择器 -->
+                     <{input type="time"  name="hello[label7]" value=$hello.label7}>
+                 </div>
+             </div>
+
+         </div>
+         <!-- end form body -->
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>

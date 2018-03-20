@@ -1,0 +1,15 @@
+<!-- 图片滚动 -->
+<template id="widget-slider">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-slider :widget="widget" :index="index"></widget-child-slider>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_slider = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-slider',
+    components: {
+        'widget-child-slider': widget_child_slider
+    }
+});
+</script>

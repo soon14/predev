@@ -1,0 +1,85 @@
+<textarea name="<{$params.name}>" id="<{$id}>">
+    <{$params.value}>
+</textarea>
+<script charset="utf-8">
+$(function(){
+
+    var editor = $('#<{$id}>').summernote({
+        height: <{$params.height|default:250}> ,
+        lang: 'zh-CN',
+        disableDragAndDrop: true,
+        toolbar: [
+            ['style', ['style']],
+            ['color', ['color']],
+            ['height', ['height']],
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['link', 'picture', 'table']],
+            ['misc', ['fullscreen', 'codeview']]
+        ],
+        callbacks: {
+            onImageUpload: function(files, editor, editable) {
+                var files_array = [];
+                for (var i = 0; i < files.length; i++) {
+                    files_array.push(files[i]);
+                }
+                (function(file){
+                    if(!file)return;//break;
+                    var _loop_fn = arguments.callee;
+                    var data = new FormData();
+                    data.append('file', file);
+                    BlockLoading({
+                        target: $('#<{$id}>').next('.note-editor'),
+                        animate: true
+                    });
+                    $.ajax({
+                        data: data,
+                        type: "POST",
+                        url: "<{link app=image ctl=admin_manage act=wysiswyg_upload}>",
+                        cache: false,
+                        contentType: false,
+                        processData: false,
+                        error:function(){
+                            Messagebox.error('图片上传失败');
+                        },
+                        complete:function(){
+                            UnblockLoading($('#<{$id}>').next('.note-editor'));
+                        },
+                        success: function(re) {
+                            try {
+                                re = $.parseJSON(re);
+                            } catch (e) {
+
+                            }
+                            if (re.url){
+                                $('#<{$id}>').summernote('insertImage',re.url,function($image){
+
+                                });
+                                _loop_fn(files_array.shift());
+                            }
+                        }
+                    });
+
+                })(files_array.shift());
+
+            },
+            onChange: function(contents,$editable) {
+                $('#<{$id}>').html(contents);
+            },
+            onFocus:function(){
+                $('#<{$id}>').next('.note-editor').addClass('focus');
+            },
+            onBlur:function(){
+                $('#<{$id}>').next('.note-editor').removeClass('focus');
+            },
+            onInit:function(obj){
+                obj.codable.on('keyup',function(e){
+                        $('#<{$id}>').html($(this).val());
+                });
+            }
+        }
+
+    });
+});
+
+</script>

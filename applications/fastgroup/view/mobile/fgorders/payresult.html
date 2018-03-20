@@ -1,0 +1,34 @@
+<div class="content">
+    <ul class="table-view">
+    <{if $bill.status == 'succ' || $bill.status == 'progress'}>
+    <li class="table-view-cell media text-success">
+        <span class="fa fa-check media-object pull-left"></span>
+        <div class="media-body">
+            支付成功
+            <p>
+                <{$bill.last_modify|cdate}>
+            </p>
+        </div>
+    </li>
+    <li class="table-view-cell">
+        成功支付金额
+        <p class="pull-right text-danger">
+            <small>￥</small><strong><{$bill.money|cur}></strong>
+        </p>
+    </li>
+    <{else}>
+    <li class="table-view-cell media text-danger">
+            <span class="fa fa-times media-object pull-left"></span>
+            <div class="media-body">
+                支付失败
+                <p>
+                    <{$bill.last_modify|cdate}>
+                </p>
+            </div>
+    </li>
+    <{/if}>
+    </ul>
+    <div class="content-padded">
+        <a class="btn btn-block btn-primary" href="<{link app=fastgroup ctl=mobile_fastgroup act=order args0=$order_id_encrypt}>">查看订单详情</a>
+    </div>
+</div>

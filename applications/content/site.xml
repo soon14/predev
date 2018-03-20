@@ -1,0 +1,12 @@
+<site>
+	<module controller='site_article' >
+		<name>p</name>
+		<title>文章页面</title>
+		<disable>false</disable>
+	</module>
+	<module controller='site_node' >
+		<name>n</name>
+		<title>栏目首页</title>
+		<disable>false</disable>
+	</module>
+</site> 

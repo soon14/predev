@@ -1,0 +1,25 @@
+<h3 class="page-title">
+    微信支付配置
+</h3>
+
+<div class="form">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="alert alert-info">请将以下信息填写至<a href="http://mp.weixin.qq.com" target="_blank">微信公众平台</a>&raquo;微信支付&raquo;开发配置</div>
+            <{foreach from=$wx_business_api item=item key=key}>
+                <h4><{$key}></h4>
+                <{foreach from=$item item=item1 key=key1}>
+                    <div class="form-group">
+                        <label class="control-label col-md-3">
+                            <{$key1}>
+                        </label>
+                        <div class="col-md-7">
+                            <input type="text" class="form-control" readonly=true value="<{$item1}>">
+                        </div>
+                    </div>
+                <{/foreach}>
+            <{/foreach}>
+        </div>
+    </div>
+</div>
+<a class="btn green btn-block" href="index.php?app=ectools&ctl=payment_apps&act=setting&p[0]=<{$wxpay_classname}>">[下一步] 微信支付方式设置</a>

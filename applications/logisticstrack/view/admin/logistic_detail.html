@@ -1,0 +1,23 @@
+<{if $data.logi_name}>
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <h3 class="modal-title"><{$data.logi_name}> # <{$data.logi_no}></h3>
+</div>
+<{/if}>
+<div class="modal-body">
+    <{if $data.logi_log}>
+    <dl class="dl-horizontal">
+        <{foreach from=$data.logi_log item=item name=logi_log}>
+            <dt class="text-muted text-xs"><{$item.time}></dt>
+            <dd <{if $env.foreach.logi_log.first}>class="text-success"<{/if}>>
+                <i class="fa <{if $env.foreach.logi_log.first}> fa-map-marker text-success<{/if}>"></i>&nbsp;<{$item.context|replace:'签收':'<strong class="text-danger">签收</strong>'}>
+            </dd>
+        <{/foreach}>
+    </dl>
+    <{else}>
+    <div class="alert alert-danger">
+    	<{$errmsg}>
+    </div>
+    <{/if}>
+
+</div>

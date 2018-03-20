@@ -1,0 +1,12 @@
+<{if $data}>
+    <dl class="dl-horizontal">
+        <{foreach from=$data item=item}>
+            <dt><{$item.time}></dt>
+            <dd><{$item.context}></dd>
+        <{/foreach}>
+    </dl>
+<{else}>
+<div class="alert alert-danger">
+	<{$errmsg}>
+</div>
+<{/if}>

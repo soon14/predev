@@ -1,0 +1,58 @@
+<h3 class="page-title">
+    <{if !$tmpl.group_id}>添加<{else}>编辑<{/if}>模板
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=marketing&ctl=admin_message&act=<{$type}>_tmpl">模板列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if !$tmpl.tmpl_id}>添加<{else}>编辑<{/if}>模板</a>
+        </li>
+    </ul>
+</div>
+
+<form action="index.php?app=marketing&ctl=admin_message&act=save_tmpl" method="post" >
+    <input type="hidden" name="tmpl_id" value="<{$tmpl.tmpl_id}>">
+    <input type="hidden" name="message_type" value="email">
+    <div class="form-horizontal">
+        <div class="form-body form">
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                    <span class="required" aria-required="true">*</span>
+                    模板名称
+                </label>
+                <div class="col-md-4">
+                    <{input type='text' value=$tmpl.name name='name' required='true'}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                    <span class="required" aria-required="true">*</span>
+                    邮件标题
+                </label>
+                <div class="col-md-4">
+                    <{input type='text' value=$tmpl.title name='title' required='true'}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">邮件内容
+                </label>
+                <div class="col-md-8">
+                    <{input type="html" value=$tmpl.content name="content" }>
+                </div>
+            </div>
+
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                        <a href="index.php?app=marketing&ctl=admin_group&act=index" class="btn default">返回</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</form>

@@ -1,0 +1,236 @@
+<h3 class="page-title">
+    <{if !$task.group_id}>添加<{else}>编辑<{/if}>营销活动
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=marketing&ctl=admin_message&act=<{$type}>_tasks">营销活动</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if !$task.task_id}>添加<{else}>编辑<{/if}>营销活动</a>
+        </li>
+    </ul>
+</div>
+
+<div class="form">
+    <div class="form-horizontal">
+        <div class="form-wizard">
+            <form id="task_form" action="index.php?app=marketing&ctl=admin_message&act=save_task" method="post" class="form-body" >
+                <{if $task.task_id}>
+                <input type="hidden" name="task_id" value="<{$task.task_id}>">
+                <{/if}>
+                <input type="hidden" name="message_type" value="<{$type}>">
+
+                <ul class="nav nav-pills nav-justified steps">
+                    <li class="active">
+                        <a href="#tab1" data-toggle="tab" class="step">
+                            <span class="number">1 </span>
+                            <span class="desc"><i class="fa fa-check"></i> 编辑营销活动 </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tab2" data-toggle="tab" class="step">
+                            <span class="number">2 </span>
+                            <span class="desc"><i class="fa fa-check"></i> 预览并发送 </span>
+                        </a>
+                    </li>
+
+                </ul>
+                <div id="task_progress_bar" class="progress progress-striped" role="progressbar">
+                    <div class="progress-bar progress-bar-success" style="width: 50%;">
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                <span class="required" aria-required="true">*</span>
+                                营销名称
+                            </label>
+                            <div class="col-md-4">
+                                <{input type='text' value=$task.name name='name' required='true'}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                <span class="required" aria-required="true">*</span>
+                                发送客户
+                            </label>
+                            <div class="col-md-8">
+                                <{input type='object' object='group' base_filter=$base_filter multiple="true" callback_func="group_callback_func"}>
+                                <table class="table <{if !$extend_group}>hide<{/if}>" id="group_table">
+                                    <thead>
+                                    <th>操作</th>
+                                    <th>分组名称</th>
+                                    <th>描述</th>
+                                    </thead>
+                                    <tbody>
+                                    <{include file='admin/group/ajax_group.html'}>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                <span class="required" aria-required="true">*</span>
+                                选择模板
+                            </label>
+                            <div class="col-md-8">
+                                <{input type='object' object='message_tmpl' base_filter=$base_tmpl_filter multiple=false callback_func="tmpl_callback_func"}>
+                                <table class="table <{if !$tmpl}>hide<{/if}>" id="tmpl_table">
+                                    <thead>
+                                    <th>操作</th>
+                                    <th>模板名称</th>
+                                    <th>标题</th>
+                                    </thead>
+                                    <tbody>
+                                    <{include file='admin/message/ajax_tmpl.html'}>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                <span class="required" aria-required="true">*</span>
+                                发送时间
+                            </label>
+                            <div class="col-md-4">
+                                <{input type=time name="send_time" value=$task.send_time}>
+
+                            </div>
+                            <div class="help-inline">
+                                不指定则立即执行发送,指定时间则定时推送
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <button type="submit" class="btn blue button-next">下一步 <i class="m-icon-swapright m-icon-white"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="tab-pane" id="tab2">
+                        <div class="form-group">
+                            <label class="control-label col-md-3"><{if $type=='sms'}>短信<{else}>邮件<{/if}>流量
+                            </label>
+                            <div class="col-md-4">
+
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3"><{if $type=='sms'}>短信<{else}>邮件<{/if}>预览
+                            </label>
+                            <div class="col-md-8" id="content">
+                                <{$task.content}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">测试<{if $type=='sms'}>短信<{else}>邮件<{/if}>
+                            </label>
+                            <div class="col-md-4">
+                                <input id="account" class="form-control" type="text" placeholder="请输入测试<{if $type=='sms'}>手机号码<{else}>邮箱地址<{/if}>">
+                            </div>
+                            <div class="col-md-1">
+                                <button class="btn default green" id="send_test">立即发送</button>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">发送时间
+                            </label>
+                            <div class="col-md-4">
+                                <p class="form-control-static" id="send_time"><{$task.send_time|cdate}></p>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a href="javascript:;" class="btn default button-previous" >
+                                        <i class="m-icon-swapleft"></i> 上一步 </a>
+                                    <a href="index.php?app=marketing&ctl=admin_message&act=<{$type}>_tasks" class="btn blue button-complete" >
+                                        完成
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    var group_callback_func = function(ids){
+        $('<table></table>').load('index.php?app=marketing&ctl=admin_group&act=ajax_group' ,ids ,function(){
+            $('#group_table').removeClass('hide');
+            $(this).find('tr').appendTo($('#group_table tbody'));
+        });
+    }
+
+    var tmpl_callback_func = function(ids){
+        $('#tmpl_table tbody').load('index.php?app=marketing&ctl=admin_message&act=ajax_tmpl' ,ids ,function(){
+            $('#tmpl_table').removeClass('hide');
+        });
+    }
+</script>
+
+<script charset="utf-8">
+    //注册FORM表单提交
+    $('#task_form').data('ajax:success',function(re){
+        if(typeof(re)!='object')
+            try{
+                re = JSON.parse(re);
+            }catch(e){
+                re = $.parseJSON(re);
+            }
+        if(re.success){
+            if(!$('#task_form input[name="task_id"]').length){
+                $('#task_form').append('<input type=hidden name=task_id value='+re.task_id+' >');
+            }
+            $('#task_form .steps li:eq(1) a').click();
+            $('#content').html(re.content);
+            $('#send_time').html(re.send_time);
+        }
+    });
+
+
+    $('#task_form a.button-previous').on('click',function(){
+        $('#task_form .steps li:eq(0) a').click();
+    });
+    $('#task_form .steps li:eq(1)').on('shown.bs.tab', function (e) {
+
+        $('#task_progress_bar .progress-bar').animate({width:'100%'},200);
+
+    });
+    $('#task_form .steps li:eq(1)').on('hidden.bs.tab', function (e) {
+
+        $('#task_progress_bar .progress-bar').animate({width:'50%'},200);
+
+    });
+</script>
+
+<script>
+    $('#send_test').on('click',function(e){
+        e.preventDefault();
+        var account = $('#account').val();
+        if(!account){
+            return Messagebox.warning('请输入要测试发送的手机号码或者邮箱');
+        }
+        $.post('index.php?app=marketing&ctl=admin_message&act=send_test&p[0]=<{$type}>',{account:account,task_id:$('input[name="task_id"]').val()},function(res){
+            if(res.success){
+                return Messagebox.success('发送成功，请查看');
+            }else{
+                return Messagebox.error(res.error);
+            }
+        },'json');
+    });
+</script>

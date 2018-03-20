@@ -1,0 +1,83 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">
+        <{if $set_app.app_id }>编辑服务<{else}>添加服务<{/if}>
+    </h3>
+</div>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=vmcconnect&ctl=admin_apps&act=index">VMCC服务管理</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">API管理</a>
+        </li>
+    </ul>
+</div>
+<form method="post" action="index.php?app=vmcconnect&ctl=admin_apps&act=apis&app_id=<{$app_info.app_id}>" calss="form">
+    <input type="hidden" name="set_app_items[app_id]" value="<{$app_info.app_id}>">
+    <div class="modal-body form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">APP信息</label>
+                <div class="col-md-8">
+                    <code><{$app_info.app_name}></code>
+                </div>
+            </div>
+            <div class="form-group" data-box="view" style="display: <{if $api_conf.api_enable == 'false'}>none<{/if}>;">
+                <label class="col-md-2 control-label">可用API<span class="required" aria-required="true">*</span></label>
+                <div class="col-md-8">
+                    <{if $allow_apis}>
+                    
+                    <label for="select_all" class="control-label">
+                        <input name="select_all" id="select_all" type="checkbox">
+                        <span class="text-danger">全选</span>
+                    </label>
+                    
+                    <{foreach from=$allow_apis item=api key=key}>
+                    <div>
+                        <label for="app_item_cat_<{$key}>" class="control-label">
+                            <input name="app_item_cat_<{$key}>" id="app_item_cat_<{$key}>" value="<{$key}>" type="checkbox">
+                            <{$api.name}><span class="text-success">点击全选子项目</span>
+                        </label>
+                        <br />
+                        <{if $api.items}>
+                        <{foreach from=$api.items item=item key=item_key}>
+                        <label for="set_app_items_<{$item_key}>" class="control-label">
+                            <input id="set_app_items_<{$item_key}>" name="set_app_items[app_item][<{$item_key}>]" value="<{$item_key}>" data-rel="<{$key}>" type="checkbox"<{if $app_get_items && in_array($item_key,$app_get_items)}> checked<{/if}>>
+                                   <{$item}><code>&lt;<{$item_key}>&gt;</code>
+                        </label>
+                        <{/foreach}>
+                        <{/if}>
+                        <hr />
+                    </div>
+                    <{/foreach}>
+                    <{/if}>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+        <a type="button" class="btn default" href="index.php?app=vmcconnect&ctl=admin_apps&act=index">返回</a>
+        <button type="submit" class="btn blue">保存</button>
+    </div>
+
+
+</form>
+
+<script type="text/javascript">
+    $(function () {
+        $("input[name^='app_item_cat_']").click(function () {
+            $("input[id^='set_app_items_'][data-rel='" + $(this).val() + "']").prop('checked', $(this).prop('checked'));
+        });
+
+        $("input#select_all").click(function () {
+            $("input[id^='set_app_items_']").prop('checked', $(this).prop('checked'));
+        });
+    });
+</script>

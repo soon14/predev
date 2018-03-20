@@ -1,0 +1,167 @@
+<div class="alert alert-danger" role="alert" id="error_msg"></div>
+<div class="order-processing-title">
+    <div class="page-header">
+        <h1>闪币提现</h1>
+    </div>
+	<div class="cash-account">
+        <div class="account">
+            <div class="panel panel-default">
+                <div class="panel-heading">提现账户</div>
+                <div class="panel-body">
+                    <{if $member_info.bank_account}>
+                        <span class="word-part">持卡人：<{$member_info.account_name}></span>
+                        <span class="word-part">类型：<{$member_info.bank_type}></span>
+                        <span class="word-part">后四位：<{$member_info.bank_account}></span>
+                        <span class="word-part"><a style="color:#337ab7;" href="<{link app=commission ctl=site_member act=bank}>">修改账户</a></span>
+                    <{else}>
+                        <span>还未绑定提现账户,去 <a style="color:#337ab7;" href="<{link app=commission ctl=site_member act=bank}>">绑定</a> 吧</span>
+                    <{/if}>
+                </div>
+            </div>
+        </div>
+
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="coin" class="col-md-2 control-label">提现闪币</label>
+                <div class="col-md-2">
+                    <div class="popover-tip">
+                        <input type="text" class="form-control" id="coin" name="coin">
+                        <div class="popover top">
+                            <div class="arrow" style="left: 50%;"></div>
+                            <div class="popover-content"></div>
+                        </div>
+                    </div>          
+                    
+                </div>
+                <div class="col-md-4"><div class="lh34">折算人民币：<span id="rmb">0</span>元</div></div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <div class="describe">
+                        <span>人民币折算闪币比例为<span class="purple">1:<{$cash_rule.exchange}></span></span>&nbsp;<span>最低提现额度为<span class="purple"><{$cash_rule.min_cash|to_coin}></span>闪币</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="vcode" class="col-md-2 control-label">手机验证码</label>
+                <div class="col-md-2">
+                    <div class="popover-tip">
+                        <input type="text" class="form-control" id="vcode" name="vcode">
+                        <div class="popover top">
+                            <div class="arrow" style="left: 50%;"></div>
+                            <div class="popover-content"></div>
+                        </div>
+                    </div>     
+                    
+                </div>
+                <div class="col-md-2">
+                    <input type="button" class="btn btn-default" id="btn"  <{if !$member_info.bank_account  || time()>$cash_rule.last_cash_time}>disabled<{/if}>  value="获取验证码" >
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-md-2">
+                    <button id="save_card"  <{if !$member_info.bank_account  || time()>$cash_rule.last_cash_time}>disabled<{/if}> class="btn btn-primary">确认提现</button>
+                </div>
+                <div class="col-md-5"><div class="lh34"><span>本月最晚提现时间为<{$cash_rule.last_cash_time|cdate}></span></div></div>
+            </div>
+        </form>
+	</div>
+</div>
+<script>
+	$(document.body).addClass('cash-body');
+
+    //至少获取一次验证码
+    var get_vcode=false;
+    //个别提示信息
+    function popoverShow(pop,txt){
+        pop.next().stop(true,true).fadeIn(100).delay(2000).fadeOut(1000).find('.popover-content').text(txt);
+    }
+    //全局提示信息
+    function global_err_msg(txt){
+        $('#error_msg').stop(true,true).fadeIn(600).delay(2000).fadeOut(400).text(txt);
+    }
+
+    //获得短信验证码
+    var _cutdown_sms = function(btn){
+        var cutdown = 120,
+            btn_o_text = btn.val();
+        var timer =setInterval(function(){
+            btn.val('再次发送'+(cutdown--)+'秒');
+            if(cutdown<1){
+                clearInterval(timer);
+                btn.val(btn_o_text).removeAttr('disabled');
+            }
+        },1000);
+    };
+
+    $('#btn').on('click',function(e){
+        var btn = $(this);
+        btn.attr('disabled','true');
+        $('#save_card').attr('disabled','true');
+        $.post('<{link app=commission ctl=site_member act=send_vcode_sms}>',function(re){
+            if(re && re.error){
+                btn.removeAttr('disabled');
+                global_err_msg(re.error);
+            }
+            if(re && re.success){
+                if(!get_vcode){
+                    get_vcode=true;
+                }
+                _cutdown_sms(btn);
+            }
+            $('#save_card').removeAttr('disabled','true');
+        },'json');
+    });
+
+    $('#coin').on('keydown',function(e){
+        //alert(1)
+        console.log(e.which)
+        if((e.which>57&&e.which<96)||(e.which<48&&e.which!==8)||e.which>105){
+            return false;
+        }
+        setTimeout(function(){
+            if($('#coin').val()){
+                $('#rmb').text(parseInt($('#coin').val())/parseInt('<{$cash_rule.exchange}>'));
+            }else{
+                $('#rmb').text(0);
+            }
+        },10)
+    });
+
+    $('#save_card').on('click',function(){
+        checkForm();
+        return false;
+    });
+
+    function checkForm(){
+        if(!get_vcode){
+            global_err_msg('您未获取验证码');
+            return;
+        }
+
+        if($.trim($('#coin').val())){
+            var money = $.trim($('#coin').val())
+        }else{
+            popoverShow($('#coin'),"请填写提现闪币");
+            return;
+        }
+        if($.trim($('#vcode').val())){
+            var vcode = $.trim($('#vcode').val())
+        }else{
+            popoverShow($('#vcode'),"请填写提现闪币");
+            return;
+        }
+
+        var data = {vcode: vcode , money:money };
+        $.post('<{link app=commission ctl=site_member act=cash}>' ,data ,function(re){
+            if(re && re.error){
+                global_err_msg(re.error);
+            }
+            if(re && re.success){
+                location.href="<{link app=commission ctl=site_member act=account}>";
+            }
+        },'json');
+    }
+</script>

@@ -1,0 +1,10 @@
+<ol class="breadcrumb article-path notice-path">
+  <li class='ap-home'><a href="<{link app=supplier ctl=site_supplier act=index}>">供应商管理面板</a></li>
+  <li class="active">公告详情</li>
+</ol>
+<div class="article-main notice-main">
+    <h2 class="article-title notice-title"><{$notice.title}> <small><{$notice.pubtime|cdate:'FDATE'}></small></h2>
+    <div class="article-body notice-content">
+        <{$notice.content}>
+    </div>
+</div>

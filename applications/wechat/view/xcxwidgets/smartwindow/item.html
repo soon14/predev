@@ -1,0 +1,15 @@
+<!-- 智能橱窗 -->
+<template id="widget-smartwindow">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-smartwindow :widget="widget" :index="index"></widget-child-smartwindow>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_smartwindow = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-smartwindow',
+    components: {
+        'widget-child-smartwindow': widget_child_smartwindow
+    }
+});
+</script>

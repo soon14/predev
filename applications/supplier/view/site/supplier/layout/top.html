@@ -1,0 +1,10 @@
+<{css src="font-awesome.min.css"}>
+<nav class="navbar navbar-default supplier-navbar" role="navigation">
+      <div class="container-fluid">
+         <a class="navbar-brand" href="<{link app=supplier ctl=site_supplier act=index}>">供应商管理面板</a>
+         <p class="navbar-text pull-right">
+             <{$supplier.supplier_name}> <small><{$supplier.supplier_bn}></small>
+             <a href="<{link app=supplier ctl=site_supplier act=profile}>" class="navbar-link"><i class="glyphicon glyphicon-edit"></i></a>
+         </p>
+      </div>
+</nav>

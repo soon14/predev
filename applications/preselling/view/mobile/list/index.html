@@ -1,0 +1,40 @@
+
+
+    <div class="content">
+        <div class="glist-container">
+            <div class="goods-list">
+                <{include file='mobile/list/type/list.html'}>
+            </div>
+        </div>
+        <div class="content-padded">
+            <{morepage data=$pager}>
+        </div>
+    </div>
+    <script type="text/javascript">
+        /**
+         * @copyright vmcshop.com
+         * @version 20150811
+         */
+        $(function(){
+
+            //翻页
+            var current_page = 1;
+            $('.btn-morepage').on('touchend',function(e){
+                e.stopPropagation();
+                var btn = $(this);
+                btn.find('.fa-circle-o-notch').removeClass('hidden');
+                var data_morepage = btn.attr('data-morepage');
+                data_morepage = $.parseJSON(data_morepage);
+                var new_page = $('<div class="goods-list"></div>').insertAfter($('.glist-container .goods-list:last-child'));
+                new_page.load(data_morepage.link.replace(data_morepage.token,++current_page)+" .glist-container .goods-list .table-view",function(){
+                    render_glist(new_page);
+                    btn.find('.fa-circle-o-notch').addClass('hidden');
+                });
+                if(current_page == data_morepage.total){
+                    btn.remove();
+                }
+                return false;
+            });
+
+        });
+    </script>

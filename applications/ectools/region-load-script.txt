@@ -1,0 +1,27 @@
+echo "<pre>";
+$db = vmc::database();
+$region_res = $db->select('select * from region');
+$region_res = utils::array_change_key($region_res,'PARENT_ID',true);
+foreach ($region_res[0] as $item0) {
+    echo $item0['REGION_NAME'].'::'."\n";
+    foreach ($region_res[$item0['REGION_ID']] as $item1) {
+        if(in_array($item0['REGION_NAME'],array('北京市','天津市','重庆市','上海市'))){
+            if($item1['REGION_NAME'] == '市辖区'){
+                $item1['REGION_NAME'] = $item0['REGION_NAME'];
+            }
+        }
+        echo $item1['REGION_NAME'].':';
+        if($region_res[$item1['REGION_ID']]){
+            $region_name_arr = [];
+            foreach ($region_res[$item1['REGION_ID']] as $item2) {
+                if(in_array($item2['REGION_NAME'],array('市辖区','县'))){
+                    continue;
+                }
+                $region_name_arr[] = $item2['REGION_NAME'];
+            }
+            echo implode(',',$region_name_arr);
+        }
+        echo "\n";
+    }
+}
+exit;

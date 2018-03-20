@@ -1,0 +1,252 @@
+<!-- 设计面板 - 选择表单 -->
+<!-- 普通输入框 -->
+<template id="form-single-selector-text">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label for="" class="weui-label" :style="{fontSize:config.data.form_item_title_size+'px'}">
+                {{widget.module_name}}
+            </label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" :name="widget.name" type="text" :required="widget.required" :placeholder="'请输入'+widget.module_name">
+        </div>
+    </div>
+</template>
+<!-- 单选项 -->
+<template id="form-single-selector-radio">
+    <div class="weui-cell weui-cell_select weui-cell_select-after">
+        <div class="weui-cell__hd">
+            <label for="" class="weui-label" :style="{fontSize:config.data.form_item_title_size+'px'}">{{widget.module_name}}</label>
+        </div>
+        <div class="weui-cell__bd">
+            <select class="weui-select" :name="widget.name">
+                <option :value="item" v-for="(item,index) in widget.options">{{index}}</option>
+            </select>
+        </div>
+    </div>
+</template>
+<!-- 多选项 -->
+<template id="form-single-selector-checkbox">
+    <div class="weui-cells_checkbox">   
+        <div class="weui-cell__hd check-title">
+            <p class="weui-uploader__title" :style="{fontSize:config.data.form_item_title_size+'px'}">{{widget.module_name}}</p>
+        </div>
+        <label class="weui-cell weui-check__label" v-for="(item,index) in widget.options">
+            <div class="weui-cell__bd">
+                <p>{{item}}</p>
+            </div>
+            <div class="weui-cell__ft">
+                <input type="checkbox" class="weui-check" :value="index" :name="widget.name+'[]'" :required="widget.required" checked>
+                <span class="weui-icon-checked"></span>
+            </div>
+        </label>
+    </div>
+</template>
+<!-- 日期选择器 -->
+<template id="form-single-selector-date">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label for="" class="weui-label" :style="{fontSize:config.data.form_item_title_size+'px'}">
+                {{widget.module_name}}
+            </label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="date" placeholder="请选择日期" :name="widget.name" :required="widget.required">
+        </div>
+    </div>
+</template>
+<!-- 地区选择器 -->
+<template id="form-single-selector-region">
+    <div class="weui-cell">
+        <div class="weui-cell__hd">
+            <label for="" class="weui-label" :style="{fontSize:config.data.form_item_title_size+'px'}">
+                {{widget.module_name}}
+            </label>
+        </div>
+        <div class="weui-cell__bd">
+            <input class="weui-input" type="" placeholder="请选择地区">
+        </div>
+    </div>
+</template>
+<!-- 单图上传 -->
+<template id="form-single-selector-singleimage">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title" :style="{fontSize:config.data.form_item_title_size+'px'}">{{widget.module_name}}</p>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+                        <!-- <li class="weui-uploader__file" style="background-image:url(./images/pic_160.png)"></li> -->
+                    </ul>
+                    <div class="weui-uploader__input-box">
+                        <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" :name="widget.name" :required="widget.required">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!-- 多图上传 -->
+<template id="form-single-selector-multipleimage">
+    <div class="weui-cell">
+        <div class="weui-cell__bd">
+            <div class="weui-uploader">
+                <div class="weui-uploader__hd">
+                    <p class="weui-uploader__title" :style="{fontSize:config.data.form_item_title_size+'px'}">{{widget.module_name}}</p>
+                </div>
+                <div class="weui-uploader__bd">
+                    <ul class="weui-uploader__files" id="uploaderFiles">
+                        <!-- <li class="weui-uploader__file" style="background-image:url(./images/pic_160.png)"></li> -->
+                    </ul>
+                    <div class="weui-uploader__input-box">
+                        <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" multiple="" :name="widget.name" :required="widget.required">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+// 设置表单筛选
+// 
+designStore.methods.setFilterFormId = function(vnode, form_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.push({form_id: form_id});
+};
+designStore.methods.removeFilterFormId = function(vnode, form_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.splice(0,1);
+};
+// 设计面板 - 输入框
+var form_single_selector_text = Vue.extend({
+    props: ['widget', 'index' ,'config'],
+    data: function() {
+        return {
+            
+        };
+    },
+    template: '#form-single-selector-text',
+    methods: {
+        
+    },
+    mounted: function() {
+    }
+});
+// 注册
+Vue.component('form-single-selector-text', form_single_selector_text);
+
+// 设计面板 - 单选项
+var form_single_selector_radio = Vue.extend({
+    props: ['widget', 'index' ,'config'],
+    data: function() {
+        return {
+            
+        };
+    },
+    template: '#form-single-selector-radio',
+    methods: {
+        
+    },
+    mounted: function() {
+        
+    }
+});
+// 注册
+Vue.component('form-single-selector-radio', form_single_selector_radio);
+
+// 设计面板 - 多选项
+var form_single_selector_checkbox = Vue.extend({
+    props: ['widget', 'index' ,'config'],
+    data: function() {
+        return {
+            
+        };
+    },
+    template: '#form-single-selector-checkbox',
+    methods: {
+        
+    },
+    mounted: function() {
+        
+    }
+});
+// 注册
+Vue.component('form-single-selector-checkbox', form_single_selector_checkbox);
+
+// 设计面板 - 日期选择器
+var form_single_selector_date = Vue.extend({
+    props: ['widget', 'index' ,'config'],
+    data: function() {
+        return {
+            
+        };
+    },
+    template: '#form-single-selector-date',
+    methods: {
+        
+    },
+    mounted: function() {
+        
+    }
+});
+// 注册
+Vue.component('form-single-selector-date', form_single_selector_date);
+
+// 设计面板 - 地区选择器
+var form_single_selector_region = Vue.extend({
+    props: ['widget', 'index' ,'config'],
+    data: function() {
+        return {
+            
+        };
+    },
+    template: '#form-single-selector-region',
+    methods: {
+        
+    },
+    mounted: function() {
+        
+    }
+});
+// 注册
+Vue.component('form-single-selector-region', form_single_selector_region);
+
+// 设计面板 - 单图上传
+var form_single_selector_singleimage = Vue.extend({
+    props: ['widget', 'index' ,'config'],
+    data: function() {
+        return {
+            
+        };
+    },
+    template: '#form-single-selector-singleimage',
+    methods: {
+        
+    },
+    mounted: function() {
+        
+    }
+});
+// 注册
+Vue.component('form-single-selector-singleimage', form_single_selector_singleimage);
+
+// 设计面板 - 多图上传
+var form_single_selector_multipleimage = Vue.extend({
+    props: ['widget', 'index' ,'config'],
+    data: function() {
+        return {
+            
+        };
+    },
+    template: '#form-single-selector-multipleimage',
+    methods: {
+        
+    },
+    mounted: function() {
+        
+    }
+});
+// 注册
+Vue.component('form-single-selector-multipleimage', form_single_selector_multipleimage);
+
+</script>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <title>TENCENT MAP</title>
+    <style type="text/css" media="screen">
+    body, html{width: 100%;height: 100%;margin:0;font-family:"微软雅黑";}
+	#allmap {width: 100%; height:500px; overflow: hidden;}
+	#result {width:100%;font-size:12px;}
+	dl,dt,dd,ul,li{
+		margin:0;
+		padding:0;
+		list-style:none;
+	}
+	p{font-size:12px;}
+	dt{
+		font-size:14px;
+		font-family:"微软雅黑";
+		font-weight:bold;
+		border-bottom:1px dotted #000;
+		padding:5px 0 5px 5px;
+		margin:5px 0;
+	}
+	dd{
+		padding:5px 0 0 5px;
+	}
+	li{
+		line-height:28px;
+	}
+    .anchorBL,.BMap_cpyCtrl{
+        display: none;
+    }
+    </style>
+    <script type="text/javascript">
+        /**
+         *  http://lbs.qq.com/ @11113533
+         *  6MKBZ-5YBC4-L5ZUF-XYYXN-VJAPZ-S7BSW
+         */
+        var tencentmap_ak = '6MKBZ-5YBC4-L5ZUF-XYYXN-VJAPZ-S7BSW';
+    </script>
+    <script type="text/javascript" src="//map.qq.com/api/js?v=2.exp&key=6MKBZ-5YBC4-L5ZUF-XYYXN-VJAPZ-S7BSW"></script>
+</head>
+<body id="tencentmap_body">
+    <div id="allmap" style="overflow:hidden;zoom:1;position:relative;height:<{$params.height|default:400}>px;width:100%">
+		<div id="map" style="height:100%;-webkit-transition: all 0.5s ease-in-out;transition: all 0.5s ease-in-out;"></div>
+	</div>
+    <script type="text/javascript">
+
+        /**
+         * 地图渲染
+         */
+         var map = new qq.maps.Map(document.getElementById("map"),{
+             zoom:13,
+             scrollwheel:false
+         });
+         var maker = new qq.maps.Marker();
+
+         <{if !$params.disabled_navcontrol}>
+            new qq.maps.ScaleControl({
+                align: qq.maps.ALIGN.BOTTOM_LEFT,
+                margin: qq.maps.Size(85, 15),
+                map: map
+            });
+         <{/if}>
+
+        <{if $params.lat+$params.lng>$params.lat}>
+        /**
+         * @param lng 纬度
+         * @param lat 经度
+         * @param 缩放比
+         */
+            var point = new qq.maps.LatLng(<{$params.lat}>,<{$params.lng}>);
+            map.setCenter(point);
+            maker.setMap(map);
+            maker.setPosition(point);
+        <{elseif $params.region && $params.address}>
+            var myGeo = new qq.maps.Geocoder({
+                complete:function(res){
+                    map.setCenter(res.detail.location);
+                    maker.setMap(map);
+                    maker.setPosition(res.detail.location);
+                    <{if $params.click_callback}>
+                        if(typeof <{$params.click_callback}> =='function'){
+                            <{$params.click_callback}>({
+                                latLng:res.detail.location
+                            });
+                        }
+                    <{/if}>
+                }
+            });
+            myGeo.getLocation(decodeURIComponent("<{$params.region}>")+','+decodeURIComponent("<{$params.address}>"));
+        <{else}>
+            var myGeo = new qq.maps.Geocoder({
+                complete:function(res){
+                    map.setCenter(res.detail.location);
+                }
+            });
+            myGeo.getLocation("北京");
+        <{/if}>
+        qq.maps.event.addListener(map,'click',function(e){
+            maker.setMap(null);
+            maker.setPosition(e.latLng);
+            maker.setMap(map);
+            <{if $params.click_callback}>
+                if(typeof <{$params.click_callback}> =='function'){
+                    <{$params.click_callback}>(e);
+                }
+            <{/if}>
+        });
+    </script>
+</body>
+</html>

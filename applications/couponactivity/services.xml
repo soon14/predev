@@ -1,0 +1,15 @@
+<services>
+    <service id="b2c.messenger.actions">
+        <class>couponactivity_messenger_activity</class>
+    </service>
+
+    <service id="desktop_finder.couponactivity_mdl_activity">
+        <class>couponactivity_finder_activity</class>
+    </service>
+
+    <!-- OPENAPI BEGIN -->
+    <service id="openapi.acpns" optname="openapi@领券活动相关">
+    	<class>couponactivity_openapi_acpns</class>
+    </service>
+    <!-- OPENAPI END -->
+</services>

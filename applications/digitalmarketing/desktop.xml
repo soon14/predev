@@ -1,0 +1,16 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="digitalmarketing">互动营销</permission>
+        <permission display='true' id="digitalmarketing_edit">编辑互动营销</permission>
+    </permissions>
+
+    <workground icon="icon-present" id="b2c.wrokground.sale" name="营销" order="40">
+        <menugroup name="互动营销">
+            <menu action='index' controller='admin_activity' display='true' order='10' permission='digitalmarketing'>互动营销</menu>
+            <menu action='activity' controller='admin_activity' display='false' order='10' permission='digitalmarketing'>互动营销</menu>
+            <menu action='edit' controller='admin_activity' display='false' order='10' permission='digitalmarketing_edit'>编辑互动营销</menu>
+            <menu action='save' controller='admin_activity' display='false' order='10' permission='digitalmarketing_edit'>编辑互动营销</menu>
+        </menugroup>
+
+    </workground>
+</desktop>

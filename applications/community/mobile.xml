@@ -1,0 +1,18 @@
+<site>
+    <module controller='mobile_publish'>
+        <name>communitypublish</name>
+        <title>社区内容发布</title>
+    </module>
+    <module controller='mobile_blog'>
+        <name>communityblog</name>
+        <title>社区内容</title>
+    </module>
+    <module controller='mobile_relation'>
+        <name>communityrelation</name>
+        <title>社区关系</title>
+    </module>
+    <module controller='mobile_setting'>
+        <name>communitysetting</name>
+        <title>社区用户个人设置</title>
+    </module> 
+</site>

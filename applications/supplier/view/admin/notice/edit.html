@@ -1,0 +1,60 @@
+<h3 class="page-title"><{if $notice.notice_id }>编辑公告<{else}>新公告<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=supplier&ctl=admin_notice&act=index">公告列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $notice.notice_id }>编辑公告<{else}>新公告<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=supplier&ctl=admin_notice&act=save" method="post" id='notice_form' class="form" >
+    <{if $notice.notice_id }>
+        <input type="hidden" name="notice[notice_id]" value="<{$notice.notice_id}>">
+    <{/if}>
+    <div class="form form-horizontal">
+        <!-- begin form body -->
+        <div class="form-body">
+             <div class="form-group">
+                 <label class="col-md-2 control-label">
+                     公告标题
+                     <span class="required" aria-required="true">*</span>
+                 </label>
+                 <div class="col-md-10">
+                     <input type="text" name="notice[title]" value="<{$notice.title}>" required=true class="form-control">
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">
+                     公告内容
+                     <span class="required" aria-required="true">*</span>
+                 </label>
+                 <div class="col-md-10">
+                     <{input type="html" name="notice[content]" value=$notice.content}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">是否发布</label>
+                 <div class="col-md-3">
+                     <{input type="bool" name="notice[ispub]" value=$notice.ispub}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">是否置顶</label>
+                 <div class="col-md-3">
+                     <{input type="bool" name="notice[istop]" value=$notice.istop}>
+                 </div>
+             </div>
+         </div>
+         <!-- end form body -->
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>

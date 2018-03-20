@@ -1,0 +1,197 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title"><{$orderPaymethodInfo['name']}></h3>
+</div>
+<div class="btn btn-lg btn-block bg-green-seagreen" style="font-size:50px;">
+    <i id="need_total_pay" class="fa fa-cny fa-3x" style="font-size:50px;"><{$orderInfo['order_total']-$orderInfo['payed']|cur}></i>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="screen-num-ipt" id="payBody">
+                <form id="payBodyForm">
+                    <input name="pay[order_id]" type="hidden" value="<{$orderInfo['order_id']}>">
+                    <input name="pay[bill_id]" type="hidden" value="<{$paybillId}>">
+                    <{if $paybillInfo['pay_app_id'] == 'cash'}>
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <div class="panel panel-default text-center">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">收款金额</h3>
+                                </div>
+        					  <input type="text" value="" placeholder="请输入收款金额"  class="form-control input-lg text-center font-green-seagreen" id="collection_money" data-pay_money="<{$orderInfo['order_total']}>" name="pay[shoukuanJine]" style="font-size:32px">
+        				    </div>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="panel panel-default text-center">
+                                <div class="panel-heading">
+                                    <h3 class="panel-title">应找零金额</h3>
+                                </div>
+        					  <input type="text" value="" class="form-control input-lg text-center font-red" id="show_change_money" readyonly="true" style="font-size:32px">
+        				    </div>
+                        </div>
+                    </div>
+                    <{elseif $paybillInfo['pay_app_id'] == 'paybycard' }>
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">刷卡交易流水号</h3>
+                        </div>
+					  <input type="text" id="out_trade_no" autocomplete="off" placeholder="输入刷卡交易流水号" value=""  class="form-control input-lg text-center font-green-seagreen" name="pay[out_trade_no]" style="font-size:32px">
+				    </div>
+                    <{elseif $paybillInfo['pay_app_id'] == 'membercard' }>
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+                            <h3 class="panel-title">MMGO专用卡磁条内容</h3>
+                        </div>
+                        <input id="store_id" name="store_id" type="hidden" value="<{$orderInfo['store_id']}>">
+                        <input type="password" id="out_membercard_no" autocomplete="off" placeholder="请刷卡" value=""  class="form-control input-lg text-center font-green-seagreen" name="pay[out_membercard_no]" style="font-size:32px">
+                        <table id="data_add_table" class="table " style="display: none" >
+                            <thead >
+                            <tr>
+                                <th>编辑</th>
+                                <th>购物卡号</th>
+                                <th>余额</th>
+                                <th>使用</th>
+                                <th>剩余</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td> </td>
+                                <td> </td>
+                                <td>合计：</td>
+                                <td id="table_sum">0.00</td>
+                                <td id="table_surplus">0.00</td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <{elseif $paybillInfo['pay_app_id'] == 'allinpay'}>
+                         <input type="hidden" value="<{$kjt_order_id}>" name="pay[out_trade_no]">
+                    <{else}>
+                    <div class="panel panel-default text-center">
+                        <div class="panel-heading">
+  							<h3 class="panel-title">条码或二维码</h3>
+  						</div>
+                         <input type="text" id="auth_code" autocomplete="off" value="" placeholder="请扫描顾客手机进行收款"   class="form-control input-lg text-center font-green-seagreen" name="pay[auth_code]" style="font-size:32px;">
+				    </div>
+                    <p class="help-block">
+                        <i class="fa fa-info"></i> 请在输入框获得光标时,扫描顾客手机付款条码或二维码进行收款。
+                    </p>
+                    <{/if}>
+                </form>
+
+                <{if $paybillInfo['pay_app_id'] == 'allinpay'}>
+                <{if !$kjt_order_id||$kjt_order_id==''}>
+                    <div class="alert alert-error"><i class="fa fa-warning"></i> 支付平台异常,请稍候再试.</div>
+                <{else}>
+                <div class="well text-center">
+                    <p class="help-block">
+                        请用专用设备扫描下面二维码,进行收款
+                    </p>
+                    <div class="margin-top-10 margin-bottom-10">
+                        <img src="<{$env.base_url}>/index.php/openapi/store_qrcode/get_qrcode?text=<{$kjt_order_id}>" />
+                    </div>
+                    <p class="help-block">
+                        交易流水号：<{$kjt_order_id}>
+                    </p>
+                </div>
+                <{/if}>
+                <{elseif $paybillInfo['pay_app_id'] == 'cash'}>
+                <div class="well well-sm">
+                    <div class="row margin-top-10">
+                        <div class="col-xs-4">
+                            <button data-val='7' type="button" class="btn btn-block btn-default"><span class="h1">7</span>
+                            </button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button data-val='8' type="button" class="btn btn-block btn-default"><span class="h1">8</span>
+                            </button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button data-val='9' type="button" class="btn btn-block btn-default"><span class="h1">9</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row margin-top-10">
+                        <div class="col-xs-4">
+                            <button data-val='4' type="button" class="btn btn-block btn-default"><span class="h1">4</span>
+                            </button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button data-val='5' type="button" class="btn btn-block btn-default"><span class="h1">5</span>
+                            </button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button data-val='6' type="button" class="btn btn-block btn-default"><span class="h1">6</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row margin-top-10">
+                        <div class="col-xs-4">
+                            <button data-val='1' type="button" class="btn btn-block btn-default"><span class="h1">1</span>
+                            </button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button data-val='2' type="button" class="btn btn-block btn-default"><span class="h1">2</span>
+                            </button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button data-val='3' type="button" class="btn btn-block btn-default"><span class="h1">3</span>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="row margin-top-10">
+                        <div class="col-xs-4">
+                            <button data-val='0' type="button" class="btn btn-block btn-default"><span class="h1">0</span>
+                            </button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button data-val='.' type="button" class="btn btn-block btn-default"><span class="h1">.</span>
+                            </button>
+                        </div>
+                        <div class="col-xs-4">
+                            <button data-val='delete' type="button" class="btn btn-block default">
+                                <span class="h1"><i class="glyphicon glyphicon-arrow-left"></i></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <{/if}>
+
+            </div>
+        </div>
+    </div>
+</div>
+<{if $paybillInfo['pay_app_id'] == 'cash' || $paybillInfo['pay_app_id'] == 'paybycard' || $paybillInfo['pay_app_id'] == 'membercard'}>
+<div class="modal-footer">
+    <div class="row">
+        <div class="col-xs-6">
+            <button type="button" class="btn btn-block btn-lg btn-default" id="change_pay_method_btn" data-order_id="<{$orderInfo['order_id']}>">使用其他支付方式</button>
+        </div>
+        <div class="col-xs-6">
+            <button type="button"  class="btn button-confirm btn-block btn-lg blue" id="confirm_pay_btn">完成收款</button>
+        </div>
+    </div>
+</div>
+<{elseif $paybillInfo['pay_app_id'] == 'allinpay'}>
+<div class="modal-footer">
+    <div class="row">
+        <div class="col-xs-6">
+            <button type="button" class="btn btn-block btn-lg btn-default" id="change_pay_method_btn" data-order_id="<{$orderInfo['order_id']}>">刷新二维码</button>
+        </div>
+        <div class="col-xs-6">
+            <button type="button"  class="btn button-confirm btn-block btn-lg blue" id="confirm_pay_btn">完成收款</button>
+        </div>
+    </div>
+</div>
+<{else}>
+<div class="modal-footer">
+    <div class="row">
+        <div class="col-xs-12">
+            <button type="button" class="btn btn-block btn-lg btn-default" id="change_pay_method_btn" data-order_id="<{$orderInfo['order_id']}>">使用其他支付方式</button>
+        </div>
+    </div>
+</div>
+<{/if}>

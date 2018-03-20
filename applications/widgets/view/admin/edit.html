@@ -1,0 +1,263 @@
+<h3 class="page-title"><{if $widgets.id }>板块编辑<{else}>添加板块<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=widgets&ctl=admin_index&act=index">板块列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $widgets.id}>板块编辑<{else}>添加板块<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=widgets&ctl=admin_index&act=save" method="post" class="form" >
+    <{if $widgets.id }>
+    <input type="hidden" name="id" value="<{$widgets.id}>">
+    <{else}>
+    <input type="hidden" name="createtime" value="<{$widgets.createtime}>">
+    <{/if}>
+
+    <ul class="nav nav-tabs">
+		<li class="active">
+			<a href="#tab_1_1" data-toggle="tab" data-url="<{link app=widgets ctl=admin_index act=get_edit}>&p[0]=<{$id}>">
+			基本信息 </a>
+		</li>
+		<li>
+			<a href="#tab_1_2" data-type="code" data-toggle="tab" data-url="<{link app=widgets ctl=admin_index act=get_edit_code}>&p[0]=<{$id}>">
+			<i class="fa fa-code"></i> 板块模板源码 </a>
+		</li>
+        <li>
+            <a href="#data_example" data-toggle="modal"><i class="fa fa-question"></i>板块模板可调用数据说明</a>
+        </li>
+        <li role="presentation">
+            <a href="#J_widgets_history" data-toggle="tab"  data-url="<{link app=widgets ctl=admin_index act=get_history}>&p[0]=<{$id}>"><i class="fa fa-list"></i>修改历史</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div class="tab-pane active" id="tab_1_1">
+            <{include file="admin/widgets/edit.html"}>
+        </div>
+        <div class="tab-pane" id="tab_1_2">
+            <{input type="code" height="500" name="html_code" value="{$html_code}"}>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="J_widgets_history"></div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-9">
+                <button type="submit" class="btn blue">保存</button>
+                <a href="index.php?app=widgets&ctl=admin_index&act=index" class="btn btn-default">返回</a>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="modal fade" id="data_example" tabindex="-1" role="basic" aria-hidden="true" style="display: none;">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+				<h4 class="modal-title">数据格式</h4>
+			</div>
+			<div class="modal-body">
+                <div>
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                      <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">图文类</a></li>
+                      <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">商品类</a></li>
+                    </ul>
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                      <div role="tabpanel" class="tab-pane active" id="home">
+                      <pre>
+  $data.id => 模板主键
+  $data.tmp_name => string "板块模板名称"
+  $data.type  => string(1) "板块类型 0:图文 1:商品 2:自定义 3:静态板块"
+  $data.code  => string(5) "唯一编码"
+  $data.cid => string(1) "板块分类ID"
+  $data.screen => string(1) "板块试用屏幕 0:PC 1:mobile"
+  $data.status => string(1) "0:有效 1:暂停"
+  $data.last_modify => string(10) "最后更新时间，时间戳格式"
+  $data.createtime => string(10) "创建时间，时间戳格式"
+  $data.file_path => string(32) "模板文件路劲"
+  $data.name=> string(7) "板块名称"
+  "图片信息获取方法"
+  [foreach from=$data.data.pic item=item]
+        $item.id|storager => string(32) "图片地址"
+        $item.title => string(5) "名称"
+        $item.link => string(6) "图片去向地址"
+  [/foreach]
+                      </pre>
+                      </div>
+                      <div role="tabpanel" class="tab-pane" id="profile">
+                      <pre>
+  $data.id  => 模板主键
+  $data.tmp_name  => string "板块模板名称"
+  $data.type  => string(1) "板块类型 0:图文 1:商品 2:自定义 3:静态板块"
+  $data.code  => string(5) "唯一编码"
+  $data.cid  => string(1) "板块分类ID"
+  $data.screen  => string(1) "板块试用屏幕 0:PC 1:mobile"
+  $data.status  => string(1) "0:有效 1:暂停"
+  $data.last_modify  => string(10) "最后更新时间，时间戳格式"
+  $data.createtime  => string(10) "创建时间，时间戳格式"
+  $data.file_path  => string(32) "模板文件路劲"
+  $data.name  => string(7) "板块名称"
+  $data.tag => string "标签"
+  "商品信息获取方法"
+  [foreach from=$data.data.goods item=item]
+        $item.goods_id  => string(1) "商品ID"
+        $item.gid  => string(9) "商品编号"
+        $item.name  => string(8) "商品名称"
+        $item.extended_cat  => array(3) "扩展分类ID:"
+        $item.w_order  => string(1) "周订单数"
+        $item.brief  => string(0) "简介"
+        $item.goods_type  => string(6) "商品类型"
+        $item.image_default_id  => string(32) "商品默认图片"
+        $item.intro  => string(23) "详情"
+        $item.min_buy  => "最小购买数量"
+        $item.nostore_sell  => string(1) "是否无库存销售"
+        $item.comment_count  => string(1) "评论数量"
+        $item.view_w_count  => string(2) "周浏览数"
+        $item.view_count  => string(3) "总浏览数"
+        $item.buy_count  => string(1) "总购买量"
+        $item.buy_w_count  => string(1) "周购买量"
+        $item.seo_info.seo_title  => string(0) "SEO title"
+        $item.seo_info.seo_keywords  => string(0) "SEO keywords"
+        $item.seo_info.seo_description  => string(0) "SEO description"
+        "默认货品信息"
+        $item.product.product_id  => string(3) "货品ID"
+        $item.product.goods_id  => string(1) "商品ID"
+        $item.product.bn  => string(16) "货号"
+        $item.product.barcode  => string(6) "条码"
+        $item.product.name  => string(8) "名称"
+        $item.product.price  => string(7) "销售价"
+        $item.product.mktprice  => string(4) "市场价"
+        $item.product.weight  => string(7) "重量"
+        $item.product.unit  => string(3) "计量单位"
+        $item.product.spec_info  => string(10) "sku信息"
+        $item.product.image_id  => string(32) "货品图片"
+        $item.product.buy_price  => string(7) "促销后价格"
+        $item.product.promotion  => array(2) {
+            plist  => array(0) "促销信息"
+            sale_price  => "促销价格"
+        }
+        $item.product.item_url  => string(34) "货品URL地址"
+        $item.product.image  => string(82) "图片地址"
+
+        $item.mark_star  => "评分"
+        $item.category  => "分类" array(2) {
+          id  => string(4) "4340"
+          cat_name  => string(6) "手机"
+        }
+        $item.brand  => "品牌信息" array(7) {
+          id  => string(1) "品牌主键"
+          brand_name  => string(5) "品牌名"
+          brand_initial  => string(1) "品牌首字母"
+          brand_logo  => string(32) "品牌图片"
+          brand_country  => string(2) "国家"
+          brand_logo_image  => string(60) "品牌图片地址"
+          brand_country_flag  => string(45) "国家标识"
+        }
+  [/foreach]
+                      </pre>
+                      </div>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="J_history_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<script>
+    (function(){
+        $('.nav a[data-url]').on('click',function(e){
+            var $el = $(this),
+                    content = $($el.attr('href'));
+            if($el.attr('data-type')=='code'){
+                $.get($el.data('url'),function(re){
+                    var html_code = content.find('textarea[name="html_code"]');
+                    html_code.empty();
+                    html_code.text(re);
+                    var code_edit = html_code.next('iframe')[0].contentWindow.code_editor;
+                    code_edit.setValue(re);
+                    code_edit.refresh();
+                });
+            }else{
+                content.load($el.data('url'));
+            }
+        });
+        $('#J_page_widgets').on('click','.J-show',function(e){
+            var $el = $(this);
+            $('#J_page_widgets').load($el.data('url'));
+        });
+    })();
+</script>
+
+<script>
+    $('#J_widgets_history').on('click','.pagination li',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if($(this).hasClass('disabled')){
+            return false;
+        }
+        var page = $(this).children('a').attr('href');
+        $('#J_widgets_history').load(page);
+
+    }).on('click','.J-show-code',function(){
+        $('#J_history_modal .modal-content').load($(this).attr('data-url'));
+        $('#J_history_modal').modal('show');
+    });
+</script>
+<script charset="utf-8">
+(function(){
+    var html_code = $('textarea[name="html_code"]');
+    function edit_refresh(type){
+        <{if !($widgets.id || $copy_id) }>
+            $.get('<{link app=widgets ctl=admin_index act=ajax_get_tpl}>',{type:type} ,function(re){
+                console.info(re);
+                html_code.empty();
+                html_code.text(re.success);
+                var code_edit = html_code.next('iframe')[0].contentWindow.code_editor;
+                code_edit.setValue(re.success);
+                code_edit.refresh();
+            },'json');
+        <{/if}>
+    }
+
+    $(function(){
+        edit_refresh($('#J_select_type').val());
+    });
+
+
+    $('#J_select_type').on('change',function(){
+        var $el = $(this);
+        $('.J-data').hide();
+        switch($el.val()){
+            case '0':
+                $('#code_html_block').show();
+                $('input[name="nums"]').parents('.form-group').show();
+                edit_refresh($el.val());
+            break;
+            case '1':
+                $('#code_html_block').show();
+                $('input[name="nums"]').parents('.form-group').show();
+                edit_refresh($el.val());
+            break;
+            case '2':
+                $('input[name="nums"]').parents('.form-group').hide();
+                $('#code_html_block').hide();
+            break;
+            case '3':
+                $('input[name="nums"]').parents('.form-group').hide();
+                $('#code_html_block').show();
+                edit_refresh($el.val());
+            break;
+        }
+    }).trigger('change');
+})();
+</script>

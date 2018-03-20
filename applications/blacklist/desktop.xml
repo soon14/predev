@@ -1,0 +1,10 @@
+<desktop>
+    <permissions>
+        <permission id="blacklist_member" display='true' workground='b2c.wrokground.member'>会员黑名单</permission>
+    </permissions>
+    <workground icon="icon-users" id="b2c.wrokground.member" name="会员" order='30'>
+        <menugroup name="会员管理">
+            <menu controller='admin_member' action='index' permission='blacklist_member' display='true' order="60">会员黑名单</menu>
+        </menugroup>
+    </workground>
+</desktop>

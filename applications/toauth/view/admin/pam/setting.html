@@ -1,0 +1,48 @@
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <h3 class="modal-title">配置 <{$pam_name}><small><{$pam_ver}></small></h3>
+</div>
+<form method="post" action="index.php?app=toauth&ctl=admin_setting&act=setting&p[0]=<{$classname}>" id='pconf_form' calss="form">
+<div class="modal-body">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="form-horizontal">
+				<div class="form-body">
+					<{foreach from=$settings item=input key=key}>
+					<{if $input.name}>
+					<{assign var=input_name value=$input.name}>
+					<{else}>
+					<{assign var=input_name value="setting[{$key}]"}>
+					<{/if}>
+					<{if $input.type == 'hidden'}>
+						<input type="hidden" name="<{$input_name}>" value="<{$conf.{$key}|default:$input.default}>">
+					<{else}>
+					<div class="form-group">
+						<label class="col-md-4 control-label"><{$input.title}></label>
+						<div class="col-md-8">
+							<{if $input.type == 'html' || $input.type == 'textarea'}>
+								<{input   type=textarea rows=2 name=$input_name value=$conf.{$key}|default:$input.default}>
+							<{elseif $input.type == 'radio' || $input.type == 'select'}>
+								<{input  type=select required=true options=$input.options name=$input_name value=$conf.{$key}|default:$input.default}>
+							<{else}>
+							<{input  type=text  name=$input_name value=$conf.{$key}|default:$input.default}>
+							<{/if}>
+                            <{if $input.helpinfo}>
+                                <span class="help-info"><{$input.helpinfo}></span>
+                            <{/if}>
+						</div>
+					</div>
+					<{/if}>
+					<{/foreach}>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</div>
+<div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">保存</button>
+</div>
+
+</form>

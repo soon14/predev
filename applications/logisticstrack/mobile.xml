@@ -1,0 +1,6 @@
+<site>
+    <module controller='mobile_tracker'>
+        <name>logisticstracker</name>
+        <title>物流追踪</title>
+    </module>
+</site>

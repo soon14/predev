@@ -1,0 +1,52 @@
+<form action='index.php?app=site&ctl=admin_seo&act=saveseo&p[0]=<{$id}>' method='post'>
+    <div class="form-horizontal">
+        <div class="form-body">
+            <{if count($config) > 0}>
+                <h4>可用变量</h4>
+                <ul class="list-inline">
+                <{foreach from=$config item=item}>
+                    <li class="margin-top-10">
+                        <div class="btn-group">
+                            <div class="btn default btn-xs">
+                                <{$item.value}>
+                            </div>
+                            <div class="btn btn-default btn-xs">
+                                    <{$item.id}>
+                            </div>
+                        </div>
+                    </li>
+                <{/foreach}>
+                </ul>
+                <div class="clearfix">
+                    <span class="help-block"><i class="fa fa-info-circle"></i> 以上变量会在前台自动替换为相关值</span>
+                </div>
+                <hr>
+            <{/if}>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">title</label>
+                    <div class="col-md-4">
+                        <input type="text" name="seo_title" value="<{$param.seo_title}>" class="form-control" required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">keywords</label>
+                    <div class="col-md-4">
+                        <input type="text" name="seo_keywords" value="<{$param.seo_keywords}>" class="form-control" required="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-2 control-label">description</label>
+                    <div class="col-md-4">
+                        <textarea required="true" name="seo_content" rows="2" class="form-control"><{$param.seo_content}></textarea>
+                    </div>
+                </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,13 @@
+<services>
+    <service id="openapi.toauth" optname="openapi@信任登录相关">
+        <class>toauth_api</class>
+    </service>
+    <service id="toauth.pam" optname="第三方信任登录列表">
+        <class>toauth_pam_qq</class>
+        <class>toauth_pam_sina</class>
+        <class>toauth_pam_taobao</class>
+    </service>
+    <service id="view_helper">
+        <class>toauth_viewhelper</class>
+    </service>
+</services>

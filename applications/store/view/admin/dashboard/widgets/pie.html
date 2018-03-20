@@ -1,0 +1,20 @@
+
+<div id="pie" ></div>
+<script>
+    $(function(){
+        var data = '';
+
+        $.plot($("#pie"), data, {
+            series: {
+                pie: {
+                    show: true ,//显示饼图
+                    radius: 'auto'
+                }
+            },
+            legend: {
+                show: false //不显示图例
+            }
+        });
+
+    });
+</script>

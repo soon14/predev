@@ -1,0 +1,10 @@
+<desktop>
+    <permissions>
+        <permission id="solr" display='true' workground='solr.workground'>Solr搜索引擎管理</permission>
+    </permissions>
+
+    <panelgroup icon="fa fa-database" id="solr" order="55">Solr搜索引擎</panelgroup>
+    <adminpanel action="index" controller="admin_setting" display='true' group="solr_solr" permission="solr">基本配置</adminpanel>
+    <adminpanel action="index" controller="admin_operation" display='true' group="solr_solr" permission="solr">引擎管理</adminpanel>
+    <adminpanel action="index" controller="admin_dashboard" display='true' group="solr_solr" permission="solr">仪表盘</adminpanel>
+</desktop>

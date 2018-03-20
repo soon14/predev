@@ -1,0 +1,112 @@
+CNY	￥	中国，人民币	China, Yuan Renminbi
+USD	$	美国，美元	Dollars
+EUR	€	欧盟，欧元	Euro
+GBP	£	英国，英镑	Britain (United Kingdom), Pounds
+JPY	¥	日本，日元	Japan, Yen
+AFN	؋	阿富汗，阿富汗尼	Afghanistan, Afghanis
+ARS	$	阿根廷，比索	Argentina, Pesos
+AWG	ƒ	阿鲁巴，荷兰盾	Aruba, Guilders (also called Florins)
+AUD	$	澳大利亚，澳元	Australia, Dollars
+AZN	ман	阿塞拜疆，新马纳特	Azerbaijan, New Manats
+BSD	$	巴哈马，美元	Bahamas, Dollars
+BBD	$	巴巴多斯，美元	Barbados, Dollars
+BYR	p.	白俄罗斯，卢布	Belarus, Rubles
+BZD	BZ$	伯利兹，美元	Belize, Dollars
+BMD	$	百慕大，美元	Bermuda, Dollars
+BOB	$b	玻利维亚，Bolivianos	Bolivia, Bolivianos
+BAM	KM	波黑，可兑换马克	Bosnia and Herzegovina, Convertible Marka
+BWP	P	博茨瓦纳，Pulas	Botswana, Pulas
+BGN	лв	保加利亚，列弗	Bulgaria, Leva
+BRL	R$	巴西，雷亚尔	Brazil, Reais
+BND	$	文莱达鲁萨兰国，美元	Brunei Darussalam, Dollars
+KHR	៛	柬埔寨，瑞尔	Cambodia, Riels
+CAD	$	加拿大，加拿大元	Canada, Dollars
+KYD	$	开曼群岛，美元	Cayman Islands, Dollars
+CLP	$	智利，比索	Chile, Pesos
+COP	$	哥伦比亚，比索	Colombia, Pesos
+CRC	₡	哥斯达黎加，科隆	Costa Rica, Colón
+HRK	kn	克罗地亚，库纳	Croatia, Kuna
+CUP	₱	古巴，比索	Cuba, Pesos
+CZK	Kč	捷克共和国，克克朗	Czech Republic, Koruny
+DKK	kr	丹麦，克隆纳	Denmark, Kroner
+DOP	RD$	多米尼加共和国，比索	Dominican Republic, Pesos
+XCD	$	东加勒比，美元	East Caribbean, Dollars
+EGP	£	埃及，磅	Egypt, Pounds
+SVC	$	萨尔瓦多，科朗	El Salvador, Colones
+EEK	kr	爱沙尼亚，克龙	Estonia, Krooni
+FKP	£	福克兰群岛，英镑	Falkland Islands, Pounds
+FJD	$	斐济，美元	Fiji, Dollars
+GHC	¢	加纳，塞地	Ghana, Cedis
+GIP	£	直布罗陀，磅	Gibraltar, Pounds
+GTQ	Q	危地马拉，格查尔	Guatemala, Quetzales
+GGP	£	根西岛，磅	Guernsey, Pounds
+GYD	$	圭亚那，美元	Guyana, Dollars
+HNL	L	洪都拉斯，伦皮拉	Honduras, Lempiras
+HKD	$	香港，港币	Hong Kong, Dollars
+HUF	Ft	匈牙利，福林	Hungary, Forint
+ISK	kr	冰岛，Kronur	Iceland, Kronur
+INR	₨	印度，卢比	India, Rupees
+IDR	Rp	印尼，卢比	Indonesia, Rupees
+IRR	﷼	伊朗，里亚尔	Iran, Rials
+IMP	£	马恩岛，磅	Isle of Man, Pounds
+ILS	₪	以色列，新谢克尔	Israel, New Shekels
+JMD	J$	牙买加，美元	Jamaica, Dollars
+JEP	£	泽西岛，磅	Jersey, Pounds
+KZT	лв	哈萨克斯坦，藤戈	Kazakhstan, Tenge
+KGS	лв	吉尔吉斯斯坦，索姆	Kyrgyzstan, Soms
+LAK	₭	老挝，基普	Laos, Kips
+LVL	Ls	拉脱维亚，拉提	Latvia, Lati
+LBP	£	黎巴嫩，磅	Lebanon, Pounds
+LRD	$	利比里亚，美元	Liberia, Dollars
+CHF	CHF	列支敦士登，瑞士法郎	Liechtenstein, Switzerland Francs
+LTL	Lt	立陶宛，利泰	Lithuania, Litai
+MKD	ден	马其顿，第纳尔	Macedonia, Dinars
+MYR	RM	马来西亚，林吉特	Malaysia, Ringgits
+MUR	₨	毛里求斯，卢比	Mauritius, Rupees
+MXN	$	墨西哥，比索	Mexico, Pesos
+MNT	₮	蒙古图格里克	Mongolia, Tugriks
+MZN	MT	莫桑比克梅蒂卡尔	Mozambique, Meticais
+NAD	$	纳米比亚，美元	Namibia, Dollars
+NPR	₨	尼泊尔，卢比	Nepal, Rupees
+ANG	ƒ	荷属安的列斯，荷兰盾	Netherlands Antilles, Guilders
+NZD	$	新西兰，新西兰元	New Zealand, Dollars
+NIO	C$	尼加拉瓜，科多巴	Nicaragua, Cordobas
+NGN	₦	尼日利亚，奈拉	Nigeria, Nairas
+KPW	₩	朝鲜，朝鲜元	North Korea, Won
+NOK	kr	挪威，克朗	Norway, Krone
+OMR	﷼	阿曼，里亚尔	Oman, Rials
+PKR	₨	巴基斯坦，卢比	Pakistan, Rupees
+PAB	B/.	巴拿马，巴尔博亚	Panama, Balboa
+PYG	Gs	巴拉圭，瓜拉尼	Paraguay, Guarani
+PEN	S/.	秘鲁，新索尔	Peru, Nuevos Soles
+PHP	Php	菲律宾，比索	Philippines, Pesos
+PLN	zł	波兰，罗提	Poland, Zlotych
+QAR	﷼	卡塔尔，里亚尔	Qatar, Rials
+RON	lei	罗马尼亚，新雷	Romania, New Lei
+RUB	руб	俄罗斯，卢布	Russia, Rubles
+SHP	£	圣赫勒拿岛，磅	Saint Helena, Pounds
+SAR	﷼	沙特阿拉伯，里亚尔	Saudi Arabia, Riyals
+RSD	Дин.	塞尔维亚，第纳尔	Serbia, Dinars
+SCR	₨	塞舌尔，卢比	Seychelles, Rupees
+SGD	$	新加坡，新加坡元	Singapore, Dollars
+SBD	$	所罗门群岛，美元	Solomon Islands, Dollars
+SOS	S	索马里，先令	Somalia, Shillings
+ZAR	R	南非，兰特	South Africa, Rand
+KRW	₩	韩国，韩元	South Korea, Won
+LKR	₨	斯里兰卡，卢比	Sri Lanka, Rupees
+SEK	kr	瑞典，克郎	Sweden, Kronor
+SRD	$	苏里南，美元	Suriname, Dollars
+SYP	£	叙利亚，磅	Syria, Pounds
+TWD	NT$	台湾，新台币	Taiwan, New Dollars
+THB	฿	泰国，泰铢	Thailand, Baht
+TTD	TT$	特里尼达和多巴哥，美元	Trinidad and Tobago, Dollars
+TRY	TL	土耳其，里拉	Turkey, Lira
+TVD	$	图瓦卢，美元	Tuvalu, Dollars
+UAH	₴	乌克兰，赫夫纳	Ukraine, Hryvnia
+UYU	$U	乌拉圭，比索	Uruguay, Pesos
+UZS	лв	乌兹别克斯坦，求和	Uzbekistan, Sums
+VEF	Bs	委内瑞拉，博利瓦富尔特斯	Venezuela, Bolivares Fuertes
+VND	₫	越南，东	Vietnam, Dong
+YER	﷼	也门，里亚尔	Yemen, Rials
+ZWD	Z$	津巴布韦，津元	Zimbabwe, Zimbabwe Dollars
+ALL	Lek	阿尔巴尼亚，莱凯	Albania, Leke

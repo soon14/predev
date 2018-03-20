@@ -1,0 +1,10 @@
+<root>
+    <register act="save" ctl="admin_plan" module="goods" method="get" param="p.0">
+        <operate_type>计划调价设置</operate_type>
+        <template>计划 %s 被编辑</template>
+    </register>
+    <register act="update_plan_products" ctl="admin_plan" method="get" module="goods" param="p.0">
+        <operate_type>计划调价内货品变更</operate_type>
+        <template>计划 %s 内货品被编辑</template>
+    </register>
+</root>

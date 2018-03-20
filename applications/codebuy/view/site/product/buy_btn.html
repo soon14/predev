@@ -1,0 +1,28 @@
+<p>
+您使用了优购码，可以优先购买
+</p>
+<div class="product-quantity input-group" style="width:150px;" data-minibuy="1">
+    <div class="spinner-buttons input-group-btn">
+        <button type="button" class="btn btn-default">
+        -
+        </button>
+    </div>
+    <input type="text" id="J_codebuy_num" class="spinner-input form-control"  value=1 data-max-sale=<{$activity.number}>>
+    <div class="spinner-buttons input-group-btn">
+        <button type="button" class="btn btn-default">
+        +
+        </button>
+    </div>
+</div>
+<hr>
+<a class="btn btn-success btn-lg btn-buy" href="<{link app=b2c ctl=site_cart act=fastbuy args0=$product_id args1=1}>">立即抢购</a>
+<script>
+(function(){
+    $('#J_codebuy_num').on('_change',function(e){
+        var $el = $(this);
+        if($el.val() > $el.data('max-sale')){
+            $el.val($el.data('max-sale'));
+        }
+    });
+})();
+</script>

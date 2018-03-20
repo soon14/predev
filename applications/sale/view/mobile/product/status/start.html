@@ -1,0 +1,17 @@
+<a class="btn btn-positive btn-buy pull-right" href="<{link app=b2c ctl=mobile_cart act=fastbuy args0=$product_id args1=1}>">
+    <span class="J-countdown">
+    <i class="glyphicon glyphicon-time"></i>
+    <span class="day-show">0</span>
+    <span class="hour-show">0</span>
+    <span class="minute-show">0</span>
+    <span class="second-show">0</span>
+    后抢购结束
+    </span>
+</a>
+<script>
+(function(){
+    var notStart = new Sale.countdown(<{$sale.end - $now}>,$('.J-countdown'),function(){
+        $('#J_sale_buy').load('<{link app=sale ctl=mobile_sale act=get_status arg0=$product_id}>',{'sale_id':<{$sale.id}>,'goods_id':<{$sale.goods_id}>});
+    });
+})();
+</script>

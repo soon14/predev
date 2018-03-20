@@ -1,0 +1,7 @@
+<desktop>
+    <permissions>
+        <permission id="vmcservice_market" display='true'>应用市场</permission>
+        <permission id="vmcservice_service" display='true'>服务中心</permission>
+
+    </permissions>
+</desktop>

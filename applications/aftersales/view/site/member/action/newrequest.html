@@ -1,0 +1,148 @@
+<div class="page-header">
+  <h1>售后服务申请 <small>Services  Request</small></h1>
+</div>
+<div class="list-unstyled row order-process-bar">
+    <div class="col-xs-3"><div class="well well-sm"><a href="<{link app=aftersales ctl=site_member act=order}>">选择需服务商品</a> &raquo;</div></div>
+    <div class="col-xs-3 active"><div class="well well-sm">填写申请表 &raquo;</div></div>
+    <div class="col-xs-3"><div class="well well-sm">客服处理 &raquo;</div></div>
+    <div class="col-xs-3"><div class="well well-sm">服务承诺兑现 <i class="glyphicon glyphicon-heart"></i></div></div>
+</div>
+<div class="panel panel-default panel-assrule">
+    <div class="panel-body">
+    <{$gtype_assrule}>
+    <{$env.conf.aftersales.default_assrule}>
+    </div>
+</div>
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>
+                请求售后服务商品描述
+            </th>
+            <!-- <th>包装清单</th>
+            <th>赠品清单</th> -->
+            <th>
+                已发货数量
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="warning">
+            <td>
+                <div class="row">
+                    <div class="col-xs-1">
+                        <img class="img-thumbnail" src="<{$request_item.image_id|storager:'xs'}>" alt="<{$request_item.name}>" />
+                    </div>
+                    <div class="col-xs-6">
+                        <{$request_item.name}><{if $request_item.spec_info}><br><small><{$request_item.spec_info}></small><{/if}>
+                    </div>
+                    <div class="col-xs-5 text-center">
+                        成交价：￥<{$request_item.buy_price|cur}>
+                    </div>
+                </div>
+            </td>
+            <!-- <td></td><td></td> -->
+            <td>
+                <{$request_item.sendnum}>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<form target="new_request_frame" class="form-horizontal" action="<{link app=aftersales ctl=site_member act=newrequest args0=$order.order_id args1=$request_item.product_id args2='save'}>" method="post" enctype="multipart/form-data" id="ass_newrequest_form">
+    <input type="hidden" name="request[req_type]" value="1">
+    <div class="form-group" data-extend="req_type">
+        <label  class="col-xs-2 control-label">商品返回方式</label>
+        <div class="col-xs-7">
+          <span class="help-block"><{$env.conf.aftersales.return_item_helpinfo}></span>
+        </div>
+    </div>
+    <div class="form-group" data-extend="req_type">
+        <label  class="col-xs-2 control-label">退货数量(最多：<{$request_item.nums-$request_quantity}>)<span class="text-danger">*</span></label>
+        <div class="col-xs-7">
+            <div class="product-quantity input-group" style="width:150px;">
+                <div class="spinner-buttons input-group-btn">
+                    <button type="button" class="btn btn-default">
+                    -
+                    </button>
+                </div>
+                <input type="text" name="product_return_num" class="spinner-input form-control"  value=1 data-max="<{$request_item.nums-$request_quantity}>">
+                <div class="spinner-buttons input-group-btn">
+                    <button type="button" class="btn btn-default">
+                    +
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-xs-2 control-label">问题描述<span class="text-danger">*</span></label>
+        <div class="col-xs-7">
+          <{input type="textarea" required="true" name="request[description]" placeholder="售后问题描述" rows=3}>
+        </div>
+    </div>
+    <div class="form-group">
+        <label  class="col-xs-2 control-label">照片</label>
+        <div class="col-xs-7">
+                <{input type="file" class="request-image"  name="images[]"}>
+                <span class="help-block">最多上传5张,每张大小不能超过<span class="text-danger"><{$env.conf.aftersales.request_image_size}>MB</span>,支持bmp,gif,jpg,png,jpeg</span>
+        </div>
+    </div>
+    <hr>
+    <div class="form-group">
+        <div class="col-xs-7 col-xs-offset-2">
+          <button type="submit" class="btn btn-lg btn-primary" data-loading-text="正在提交...">提交申请</button>
+        </div>
+    </div>
+</form>
+<iframe src="about:blank" class="hide" name="new_request_frame"></iframe>
+
+<script type="text/javascript">
+    //图片选择输入框自动复制
+    $('.request-image').on('change',function(){
+        $(this).off('change',arguments.callee);
+        var images_length = $('.request-image').length;
+        if(images_length>4)return;
+        var file_ipt_clone = $($(this).clone());
+        file_ipt_clone.insertAfter($(this));
+        file_ipt_clone.on('change',arguments.callee);
+        //file_ipt_clone.prop('name','images['+images_length+']');
+    });
+     //提交处理
+     $('#ass_newrequest_form').on('submit',function(){
+         var sub_btn = $(this).find('button[type=submit]');
+         sub_btn.attr('data-loading-text','正在提交...').button('loading');
+         $('iframe[name=new_request_frame]').on('load',function(){
+             $(this).off('load',arguments.callee);
+             sub_btn.button('reset');
+             try{
+                 var response = $(this.contentWindow.document.body.innerHTML).text();
+                 response = $.parseJSON(response);
+             }catch(e){
+                 try{
+                     var response = this.contentWindow.document.body.innerHTML;
+                         response = $.parseJSON(response);
+                 }catch(e){
+
+                 }
+             }
+             if(typeof(response)!='object'){
+                 alert('提交失败!请稍后重试');
+             }
+             if('fipt_idx' in response){
+                 //上传错误
+                 var error_info = $('<span class="span-info dropup text-danger"><span class="caret"></span>'+response.error+'</span>'),ipt = $('.request-image').eq(response.fipt_idx);
+                 error_info.insertAfter(ipt);
+                 return setTimeout(function(){
+                     error_info.fadeOut(function(){
+                         error_info.remove();
+                     });
+                 },5000);
+             }
+             if('error' in response){
+                 //其他异常
+                 alert('提交失败!'+response.error);
+             }
+             location = "<{link app=aftersales ctl=site_member act=request}>";
+         });
+     });
+</script>

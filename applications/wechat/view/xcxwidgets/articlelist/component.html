@@ -1,0 +1,180 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 文章列表 - 子组件 -->
+<template id="widget-child-articlelist">
+    <!--
+    title 标题
+    show_title 是否显示标题
+    with_panel 是否显示panel
+    type 显示类型 swiper gallery grid tower list
+    card_style card方式显示
+    swiper_height 是否显示间距
+    swiper_item_margin 分列样式
+    filter 筛选条件
+    orderby 排序方式
+    limit 获取数量
+    -->
+    <section class="widget-box widget-articlelist" :class="{
+             'widget-articlelist-gallery': widget.data.type == 'gallery',
+             'widget-articlelist-list weui-panel': widget.data.type == 'list'}">
+        
+        <div class="articlelist-body weui-panel__bd"  v-if="widget.data.items.length > 0">
+            <ul v-if="widget.data.type == 'list'">
+                <li v-for="(columns, goods_key) in widget.data.items" :goods_key="goods_key">
+                    <a href="" class="weui-media-box weui-media-box_appmsg co-item">
+                        <span v-if="widget.data.mode!='widthFix'" class="weui-media-box__hd weui-media-box__hd_in-appmsg g-image" :style="{'width': (widget.data.type == 'list' ? (widget.data.swiper_width) + 'px' : '80px'),'height': (widget.data.type == 'list' ? (widget.data.swiper_height) + 'px' : '80px')}">
+                            <!--<img :src="goods.image"/>-->
+                            <div class="image-display"  :class="widget.data.mode||aspectFit" :style="{'backgroundImage':'url('+columns.src+')'}"></div>
+                        </span>
+                        <span v-else class="weui-media-box__hd weui-media-box__hd_in-appmsg g-image" :style="{'width': (widget.data.type == 'list' ? (widget.data.swiper_width) + 'px' : '80px'),height:'auto'}">
+                            <img :src="columns.src" style="width:100%;height:auto;"/>
+                        </span>
+                        <p class="weui-media-box__bd weui-media-box__desc">
+                            <span  class="weui-media-box__desc g-name">{{columns.title}}</span>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+            <ul v-else>
+                <li v-for="(columns, goods_key) in widget.data.items" :goods_key="goods_key">
+                    <a href="">
+                        <span class="g-image">
+                            <img :src="columns.src" />
+                        </span>
+                        <span class="g-name">{{columns.title}}</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="articlelist-body weui-panel__bd"  v-else>
+            <ul v-if="widget.data.type == 'list'">
+                <li>
+                    <a href="" class="weui-media-box weui-media-box_appmsg co-item">
+                        <span class="weui-media-box__hd weui-media-box__hd_in-appmsg g-image">
+                            <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" />
+                        </span>
+                        <p class="weui-media-box__bd">
+                            <span class="weui-media-box__desc g-name">请设置筛选</span>
+                        </p>
+                    </a>
+                </li>
+            </ul>
+            <ul v-else>
+                <li>
+                    <a href="">
+                        <span class="g-image">
+                            <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" />
+                        </span>
+                        <span class="g-name">请设置筛选</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </section>
+</template>
+<script type="text/javascript">
+// --------------------------- 产品列表
+// 更新产品列表
+designStore.methods.initFilter = function(vnode) {
+    if (!this.root.page.currWidgets[vnode.index].data.filter_type) {
+        this.root.page.currWidgets[vnode.index].data.filter_type = 'column_id';
+    }
+    if (!this.root.page.currWidgets[vnode.index].data.filter) {
+        this.root.page.currWidgets[vnode.index].data.filter = {
+            column_id: '首页推荐'
+        };
+    }
+};
+// 更新产品列表
+designStore.methods.onArticleUpdate = function(vnode) {
+    var _widget = this.root.page.currWidgets[vnode.index].data;
+console.log(_widget);
+    var _t = this;
+    if( _widget.filter_type=="column_id"){
+    	var node_id = _widget.filter['column_id'][0];
+	    _t.root.page.currWidgets[vnode.index].data.items = [];
+	    console.log('------------'+node_id);
+	    if(!node_id){
+	    	return false;
+	    }
+	    var header = {headers:{'X-Requested-isWXAPP':'YES'}};
+	    axios.get('/index.php/m/n-' +node_id+ '-' + 1 + '.html?size='+_widget.limit, header)
+	        .then(function(response) {
+	            if (!response.data || !response.data.alist)
+	                return false;
+                var arr = [];
+                for(var i=0;i<response.data.alist.length;i++){
+                	if(!response.data.alist[i].body||!response.data.alist[i].body.image_id){
+                		arr.push('');
+                	}else{
+                		
+                		arr.push(response.data.alist[i].body.image_id);
+                	}
+                	
+                }
+                getImg(arr,'',function(imgs){
+                		for(var i=0;i<imgs.length;i++){
+		                	response.data.alist[i].src = imgs[i];
+		                }
+                		_t.root.page.currWidgets[vnode.index].data.items = response.data.alist;
+                })
+	        });
+    }else{
+    	var content_id = _widget.filter['content_id'];
+    	var str = content_id.join(',');
+    	axios.get('/index.php/openapi/content_node/articles_body/article_id/'+str+'/article_limit/'+_widget.limit,{
+    	}).then(function(response) {
+    		console.log(response.data.data);
+				if (!response.data || !response.data.data)
+	                return false;
+	                var arr = [];
+	                for(var i=0;i<response.data.data.length;i++){
+	                	if(!response.data.data[i].image_id){
+	                		arr.push('');
+	                	}else{
+	                		
+	                		arr.push(response.data.data[i].image_id);
+	                	}
+	                	
+	                }
+	                getImg(arr,'',function(imgs){
+	                		for(var i=0;i<imgs.length;i++){
+			                	response.data.data[i].src = imgs[i];
+			                }
+	                		_t.root.page.currWidgets[vnode.index].data.items = response.data.data;
+	                })
+	    });
+    }
+    
+};
+var widget_child_articlelist = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-articlelist',
+    created: function() {
+      designStore.methods.initFilter(this);
+      return designStore.methods.onArticleUpdate(this);
+    }
+});
+function fix_img_url(url) {
+    if (url.match(/^http([s]*):/)) {
+        return url;
+    }
+    return 'http:' + url;
+}
+function getImg(ident, size, callback) {
+    size || (size = 'l');
+    if (['o', 'xs', 's', 'm', 'l'].indexOf(size) < 0) {
+        size = 'l';
+    }
+    $.post('/openapi/storager/' + size, {
+        'images': ident
+    }, function(res) {
+        if (res && res.result == 'success' && res.data && callback) {
+            var imgs = [];
+            for (var i in res.data) {
+                imgs.push(fix_img_url(res.data[i]));
+            }
+            callback(imgs);
+        }
+    })
+}
+</script>

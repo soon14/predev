@@ -1,0 +1,255 @@
+<!-- 设计面板 - 子组件 -->
+<template id="design-action">
+    <div class="page-view-mask-box" @click.self="settingWidget">
+        <div class="page-view-action-box">
+            <ul>
+                <li>
+                    <a href="javascript:;" class="btn btn-primary btn-xs" @click.stop="settingWidget"><i class="fa fa-cog"></i>设置</a>
+                </li>
+                <li>
+                    <a href="javascript:;" class="btn btn-danger btn-xs" @click.stop="deleteWidget"><i class="fa fa-trash"></i>移除</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</template>
+
+<!-- 设计面板 - 选择分类 -->
+<template id="design-category-selector">
+    <div v-if="count">
+        <select class="form-control" style="margin-bottom: 5px;" v-model="category" @change="categoryChange">
+            <option value="" :selected="!category">选择...</option>
+            <option v-for="(cat, key) in categories" :key="key" :value="cat.cat_id">{{cat.cat_name}}</option>
+        </select>
+    </div>
+</template>
+
+<!-- 设计面板 - 选择商品单选 -->
+<template id="design-product-single-selector">
+    <div class="product-single-select-box" :id="widget.name + '_' + name + '_select_product_single_' + index">
+        <div>
+            <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectProduct($event)">
+                <i class="fa fa-list-alt"></i> 选择商品
+            </button>
+        </div>
+        <div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            名称
+                        </th>
+                        <th>
+                            销售价
+                        </th>
+                    </tr>
+                </thead>
+                <tbody :id="widget.name + '_' + name + '_product_single_selected_' + index">
+                    <tr v-for="(product, product_key) in products">
+                        <td>{{product.name}}</td>
+                        <td>{{'￥' + product.price}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <!-- Modal -->
+        <div class="modal fade" :id="widget.name + '_' + name + '_select_product_single_modal_' + index">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                        <h3 class="modal-title">请选择</h3>
+                    </div>
+                    <div class="modal-body">
+                        loading...
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn default btn-close">关闭</button>
+                        <button type="button" class="btn blue btn-submit">确认</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/javascript">
+// 设计面板 - 设置操作
+var design_action = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#design-action',
+    methods: {
+        deleteWidget: function() {
+            return designStore.methods.deleteWidget(this);
+        },
+        settingWidget: function() {
+            return designStore.methods.onSetting(this);
+        }
+    }
+});
+
+// 获取分类
+designStore.methods.getCategories = function(pid, callBack) {
+    if (!pid) pid = 0;
+    axios.post(this.root.categoryRemoteUrl + pid)
+        .then(function(response) {
+            if (!response.data)
+                return false;
+            if (callBack) callBack(response.data);
+        });
+};
+// 设计面板 - 选择分类
+var design_category_selector = Vue.extend({
+    props: ['widget', 'index', 'name', 'item', 'item_index'],
+    data: function() {
+        return {
+            category: '',
+            categories: null,
+            count: 0
+        };
+    },
+    template: '#design-category-selector',
+    methods: {
+        bindOptions: function(data) {
+            this.categories = data.data;
+            this.count = this.categories ? Object.keys(this.categories).length : 0;
+        },
+        categoryChange: function() {
+            this.$parent.categoryChange(this.category, this.item_index);
+        },
+        init: function() {
+            this.category = '';
+            this.count = 0;
+            if (!this.item) {
+                return;
+            }
+            if (this.item.value) this.category = this.item.value;
+            designStore.methods.getCategories(this.item.pid, this.bindOptions);
+        }
+    },
+    mounted: function() {
+        this.init();
+    },
+    watch: {
+        item: {
+            handler: function(val, oldVal) {
+                if (oldVal.pid != val.pid) {
+                    this.init();
+                }
+                this.category = val.value;
+            },
+            deep: true
+        }
+    }
+});
+// 注册
+Vue.component('design-category-selector', design_category_selector);
+
+// 设计面板 - 选择商品单选
+var design_product_single_selector = Vue.extend({
+    props: ['widget', 'index', 'name', 'product'],
+    data: function() {
+        return {
+            products: {}
+        };
+    },
+    template: '#design-product-single-selector',
+    methods: {
+        //
+        listProducts: function(product_id) {
+            this.products = {};
+            if (!product_id) return;
+            var t = this;
+            axios.post(designStore.productRowRemoteUrl, {
+                    product_id: product_id
+                })
+                .then(function(response) {
+                    if (!response.data)
+                        return false;
+                    t.products = response.data;
+                });
+        },
+        // 选择商品
+        onSelectProduct: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.product-single-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_' + this.name + '_select_product_single_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = modalBody.find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onProductSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load(designStore.productRemoteUrl, function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        // 已改变
+        onProductSelected: function(selected) {
+            var product_id = '';
+            this.products = {};
+            if (selected.length) {
+                product_id = selected[0].value;
+            }
+            this.listProducts(product_id);
+            this.$parent.productChange(product_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.product) this.listProducts(this.product);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+Vue.component('design-product-single-selector', design_product_single_selector);
+</script>

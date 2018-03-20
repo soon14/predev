@@ -1,0 +1,19 @@
+<desktop>
+    <permissions>
+        <permission display="true" id="adjustprices">查看限时降价活动</permission>
+        <permission display="true" id="adjustprices_edit">新建/编辑降价计划</permission>
+        <permission display="true" id="adjustprices_del">删除降价计划</permission>
+        <permission display="true" id="adjustprices_status_edit">降价活动商品维护</permission>
+    </permissions>
+    <workground icon="icon-present" id="b2c.wrokground.sale" name="营销" order="40">
+        <menugroup name="限时降价">
+            <menu action='index' controller='admin_plan' display='true' order='20' permission='adjustprices'>限时降价</menu>
+            <menu action='edit' controller='admin_plan' display='false' order='20' permission='adjustprices_edit'>编辑降价活动</menu>
+            <menu action='edit_products' controller='admin_plan' display='false' order='20' permission='adjustprices_status_edit'>编辑降价活动货品</menu>
+            <menu action='update_job_item' controller='admin_plan' display='false' order='20' permission='adjustprices_status_edit'>编辑单个货品调整价格</menu>
+            <menu action='update_plan_products' controller='admin_plan' display='false' order='20' permission='adjustprices_status_edit'>更新调价活动货品项</menu>
+            <menu action='update_plan_products_bycsv' controller='admin_plan' display='false' order='20' permission='adjustprices_status_edit'>csv更新调价活动货品项</menu>
+            <menu display='false' order='20' permission='adjustprices_status_edit'>限时降价活动状态切换</menu>
+        </menugroup>
+    </workground>
+</desktop>

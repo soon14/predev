@@ -1,0 +1,94 @@
+<div class="content">
+    <img src="<{$subject.default_image_id|storager}>" alt="<{$subject.title}>" width=100%/>
+    <h3 class="subject-title"><{$subject.title}></h3>
+    <ul class="table-view">
+            <li class="table-view-cell">
+                <a class="navigate-right" href="<{link app=experiencestore ctl=mobile_store act=storelist}>">
+                  <div class="media-body">
+                    <{$store.region|regionpart:'city'}>,<{$store.name}>
+                  </div>
+                 </a>
+            </li>
+            <li class="table-view-cell">
+                <label class="hide"><{$date_range_str}></label>
+                <select id="schedule_select">
+                    <{foreach from=$datepicker item=dpitem}>
+                        <{if $dpitem.schedule}>
+                            <optgroup label="<{$dpitem.time|date_format:'%m月%d日 星期%w'}>">
+                                <{foreach from=$dpitem.schedule item=sitem}>
+                                    <option data-blur="<{$dpitem.time|date_format:'%m月%d日 星期%w'|replace:'星期0':'星期日'}>&nbsp;<{$sitem.from_time|date_format:'%p %R'|replace:'AM':'上午'|replace:'PM':'下午'}>" value="<{$sitem.id}>" data-focus="<{$sitem.from_time|date_format:'%p %R'|replace:'AM':'上午'|replace:'PM':'下午'}>" <{if $sitem.need_ticket && $sitem.tickets}>data-tickets='<{$sitem.tickets|json_encode}>'<{/if}>>
+                                        <{$dpitem.time|date_format:'%m月%d日 星期%w'|replace:'星期0':'星期日'}>&nbsp;<{$sitem.from_time|date_format:'%p %R'|replace:'AM':'上午'|replace:'PM':'下午'}>
+                                    </option>
+                                <{/foreach}>
+                            </optgroup>
+                        <{/if}>
+                    <{/foreach}>
+                </select>
+            </li>
+    </ul>
+    <div class="tickets-select hide" id="tickets_select">
+        <h3>票券</h3>
+        <div class="tickets-list">
+
+        </div>
+    </div>
+    <div class="subject-desc">
+        <h3>简介</h3>
+        <{$subject.desc}>
+    </div>
+</div>
+<div class="bar bar-standard bar-footer-secondary">
+    <form class="schedule-form" action="<{link app=experiencestore ctl=mobile_activity act=order}>" method="get">
+        <{if $order_id}>
+        <input type="hidden" name="order_id" value="<{$order_id}>">
+        <{/if}>
+        <input type="hidden" name="store_id" value="<{$store_id}>">
+        <input type="hidden" name="subject_id" value="<{$subject_id}>">
+        <input type="hidden" name="schedule_id" value="">
+        <input type="hidden" name="ticket_id" value="">
+        <button type="submit" class="btn btn-block btn-primary disabled">立即预约</button>
+    </form>
+</div>
+<script type="text/javascript">
+$(function(){
+    $('#schedule_select').on('change',function(){
+        var option = $(this.options[this.selectedIndex]);
+        $('.schedule-form input:hidden[name="schedule_id"]').val(option[0].value);
+        if(option.attr('data-tickets')){
+            $('.schedule-form button[type="submit"]').addClass('disabled');
+            $('#tickets_select .tickets-list').empty();
+            $('#tickets_select').removeClass('hide');
+            var tickets = eval(option.attr('data-tickets'));
+            $.each(tickets,function(idx,ticket){
+                $('#tickets_select .tickets-list').append("<button class='btn btn-outlined ticket-item' data-id='"+ticket.id+"'>"+ticket.name+"<br><i class='fa fa-yen'></i>"+new Number(ticket.price).toFixed(2)+"</button>");
+            });
+            if($('#tickets_select .ticket-item').length == 1){
+                $('#tickets_select .ticket-item').trigger('click');
+            }
+        }else{
+            $('#tickets_select .tickets-list').empty();
+            $('#tickets_select').addClass('hide');
+            $('.schedule-form button[type="submit"]').removeClass('disabled');
+        }
+    });
+    $('#tickets_select').on('click','.ticket-item',function(e){
+        $('#tickets_select').find('.ticket-item').removeClass('btn-primary');
+        $(this).addClass('btn-primary');
+        $('.schedule-form button[type="submit"]').removeClass('disabled');
+        $('.schedule-form input:hidden[name="ticket_id"]').val($(this).attr('data-id'));
+    });
+
+    $('#schedule_select').trigger('change');
+
+    // $('#schedule_select').on('focus',function(){
+    //     $(this).find('option').each(function(idx,option){
+    //         option.text = $(option).attr('data-focus');
+    //     });
+    // });
+    // $('#schedule_select').on('select',function(){
+    //     $(this).find('option').each(function(idx,option){
+    //         option.text = $(option).attr('data-blur');
+    //     });
+    // });
+});
+</script>

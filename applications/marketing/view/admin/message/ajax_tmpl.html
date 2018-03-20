@@ -1,0 +1,12 @@
+<{if $tmpl}>
+<tr>
+    <td>
+        <button onclick="$(this).closest('tr').fadeOut(function(){$(this).remove();});" type="button" class="btn btn-xs default">
+        <i class="fa fa-trash-o"></i>
+        </button>
+        <input type="hidden" name="tmpl_id" value="<{$tmpl.tmpl_id}>">
+    </td>
+    <td><{$tmpl.name}></td>
+    <td><{$tmpl.title}></td>
+</tr>
+<{/if}>

@@ -1,0 +1,35 @@
+<services>
+    <service id="desktop_finder.vshop_mdl_shop">
+        <class>vshop_finder_shop</class>
+    </service>
+    <service id="desktop_finder.vshop_mdl_lv">
+        <class>vshop_finder_lv</class>
+    </service>
+    <service id="desktop_finder.vshop_mdl_purchase">
+        <class>vshop_finder_purchase</class>
+    </service>
+    <service id="desktop_finder.vshop_mdl_vshop">
+        <class>vshop_finder_vshop</class>
+    </service>
+    <service id="desktop_finder.vshop_mdl_notice">
+        <class>vshop_finder_notice</class>
+    </service>
+    <service id="desktop_finder.vshop_mdl_voucher">
+        <class>vshop_finder_voucher</class>
+    </service>
+    <service id="desktop_finder.vshop_mdl_statement">
+        <class>vshop_finder_statement</class>
+    </service>
+    <service id="openapi.vshop" optname="openapi@微店vshop相关">
+        <class>vshop_openapi</class>
+    </service>
+    <service id="b2c.order.create.before" optname="订单创建前处理">
+        <class orderby="55">vshop_service_order_createbefore</class>
+    </service>
+    <!-- <service id="ectools.bill.payment.b2c.order.succ" optname="订单支付完成处理">
+        <class orderby="55">vshop_service_order_payfinish</class>
+    </service> -->
+    <service id="b2c.order.delivery.send.finish" optname="发货单操作完成触发">
+        <class orderby="55">vshop_service_delivery_finish</class>
+    </service>
+</services>

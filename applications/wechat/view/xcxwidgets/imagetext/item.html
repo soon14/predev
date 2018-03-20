@@ -1,0 +1,15 @@
+<!-- 图文混合 -->
+<template id="widget-imagetext">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-imagetext :widget="widget" :index="index"></widget-child-imagetext>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_imagetext = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-imagetext',
+    components: {
+        'widget-child-imagetext': widget_child_showcase
+    }
+});
+</script>

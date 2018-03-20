@@ -1,0 +1,58 @@
+<div class="input-group  region" id="<{$params.id}>">
+<input name="<{$params.name}>" data-v="<{$params.value}>" package="<{$params.package}>"  type="hidden" value="<{$params.value}>" />
+<{foreach from=$area_depth item=item}>
+<{if $item === 0}>
+<select data-level-index="<{$item}>" class="form-control input-xsmall"><option value="_NULL_">请选择</option></select>
+<{else}>
+<select data-level-index="<{$item}>" class="form-control input-xsmall" style="visibility:hidden"></select>
+<{/if}>
+<{/foreach}>
+</div>
+
+<script>
+
+!function(){
+
+
+    var region_js_path ='<{$env.statics_host_url}>/javascripts/';
+    var region_data_path ='<{$env.base_url}>/data/misc/';
+    var callback = '';
+    <{if $params.callback}>
+        callback = "<{$params.callback}>";
+    <{/if}>
+
+    var _region_init = function(region_panel_id,region_data,callback){
+        try{
+            region_sel.init(region_panel_id,region_data, callback);//REGION_DATA FROM SCRIPT
+        }catch(e){
+            console.log(e);
+        }
+    }
+    function region_init(){
+        if( typeof(region_sel)!='undefined'){
+            return _region_init($('#<{$params.id}>'), REGION_DATA,callback);
+        }else{
+            $.ajax({
+                url:region_js_path+'region_sel.js',
+                dataType:'script',
+                complete:function(){
+                    _region_init($('#<{$params.id}>'), REGION_DATA,callback);
+                }
+            });
+        }
+    }
+    if(typeof(REGION_DATA)=='undefined'){
+        $.ajax({
+            url:region_data_path + 'region_data.js',
+            dataType:'script',
+            complete:function(){
+                region_init();
+            }
+        });
+    }else{
+        region_init();
+    }
+}();
+
+
+</script>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="site">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="explorer"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="module"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="explorer">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="path" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="module">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element ref="title"/>
+                <xs:element ref="disable"/>
+                <xs:element ref="extension"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="allow_menu"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="default_menu"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="allow_seo"/>
+            </xs:sequence>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="controller" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="name" type="xs:string"/>
+    <xs:element name="title" type="xs:string" use="required"/>
+    <xs:element name="disable" type="xs:string" use="required"/>
+    <xs:element name="extension" type="xs:string"/>
+    <xs:element name="config" type="xs:string"/>
+    <xs:element name="allow_menu">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="act" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="default_menu">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="title"/>
+                <xs:element ref="act"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="params"/>
+                <xs:element ref="custom_url"/>
+                <xs:element ref="display_order"/>
+                <xs:element ref="hidden"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="title" type="xs:string" use="required"/>
+    <xs:element name="act" type="xs:string"/>
+    <xs:element name="hidden" type="xs:string"/>
+    <xs:element name="allow_seo">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="title"/>
+                <xs:element ref="act"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="param"/>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="config"/>
+                <xs:element ref="hidden"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="title" type="xs:string" use="required"/>
+    <xs:element name="act" type="xs:string"/>
+    <xs:element maxOccurs="unbounded" minOccurs="0" ref="param"/>
+    <xs:element maxOccurs="unbounded" minOccurs="0" ref="config"/>
+    <xs:element name="hidden" type="xs:string"/>
+    <xs:element name="params">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="id" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="param">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="seo_title"/>
+                <xs:element ref="seo_keywords"/>
+                <xs:element ref="seo_content"/>
+                <xs:element ref="seo_nofollow"/>
+                <xs:element ref="seo_noindex"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="config">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute name="id" type="xs:string" use="required"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

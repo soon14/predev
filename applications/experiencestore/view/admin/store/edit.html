@@ -1,0 +1,317 @@
+<!-- 此页面是后台管理界面 页面的class及元素定义依赖 bootstrap UI框架 -->
+<h3 class="page-title"><{if $store.id }>编辑地点信息<{else}>添加地点<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=experiencestore&ctl=admin_store&act=index">地点列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $store.id }>编辑地点信息<{else}>添加地点<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=experiencestore&ctl=admin_store&act=save" method="post" id='store_form' class="form" >
+    <{if $store.id }>
+        <input type="hidden" name="store[id]" value="<{$store.id}>">
+    <{/if}>
+    <div class="form form-horizontal">
+        <div class="form-body">
+
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         地点名称
+                         <span class="required" aria-required="true">*</span>
+                     </label>
+                     <div class="col-md-5">
+                         <input type="text" name="store[name]" value="<{$store.name}>" required=true class="form-control" placeholder="请输入地点名称">
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         相册
+                     </label>
+                     <div class="col-md-10">
+                         <input type="hidden" name="store[gallery_default_image_id]" value="<{$store.gallery_default_image_id}>">
+                         <div class="tiles store-gallery-images-pane">
+                             <{foreach from=$store.images item=image}>
+                                 <div class="tile image bg-grey <{if $store.gallery_default_image_id==$image.image_id}>selected<{/if}>">
+                                     <input type="hidden" name="store[images][]" value="<{$image.image_id}>">
+                                     <div class="tile-body">
+                                         <figure style="width:100%;height:100%;background-image:url(<{$image.image_id|storager:'s'}>);background-position:center;background-repeat:no-repeat;background-size:auto 127px;"></figure>
+                                     </div>
+                                     <div class="tile-object">
+                                         <div class="number">
+                                             <i class="fa fa-trash-o text-danger delete-image" data-image-id="<{$image.image_id}>"></i>
+                                         </div>
+                                     </div>
+                                     <{if $store.gallery_default_image_id==$image.image_id}>
+                                     <span class="badge badge-roundless badge-danger" style="position:absolute;top:0px;left:0px;">默认图</span>
+                                     <{/if}>
+                                 </div>
+                             <{/foreach}>
+                             <div class="tile bg-grey store-gallery-images-upload-pane fileinput-button">
+                                 <div class="tile-body">
+                                     <i class="glyphicon glyphicon-plus"></i>
+                                 </div>
+                                 <input id="store_gallery_upload_handle" type="file"  multiple data-url="index.php?app=image&ctl=admin_manage&act=upload&p[0]=true&p[1]=s" accept="image/*">
+                             </div>
+                         </div>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         电话
+                     </label>
+                     <div class="col-md-5">
+                          <{input type="text" name="store[phone]" value=$store.phone}>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         营业时间描述
+                     </label>
+                     <div class="col-md-5">
+                          <{input type="text" placeholder="如：星期一至星期日,上午 10:00 - 晚上 11:00" name="store[hours]" value=$store.hours}>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         所在地区
+                     </label>
+                     <div class="col-md-5">
+                          <{input type="region" name="store[region]" value=$store.region}>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         地址\门牌
+                     </label>
+                     <div class="col-md-5">
+                          <{input type="textarea" name="store[address]" value=$store.address}>
+                     </div>
+                     <div class="col-md-1">
+                         <button id="btn_updatemap" class="btn btn-default btn-xs" type="button" name="button">
+                            <i class="fa fa-refresh"></i> 更新地图
+                         </button>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         前往方法
+                     </label>
+                     <div class="col-md-5">
+                          <{input type="textarea" name="store[waytogo]" value=$store.waytogo}>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         地理坐标
+                     </label>
+                     <div class="col-md-3">
+                          (经度lng)<{input type="text" name="store[lng]" value=$store.lng}>
+                     </div>
+                     <div class="col-md-3">
+                          (纬度lat) <{input type="text" name="store[lat]" value=$store.lat}>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         地图位置
+                     </label>
+                     <div class="col-md-10">
+                         <!-- <div id="tencentmap_panel">
+
+                         </div>
+                         <div id="tencentmap_panel_tmp">
+                             &nbsp;
+                         </div> -->
+                         <div id="tencentmap_panel">
+
+                         </div>
+                         <div id="tencentmap_panel_tmp">
+                             &nbsp;
+                         </div>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         详情描述
+                     </label>
+                     <div class="col-md-10">
+                          <{input type="html" name="store[desc]" value=$store.desc}>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         展示排序
+                     </label>
+                     <div class="col-md-1">
+                          <{input type="number" name="store[sort]" value=$store.sort}>
+                     </div>
+                 </div>
+                 <div class="form-group">
+                     <label class="col-md-2 control-label">
+                         失效
+                     </label>
+                     <div class="col-md-5">
+                          <{input type="bool" name="store[disabled]" value=$store.disabled}>
+                     </div>
+                 </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                        <a href="index.php?app=experiencestore&ctl=admin_store&act=index" class="btn default">返回列表</a>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>
+<textarea class="hide sgimage-box-process-tpl">
+    <div class="tile bg-grey-gallery">
+        <div class="tile-body">
+            <i class="fa fa-cloud-upload">
+            </i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                <img src="<{$env.STATICS_HOST_URL}>/desktop/stylesheets/img/ajax-modal-loading.gif"/>
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </div>
+</textarea>
+<textarea class="hide sgimage-box-done-tpl">
+    <div class="tile image bg-grey">
+        <input type="hidden" name="store[images][]" value="{image_id}">
+        <div class="tile-body">
+            <figure style="width:100%;height:100%;background-image:url({url});background-position:center;background-repeat:no-repeat;background-size:auto 127px;"></figure>
+        </div>
+        <div class="tile-object">
+            <div class="number">
+                <i class="fa fa-trash-o delete-image" data-image-id="{image_id}"></i>
+            </div>
+        </div>
+    </div>
+</textarea>
+<script type="text/javascript">
+var tencentmap_click_callback = function(e){
+    $('#store_form input[name="store[lng]"]').val(e.latLng.lng);
+    $('#store_form input[name="store[lat]"]').val(e.latLng.lat);
+}
+$(function(){
+    var lbs_openapi = "<{$lbs_openapi}>";
+    var openapi_default_params = {
+        'height':500,
+        'click_callback':'parent.tencentmap_click_callback'
+    };
+    <{if $store.lat && $store.lng}>
+    openapi_default_params.lat = <{$store.lat}>;
+    openapi_default_params.lng = <{$store.lng}>;
+    <{elseif $store.region && $store.address}>
+    openapi_default_params.region = "<{$store.region}>".match(/([\s\S]+):([\s\S]+?)\//)[2];
+    openapi_default_params.address = "<{$store.address}>";
+    <{/if}>
+
+    $.each(openapi_default_params,function(k,v){
+        lbs_openapi+='/'+k+'/'+encodeURIComponent(v);
+    });
+    var iframe = $('<iframe frameborder=0 scrolling=no seamless height="500" width="100%" ></iframe>');
+    $('#tencentmap_panel').append(iframe.attr('src',lbs_openapi));
+    $('#btn_updatemap').on('click',function(e){
+        openapi_default_params.region = $('input[name="store[region]"]').val().match(/mainland:([^:]*)/)[1];
+        openapi_default_params.address = $('textarea[name="store[address]"]').val();
+        var new_lbs_openapi = "<{$lbs_openapi}>";
+        $.each(openapi_default_params,function(k,v){
+            if(k == 'lat' || k == 'lng')return;
+            new_lbs_openapi+='/'+k+'/'+encodeURIComponent(v);
+        });
+        console.info(openapi_default_params);
+        iframe.attr('src',new_lbs_openapi);
+    });
+});
+
+!function(){
+
+    /*商品相册上传选择逻辑*/
+    var substitute = function(str,obj){
+           return str.replace(/\\?\{([^{}]+)\}/g, function(match, name){
+               if (match.charAt(0) == '\\') return match.slice(1);
+               return (obj[name] != undefined) ? obj[name] : '';
+           });
+   }
+   /*相册拖动排序*/
+   $('.store-gallery-images-pane').sortable({
+       cursor: "move",
+       items:'> .image'
+   });
+
+    var set_default = function(el_box){
+        $('.store-gallery-images-pane .selected').removeClass('selected');
+        $(el_box).addClass('selected');
+        if($('.store-gallery-images-pane .badge-danger').length){
+            $(el_box).append($('.store-gallery-images-pane .badge-danger'));
+        }else{
+            $(el_box).append('<span class="badge badge-roundless badge-danger" style="position:absolute;top:0px;left:0px;">默认图</span>');
+        }
+        $('input[name="store[gallery_default_image_id]"]').val($(el_box).find('input[name="store[images][]"]').val());
+    }
+    //var tmp_doc_title = document.title,timer = 0;
+    $('#store_gallery_upload_handle').fileupload({
+        add:function(e,data){
+            var file_obj = data.files[0];
+            if(!file_obj['type'].match(/^image/)){
+                return toastr.warning(data.files[0]['name']+'不是允许的图片类型','类型错误');
+            }
+            data.context = $($('.sgimage-box-process-tpl').val());
+            data.context.find('.number')
+            .html("<small>"+Math.round(parseFloat(file_obj.size/1024/1024)*100)/100+'MB</small>');
+            data.context.insertBefore($('.store-gallery-images-upload-pane'));
+            data.submit();
+        },
+        progress:function(e){
+        },
+        progressall:function(e){
+
+        },
+        done:function(e,data){
+            // clearTimeout(timer);
+            // document.title = tmp_doc_title;
+            try{
+                var re = $.parseJSON(data.result);
+                data.context.replaceWith(substitute($('.sgimage-box-done-tpl').val(),re));
+                if(!$('.store-gallery-images-pane .selected').length){
+                    set_default($('.store-gallery-images-pane .image:first'));
+                }
+            }catch(e){
+                $(data.context).fadeOut(function(){
+                    $(this).remove();
+                });
+            }
+
+        }
+    });
+
+    $('.store-gallery-images-pane').on('click','.image',function(e){
+            set_default(this);
+            return;
+    });
+    $('.store-gallery-images-pane').on('click','.delete-image',function(e){
+        e.stopPropagation();
+        if(!confirm('确认移除？'))return;
+        $(this).closest('.image').remove();
+        if(!$('.store-gallery-images-pane .selected').length){
+            if($('.store-gallery-images-pane .image:first')){
+                    set_default($('.store-gallery-images-pane .image:first'));
+            }else{
+                    $('input[name="store[gallery_default_image_id]"]').val('');
+            }
+        }
+
+    });
+}();
+
+</script>

@@ -1,0 +1,63 @@
+<!--该xml文件用来定义后台管理权限和菜单-->
+<desktop>
+    <permissions>
+        <!-- permission 权限定义
+            @attribute id 权限ID
+            @value 权限说明
+        -->
+        <permission id="helloworldlist">问候语列表</permission>
+        <permission id="edithello">新建或编辑问候语</permission>
+        <permission id="hbasicsetting">问好设置</permission>
+    </permissions>
+
+    <!-- workground 工作组定义
+            @attribute icon 图标css classname
+            @attribute id 工作组id
+            @attribute name 工作组名称
+            @attribute order 工作组升序排序
+    -->
+    <workground icon="icon-puzzle" id="helloworld.wrokground.whohello" name="HelloWorld" order="55">
+        <!-- menugroup 工作组内菜单组定义
+            @attribute name 菜单组名次
+        -->
+        <menugroup name="问候语管理">
+            <!-- menu 具体管理菜单定义
+                    @attribute action 控制器方法函数名
+                    @attribute controller 控制器
+                    @attribute display 是否显示（某些情况下为了权限管理，可以新建隐藏菜单项）
+                    @attribute order 升序排序
+                    @attribute permission 权限id(必须有权限定义才可以)
+            -->
+            <menu action='index' controller='admin_hello' display='true' order='10' permission='helloworldlist'>问候语列表</menu>
+            <menu action='edit' controller='admin_hello' display='false' order='10' permission='edithello'>新建问候语</menu>
+        </menugroup>
+    </workground>
+
+    <!-- panelgroup 控制面板菜单组
+            @attribute icon 图标css classname，支持:
+            Fontawesome(http://fortawesome.github.io/Font-Awesome/icons/),
+            Simple Line Icons( http://graphicburger.com/simple-line-icons-webfont/),
+            Glyphicons (http://getbootstrap.com/components/#glyphicons)
+            @attribute id 菜单组id
+            @attribute order 升序
+            @value 控制面板菜单组名称
+    -->
+    <panelgroup icon="icon-puzzle" id="hwsetting" order="50">HelloWorld相关</panelgroup>
+    <!-- adminpanel 控制面板菜单
+            @attribute action 控制器方法
+            @attribute controller 控制器（本app内控制器）
+            @attribute display 是否显示
+            @attribute group 控制面板菜单组（app的id拼接panelgroup的id)
+            @value 控制面板菜单名称
+    -->
+    <adminpanel action="index" controller="admin_setting" display="true" group="helloworld_hwsetting" order='1' permission="hbasicsetting">helloworld配置</adminpanel>
+
+    <!-- widgets 仪表盘挂件定义
+            @attribute id 仪表盘挂件实现class
+            @attribute order
+            @attribute name 工作组名称
+            @attribute order 工作组升序排序
+
+    <widgets id="helloworld_dashboard_widget" order='55'>问候频次</widgets>
+    -->
+</desktop>

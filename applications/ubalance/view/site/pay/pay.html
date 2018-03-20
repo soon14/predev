@@ -1,0 +1,125 @@
+<div class="page-header">
+    <h1 class="clearfix">
+        用<{$env.conf.ubalance.name}>支付 <small><{$bill_arr.order_id}></small>
+        <strong class="text-danger pull-right"><{$bill_arr.money|cur}></strong>
+    </h1>
+</div>
+<form action="<{link app=ubalance ctl=site_balancepay act=do_payment}>" method="post" class="form-horizontal" id="ubalance_payform">
+    <input type="hidden" name="bill_id" value="<{$bill_arr.bill_id}>">
+    <div class="form-group">
+        <label class="col-md-2 control-label">可用<{$env.conf.ubalance.name}></label>
+        <div class="col-md-5">
+            <p class="form-control-static text-success"><{$account.ubalance|number_format:'3'}></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">应扣<{$env.conf.ubalance.name}></label>
+        <div class="col-md-5">
+            <p class="form-control-static text-danger"><{$bill_arr.money*$env.conf.ubalance.exchange_ratio|number_format:'3'}></p>
+        </div>
+    </div>
+    <{if $account.ubalance<$bill_arr.money*$env.conf.ubalance.exchange_ratio}>
+    <div class="alert alert-warning">
+        <i class="glyphicon glyphicon-warning-sign"></i> 账户<{$env.conf.ubalance.name}>不足。 <a href="<{link app=ubalance ctl=site_member act=recharge}>" class="btn btn-success">立即充值</a>
+        <a href="<{link app=b2c ctl=site_checkout act=payment args0=$bill_arr.order_id}>" class="btn btn-default pull-right">使用其他支付方式支付</a>
+    </div>
+    <{else}>
+    <{if $env.conf.ubalance.larger_type == '1' && $env.conf.ubalance.larger_sum<=$bill_arr.money*$env.conf.ubalance.exchange_ratio}>
+    <{if $member_mobile}>
+    <div class="form-group">
+        <label class="col-md-2 control-label">手机号</label>
+        <div class="col-md-3">
+            <input id="input_mobile" autocomplete="off" type="text" readonly="true" name="mobile" value="<{$member_mobile}>" class="form-control">
+        </div>
+    </div>
+    <div class="form-group">
+              <label for="input_vcode" class="col-md-2 control-label">手机验证码</label>
+              <div class="col-md-2">
+                 <input type="text" name="vcode" disabled="disabled" class="hidden">
+                <input type="text" autocomplete="off" required="true" name="vcode" class="form-control" id="input_vcode" placeholder="验证码">
+              </div>
+              <div class="col-md-4">
+                  <div class="vcode">
+                      <button type="button" class="btn btn-default">获取验证码</button>
+                  </div>
+              </div>
+    </div>
+    <{else}>
+    <div class="alert alert-waring">
+        <div class="alert alert-warning">
+            <i class="glyphicon glyphicon-warning-sign"></i> 建议绑定手机,以保障账户支付安全 <a href="<{link app=b2c ctl=site_member act=securitycenter}>" class="btn btn-success">去绑定</a>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        </div>
+    </div>
+    <{/if}>
+    <{/if}>
+    <hr>
+    <div class="form-group">
+        <div class="col-md-10 col-md-offset-2">
+                <button type="submit" class="btn btn-primary">确认支付</button>
+                <a href="<{link app=b2c ctl=site_checkout act=payment args0=$bill_arr.order_id}>" class="btn btn-default pull-right">使用其他支付方式支付</a>
+        </div>
+    </div>
+    <{/if}>
+</form>
+
+
+
+<script>
+
+    void function(ubp_form){
+        var alert_timer = 0;
+        var _alert_error = function(msg){
+            ubp_form.find('.alert-error').remove();
+            ubp_form.append($('<div class="alert alert-danger">'+msg+'</div>'));
+            alert_timer = setTimeout(function(){
+                clearTimeout(alert_timer);
+                ubp_form.find('.alert-danger').fadeOut('fast',function(){
+                    $(this).remove();
+                });
+            },3000);
+        }
+
+        ubp_form.on('submit',function(e){
+            e.stopPropagation();
+            ubp_form.find('button[type=submit]').button('loading');
+            $.post(ubp_form.prop('action'),ubp_form.serialize(),function(re){
+                if(re.error){
+                    _alert_error(re.error);
+                }
+                if(re.success){
+                    location = re.redirect;
+                }
+                ubp_form.find('button[type=submit]').button('reset');
+            },'json');
+            return false;
+        });
+        //获得短信验证码
+        var _cutdown_sms = function(btn){
+            btn.addClass('disabled');
+            var cutdown = 120,btn_o_text = btn.text(),timer =
+            setInterval((function(){
+                btn.text('验证码已发送,'+(cutdown--)+'秒后可重试');
+                if(cutdown<1){
+                    clearInterval(timer);
+                    btn.text(btn_o_text).removeClass('disabled');
+                }
+                return arguments.callee;
+            })(),1000);
+        };
+        ubp_form.find('.vcode button').on('click',function(e){
+            var btn = $(this);
+            if(btn.hasClass('disabled'))return;
+            btn.addClass('disabled');
+            $.post('<{link app=b2c ctl=site_passport act=member_vcode}>',{account:$('#input_mobile').val()},function(re){
+                if(re && re.error){
+                    btn.removeClass('disabled');
+                    _alert_error(re.error);
+                }
+                if(re && re.success){
+                    _cutdown_sms(btn);
+                }
+            },'json');
+        });
+    }($('#ubalance_payform'));
+</script>

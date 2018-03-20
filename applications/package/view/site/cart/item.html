@@ -1,0 +1,84 @@
+<{foreach from=$cart_result.objects.package item=object}>
+    <!-- package-item begin  -->
+    <div class="package-item <{$object.obj_ident}> cart-item <{if $object.disabled!='true'}>enabled<{/if}>" data-object="package">
+        <div class="row">
+            <div class="col-xs-1 c-ci-check">
+                <label class="control-label">
+                    <input type="checkbox" data-ident="<{$object.obj_ident}>" name="ident[]" value="<{$object.obj_ident}>"<{if $object.disabled!='true'}>checked=true<{/if}>>
+                </label>
+            </div>
+            <div class="col-xs-5 c-ci-title">
+                <div class="row">
+                      <div class="col-xs-12">
+                        <h5><{$object.params.package_name}></a></h5>
+                      </div>
+                </div>
+            </div>
+            <div class="col-xs-1 c-ci-price"><{$object.price|cur}></div>
+            <div class="col-xs-2 c-ci-quantity">
+                <{if $self == 'true'}>
+                <div class="product-quantity input-group input-group-sm"  data-minibuy="<{$data_detail.minibuy}>">
+                    <div class="spinner-buttons input-group-btn">
+                        <button type="button" class="btn btn-default">
+                        -
+                        </button>
+                    </div>
+                    <input type="text" data-ident="<{$object.obj_ident}>" class="spinner-input form-control"  value="<{$object.quantity}>" data-now="<{$object.quantity}>">
+                    <div class="spinner-buttons input-group-btn">
+                        <button type="button" class="btn btn-default">
+                        +
+                        </button>
+                    </div>
+                </div>
+                <{else}>
+                <div class="product-quantity input-group input-group-sm"  data-minibuy="<{$data_detail.minibuy}>">
+                    <input type="text" data-ident="<{$object.obj_ident}>" class="spinner-input form-control"  value="<{$object.quantity}>" data-now="<{$object.quantity}>" readonly>
+                </div>
+                <{/if}>
+            </div>
+            <div class="col-xs-1 c-ci-amount">
+                <strong data-bind="price*quantity"><{$object.price*$object.quantity|cur}></strong>
+            </div>
+            <div class="col-xs-2 c-ci-opt">
+                <ul class="list-unstyled">
+                    <li><a href="javascript:;" data-remove=".cart-body input:text[data-ident='<{$object.obj_ident}>']" class="btn btn-link btn-xs">删除</a></li>
+                </ul>
+            </div>
+        </div>
+        <{foreach from=$object.params.package_goods item=package_goods key=goods_key}>
+        <div class="row">
+            <div class="col-xs-1">
+            </div>
+            <div class="col-xs-5 c-ci-title">
+                <div class="row">
+                      <div class="col-xs-3">
+                        <a href="<{link app=b2c ctl=site_product args0=$package_goods.product_id}>">
+                            <img class="img-thumbnail" src="<{$package_goods.image_id|storager:'s'}>" alt="<{$package_goods.name}>" />
+                        </a>
+                      </div>
+                      <div class="col-xs-9">
+                          <h5><{$package_goods.name}></a></h5>
+                          <p class="warning text-warning <{if !$package_goods.warning}>hide<{/if}>">
+                              <i class="glyphicon glyphicon-warning-sign"></i>&nbsp;
+                              <span data-bind="params/package_goods/<{$goods_key}>/warning"><{$package_goods.warning}></span>
+                          </p>
+                          <p class="spec-info">
+                              <{$package_goods.spec_info}>
+                          </p>
+                      </div>
+                </div>
+            </div>
+            <div class="col-xs-1 c-ci-price"><{$package_goods.package_price|cur}></div>
+            <div class="col-xs-2 c-ci-quantity" data-bind="params/package_goods/<{$goods_key}>/quantity*quantity">
+                <{$package_goods.quantity * $object.quantity}>
+            </div>
+            <div class="col-xs-1 c-ci-amount">
+                <strong data-bind="params/package_goods/<{$goods_key}>/package_price*params/package_goods/<{$goods_key}>/quantity*quantity"><{$package_goods.package_price*$package_goods.quantity*$object.quantity|cur}></strong>
+            </div>
+            <div class="col-xs-2 c-ci-opt">
+            </div>
+        </div>
+        <{/foreach}>
+    </div>
+    <!-- package-item end  -->
+<{/foreach}>

@@ -1,0 +1,30 @@
+<services>
+
+    <service id="ectools.bill.payment.ubalance.recharge.succ" optname="订单支付完成处理">
+        <class orderby="50">ubalance_recharge_payfinish</class>
+    </service>
+    <service id="ectools.bill.payment.ubalance.recharge.progress" optname="订单支付到担保方完成处理">
+        <class orderby="50">ubalance_recharge_payfinish</class>
+    </service>
+
+    <service id="desktop_finder.ubalance_mdl_account">
+        <class>ubalance_finder_account</class>
+    </service>
+
+    <service id="b2c.ubalance_member_center" optname="会员中心扩展">
+        <class>ubalance_member_center</class>
+    </service>
+    <service id="ectools_payment.applications" optname="支付插件列表">
+        <class>ubalance_payment_applications_balance</class>
+    </service>
+
+    <service id="ectools.bill.refund.order.succ" optname="订单退款完成处理[兼容]">
+        <class orderby="40">ubalance_order_refundfinish</class>
+    </service>
+    <service id="ectools.bill.refund.b2c.order.succ" optname="订单退款完成处理">
+        <class orderby="40">ubalance_order_refundfinish</class>
+    </service>
+    <service id="extend_filter_ubalance_mdl_account" optname="账户筛选扩展">
+        <class>ubalance_finder_extend_account</class>
+    </service>
+</services>

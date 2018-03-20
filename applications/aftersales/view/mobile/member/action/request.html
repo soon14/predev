@@ -1,0 +1,57 @@
+<{foreach from=$request_list item=item}>
+<ul class="table-view">
+    <li class="table-view-divider">服务编号: <{$item.request_id}></li>
+    <li class="table-view-cell">
+        <a href="<{link app=b2c ctl=mobile_order act=detail arg0=$item.order_id}>" class="navigate-right">
+        <p>
+            所在订单: <{$item.order_id}>
+        </p>
+        </a>
+    </li>
+    <li class="table-view-cell media">
+        <{if $item.status!='1'}>
+        <a href="<{link app=aftersales ctl=mobile_member act=req_detail args0=$item.request_id}>" class="navigate-right">
+        <{/if}>
+            <img class="img-thumbnail media-object pull-left" width=50 src="<{$item.product.info.image_id|storager:'xs'}>" alt="<{$item.product.info.name}>" />
+            <div class="media-body">
+                <p>
+                <{$item.product.info.name}><br>
+                <{$item.product.info.spec_info}><br>
+                <strong>
+                <{switch from=$item.req_type}>
+                    <{case value='1'}>
+                    退货
+                    <{case value='2'}>
+                    更换
+                    <{case value='3'}>
+                    维修
+                    <{case value='4'}>
+                    投诉建议
+                <{/switch}> <{if $item.product.quantity}>x <{$item.product.quantity}><{/if}>
+                </strong>
+                </p>
+                <!-- <p>
+                    <{$item.subject}>
+                </p> -->
+            </div>
+            <{switch from=$item.status}>
+                <{case value='1'}>
+                <span class="badge">申请中</span>
+                <{case value='2'}>
+                <span class="badge">被拒绝</span>
+                <{case value='3'}>
+                <span class="badge">退货处理中</span>
+                <{case value='4'}>
+                <span class="badge">退款处理中</span>
+                <{case value='5'}>
+                <span class="badge">处理完成</span>
+            <{/switch}>
+        <{if $item.status!='1'}>
+        </a>
+        <{/if}>
+    </li>
+</ul>
+<{/foreach}>
+<div class="content-padded">
+    <{morepage data=$pager}>
+</div>

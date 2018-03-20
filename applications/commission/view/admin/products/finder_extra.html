@@ -1,0 +1,43 @@
+<script type="text/javascript">
+    $(function () {
+        $('#finder_body_<{$name}>').on('focus', 'input.edit-col', function (e) {
+            $(this).data('v', $(this).val());
+        });
+        $('#finder_body_<{$name}>').on('blur', 'input.edit-col', function (e) {
+            var edit_input = $(this), current_val = edit_input.val();
+            if (current_val == edit_input.data('v'))return;
+            var post_data = {
+                'product_id': edit_input.attr('data-pkey'),
+            };
+            var edit_row = edit_input.parents('tr').find('input:text');
+            edit_row.each(function () {
+                post_data[$(this).prop('name')] = $(this).val();
+            });
+            $.post("<{link app=commission ctl=admin_products act=update_commission}>", post_data, function (re) {
+                if (re && ('success' in re)) {
+                    edit_input.data('v', edit_input.val());
+                    edit_input.val('已修改').fadeOut(function () {
+                        edit_input.val(edit_input.data('v'));
+                    }).fadeIn();
+                } else {
+                    Messagebox.error(re.error);
+                }
+            }, 'json');
+        });
+
+    });
+
+</script>
+<{if $extra_pagedata}>
+<div class="well well-sm">
+    <a href="<{link app=b2c ctl=admin_stock act=index}>" class="btn btn-default pull-right"><i
+            class="fa fa-times-circle"></i> 退出</a>
+
+    <p><{assign var=img_id value=$extra_pagedata.image_default_id|default:$extra_pagedata.image_id}>
+        <img src="<{$img_id|storager:'xs'}>" class="img-thumbnail" width=50/>
+        正在维护 “<{$extra_pagedata.name}><{if $extra_pagedata.spec_info}>
+        <ins><{$extra_pagedata.spec_info}></ins>
+        <{/if}>”的库存
+    </p>
+</div>
+<{/if}>

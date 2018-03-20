@@ -1,0 +1,15 @@
+<app>
+    <name>VMCSHOP报表分析</name>
+    <description>电商业务报表和统计分析图表</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.0</version>
+    <license>http://www.vmcshop.com/license</license>
+    <parent_model_class>dbeav_model</parent_model_class>
+    <depends>
+        <app>b2c</app>
+    </depends>
+</app>

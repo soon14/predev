@@ -1,0 +1,81 @@
+<ol class="breadcrumb">
+    <li><a href="<{link app=site ctl=index}>">首页</a></li>
+    <li><a href="<{link app=b2c ctl=site_member}>">会员中心</a></li>
+    <li><a href="<{link app=ubalance ctl=site_member}>"><{$env.conf.ubalance.name}></a></li>
+    <li class="active"><{$env.conf.ubalance.name}>充值</li>
+</ol>
+<div class="page-header">
+    <div class="container">
+        <h1 class="clearfix"><{$env.conf.ubalance.name}>充值</h1>
+    </div>
+</div>
+<form class="form-horizontal" action="<{link app=ubalance ctl=site_balancepay act=do_recharge}>" method="post" target="_blank">
+    <div class="form-group">
+        <label class="col-md-2 control-label">当前余额</label>
+        <div class="col-xs-3">
+            <p class="form-control-static text-success"><{$balance_account.ubalance|number_format:'3'}></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">充值金额</label>
+        <div class="col-xs-3">
+            <input type="text" class="form-control" autocomplete="off"  required="true" name="money" id="recharge_money" >
+            <span class="help-inline text-muted">单次充值限额 <{$setting.recharge_limit.limit_minimum}> ~ <{$setting.recharge_limit.limit_maximum}></span>
+        </div>
+
+    </div>
+    <div class="form-group" >
+        <label class="col-md-2 control-label">获得额度</label>
+        <div class="col-md-5">
+            <p class="form-control-static"><span class="text-success" id="bean_num">0</span><{$setting.unit}></p>
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">充值方式</label>
+        <div class="col-md-8">
+            <{foreach from=$payapps item=item}>
+                <label class="radio-inline">
+                    <input type="radio" name="payapp_id" value="<{$item.app_id}>"/><{$item.display_name}>
+                </label>
+            <{/foreach}>
+        </div>
+    </div>
+    <hr>
+    <div class="form-group">
+        <div class="col-md-7 col-md-offset-2">
+                <button type="submit" class="btn btn-primary">立即支付</button>
+        </div>
+    </div>
+</form>
+
+<div class="modal" id="notice_modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title"><{$setting.name}>充值</h4>
+            </div>
+            <div class="modal-body">
+                <p>请您在新打开的支付平台页面完成支付</p>
+            </div>
+            <div class="modal-footer">
+                <div class="row">
+                    <div class="col-md-6">
+                        <a href="<{link app=ubalance ctl=site_member}>" class="btn btn-block btn-success">已完成支付</a>
+                    </div>
+                    <div class="col-md-6">
+                        <button type="button" class="btn btn-default btn-block" data-dismiss="modal" aria-label="Close">重新支付</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function(){
+        var exchange = <{$setting.exchange_ratio|default:1}>;
+        $("#recharge_money").keyup(function(event) {
+            $("#bean_num").text($("#recharge_money").val() * exchange);
+        });
+    });
+</script>

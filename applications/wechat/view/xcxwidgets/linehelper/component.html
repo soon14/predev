@@ -1,0 +1,18 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 辅助线条 - 子组件 -->
+<template id="widget-child-linehelper">
+    <!--
+    line_color 线条颜色
+    padding 是否显示间距
+    type 线条类型
+    -->
+    <section class="widget-box widget-linehelper" :class="{'line-padding': widget.data.padding}">
+        <div class="widget-linehelper-line" :class="{'line-padding': widget.data.padding}" :style="{'border-bottom-color': (widget.data.line_color || '#E9E9E9'), 'border-bottom-style': (widget.data.type || 'solid')}"></div>
+    </section>
+</template>
+<script type="text/javascript">
+var widget_child_linehelper = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-linehelper',
+});
+</script>

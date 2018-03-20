@@ -1,0 +1,126 @@
+<div class="content order-detail-container">
+<{assign var=paystatus_map value=array('0','3','4','5')}>
+    <ul class="table-view">
+        <li class="table-view-divider">
+         订单号：<{$order.order_id}>
+        </li>
+        <{if $order.status == 'dead'}>
+        <li class="table-view-cell media text-danger">
+            <span class="fa fa-warning media-object pull-left"></span>
+            <div class="media-body">
+                订单已作废
+                <p>
+                    订单已作废,若需购买,请重新下单!<br>
+                    作废时间：<{$order.last_modify|cdate}>
+                </p>
+            </div>
+        </li>
+        <li class="table-view-divider"></li>
+        <{/if}>
+        <li class="table-view-divider"><{$subject.fg_title}></li>
+        <{foreach from=$order.items item=item}>
+        <li class="table-view-cell media">
+            <a href="<{link app=fastgroup ctl=mobile_fastgroup act=subject args0=$subject.id}>" class="navigate-right">
+                <img src="<{$item.image_id|storager:'s'}>" class="media-object pull-left" width="50" alt="<{$item.name}>-<{$item.spec_info}>" />
+                <div class="media-body">
+                    <p>
+                        <{$item.name|cut:40:"..."}><{if $item.spec_info}><br><{$item.spec_info}><{/if}>
+                        <br>
+                        <strong><{$item.buy_price|cur}></strong>
+                        <span class="text-muted">x <{$item.nums}></span>
+                    </p>
+                    <{if $goods_pmt.{$item.product_id}}>
+                    <ul class="promotion-list">
+                        <{foreach from=$goods_pmt.{$item.product_id} item=pitem}>
+                            <li>
+                                <span class="label label-danger"><{$pitem.pmt_tag}></span>
+                                <{$pitem.pmt_description}>
+                                <{if $pitem.pmt_save>0}>,<em>已省 <{$pitem.pmt_save|cur}></em><{/if}>
+                            </li>
+                        <{/foreach}>
+                    </ul>
+                    <{/if}>
+                </div>
+            </a>
+         </li>
+        <{/foreach}>
+        <{if $subject.customer_memo_title}>
+        <li class="table-view-cell">
+            <p><{$subject.customer_memo_title}></p>
+            <p>
+                <{$fgorder.customer_memo}>
+            </p>
+        </li>
+        <{/if}>
+        <li class="table-view-divider"></li>
+        <li class="table-view-cell">
+            订单金额：
+            <p class="pull-right">￥<span><{$order.finally_cart_amount|cur}></span></p>
+        </li>
+        <li class="table-view-cell">
+            <{if $order.status == 'active' && $order.pay_status|in_array:$paystatus_map}>
+            <a href="#payapp_modal" class="navigate-right">
+                支付方式
+                <p class="pull-right">
+                    <{$payapp.display_name}>
+                </p>
+            </a>
+            <{else}>
+            支付方式
+            <p class="pull-right">
+                <{$payapp.display_name}>
+            </p>
+            <{/if}>
+        </li>
+        <li class="table-view-cell">
+            付款状态
+            <p class="pull-right">
+                <span class="badge"><{$order.pay_status|order_pay_status}></span>
+            </p>
+        </li>
+    </ul>
+
+    <div class="content-padded">
+        <{if $order.status == 'active' || $order.status=='finish'}>
+            <{if $order.status == 'active' && $order.pay_status|in_array:$paystatus_map}>&nbsp;&nbsp;
+            <a href="<{link app=fastgroup ctl=mobile_fastgroup act=dopayment args0=$order.order_id}>" class="btn btn-positive btn-block">立即付款</a>
+            <{if $order.pay_status == '0'}>
+            <a onclick="if(!confirm('确认取消？'))return false;" href="<{link app=fastgroup ctl=mobile_fastgroup act=cancel_order args0=$order_id_encrypt}>" class="btn btn-outlined btn-block">取消订单</a>
+            <{/if}>
+            <{else}>
+            <p>
+                提货秘匙:
+            </p>
+            <p>
+                <{$fgorder.skey|barcode}>
+            </p>
+            <br>
+            <p>
+                <{$fgorder.skey|qrcode}>
+            </p>
+            <{/if}>
+        <{/if}>
+        <a href="<{link app=fastgroup ctl=mobile_fastgroup act=order_list}>" class="btn btn-primary btn-block btn-outlined"><i class="fa fa-history"></i> 历史订购纪录</a>
+
+    </div>
+
+</div>
+
+<div class="modal" id="payapp_modal">
+    <header class="bar bar-nav">
+      <a class="icon icon-close pull-right" href="#buy_modal"></a>
+      <h1 class="title">更换支付方式</h1>
+    </header>
+    <div class="content">
+        <ul class="table-view">
+            <li class="table-view-divider">选择支付方式</li>
+            <{foreach from=$payapps key=k item=papp}>
+                <li  class="table-view-cell checkout-payment">
+                    <a href="<{link app=fastgroup ctl=mobile_fastgroup act=changepayment args0=$order_id_encrypt args1=$papp.app_id}>" class="navigate-right">
+                        <{$papp.display_name|default:$papp.name}>
+                    </a>
+                </li>
+            <{/foreach}>
+        </ul>
+    </div>
+</div>

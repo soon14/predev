@@ -1,0 +1,51 @@
+<{if $item_group}>
+	<ul class="list-group">
+		<{foreach from=$item_group item=group key=key}>
+			<{assign var=gimage value=$gimages.{$key}}>
+			<{assign var=pcount value=count($group)}>
+			<li class="list-group-item">
+				<h4><{$group.0.name}></h4>
+				<table class="table table-hover table-striped">
+					<{foreach from=$group item=item}>
+						<tr data-goodsid="<{$item.goods_id}>" data-productid="<{$item.product_id}>">
+							<td>
+								<strong><{$item.spec_info}></strong>
+								<ul class="list-inline">
+									<li>货号：<span data-hightline="bn" class="text-muted"><{$item.bn}></span></li>
+									<{if $item.barcode}>
+									<li>条码：<span data-hightline="barcode" class="text-muted"><{$item.barcode}></span></li>
+									<{/if}>
+									<li>价格：<span class="text-muted"><{$item.price|cur}></span></li>
+								</ul>
+							</td>
+							<td width="10%">
+								<i class="fa fa-plus-circle fa-2x text-success"></i>
+							</td>
+						</tr>
+					<{/foreach}>
+				</table>
+			</li>
+		<{/foreach}>
+	</ul>
+	<script type="text/javascript">
+	!function () {
+		$('#product_filter').find('tr[data-goodsid]').on('click',function(){
+			$(this).closest('.modal').modal('hide');
+		});
+	}();
+	</script>
+<{else}>
+	<div class="alert alert-warning" id="empty_filter_warning">
+		<{foreach from=$env.post.filter key=key item=item}>
+		<{if $key=='store_id'}><{continue;}><{/if}>
+		<h4>没有找到<strong class="fname"></strong>为 “<{$item}>”的货品</h4>
+		<{/foreach}>
+	</div>
+	<script charset="utf-8">
+		!function () {
+			var el = $('#empty_filter_warning').find('strong.fname');
+			el.text($('#product_filter').find('li.active a').text());
+		}();
+
+	</script>
+<{/if}>

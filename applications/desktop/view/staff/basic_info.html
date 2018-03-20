@@ -1,0 +1,46 @@
+<form action="index.php?<{$env.server.QUERY_STRING}>" method="post">
+	<div class="division">
+		<table width='100%' cellspacing="0" cellpadding="0">
+			<tr>
+				<th>用户名:</th>
+				<td>
+				<{if $opinfo.op_id}>
+				<{$opinfo.username}>
+				<{else}>
+				<{input type="text" name="username" value=$opinfo.username required=true}><em class="red">*</span>
+				<{/if}></td>
+			</tr>
+			<tr>
+				<th>真实姓名:</th>
+				<td><{input type="text" value=$opinfo.name name="name"}></td>
+			</tr>
+			<tr>
+				<th>密码：</th>
+				<td>
+				<{if $opinfo.op_id}>
+					<input name="change_pwd" onclick="$('pwd_box_<{$env.get.finder_id}>').setStyle('display',this.checked?'':'none')" type="checkbox" value="1" id="set_pwd-<{$env.get.finder_id}>" /><label for="set_pwd-<{$env.get.finder_id}>">更改密码</label><br />
+				<div style="display:none" id="pwd_box_<{$env.get.finder_id}>">
+				<{else}>
+				<div>
+				<{/if}>
+				<{input type="password" name="userpass"}>&nbsp;<em class="red">*</span><br />
+				<{input type="password" name="userpass_rt"}><span class="notice-inline">再输入一次</span>
+				</div>
+				
+				</td>
+			</tr>
+            <tr>
+				<th>工作组:</th>
+				<td>
+				<input value="1" <{if $opinfo.super}>checked="checked"<{/if}> id="role-<{$env.get.finder_id}>-super" type="checkbox" name="super" >&nbsp;&nbsp;&nbsp;&nbsp;<label for="role-<{$env.get.finder_id}>-super" style="color:red">超级管理员</label><br />
+				<{foreach from=$roles key=key item=item}>
+				<div style="float:left;width:200px"><input value=<{$item.role_id}> id="role-<{$env.get.finder_id}>-<{$key}>" <{if $rolemap[$item.role_id]}>checked="checked"<{/if}> type="checkbox" name="roles[<{$key}>][role_id]" >&nbsp;&nbsp;&nbsp;&nbsp;<label for="role-<{$env.get.finder_id}>-<{$key}>"><{$item.role_name}></label></div>
+				<{/foreach}></td>
+			</tr>
+            <tr>
+				<th>&nbsp;</th>
+				<td><{button class="btn-primary" type="submit" label=$___desktop="保存管理员信息"|t:'desktop'}></td>
+			</tr>
+		</table>
+   </div>
+</form>

@@ -1,0 +1,24 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">批量打印价签</h3>
+</div>
+<form class="form-horizontal" action="index.php?app=store&ctl=admin_goods&act=do_print&signlepage=1" method="post" target="_blank" >
+    <div class="modal-body">
+        <span class="help-block">您正在对<span class="badge"><{$total}></span>件商品进行操作</span>
+        <textarea name="filter" style="display:none"><{$filter}></textarea>
+        <div class="row">
+            <label class="col-xs-2 control-label">选择类型</label>
+            <div class=" col-xs-10">
+                <select class="form-control" name="type">
+                    <option value="1">普通商品价签</option>
+                </select>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">确定</button>
+    </div>
+</form>

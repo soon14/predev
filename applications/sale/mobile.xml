@@ -1,0 +1,10 @@
+<site>
+    <module controller='mobile_sale' id='sale'>
+        <name>sale</name>
+        <title>商品预售</title>
+    </module>
+    <module controller='mobile_member' >
+        <name>mysale</name>
+        <title>我的预售</title>
+    </module>
+</site>

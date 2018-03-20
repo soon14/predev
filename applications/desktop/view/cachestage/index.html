@@ -1,0 +1,144 @@
+<h3 class="page-title">
+        缓存管理
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?ctl=adminpanel">控制面板</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">系统缓存管理</a>
+        </li>
+    </ul>
+</div>
+<div class="row">
+
+<div class="col-md-3">
+
+    	<div class="well">
+            <h4><{$cache_name}></h4>
+            <{if $enable == 'true'}>
+    		<dl>
+    		<{foreach from=$status key=key item=value}>
+    			<dt><{$key}></dt>
+    			<dd><big><{$value}></big></dd>
+    		<{/foreach}>
+    		</dl>
+    		<a href="index.php?app=desktop&ctl=cachestage&act=cachemgr_clean" target="_command" class="btn btn-success"><i class="fa fa-refresh"></i> 刷新</a>
+            <{else}>
+                <div class="alert alert-info">
+                	没有启用高速缓存
+                </div>
+            <{/if}>
+    	</div>
+</div>
+
+<div class="col-md-3">
+
+    	<div class="well">
+            <h4>KVstore<br><small>NOSQL 持久化缓存仓库</small></h4>
+
+    		<dl>
+                <dt>仓库类型</dt>
+                <dd><{$kvstore.name}></dd>
+    		     <dt>仓库名称</dt>
+                 <dd><{$kvstore.kvprefix}></dd>
+    		</dl>
+    		<a href="index.php?app=desktop&ctl=cachestage&act=kvstore_clean" target="_command" class="btn btn-success"><i class="fa fa-refresh"></i> 刷新</a>
+    	</div>
+</div>
+
+<div class="col-md-3">
+
+        <div class="well">
+            <h4>系统级缓存-SYSCACHE<br><small>用于系统配置、服务加载等</small></h4>
+            <{foreach from=$syscache key=key item=value}>
+        		<dl>
+                    <dt><h5 class="text-success"><{$key}></h5></dt>
+        			<dd>
+                        <dl>
+                            <{foreach from=$value key=k item=item}>
+                                <dt class="text-muted"><{$k}></dt>
+                                <dd><{$item}></dd>
+                            <{/foreach}>
+                        </dl>
+                    </dd>
+                    <dd><a href="index.php?app=desktop&ctl=cachestage&act=clean_syscache&p[0]=<{$key}>" target="_command" class="btn btn-success"><i class="fa fa-refresh"></i>刷新</a></dd>
+                </dl>
+    		<{/foreach}>
+    		<!-- <i class="glyphicon glyphicon-th pull-right" style="font-size:50px;margin-top:-100px;"></i> -->
+
+    	</div>
+</div>
+
+	<{if count($static_cache) > 0}>
+	<div class="col-md-3">
+
+<h4>PC端强制缓存时间配置</h4>
+<form  action="index.php?app=desktop&ctl=cachestage&act=router_cache_save" method="post">
+	<table class="table table-striped  table-hover ">
+	<thead>
+		<tr>
+			<th>名称</th>
+			<th>缓存更新周期(秒)</th>
+		</tr>
+	</thead>
+	<tbody>
+	<{foreach from=$static_cache item=item}>
+	<tr>
+		<td><{$item.name}></td>
+		<td>
+			<input type="text" placeholder="不配置则系统自动处理" name="<{$item.app}>.<{$item.ctl}>.<{$item.act}>" value="<{$item.expires>0?$item.expires:''}>">
+		</td>
+
+	</tr>
+	<{/foreach}>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td>
+
+			</td>
+			<td>
+				<button type="submit" class="btn btn-default">保存设置</button>
+			</td>
+		</tr>
+	</tfoot>
+	</table>
+</form>
+<h4>移动端强制缓存配置</h4>
+<form  action="index.php?app=desktop&ctl=cachestage&act=mrouter_cache_save" method="post">
+	<table class="table table-striped  table-hover ">
+	<thead>
+		<tr>
+			<th>名称</th>
+			<th>缓存更新周期(秒)</th>
+		</tr>
+	</thead>
+	<tbody>
+	<{foreach from=$mstatic_cache item=item}>
+	<tr>
+		<td><{$item.name}></td>
+		<td>
+			<input type="text" placeholder="不配置则系统自动处理" name="<{$item.app}>.<{$item.ctl}>.<{$item.act}>" value="<{$item.expires>0?$item.expires:''}>">
+		</td>
+
+	</tr>
+	<{/foreach}>
+	</tbody>
+	<tfoot>
+		<tr>
+			<td>
+
+			</td>
+			<td>
+				<button type="submit" class="btn btn-default">保存设置</button>
+			</td>
+		</tr>
+	</tfoot>
+	</table>
+</form>
+</div>
+	<{/if}>
+</div>

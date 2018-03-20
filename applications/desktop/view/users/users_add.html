@@ -1,0 +1,115 @@
+<h3 class="page-title">添加操作员</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=desktop&ctl=users&act=index">操作员列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">添加操作员</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?ctl=users&act=addnew" method="post" id='users_form' class="form" >
+    <div class="form-horizontal">
+        <div class="form-body">
+             <div class="form-group">
+                 <label class="col-md-2 control-label">登录用户名<span class="required" aria-required="true">*</span></label>
+                 <div class="col-md-5">
+                     <input type="text" name="pam_account[login_name]"   required=true class="form-control" placeholder="请输入唯一的用户名">
+                     <span class="help-block">
+                         用户名全系统唯一，不能有重复 </span>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">登录密码<span class="required" aria-required="true">*</span></label>
+                 <div class="col-md-5">
+                     <input type="password" name="pam_account[login_password]"   required=true class="form-control" >
+
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">确认登录密码<span class="required" aria-required="true">*</span></label>
+                 <div class="col-md-5">
+                     <input type="password" name="re_password"   required=true class="form-control" >
+                 </div>
+             </div>
+
+             <div class="form-group">
+                 <label class="col-md-2 control-label">姓名
+                     <span class="required">*</span>
+                 </label>
+                 <div class="col-md-5">
+                     <input type="text" name="name"   required=true class="form-control" >
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">工号
+                 </label>
+                 <div class="col-md-5">
+                     <input type="text" name="op_no"   class="form-control" >
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">所属角色
+                     <span class="required">*</span>
+                 </label>
+                 <div class="col-md-7">
+                     <div class="row">
+                         <{if $is_super}>
+                         <div class="col-md-3 col-xs-6 col-md-4">
+                             <label class="control-label text-success">
+                                 <input type="checkbox" value="1" name="super"  />
+                                 超级管理员
+                             </label>
+                         </div>
+                         <{/if}>
+                         <{foreach from=$roles item=item}>
+                           <div class="col-md-3 col-xs-6 col-md-4">
+                               <label class="control-label">
+                                   <input type="checkbox" value="<{$item.role_id}>" name="role[<{$item.role_id}>]" <{if $item.checked=='true' ||$env.get.p.0 == $item.role_id}>checked='checked'<{/if}> />
+                                   <{$item.role_name}>
+                               </label>
+                           </div>
+                           <{/foreach}>
+                         </ul>
+                     </div>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">备注
+                 </label>
+                 <div class="col-md-5">
+                     <{input type=textarea rows=1 name=memo}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">是否启用
+                 </label>
+                 <div class="col-md-5">
+                     <select  name="status" class="form-control">
+                         <option value="1">是</option>
+                         <option value="0">否</option>
+                      </select>
+                 </div>
+             </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>
+
+<script charset="utf-8">
+    $('input[name=super]').on('change',function(){
+        if($(this).is(':checked')){
+            $('input[name^="role"]').prop('disabled','disabled').prop('checked',false);
+        }else{
+            $('input[name^="role"]').removeProp('disabled');
+        }
+    });
+</script>

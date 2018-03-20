@@ -1,0 +1,34 @@
+<!-- ############### 编辑区域 ############### -->
+<!-- 辅助空白 -->
+<template id="widget-child-setting-blankhelper">
+    <div class="view-item-setting" :id="widget.name + '_setting_' + index">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                {{widget.title}}
+                <a type="button" class="icon icon-close pull-right" href="javascript:;" @click="closeEv"></a>
+            </div>
+            <div class="panel-body form-horizontal">
+                <div class="form-group form-group-sm">
+                    <label :for="widget.name + '_height_' + index" class="col-sm-4 control-label">高度</label>
+                    <div class="col-sm-8">
+                        <input type="number" min="0" class="form-control" :id="widget.name + '_height_' + index" placeholder="高度" v-model="widget.data.height" :value="widget.data.height">
+                    </div>
+                </div>
+            </div>
+            <div class="panel-footer text-right">
+                <button type="button" class="btn btn-primary btn-xs" @click="closeEv">关闭</button>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_child_setting_blankhelper = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-setting-blankhelper',
+    methods: {
+        closeEv: function() {
+            return designStore.methods.closeEv(this);
+        }
+    }
+});
+</script>

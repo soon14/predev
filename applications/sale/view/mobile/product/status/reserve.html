@@ -1,0 +1,17 @@
+<a class="btn btn-primary btn-buy pull-right" href="<{link app=sale ctl=mobile_sale act=reserve arg0=$sale.id arg1=$sale.goods_id}>" id="J_show_reserve">
+<span class="J-countdown" href="javascript:;">
+<i class="glyphicon glyphicon-time"></i>
+<span class="day-show">0</span>
+<span class="hour-show">0</span>
+<span class="minute-show">0</span>
+<span class="second-show">0</span>
+后预约结束
+</span>
+</a>
+<script>
+(function(){
+    var notStart = new Sale.countdown(<{$sale.reserve_end - $now}>,$('.J-countdown'),function(){
+        $('#J_sale_buy').load('<{link app=sale ctl=mobile_sale act=get_status arg0=$product_id}>',{'goods_id':<{$sale.goods_id}>});
+    });
+})();
+</script>

@@ -1,0 +1,8 @@
+<services>
+    <service id="desktop_finder.digitalmarketing_mdl_activity">
+        <class>digitalmarketing_finder_activity</class>
+    </service>
+    <service id="openapi.prize" optname="api@抽奖相关">
+        <class>digitalmarketing_openapi_prize</class>
+    </service>
+</services>

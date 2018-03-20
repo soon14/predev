@@ -1,0 +1,7 @@
+<site>
+    <module controller='mobile_shop' id='shop'>
+        <name>vshop</name>
+        <title>微店铺</title>
+        <disable>false</disable>
+    </module>
+</site>

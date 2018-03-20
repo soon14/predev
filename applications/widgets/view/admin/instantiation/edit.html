@@ -1,0 +1,218 @@
+
+<form action="index.php?app=widgets&ctl=admin_template&act=instantiation_widget" method="post" class="form" id="J_widget_form">
+    <input type="hidden" name="file_path" value="<{$file_path}>"/>
+    <input type="hidden" name="index" value="<{$index}>"/>
+    <input type="hidden" name="code" value="<{$widget.code}>"/>
+    <input type="hidden" name="widgets_id" value="<{$widget.id}>"/>
+    <input type="hidden" name="group_index" value="<{$group_index}>">
+    <{if $widget.instantiation.id }>
+    <input type="hidden" name="id" value="<{$widget.instantiation.id}>">
+    <{else}>
+    <input type="hidden" name="createtime" value="<{$widget.instantiation.createtime}>">
+    <{/if}>
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                    <span class="required" aria-required="true">*</span>
+                    板块名称
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="name" value="<{$widget.instantiation.name}>" required=true class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group" <{if $widget.instantiation.type == '2'}>style="display:none"<{/if}>>
+            <label class="col-md-2 control-label">
+                展示数量
+            </label>
+            <div class="col-md-5">
+                <input type="text" name="nums" value="<{$widget.instantiation.nums|default:0}>" required=true class="form-control"/>
+                <span class="help-inline">0表示展示全部</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                状态
+            </label>
+            <div class="col-md-5">
+                <select name="status" class="form-control">
+                    <option value="0" <{if $widgets.status == '0'}>selected<{/if}>>有效</option>
+                    <option value="1" <{if $widgets.status == '1'}>selected<{/if}>>暂停</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                板块形象图
+            </label>
+            <div class="col-md-2">
+                <{input type=image name=image value=$widget.instantiation.image height=120 width=120}>
+            </div>
+
+            <label class="col-md-2 control-label">
+                板块背景图
+            </label>
+            <div class="col-md-2">
+                <{input type=image name=background_image value=$widget.instantiation.background_image height=120 width=120}>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                板块链接
+            </label>
+            <div class="col-md-7">
+                <input type="text" name="link" value="<{$widget.instantiation.link}>"  class="form-control"/>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">板块内容</label>
+            <{if $widget.type == '0'}>
+            <div class="col-md-10 J-data" id="J_data_0">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>操作</th>
+                        <th>广告图片</th>
+                        <th>广告说明</th>
+                        <th>链接地址</th>
+                        <th>排序</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <{foreach from=$widget.instantiation.data.pic  key=key item=item}>
+                    <tr>
+                        <td>
+                            <button onclick="$(this).closest('tr').remove();" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                        <td>
+                            <{input type="image" width=200 height=90 tag="广告图" name="data[pic][{$key}][id]" value=$item.id}>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="data[pic][<{$key}>][title]" value="<{$item.title}>"/>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="data[pic][<{$key}>][link]" value="<{$item.link}>"/>
+                        </td>
+                        <td>
+                            <input type="text" class="form-control" name="data[pic][<{$key}>][sort]" value="<{$item.sort|default:0}>"/>
+                        </td>
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                </table>
+                <hr>
+                <a href="javascript:;" class="btn btn-default" id="J_add_pic"><i class="fa fa-plus"></i> 添加</a>
+            </div>
+            <{elseif $widget.type == '1'}>
+            <div class="col-md-10 J-data" id="J_data_1">
+                <{input type="object" object="goods@b2c" multiple="true" callback_func="goods_callback_func"}>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>操作</th>
+                        <th>商品图片</th>
+                        <th>商品名称</th>
+                        <th>商品描述</th>
+                        <th>商品编号</th>
+                        <th>排序</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <{foreach from=$widget.instantiation.data.goods  key=key item=item}>
+                    <tr>
+                        <td>
+                            <button onclick="$(this).closest('tr').remove();" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+                        </td>
+                        <td>
+                            <{if !$item.custom_default_id}>
+                            <{input type="image" width=120 height=120 tag="商品图片" name="data[goods][{$item.goods_id}][custom_default_id]" value="{$widget.instantiation.data.goods_list[$item.goods_id].image_default_id}"}>
+                            <{else}>
+                            <{input type="image" width=120 height=120 tag="商品图片" name="data[goods][{$item.goods_id}][custom_default_id]" value="{$item.custom_default_id}"}>
+                            <{/if}>
+                        </td>
+                        <td>
+                            <input type="hidden" name="data[goods][<{$item.goods_id}>][goods_id]"  value="<{$item.goods_id}>">
+                            <input type="hidden" name="data[goods_id][]"  value="<{$item.goods_id}>">
+                            <input type="text" class="form-control" name="data[goods][<{$item.goods_id}>][name]" value="<{$item.name?$item.name:$widget.instantiation.data.goods_list[$item.goods_id].name}>" >
+                        </td>
+                        <td>
+                            <{input type="text" name="data[goods][{$item.goods_id}][brief]" value="{$item.brief}"}>
+                        </td>
+                        <td>
+                            <{$item.gid}>
+                            <input type="hidden" name="data[goods][<{$item.goods_id}>][gid]"  value="<{$item.gid}>">
+                        </td>
+                        <td>
+                            <input type="text" class="form-control input-xsmall" name="data[goods][<{$item.goods_id}>][sort]" value="<{$item.sort|default:0}>">
+                        </td>
+                    </tr>
+                    <{/foreach}>
+                    </tbody>
+                </table>
+            </div>
+            <{elseif $widget.type == '2'}>
+            <div class="col-md-10 J-data" id="J_data_2">
+                <{input type="code" name="data[customer]" value="{$widget.instantiation.data.customer}"}>
+            </div>
+            <{/if}>
+        </div>
+    </div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-9">
+                <button type="submit" class="btn blue">保存</button>
+                <a class="btn btn-primary gray" href="index.php?app=widgets&ctl=admin_template&act=edit&p[0]=<{$type}>&p[1]=<{$file_path}>">返回</a>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script charset="utf-8">
+    (function(win){
+        var code = $('#J_line').val(),
+                line_number = parseInt($('#J_line_number').val()),
+                $iframe = $('#J_code').find('iframe'),
+                widget_index = <{$index}>;
+        $('#J_widget_form').data('ajax:success',function(re){
+            if(re.success){
+                $('#J_edit_modal').modal('hide');
+            }
+        });
+        win.goods_callback_func = function(gids){
+            $.ajax({
+                'url':'<{link app=widgets ctl=admin_index act=get_goods}>',
+                'data':gids,
+                'type':'post',
+                'success':function(re){
+                    $('#J_data_1 tbody').append(re);
+                }
+            });
+        };
+        $('#J_add_pic').on('click',function(){
+            var id = Math.floor(Math.random()*(999999-100000+1)+100000);
+            $.ajax({
+                'url':'<{link app=widgets ctl=admin_index act=get_pic}>',
+                'data':{'id':id},
+                'type':'post',
+                'success':function(re){
+                    $('#J_data_0 tbody').append(re);
+                }
+            });
+        });
+        $('.J-goprev').live('click',function(e){
+            var tr = $(this).closest('tr');
+            if(tr.prev('tr')){
+                tr.insertBefore(tr.prev());
+            }
+        });
+        $('.J-next').live('click',function(e){
+            var tr = $(this).closest('tr');
+            if(tr.next('tr')){
+                tr.insertAfter(tr.next());
+            }
+        });
+    })(window);
+</script>

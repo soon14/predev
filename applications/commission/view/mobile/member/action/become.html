@@ -1,0 +1,118 @@
+<div class="content-block">
+    <div class="content-padded">
+		<form action="<{link app=commission ctl=mobile_member act=become}>" method="post" id="becom_form" name="becom_form">
+		  <input type="text" name="mobile" id="mobile" placeholder="手机号码" value="<{if $member_mobile}> <{$member_mobile}> <{else}>  <{/if}>" >
+		  <input type="text" name="vcode" placeholder="验证码" id="vcode">
+          <input type="button" class="btn btn-default btn-block" id="btn" value="获取验证码">
+          <p class="custom-tailor-url">定制我的专属域名</p>
+          <p>(定制后可使用该专属域名分享,购买商品)</p>
+		  <input type="text" placeholder="请输入您的域名" name="domain_pre" id="domain" class="url-input">
+          <p>.<{$root_domain}></p>
+          <input type="button" class="btn btn-primary btn-block" id="btn-2" value="同意并确认验证">
+          <input type="button" class="btn btn-primary btn-outlined btn-block" onclick="window.history.go(-1)" value="暂不参与分销">
+		</form>
+        <a href="#fy-rules" class="rules-color pull-right">《分佣者条款》</a>
+    </div>
+</div>
+<div id="fy-rules" class="modal">
+	<header class="bar bar-nav">
+		<a href="#fy-rules" class="icon icon-close pull-right"></a>
+		<h1 class="title">分佣条款</h1>
+	</header>
+	<div class="content rules">
+        <div class="content-padded">
+            <p>
+                1、前言：<br>
+                用户在注册会员前，需仔细阅读并完全理解本协议内容及闪其他服务规则（以下统称为“服务条款”），如果用户不同意受该等服务条款的约束，应停止注册程序并停止使用本服务。<br>
+                2、服务条款的接受：<br>
+                2.1：本协议所称的“用户”是指完全同意所有服务条款并完成注册程序的具备完全民事行为能力的自然人或者是具有合法经营资格的实体组织。<br>
+                2.2：用户注册、使用本站的行为即表示其已经完全同意并自愿接受服务条款的约束。<br>
+                2.3：本站通过其网站不定时发布的各项规则、公告、通知等为本协议不可分割的一部分。<br>
+                3、服务条款的变更和修改<br>
+                3.1：本站有权根据运营需要随时对服务条款进行修改，修改后的服务条款一经在闪耀绘上公示即生效，闪耀绘不再另行向用户发送修改通知。用户可随时登陆查阅最新服务条款，用户有义务不时关注并阅读最新版的服务条款及网站公告。用户如果不同意服务条款的修改，可以主动取消或放弃已经获得的网络服务；如果用户继续享用网络服务，则视为用户已经接受服务条款的修改。<br>
+                4、服务说明：<br>
+                4.1：本站通过国际互联网向用户提供丰富的网上资源，包括各种资讯文章、网上论坛、网上购物、个性化内容和服务（以称简称“网络服务”）等。除非另有明确规。
+            </p>
+        </div>
+	</div>
+</div>
+<script>
+	$(document.body).addClass('become-body');
+
+    //发送验证码请求
+    $('#btn').on('click',function(e){
+        var mobile = $('#mobile').val();
+        var moblie_reg = /^1[3|4|5|7|8][0-9]\d{8}$/;
+        if(!moblie_reg.test(mobile)){
+            Messagebox('error','手机号码格式不正确');return false;
+        }
+        var btn = $(this);
+        if(btn.attr('disabled'))return;
+        btn.attr('disabled','true');
+        $.post('<{link app=commission ctl=mobile_member act=send_vcode_sms arg0=signup}>',{mobile:mobile},function(re){
+            if(re && re.error){
+                btn.removeAttr('disabled');
+                Messagebox('error',re.error);return false;
+            }
+            if(re && re.success){
+                _cutdown_sms(btn);
+            }
+        },'json');
+    });
+
+    //获得短信验证码
+    var _cutdown_sms = function(btn){
+        var cutdown = 120,btn_o_text = btn.val(),timer =
+                setInterval((function(){
+                    btn.val('再次发送'+(cutdown--)+'秒');
+                    if(cutdown<1){
+                        clearInterval(timer);
+                        btn.val(btn_o_text).removeAttr('disabled');
+                    }
+                    return arguments.callee;
+                })(),1000);
+    };
+
+    //二级域名
+    $('#domain').on('blur' ,function(){
+        check_domain();
+    });
+    var check_domain =function(){
+        if($.trim($('#domain').val()) =='' ){
+            Messagebox('error','请填写完整信息');return false;
+        }
+        $.getJSON('<{link app=commission ctl=mobile_member act=check_domain}>',{'domain' : $('#domain').val()} ,function(re){
+            if(re && re.error){
+                Messagebox('error',re.error);return false;
+            }
+            if(re && re.success){
+                Messagebox('success',re.success);return true;
+            }
+        });
+    };
+
+    //提交表单
+    $("#btn-2").click(function(){
+        var mobile = $.trim($("#mobile").val());
+        var vcode = $.trim($("#vcode").val());
+        var domain_pre = $.trim($("#domain").val());
+        if(mobile && vcode  &&domain_pre){
+            var data = {
+                mobile :mobile,
+                vcode :vcode,
+                domain_pre :domain_pre
+            };
+            $.post('<{link app=commission ctl=mobile_member act=become arg0=signup}>',data,function(re){
+                if(re && re.error){
+                    Messagebox('error',re.error);return false;
+                }
+                if(re && re.success){
+                    window.location.href='<{$redirect}>';
+                }
+            },'json');
+        }else{
+            Messagebox('error','请填写完整信息');return false;
+        }
+    });
+
+</script>		

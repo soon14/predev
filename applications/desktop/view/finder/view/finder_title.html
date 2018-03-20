@@ -1,0 +1,30 @@
+<div id="finder_title_<{$name}>" <{if !$title||$title=='列表'}>class="hide"<{/if}>>
+    <h3 class="page-title">
+        <{$title}><small class="hidden-xs"></small>
+        <div class="btn-group">
+                    <button type="button" class="btn btn-link" onclick="update_finder_<{$name}>();"><i class="fa fa-refresh"></i></button>
+                    <a href="javascript:;" class="btn btn-link dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="1000" data-close-others="true">
+                    <i class="fa fa-cog"></i>
+                    </a>
+                    <ul class="dropdown-menu pull-right" role="menu">
+                        <li>
+                            <a href="<{$url}>&action=column" data-target="#finder_column_setting_modal_<{$name}>" data-toggle="modal">表头配置</a>
+                        </li>
+                        <li class="divider">&nbsp;</li>
+                        <{$plimit_sel}>
+                    </ul>
+
+        </div>
+    </h3>
+</div>
+<div class="modal modal-cached bs-modal-sm modal-scroll" id="finder_column_setting_modal_<{$name}>" role="basic" aria-hidden="true">
+              <div class="modal-dialog modal-sm">
+                      <div class="modal-content">
+
+                      </div>
+              </div>
+</div>
+
+    <{if $finder_extra}>
+    <{$finder_extra}>
+    <{/if}>

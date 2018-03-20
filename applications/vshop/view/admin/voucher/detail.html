@@ -1,0 +1,146 @@
+<div class="row hidden">
+    <div class="col-md-12">
+        <{*$delivery.delivery_id|barcode*}>
+    </div>
+</div>
+<div class="well well-sm">
+    <div class="row">
+        <!-- <div class="col-md-4">
+            <dl class="dl-horizontal">
+                <dt>供应商</dt>
+                <dd><{$supplier.supplier_name}> (<small><{$supplier.supplier_bn}></small>)</dd>
+                <dt>负责人</dt>
+                <dd><{$supplier.supplier_manager}></dd>
+                <dt>地址</dt>
+                <dd><{$supplier.supplier_region|region}>,<{$supplier.supplier_address}></dd>
+                <dt>联系方式</dt>
+                <dd><{$supplier.supplier_link1}>;<{$supplier.supplier_link2}></dd>
+            </dl>
+        </div> -->
+        <div class="col-md-4">
+            <dl class="dl-horizontal">
+                <dt>收货人</dt>
+                <dd><{$delivery.consignee.name}></dd>
+                <dt>收货地区</dt>
+                <dd><{$delivery.consignee.area|region}></dd>
+                <dt>收货地址</dt>
+                <dd><{$delivery.consignee.addr}></dd>
+                <dt>电话</dt>
+                <dd><{$delivery.consignee.tel}></dd>
+                <dt>手机</dt>
+                <dd><{$delivery.consignee.mobile}></dd>
+                <dt>邮箱</dt>
+                <dd><{$delivery.consignee.email}></dd>
+            </dl>
+        </div>
+        <div class="col-md-4">
+            <div class="well">
+                <h4>物流状态</h4>
+                <{if $logistics_tracker}>
+                <ul>
+                    <{foreach from=$logistics_tracker.logi_log item=item}>
+                        <li>[<{$item.time}>]<{$item.context}></li>
+                    <{/foreach}>
+                </ul>
+                <{/if}>
+            </div>
+        </div>
+        <{if count($voucher.items) > 0}>
+        <div class="col-md-12">
+            <div class="table-scrollable">
+            	<table  class="table table-striped table-hover">
+            		<thead>
+            			<tr>
+            				<th>货号</th>
+                            <th>图片</th>
+            				<th>名称</th>
+                            <th>规格</th>
+                            <th>零售价</th>
+                            <th>成交价</th>
+                            <th>分润比例</th>
+                            <th>单件分润</th>
+                            <th>应结算数量</th>
+                            <th class="text-right">小记</th>
+            			</tr>
+            		</thead>
+            		<tbody>
+                        <{assign var=s_totalprice value=0}>
+            			<{foreach from=$voucher.items item=item}>
+            				<tr>
+            					<td><{$item.bn}></td>
+                                <td>
+                                    <img src="<{$item.image_id|storager:'xs'}>" height=36>
+                                </td>
+                                <td>
+                                    <{$item.name}>
+                                </td>
+            					<td>
+                                <{$item.spec_info}>
+                                </td>
+                                <td>
+                                    <{$item.price|cur}>
+                                </td>
+                                <td>
+                                    <{$item.buy_price|cur}>
+                                </td>
+                                <td>
+                                    <{$item.profit}>
+                                </td>
+                                <td>
+                                    <{$item.s_price|cur}>
+                                </td>
+                                <td>
+                                    <{$item.s_num}>
+                                </td>
+                                <td class="text-right">
+                                    <{$item.s_subprice|cur}>
+                                </td>
+            				</tr>
+            		    <{/foreach}>
+            		</tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="8">
+
+                            </td>
+                            <td colspan="2" class="text-right">
+                                合计：<{$voucher.total_subprice|cur}>
+                            </td>
+                        </tr>
+                    </tfoot>
+            	</table>
+            </div>
+        </div>
+        <{/if}>
+    </div>
+</div>
+<form class="form" id="voucher_update_form_<{$env.get.id}>" action="index.php?app=supplier&ctl=admin_voucher&act=update&p[0]=<{$voucher.voucher_id}>" method="post">
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">备注</label>
+                <div class="col-md-9">
+                    <{if $voucher.memo}>
+                        <div class="well well-sm">
+                            <{$voucher.memo}>
+                        </div>
+                    <{/if}>
+                    <{input name="memo" placeholder="新结算凭证备注"  type=textarea }>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+$('#voucher_update_form_<{$env.get.id}>').data('ajax:success',function(){
+    window['update_finder_<{$env.get.finder_name}>']();
+});
+</script>

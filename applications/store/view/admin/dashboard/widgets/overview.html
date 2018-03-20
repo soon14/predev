@@ -1,0 +1,53 @@
+<div class="portlet box blue-steel">
+	<div class="portlet-title">
+		<div class="caption">
+			<i class="fa fa-thumb-tack"></i>门店业务概览
+		</div>
+	</div>
+	<div class="portlet-body">
+		<div class="tabbable-line">
+			<div class="tab-content">
+				<div class="tab-pane active" id="overview_1">
+					<div class="table-responsive">
+						<table class="table table-striped table-hover table-bordered">
+							<thead class="text-nowrap">
+							<tr>
+								<th>编号</th>
+								<th>名称</th>
+								<th>销售额</th>
+								<th>销售占比</th>
+								<th>操作</th>
+							</tr>
+							</thead>
+							<tbody>
+							<{foreach from=$top_four_infos key=store_id item=top_four_info name=tsf}>
+								<tr class="text-nowrap">
+									<td><{$top_four_info['show_bn']}></td>
+									<td>
+										<{$top_four_info.show_name}>
+										<!--<a href="index.php?app=b2c&ctl=admin_goods_editor&act=edit&p[0]=<{$item.goods_id}>" target="_blank">-->
+											<!--<{$top_four_info.store_name}>-->
+										<!--</a>-->
+									</td>
+									<td>
+										<{$top_four_info['show_money']|cur}>
+									</td>
+									<td>
+										<{$top_four_info.sell_proportion}>
+									</td>
+									<td>
+										无
+										<!--<a href="index.php?app=b2c&ctl=admin_goods_editor&act=edit&p[0]=<{$item.goods_id}>" target="_blank" data-pid="<{$item.product_id}>" class="btn default btn-xs green-stripe">-->
+											<!--查看-->
+										<!--</a>-->
+									</td>
+								</tr>
+							<{/foreach}>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

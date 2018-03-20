@@ -1,0 +1,12 @@
+<cronentries>
+    <cron id="groupbooking_tasks_order_cancel">
+        <description>自动关闭未支付拼团订单</description>
+        <schedule>* * * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+    <cron id="groupbooking_tasks_activity_cancel">
+        <description>自动关闭已结束拼团活动</description>
+        <schedule>*/30 * * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+</cronentries>

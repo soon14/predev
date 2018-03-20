@@ -1,0 +1,85 @@
+<div class="table-scrollable">
+    <table class="table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>货品名称</th>
+            <th>SKU</th>
+            <th>原始售价</th>
+            <th>运费</th>
+            <th>预售价</th>
+            <th>数量</th>
+            <th>小计</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            <td rowspan=2>
+                <img class="img-thumbnail" src="<{$order.image_id|storager:'xs'}>" width=30/>
+            </td>
+            <td>
+                <{$order.name}>
+            </td>
+            <td>
+                <{$order.bn}>
+            </td>
+            <td>
+                <small>￥</small>
+                <{$order.price|cur}>
+            </td>
+            <td>
+                <{$order.cost_freight}>
+            </td>
+            <td>
+                <small>￥</small>
+                <{$order.buy_price|cur}>
+            </td>
+            <td>
+                <{$order.nums}>
+            </td>
+            <td>
+                <{$order.order_total}>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<{if $order.deposit_pay_status == '1'}>
+<form class="form-horizontal" id="deposit_update_form_<{$env.get.id}>" action="index.php?app=preselling&amp;ctl=admin_order&amp;act=refund" method="post">
+    <div class="form-body">
+        <input type="hidden" value="<{$order.presell_id}>" name="presell_id">
+        <input type="hidden" name="deposit_pay_status" value="<{$order.deposit_pay_status}>">
+        <div class="form-group">
+            <div class="col-md-9 col-md-offset-1">
+                <button type="submit"  class="btn <{if $order.order_id}>default disabled<{else}>btn-info<{/if}>">申请退款</button>
+            </div>
+        </div>
+    </div>
+</form>
+<{elseif $order.deposit_pay_status == '2'}>
+    <span class="label label-default">退款中</span>
+<{/if}>
+<form class="form-horizontal" id="save_update_form_<{$env.get.id}>" action="index.php?app=preselling&amp;ctl=admin_order&amp;act=save" method="post">
+    <input type="hidden" value="<{$order.presell_id}>" name="presell_id">
+    <div class="form-group">
+        <label class="col-md-3 control-label">备注</label>
+        <div class="col-md-9">
+            <textarea name="remarks" rows="2" class="form-control"  placeholder="备注"><{$order.remarks}></textarea>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-9 col-md-offset-3">
+            <button type="submit" class="btn btn-primary">保存</button>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $('#deposit_update_form_<{$env.get.id}>').data('ajax:success',function(){
+        window['update_finder_<{$env.get.finder_name}>']();
+    });
+    $('#save_update_form_<{$env.get.id}>').data('ajax:success',function(){
+        window['update_finder_<{$env.get.finder_name}>']();
+    });
+</script>
+

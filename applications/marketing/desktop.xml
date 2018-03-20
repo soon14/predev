@@ -1,0 +1,33 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="marketing">用户分组</permission>
+        <permission display='true' id="marketing_sms_tasks">短信营销</permission>
+        <permission display='true' id="marketing_email_tasks">邮件营销</permission>
+        <permission display='true' id="marketing_sms_tmpl">短信营销模板</permission>
+        <permission display='true' id="marketing_email_tmpl">邮件营销模板</permission>
+        <permission display='true' id="marketing_report">营销效果报告</permission>
+    </permissions>
+    <workground icon="fa fa-paper-plane-o" id="marketing.wrokground.marketing" name="主动营销" order="45">
+        <menugroup name="用户分组">
+            <menu action='index' controller='admin_group' display='true' order='10' permission='marketing'>用户分组</menu>
+            <menu action='index' controller='admin_group' display='false' order='10' permission='marketing'>编辑分组</menu>
+        </menugroup>
+
+        <menugroup name="营销">
+            <menu action='sms_tasks' controller='admin_message' display='true' order='20' permission='marketing_sms_tasks'>短信营销</menu>
+            <menu action='email_tasks' controller='admin_message' display='true' order='30' permission='marketing_email_tasks'>邮件营销</menu>
+            <menu action='edit_task' controller='admin_message' params='p[0]:sms' display='false' order='40' permission='marketing_sms_tasks'>短信营销编辑</menu>
+            <menu action='edit_task' controller='admin_message' params='p[0]:email' display='false' order='40' permission='marketing_email_tasks'>邮件营销编辑</menu>
+        </menugroup>
+
+        <menugroup name="营销模板">
+            <menu action='sms_tmpl' controller='admin_message' display='true' order='40' permission='marketing_sms_tmpl'>短信模板</menu>
+            <menu action='edit_tmpl' controller='admin_message' params='p[0]:sms' display='false' order='40' permission='marketing_sms_tmpl'>短信模板编辑</menu>
+            <menu action='email_tmpl' controller='admin_message' display='true' order='50' permission='marketing_email_tmpl'>邮件模板</menu>
+            <menu action='edit_tmpl' controller='admin_message' params='p[0]:email' display='false' order='40' permission='marketing_email_tmpl'>邮件模板编辑</menu>
+        </menugroup>
+        <menugroup name="营销效果报告">
+            <menu action='index' controller='admin_report' display='true' order='40' permission='marketing_report'>营销效果报告</menu>
+        </menugroup>
+    </workground>
+</desktop>

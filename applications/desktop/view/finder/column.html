@@ -1,0 +1,36 @@
+<form method="post" action="<{$action}>">
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">表头设置</h4>
+</div>
+<div class="modal-body">
+    <ul class="list-group" id="column_sort">
+        <{foreach from=$columns item=col key=key}>
+    	<li class="list-group-item" style="padding:4px 12px;">
+    		<div class="row">
+                <div class="col-sm-1">
+                    <input type="hidden" name="allcol[]" value="<{$key}>">
+
+                    <input type="checkbox" name="col[]" value="<{$key}>" <{if $key|in_array:$use}>checked<{/if}> >
+                </div>
+                <div class="col-sm-9">
+                    <{$col.label}>
+                </div>
+                <div class="col-sm-1">
+                    <i class="fa fa-align-justify"></i>
+                </div>
+    		</div>
+    	</li>
+        <{/foreach}>
+    </ul>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn default" data-dismiss="modal">取消</button>
+    <button type="submit" class="btn blue">保存修改</button>
+</div>
+</form>
+<script charset="utf-8">
+    $('#column_sort').sortable({
+        cursor: "move"
+    });
+</script>

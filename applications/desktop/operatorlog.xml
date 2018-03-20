@@ -1,0 +1,71 @@
+<root>
+<!-- 模块：系统管理(system) -->
+    <!-- 管理员和权限 -->
+    <register module="system" ctl="users" act="addnew" param="pam_account.login_name">
+        <operate_type>添加管理员</operate_type>
+        <template>添加管理员 %s</template>
+    </register>
+
+<!--     <register module="system" ctl="users" act="dorecycle" param="pam_account.login_name">
+        <operate_type>删除管理员</operate_type>
+        <template>批量删除管理员 %s</template>
+    </register> -->
+
+<!--     <register module="system" ctl="users" act="saveUser" param="name">
+       <operate_type>编辑管理员</operate_type>
+        <template>编辑管理员 %s</template>
+    </register> -->
+
+    <register module="system" ctl="roles" act="save" param="role_name">
+        <operate_type>添加角色</operate_type>
+        <template>添加角色 %s</template>
+    </register>
+
+<!--     <register module="system" ctl="roles" act="dorecycle" param="role_id">
+        <operate_type>删除角色</operate_type>
+        <template>批量删除角色 %s</template>
+    </register> -->
+
+    <register module="system" ctl="roles" act="edit" param="role_name">
+        <operate_type>编辑角色</operate_type>
+        <template>编辑角色 %s</template>
+    </register>
+
+
+<!-- 模块：系统管理(system) -->
+    <!-- 其他配置 -->
+    <register module="system" ctl="backup" act="backup_sdf" param="">
+        <operate_type>数据备份</operate_type>
+        <template>备份数据</template>
+    </register>
+
+    <register module="system" ctl="comeback" act="comeback" param="file_name" method="get">
+        <operate_type>数据备份恢复</operate_type>
+        <template>恢复数据 %s</template>
+    </register>
+
+    <register module="system" ctl="backfile" act="getFile" param="file" method="get">
+        <operate_type>数据备份下载</operate_type>
+        <template>下载数据备份 %s</template>
+    </register>
+
+    <register module="system" ctl="comeback" act="removeTgz" param="tgz">
+        <operate_type>数据备份删除</operate_type>
+        <template> 删除数据备份 %s</template>
+    </register>
+
+    <register module="system" ctl="users" act="chkpassword" param="user_id">
+        <operate_type>修改管理员密码</operate_type>
+        <template>管理员帐号 %s 修改密码</template>
+    </register>
+    <register module="system" ctl="dashboard" act="chkpassword" param="user_id">
+        <operate_type>修改管理员密码</operate_type>
+        <template>管理员帐号 %s 修改密码</template>
+    </register>
+
+    <register module="system" ctl="appcenter" act="doupdate" param="p.0">
+        <operate_type>更新应用</operate_type>
+        <template>appid: %s</template>
+    </register>
+
+</root>

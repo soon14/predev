@@ -1,0 +1,19 @@
+<!-- 图片导航 -->
+<template id="widget-imgnav">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-imgnav :widget="widget" :index="index"></widget-child-setting-imgnav>
+        <widget-child-imgnav :widget="widget" :index="index"></widget-child-imgnav>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_imgnav = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-imgnav',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-imgnav': widget_child_setting_imgnav,
+        'widget-child-imgnav': widget_child_imgnav
+    }
+});
+</script>

@@ -1,0 +1,67 @@
+
+<h3 class="page-title">
+    编辑板块 <small><{$widget.tmp_name}></small>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=widgets&ctl=admin_template&act=edit&p[0]=<{$type}>&p[1]=<{$file_path}>">编辑文件</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">编辑板块</a>
+        </li>
+    </ul>
+</div>
+<div id="J_page_tabs">
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active">
+            <a href="#J_instantiation" aria-controls="J_instantiation" role="tab" data-toggle="tab" data-url="<{link app=widgets ctl=admin_template act=get_instantiation}>&p[0]=<{$index}>&p[1]=<{$widgets_id}>&p[2]=<{$id}>&p[3]=<{$file_path}>&type=<{$type}>">板块数据</a>
+        </li>
+        <li role="presentation">
+            <a href="#J_instantiation_history" aria-controls="J_instantiation_history" role="tab" data-toggle="tab" id="J_page_code_tab" data-url="<{link app=widgets ctl=admin_template act=get_instantiation_history}>&p[0]=<{$id}>">修改历史</a>
+        </li>
+    </ul>
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="J_instantiation">
+            <{include file="admin/instantiation/edit.html"}>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="J_instantiation_history"></div>
+    </div>
+</div>
+
+<div class="modal fade" id="J_history_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<script>
+    (function(){
+        $('#J_page_tabs .nav a').on('click',function(e){
+            var $el = $(this),
+                    content = $($el.attr('href'));
+            content.load($el.data('url'));
+        });
+        $('#J_page_widgets').on('click','.J-show',function(e){
+            var $el = $(this);
+            $('#J_page_widgets').load($el.data('url'));
+        });
+    })();
+</script>
+
+<script>
+    $('#J_instantiation_history').on('click','.pagination li',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if($(this).hasClass('disabled')){
+            return false;
+        }
+        var page = $(this).children('a').attr('href');
+        $('#J_instantiation_history').load(page);
+
+    }).on('click','.J-show-code',function(){
+        $('#J_history_modal .modal-content').load($(this).attr('data-url'));
+        $('#J_history_modal').modal('show');
+    });
+</script>

@@ -1,0 +1,36 @@
+<div data-updatecontainer="true">
+    <input type="hidden" name="page" value="<{$page}>">
+    <div class="table-scrollable">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" class="sel-handle">
+                    </th>
+                    <th>
+                        分类编号
+                    </th>
+                    <th>
+                        分类名称
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <{foreach from=$cat_list item=item}>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="cat_id[]" value="<{$item.cat_id}>">
+                    </td>
+                    <td>
+                        <{$item.cat_id}>
+                    </td>
+                    <td>
+                        <{$item.cat_name}>
+                    </td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+    <{pagers data=$pager}>
+</div>

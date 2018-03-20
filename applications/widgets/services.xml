@@ -1,0 +1,11 @@
+<services>
+    <service id="view_helper">
+        <class>widgets_view_helper</class>
+    </service>
+    <service id="desktop_finder.widgets_mdl_widgets">
+        <class>widgets_finder_widgets</class>
+    </service>
+    <service id="desktop_finder.widgets_mdl_group">
+        <class>widgets_finder_group</class>
+    </service>
+</services>

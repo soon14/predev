@@ -1,0 +1,76 @@
+<div data-updatecontainer="true">
+    <input type="hidden" name="goods_count" value="<{$goods_list_count}>">
+    <input type="hidden" name="page" value="<{$page}>">
+    <div class="table-scrollable">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox" class="sel-handle">
+                    </th>
+                    <th>
+                        商品分类
+                    </th>
+                    <th>
+                        商品编号
+                    </th>
+                    <th>
+                        商品名称
+                    </th>
+                    <th>
+                        销售价
+                    </th>
+                    <th>
+                        兑换所需积分
+                    </th>
+                    <th>
+                        是否上架
+                    </th>
+                    <th>
+                        人气(累计兑换量)
+                    </th>
+                    <th>
+                        操作
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <{foreach from=$goods_list item=item}>
+                <tr>
+                    <td>
+                        <input type="checkbox" name="goods_id[]" value="<{$item.goods_id}>">
+                    </td>
+                    <td>
+                        <{$item.category.cat_name}>
+                    </td>
+                    <td>
+                        <{$item.gid}>
+                    </td>
+                    <td>
+                        <a href="<{$item.product.item_url}>" target="_blank">
+                        <img class='img-thumbnail' src="<{$item.image_default_id|storager:'xs'}>" width=30 />&nbsp;
+                        <{$item.name}>
+                        </a>
+                    </td>
+                    <td>
+                        <{$item.product.price|cur}>
+                    </td>
+                    <td>
+                        <input class='form-control edit-col input-sm input-xsmall' data-name="deduction" type='text'  data-goodsid='<{$item.goods_id}>' data-price="<{$item.product.price}>"  value='<{$relgoods[$item.goods_id].deduction|default:1}>'>
+                    </td>
+                    <td>
+                        <input <{if $relgoods[$item.goods_id].marketable == 'true'}>checked<{/if}> class='form-control checkbox-col' data-name="marketable" type='checkbox'  data-goodsid='<{$item.goods_id}>' value='<{$relgoods[$item.goods_id].marketable|default:"false"}>'>
+                    </td>
+                    <td>
+                        <input class='form-control edit-col input-sm input-xsmall' data-name="popularity" type='text'  data-goodsid='<{$item.goods_id}>'  value='<{$relgoods[$item.goods_id].popularity|default:1}>'>
+                    </td>
+                    <td>
+                        <button class="btn btn-xs default btn-remove" type="button"><i class="fa fa-times"></i> 移除</button>
+                    </td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+    <{pagers data=$pager}>
+</div>

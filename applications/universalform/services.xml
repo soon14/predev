@@ -1,0 +1,16 @@
+<services>
+    <service id="desktop_finder.universalform_mdl_form">
+        <class>universalform_finder_form</class>
+    </service>
+    <service id="desktop_finder.universalform_mdl_form_data">
+        <class>universalform_finder_form_data</class>
+    </service>
+    <service id="view_helper">
+        <class>universalform_view_helper</class>
+    </service>
+    
+    <!--openapi-->
+    <service id="openapi.forms" optname="openapi@universalform">
+        <class>universalform_openapi_forms</class>
+    </service>
+</services>

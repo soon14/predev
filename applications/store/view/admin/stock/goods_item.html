@@ -1,0 +1,34 @@
+<{if $productCount > 0}>
+	<table class="table">
+		<{foreach from=$productInfos item=productInfo key=productId}>
+			<tr class="search-goods-list"
+				data-productinfo='<{$productInfo["productJson"]}>'
+				data-goodsprice="<{$productInfo.price|cur}>">
+				<td>
+					<div class="col-md-2">
+						<img src="<{$goodsImages[$productInfo['goods_id']]['image_default_id']|storager:'s'}>" alt="<{$productInfo.name}>" style="width: 50px;height: 50px;">
+					</div>
+				</td>
+				<td>
+					<strong><{$productInfo.name}>-<{$productInfo.spec_info}></strong>
+					<ul class="list-inline">
+						<li>货号：<span data-hightline="bn" class="text-muted"><{$productInfo.bn}></span></li>
+						<{if $productInfo.barcode}>
+							<li>
+								条码：<span data-hightline="barcode" class="text-muted"><{$productInfo.barcode}></span>
+							</li>
+						<{/if}>
+						<li>价格：<span class="text-muted"><{$productInfo.price|cur}></span></li>
+					</ul>
+				</td>
+				<td width="10%">
+					<i class="fa fa-plus-circle text-success" style="cursor: pointer;"></i>
+				</td>
+			</tr>
+		<{/foreach}>
+	</table>
+<{else}>
+	<div class="alert alert-warning">
+		<h3 class="text-center">没有找到货品</h3>
+	</div>
+<{/if}>

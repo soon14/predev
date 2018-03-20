@@ -1,0 +1,205 @@
+<!-- 设计面板 - 选择商品多选 -->
+
+<!-- 设计面板 - 选择分类 -->
+<template id="design-activity-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-12">
+            <div class="activity-select-box" :id="widget.name + '_select_activity_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectActivity($event)">
+                        <i class="fa fa-list-alt"></i> 选择活动场次
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_activity_selected_' + index">
+                            <tr v-for="(activity, activity_key) in activitys">
+                                <td><a href="javascript:;" @click.stop="removeActivity(activity_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{activity.id}}</td>
+                                <td>{{activity.id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal fade" :id="widget.name + '_select_activity_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/javascript">
+
+designStore.methods.setFilterActivityId = function(vnode, activity_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.activity_id = activity_id;
+};
+designStore.methods.removeFilterActivityId = function(vnode, activity_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.activity_id.splice(activity_key, 1);
+};
+// 设计面板 - 选择分类
+var design_activity_selector = Vue.extend({
+    props: ['widget', 'index', 'activity_id'],
+    data: function() {
+        return {
+            activitys: {}
+        };
+    },
+    template: '#design-activity-selector',
+    methods: {
+        //
+        listActivitys: function(activity_id) {
+            this.activitys = {};
+            if (!activity_id) return;
+            if(activity_id.length==0) return;
+            var t = this;
+            console.log(activity_id);
+//				$.post('/index.php/console/index.php?app=experiencestore&ctl=admin_activity&act=edit_schedule',{
+//		            filter: {
+//		            	p:activity_id
+//		            }
+//		       },function(response){
+//		                  if (!response)
+//		                      return false;
+//		                      console.log(response);
+//		                  t.activitys = response;
+//		        }, 'json');
+$.post('/index.php/console/index.php?app=desktop&ctl=finder&act=object_row',{
+		            'app':'experiencestore',
+		            'model':'activity_schedule',
+		            'cols':'*',
+		            filter: {
+		            	id:activity_id
+		            },
+		            'json': true
+		       },function(response){
+		                  if (!response)
+		                      return false;
+                                  
+                                  console.log(response);
+		                  t.activitys = response;
+		        }, 'json');
+        },
+        // 选择分类
+        onSelectActivity: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.activity-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_activity_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onActivitySelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load('/index.php/console/index.php?app=desktop&ctl=finder&act=object_select&finder_mdl=experiencestore_mdl_activity_schedule&multiple=true&cols=id,code,subject_id,store_id,from_time,to_time', function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeActivity: function(activity_key) {
+            this.activitys.splice(activity_key, 1);
+            this.$parent.removeActivity(activity_key);
+        },
+        // 已改变
+        onActivitySelected: function(selected) {
+            var activity_id = this.activity_id ? designStore.clone(this.activity_id) : [];
+            if(!(activity_id instanceof Array)){
+                var tmp = activity_id;
+                activity_id = [tmp];
+            }
+            this.activitys = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!activity_id || activity_id.indexOf(selected[n].value) < 0) {
+                        activity_id.push(selected[n].value);
+                    }
+                }
+            }
+            this.listActivitys(activity_id);
+            this.$parent.activityChange(activity_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.activity_id) this.listActivitys(this.activity_id);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-activity-selector', design_activity_selector);
+
+</script>

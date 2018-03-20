@@ -1,0 +1,52 @@
+<div class="content">
+<div class="content-padded">
+    <{foreach from=$pam_data key=key item=item}>
+    <p class="text-success">
+        <i class="fa fa-info"></i> 绑定后，依然可以用<{$pam_type.{$key}}>联合信任登录
+    </p>
+    <{/foreach}>
+</div>
+<form class="form-horizontal content-padded content-form" action="<{link app=openidcheck ctl=mobile_openidcheck act=dosign}>" method="post" id="bind_mobile_form">
+    <input type="hidden" name="forward" value="<{$forward}>">
+    <input type="text" id="mobile_input" placeholder="请输入要绑定的手机号" required="true" class="form-control" name="mobile"  value="">
+    <button type="button" class="btn btn-block btn-mobile-vcode">获取短信验证码</button>
+    <input type="text" class="hidden" disabled="disabled" name="vcode" value="">
+    <input type="text" required="true" name="vcode" class="form-control" id="input_vcode" placeholder="输入验证码">
+    <input type="password" placeholder="设置密码" required="true" class="form-control" name="password"  value="">
+    <button type="submit" class="btn btn-block btn-primary">立即绑定</button>
+    <a href="<{link app=openidcheck ctl=mobile_openidcheck act=ignore args0=$forward}>" target="_self" class="btn btn-primary btn-outlined btn-block">
+        跳过绑定
+    </a>
+</form>
+</div>
+<script type="text/javascript">
+//获得短信验证码
+var _cutdown_sms = function(btn){
+
+    var cutdown = 120,btn_o_text = btn.text(),timer =
+    setInterval((function(){
+        btn.text('短信已发送,'+(cutdown--)+'秒后可重试');
+        if(cutdown<1){
+            clearInterval(timer);
+            btn.text(btn_o_text).removeClass('disabled');
+        }
+        return arguments.callee;
+    })(),1000);
+};
+$('#bind_mobile_form .btn-mobile-vcode').on('click',function(e){
+    var btn = $(this);
+    if(btn.hasClass('disabled'))return;
+    btn.addClass('disabled');
+    $.post('<{link app=b2c ctl=mobile_passport act=send_vcode_sms}>',{mobile:$('#mobile_input').val()},function(re){
+        if(re && re.error){
+            btn.removeClass('disabled');
+            Messagebox('error',re.error);
+        }
+        if(re && re.success){
+            _cutdown_sms(btn);
+        }
+    },'json');
+
+
+});
+</script>

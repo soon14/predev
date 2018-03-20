@@ -1,0 +1,20 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="show_analytics">报表分析</permission>
+    </permissions>
+    <workground icon="icon-bar-chart" id="wrokground.analytics" name="报表" order='65'>
+        <menugroup name="经营概况">
+            <menu action='index' controller='admin_analytics' display='true' order='10' permission='show_analytics'>销售情况</menu>
+            <menu action='index1' controller='admin_analytics' display='true' order='11' permission='show_analytics'>热销排行</menu>
+        </menugroup>
+        <menugroup name="客户资产">
+            <menu action='index2' controller='admin_analytics' display='true' order='12' permission='show_analytics'>会员排行</menu>
+        </menugroup>
+        <menugroup name="财务统计">
+            <menu action='index3' controller='admin_analytics' display='true' order='13' permission='show_analytics'>应收应付统计</menu>
+            <menu action='index4' controller='admin_analytics' display='true' order='14' permission='show_analytics'>运费成本统计</menu>
+            <menu action='index5' controller='admin_analytics' display='true' order='15' permission='show_analytics'>支付费率成本统计</menu>
+            <menu action='index5' controller='admin_analytics' display='true' order='15' permission='show_analytics'>营销成本统计</menu>
+        </menugroup>
+    </workground>
+</desktop>

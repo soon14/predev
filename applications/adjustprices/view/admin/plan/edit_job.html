@@ -1,0 +1,189 @@
+<h3 class="page-title">限时降价货品管理
+    <span class="label label-default"><{$plan.plan_name}></span>
+    <span class="label bg-blue-hoki">
+        <{switch from=$plan.plan_status}>
+        <{case value='0'}>准备中
+        <{case value='1'}>确认按计划执行
+        <{case value='2'}>降价任务处理中
+        <{case value='3'}>恢复价格中
+        <{case value='4'}>已执行降价
+        <{case value='5'}>已恢复原价
+        <{/switch}>
+    </span>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=adjustprices&ctl=admin_plan&act=index">限时降价活动列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">编辑限时降价货品 <span class="badge badge-glist-count"><{$plan.product_count}></span></a>
+        </li>
+    </ul>
+</div>
+<div id="plan_products_action">
+<div class="row">
+    <div class="col-md-6">
+        <div class="well bg-grey-steel">
+            <h4 style="position:relative;margin-top:-10px">加入货品</h4>
+            <div class="row">
+                <div class="col-md-7">
+                    <{input type="object" object="products@b2c" name="product_id" multiple="true" callback_func="products_sel_callback_func" placeholder="选择需要限时降价的货品"}>
+                </div>
+                <div class="col-md-5">
+                    <div class="fileinput-button pull-right" data-toggle="tooltip" data-placement="top" data-container="body" data-original-title="格式：sku货号,计划调整价格">
+                        <button class="btn btn-default" name="button"><i class="fa fa-file-text"></i><i class="fa fa-spinner font-yellow fa-spin hidden"></i> 从CSV加入</button>
+                        <input class="csv_file_input" type="file"  multiple data-url="index.php?app=adjustprices&ctl=admin_plan&act=update_plan_products_bycsv&p[0]=<{$plan.plan_id}>" accept="text/csv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="input-group">
+            <div class="input-icon right">
+                <i class="fa fa-times-circle hide" onclick="$('#filter_products_list_input').val('');filter_products_list();"></i>
+                <input type="text"  id="filter_products_list_input" placeholder="名称/商品编号/货号/关键词搜索已加入计划的商品" class="form-control search-input" required="true">
+            </div>
+            <span class="input-group-btn">
+            <button class="btn default " type="button" onclick="filter_products_list()"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <button class="btn default btn-remove-sel" type="button">移除选中</button>
+        <button class="btn default btn-remove-all" type="button">清空</button>
+    </div>
+    <div class="col-md-4">
+
+    </div>
+</div>
+</div>
+<form id="plan_products_list">
+    <{include file='admin/plan/job_items.html'}>
+</form>
+<script type="text/javascript">
+$('.fileinput-button').tooltip();
+    var refresh_products_list = function(re){
+        if(re.error){
+            return Messagebox.error(re.error);
+        }
+        load_page('<{link ctl=admin_plan app=adjustprices act=edit_products}>&p[0]=<{$plan.plan_id}>&p[1]='+$('#plan_products_list input:hidden[name=page]').val()+'&in_page=true',$('#plan_products_list'),{},function(){
+            $('.badge-glist-count').text($('#plan_products_list input:hidden[name=products_count]').val());
+        });
+    }
+
+    var filter_products_list = function(){
+        load_page('<{link ctl=admin_plan app=adjustprices act=edit_products}>&p[0]=<{$plan.plan_id}>&p[1]=1&p[2]='+$('#filter_products_list_input').val()+'&in_page=true',$('#plan_products_list'),{},function(){
+            if($.trim($('#filter_products_list_input').val()) == ''){
+                $('#filter_products_list_input').prev('.fa').addClass('hide');
+            }else{
+                $('#filter_products_list_input').prev('.fa').removeClass('hide');
+            }
+        });
+    }
+    $('#filter_products_list_input').on('keyup',function(e){
+        if(e.keyCode == 13){
+            filter_products_list();
+        }
+    });
+    $('#filter_products_list_input').on('blur',function(e){
+        if($(this).val() == ''){
+            filter_products_list();
+        }
+    });
+
+    var products_sel_callback_func = function(re_obj){
+        $.post('<{link ctl=admin_plan app=adjustprices act=update_plan_products}>&p[0]=<{$plan.plan_id}>',re_obj,refresh_products_list,'json');
+    };
+    var products_unsel_callback_func = function(re_obj){
+        $.post('<{link ctl=admin_plan app=adjustprices act=update_plan_products}>&p[0]=<{$plan.plan_id}>&p[1]=delete',re_obj,refresh_products_list,'json');
+    }
+    $('#plan_products_list').on('change','input.sel-handle',function(){
+        $('#plan_products_list tbody input:checkbox[name^="product_id"]').attr('checked',this.checked);
+    });
+    $('#plan_products_list').on('click','.btn-remove',function(){
+        $.post('<{link ctl=admin_plan app=adjustprices act=update_plan_products}>&p[0]=<{$plan.plan_id}>&p[1]=delete',{product_id:[$(this).closest('tr').find('input:checkbox[name^="product_id"]').val()]},refresh_products_list,'json');
+    });
+    $('#plan_products_action .btn-remove-sel').on('click',function(){
+        if(!$('#plan_products_list tbody input[name^="product_id"]:checked').length){
+            return Messagebox.warning('未选中商品');
+        }
+        bootbox.confirm('确认从集合中移除选中？',function(flag){
+            if(!flag)return;
+            $.post('<{link ctl=admin_plan app=adjustprices act=update_plan_products}>&p[0]=<{$plan.plan_id}>&p[1]=delete',$('#plan_products_list').serialize(),refresh_products_list,'json');
+        });
+    });
+    $('#plan_products_action .btn-remove-all').on('click',function(){
+        bootbox.confirm('确认清空集合内商品？',function(flag){
+            if(!flag)return;
+            $.post('<{link ctl=admin_plan app=adjustprices act=update_plan_products}>&p[0]=<{$plan.plan_id}>&p[1]=delete',null,refresh_products_list,'json');
+        });
+    });
+
+
+        $('#plan_products_list').on('focus','input.edit-col',function(e){
+            $(this).data('v',$(this).val());
+        });
+        $('#plan_products_list').on('blur','input.edit-col',function(e){
+            var edit_input = $(this),current_val = edit_input.val();
+            if(current_val == edit_input.data('v'))return;
+            if(isNaN(current_val))return;
+            var post_data = {
+                'plan_id':edit_input.attr('data-planid'),
+                'product_id':edit_input.attr('data-productid')
+            };
+            post_data[edit_input.prop('name')] = edit_input.val();
+            $.post("<{link app=adjustprices ctl=admin_plan act=update_job_item}>",post_data,function(re){
+                if(re && ('success' in re)){
+                    edit_input.data('v',edit_input.val());
+                    edit_input.val('已修改').fadeOut(function(){
+                        edit_input.val(edit_input.data('v'));
+                    }).fadeIn();
+                }
+            },'json');
+        });
+
+
+
+    /**
+     * CSV导入
+     */
+     $('.csv_file_input').fileupload({
+         add:function(e,data){
+             var target_input = $(e.target).addClass('hidden');
+             var button = target_input.prev('button');
+             button.find('.fa-file-text').addClass('hidden');
+             button.find('.fa-spin').removeClass('hidden');
+             data.submit();
+         },
+         progress:function(e){
+             //dosometing
+         },
+         progressall:function(e){
+             //dosometing
+         },
+         done:function(e,data){
+             var target_input = $(e.target).removeClass('hidden');
+             var button = target_input.prev('button');
+             button.find('.fa-file-text').removeClass('hidden');
+             button.find('.fa-spin').addClass('hidden');
+             try{
+                 var re = $.parseJSON(data.result);
+                 if(re.success){
+                     Messagebox.success(data.files[0].name+'上传成功');
+                 }else{
+                    return Messagebox.warning(data.files[0].name+'上传失败');
+                 }
+                 refresh_products_list(re);
+             }catch(e){
+                 console.error(e);
+             }
+
+         }
+     });
+</script>

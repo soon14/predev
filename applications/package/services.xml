@@ -1,0 +1,28 @@
+<services>
+    <service id="desktop_finder.package_mdl_package">
+        <class>package_finder_package</class>
+    </service>
+    <!--替换商品详情页购物按钮-->
+    <service id="b2c.buy_area">
+        <class>package_service_buy_area</class>
+    </service>
+    <service id="b2c.mobile_buy_area">
+        <class>package_service_mobile_buy_area</class>
+    </service>
+    <!--替换商品详情页购物按钮end-->
+    <service id="b2c_cart_object_apps">
+        <class>package_service_cart_object_package</class>
+    </service>
+    <service id="b2c.order.create.before" optname="订单创建前触发">
+        <class>package_service_order_create_before</class>
+    </service>
+    <service id="b2c.cart_item" optname="购物车项扩展">
+        <class>package_service_cart_item</class>
+    </service>
+    <service id="b2c.checkout_item" optname="订单详情页扩展">
+        <class>package_service_checkout_item</class>
+    </service>
+    <service id="b2c_cart_process_apps" optname="订单生成时计算">
+        <class>package_service_cart_process_package</class>
+    </service>
+</services>

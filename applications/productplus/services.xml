@@ -1,0 +1,16 @@
+<services>
+    <service id="desktop_finder.b2c_mdl_products">
+        <class>productplus_finder_products</class>
+    </service>
+
+    <service id="b2c.goods.stage.detail.pre_return">
+        <class>productplus_services_goodsdetail</class>
+    </service>
+    <service id="b2c.goods.stage.gallery.pre_return">
+        <class>productplus_services_goodsgallery</class>
+    </service>
+
+
+
+
+</services>

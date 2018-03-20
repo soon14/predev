@@ -1,0 +1,32 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 文字导航 - 子组件 -->
+<template id="widget-child-textnav">
+    <!--
+    item.url 网址
+    item.text 文字
+    -->
+    <section class="widget-box widget-textnav">
+        <div class="weui-cells" v-if="widget.data.items.length > 0">
+            <div class="weui-cell weui-cell_access" v-for="(item, item_key) in widget.data.items" :item_key="item_key">
+                <div class="weui-cell__bd">
+                    <a :href="item.url">{{item.text}}</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+        </div>
+        <div class="weui-cells" v-else>
+            <div class="weui-cell weui-cell_access">
+                <div class="weui-cell__bd">
+                    <a href="javascript:;">请设置文字链接</a>
+                </div>
+                <div class="weui-cell__ft"></div>
+            </div>
+        </div>
+    </section>
+</template>
+<script type="text/javascript">
+var widget_child_textnav = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-textnav'
+});
+</script>

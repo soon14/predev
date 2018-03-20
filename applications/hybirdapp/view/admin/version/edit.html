@@ -1,0 +1,85 @@
+<h3 class="page-title"><{if $version.version_id }>编辑app版本信息<{else}>新建app版本信息<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=hybirdapp&ctl=admin_version&act=index">app版本信息</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $plan.plan_id }>编辑app版本信息<{else}>新建app版本信息<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=hybirdapp&ctl=admin_version&act=save" id='version_form' method="post" class="form" >
+    <{if $version.version_id }><input type="hidden" name="version_id" value="<{$version.version_id}>"><{/if}>
+    <div class="form form-horizontal">
+        <div class="form-body">
+             <div class="form-group">
+                 <label class="col-md-2 control-label">app版本<span class="required" aria-required="true">*</span></label>
+                 <div class="col-md-5">
+                     <input type="text" name="version" value="<{$version.version}>" required=true class="form-control">
+                 </div>
+             </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">开机广告图链接</label>
+                <div class="col-md-5">
+                    <input type="text" name="ad_image_link"  class="form-control"  value="<{$version.ad_image_link}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">版本下载地址<span class="required" aria-required="true">*</span></label>
+                <div class="col-md-5">
+                    <input type="text" name="download_url"  class="form-control"  value="<{$version.download_url}>">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">菜单个数<span class="required" aria-required="true">*</span></label>
+                <div class="col-md-2">
+                    <input type="text" name="num"  class="form-control"  value="<{$version.num}>" placeholder="默认4个">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">app类型<span class="required" aria-required="true">*</span></label>
+
+                <div class="col-md-2">
+                    <select class="form-control" name="app_type">
+                        <{foreach from=$app_type key=key item=plat}>
+                        <option value="<{$key}>" <{if $key==$version.app_type}>selected<{/if}>><{$plat}></option>
+                        <{/foreach}>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">app版本级别
+                    <i class="fa fa-question-circle font-yellow"  data-toggle="tooltip" data-placement="bottom"
+                       title="数字类型,数字越大版本越高"></i>
+                    <span class="required" aria-required="true">*</span></label>
+                <div class="col-md-2">
+                    <input type="text" name="level" value="<{$version.level}>" required=true class="form-control">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">开机广告图
+                    <i class="fa fa-question-circle font-yellow"  data-toggle="tooltip" data-placement="bottom"
+                       title="广告图尺寸大小200px*300px"></i>
+                    <span class="required" aria-required="true">*</span></label>
+                <div class="col-md-5">
+                    <{input type=image width=200 height=300 name="ad_image_id" value=$version.ad_image_id}>
+                </div>
+            </div>
+    </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+</form>
+<script type="text/javascript">
+    $('#version_form [data-toggle="tooltip"]').tooltip();
+  </script>

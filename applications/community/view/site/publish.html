@@ -1,0 +1,276 @@
+<{script src="qcloud_sdk.js" }>
+<{script src="jssha.js" }>
+<{script src="md5.min.js" }>
+<style media="screen">
+    .member-info {
+        text-align: center;
+        line-height: 100px;
+    }
+    .file-handle-box{
+        position: relative;
+    }
+    .file-handle-box i{
+        font-size: 64px;
+    }
+    #file_upload_handle{
+        cursor: pointer;
+        position: absolute;
+        width: 100%;
+        height: 64px;
+        top:0;
+        left: 0;
+        opacity: 0;
+        width: 90px;
+        overflow: hidden;
+    }
+    .brand{
+        padding: 20px 0 0 0;
+    }
+</style>
+<div class="text-center brand">
+    iTeslaCLUB
+</div>
+<div class="page-header clearfix">
+    <h1 class="pull-left">发布上传 <small>Upload & Publish </small></h1>
+</div>
+<div class="row">
+    <div class="col-md-0">
+
+    </div>
+    <div class="col-md-12">
+        <div class="form">
+            <form class="form-horizontal" action="/communitypublish-save.html" method="post" id="publish_form">
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">作品文件上传</label>
+                    <div class="col-xs-3">
+                        <input type="hidden" name="media" id="input_media" value="">
+                        <div class="file-handle-box">
+                            <i class="glyphicon glyphicon-folder-open text-primary"></i>
+                            <input id="file_upload_handle" type="file" autocomplete="off" class="form-control" value="" accept="video/*">
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="file-upload-name" id="file_uploaded_name">
+
+                        </div>
+                    </div>
+                    <div class="col-xs-7 col-xs-offset-2">
+                        <div id="progress" class="progress">
+                            <div class="progress-bar progress-bar-primary progress-bar-striped"></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">作品标题</label>
+                    <div class="col-xs-7">
+                        <input type="text" autocomplete="off" name="blog[title]" class="form-control" value="">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">作品描述</label>
+                    <div class="col-xs-7">
+                        <textarea name="blog[content]" rows="2" class="form-control"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-xs-2 control-label">作品标签<span class="text-danger">*</span></label>
+                    <div class="col-xs-7">
+                        <input name="blog[blog_tag]" required="true" class="form-control"/>
+                        <div class="help-block">
+                            多个标签用","号分割
+                        </div>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button data-loading-text="正在发布..." id="submit_btn" type="submit" class="btn btn-lg btn-primary btn-block">发布</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div class="member-info hidden" id="member_info">
+    <img class="img-circle img-thumbnail" style="height:50px;width:50px;" src="" alt="" />
+    <span class="uname">UNAME</span>
+    <span class="name hidden">NAME</span>
+</div>
+
+<div class="modal" id="session_str_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">请扫码登录</h4>
+            </div>
+            <div class="modal-body">
+                <div class="qrcode-box text-center">
+                    <img class="qrcode-image" src="communitypublish-qrcode_login.html?" />
+                    <div class="well well-sm qrcode-info">
+                        请使用小程序扫描二维码
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+<!-- /.modal -->
+<script type="text/javascript">
+    var allow_file_type = "mp4,flv,f4v,webm,m4v,mov,3gp,3g2,rm,rmvb,wmv,avi,asf,mpg,mpeg,mpe,ts,div,dv,divx,vob,dat,mkv,swf,lavf,cpk,dirac,ram,qt,fli,flc,mod";
+    var qcloudready = function(member_info){
+        /**
+         * qcloud
+         */
+         var buildcospath = function(filePath){
+             var patharr = filePath.split('.');
+             var postfix = patharr[1];
+             if(allow_file_type.split(',').indexOf(postfix.toLowerCase())<0){
+                 alert('禁止的文件格式');
+                 return false;
+             }
+             var ident = md5(filePath+(new Date()));
+             var _return = [postfix,ident[0].concat(ident[1]),ident[5].concat(ident[7]),ident.substr(-9)+'.'+postfix].join('/');
+             return _return.toLowerCase();
+         };
+        var BUCKET_NAME = 'tesla';
+        var REGION = 'sh';
+        var APPID = '1251744345';
+        var cos_path = 'm'+member_info.member_id;
+        var qcloud_cos = new CosCloud({
+            appid: APPID, // APPID 必填参数
+            bucket: BUCKET_NAME, //bucketName 必填参数
+            region: REGION, //地域信息 必填参数 华南地区填gz 华东填sh 华北填tj
+            getAppSign: function(callback) { //获取签名 必填参数
+                $.post("<{$base_url}>/openapi/qcloud_cos/auth",{
+                    bucket:BUCKET_NAME,
+                    path:cos_path
+                },function(re){
+                    console.info(re);
+                    callback(re.data);
+                },'json');
+            }
+        });
+        var successCallBack = function (result) {
+           console.log('request success.');
+           console.info(result);
+           var access_url_match = result.data.access_url.match(/http[^:]*:\/\/([^\/]+)(.+)/i);
+           host_mirror = 'https://'+access_url_match[1];
+           var url_path =  access_url_match[2];
+           var callbackdata = {
+               'host_mirror':host_mirror,
+               'url_path':url_path,
+               'ident':[url_path,BUCKET_NAME,APPID].join('@'),
+               'storage':'cos'
+           };
+           $('#file_upload_handle').val('');
+           $('#input_media').val(JSON.stringify(callbackdata));
+           console.info(callbackdata);
+        };
+        var errorCallBack = function (result) {
+           result = result || {};
+           $('#file_upload_handle').val('');
+           console.log('request error:', result && result.message);
+        };
+        var progressCallBack = function (curr, sha1) {
+           //var sha1CheckProgress = ((sha1 * 100).toFixed(2) || 100) + '%';
+           var uploadProgress = ((curr || 0) * 100).toFixed(2) + '%';
+           var msg = 'upload progress:' + uploadProgress;
+           console.log(msg);
+           $("#progress .progress-bar").css({width:uploadProgress});
+        };
+        var lastTaskId;
+        var taskReady = function (taskId) {
+           lastTaskId = taskId;
+        };
+        $('#file_upload_handle').off('change').on('change', function (e) {
+               $("#progress .progress-bar").css({width:'0%'});
+               $('#input_media').val('');
+               var file = e.target.files[0];
+               $('#file_uploaded_name').text(file.name);
+               var file_name = buildcospath(file.name);
+               if(!file_name){
+                   return false;
+               }
+               cos_path = 'm'+member_info.member_id+'/'+file_name;
+               try{
+                taskId = qcloud_cos.uploadFile(successCallBack, errorCallBack, progressCallBack, BUCKET_NAME, cos_path, file, 0, taskReady);
+            }catch(e){
+                console.info(e);
+                $('#file_upload_handle').val('');
+            }
+
+               return false;
+          });
+    };
+
+    $(function() {
+        var t = 1;
+        var checkmember_timer = 0;
+        setInterval(function() {
+            //3秒刷码
+            $('#session_str_modal .qrcode-image').attr('src', $('#session_str_modal .qrcode-image').attr('src') + (t++));
+        }, 300 * 1000);
+        var checkmember = function(callback) {
+            $.getJSON('communitypublish-check_member.html', function(res) {
+                if (res.error) {
+                    $('#session_str_modal .qrcode-info').removeClass('text-success').text('请使用小程序扫描二维码');
+                    $('#session_str_modal').modal('show');
+                    clearInterval(checkmember_timer);
+                    checkmember_timer = setInterval(checkmember, 1000);
+                } else {
+                    $('#session_str_modal .qrcode-info').addClass('text-success').text('登录成功');
+                    $('#session_str_modal').modal('hide');
+                    clearInterval(checkmember_timer);
+                    $('#member_info').removeClass('hidden');
+                    $('#member_info img').attr('src', res.data.avatar_url);
+                    $('#member_info .uname').text(res.data.name ? res.data.name : res.data.uname);
+                    qcloudready(res.data);
+                    typeof callback == 'function' && callback(res.data);
+                }
+            });
+        };
+        checkmember();
+        $('#publish_form input,#publish_form textarea').on('keyup', function(e) {
+            if (e.keyCode == 13) {
+                e.stopPropagation();
+                return false;
+            }
+        });
+        $('#publish_form').on('submit', function(e) {
+            e.stopPropagation();
+            var _form = $(this);
+            checkmember(function(member_info) {
+                //console.info(member_info);
+                if($('#input_media').val() == ''){
+                    return alert('请上传作品文件。');
+                }
+                $('#submit_btn').button('loading');
+                $.post(_form.attr('action'),_form.serialize(),function(re){
+                    $('#submit_btn').button('reset');
+                    if(re && re.success){
+                        alert('发布成功');
+                    }else{
+                        alert('发布异常');
+                    }
+                    location.reload();
+                });
+            });
+            //stop form submit;
+            return false;
+        });
+
+    });
+
+    /**
+     * geo
+     */
+     if (navigator && navigator.geolocation){
+         navigator.geolocation.getCurrentPosition(function(position){
+             var lat=position.coords.latitude;
+             var lng=position.coords.longitude;
+             var appendhtml = '<input type="hidden" name="blog[lnandla]" value="'+[lng,lat].join(',')+'" />';
+             $('#publish_form').append(appendhtml);
+         });
+     }
+</script>

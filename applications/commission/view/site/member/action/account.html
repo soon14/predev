@@ -1,0 +1,57 @@
+<div class="order-processing-title">
+    <div class="page-header">
+        <h1>我的账户</h1>
+    </div>
+	<div class="account clearfix">
+		<div class="panel panel-default">
+            <div class="panel-heading"><{$member_list.name}></div>
+            <div class="panel-body">
+                <span class="word-part">总额：<{$member_list.all_fund}> 闪币</span>
+                <span class="word-part">未结算：<{$member_list.frozen_fund}> 闪币</span>
+                <span class="word-part">可提现 <a style="color:#337ab7;" href="<{link app=commission ctl=site_member act=cash}>"><{$member_list.used_fund}>闪币</a></span>
+            </div>
+        </div>
+	</div>
+	<div class="cash-rules">
+		<div class="panel panel-default">
+	        <div class="panel-heading">提现规则</div>
+	        <div class="panel-body">
+	        	<{$cash_rule}>
+	        </div>
+	    </div>
+	</div>
+	<div class="check-notes">
+		<div class="panel panel-default">
+	        <div class="panel-heading">账单记录</div>
+	        <table class="table table-striped">
+	            <thead>
+	                <tr>
+	                    <th>创建时间</th>
+	                    <th>帐变类型</th>
+	                    <th>金额(闪币)</th>
+	                    <th>可用余额(闪币)</th>
+	                </tr>
+	            </thead>
+	            <tbody>
+	                <{foreach from=$fundlog item=list}>
+	                    <tr>
+	                        <td><{$list.opt_time|cdate}></td>
+	                        <td><{$list.type|fund_type}></td>
+	                        <td><{$list.change_fund|to_coin}></td>
+	                        <td><{$list.current_fund|to_coin}></td>
+	                    </tr>
+	                <{/foreach}>
+	            </tbody>
+	        </table>
+	    </div>
+        <{pagers data=$pager}>
+	</div>
+</div>
+
+<script>
+	$(document.body).addClass('my-account-body');
+	$("button").click(function(){
+		$(this).css("border","none");
+	})
+</script>
+

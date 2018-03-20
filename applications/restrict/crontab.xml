@@ -1,0 +1,7 @@
+<cronentries>
+    <cron id="restrict_tasks_restrict">
+        <description>限购定时执行</description>
+        <schedule>*/1 * * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+</cronentries>

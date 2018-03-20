@@ -1,0 +1,27 @@
+<services>
+    <service id="site.parse_route_static_dispatch">
+        <class>requestfilter_service_xss</class>
+    </service>
+    <service id="mobile.parse_route_static_dispatch">
+        <class>requestfilter_service_xss</class>
+    </service>
+
+    <service id="mobile.controller.construct">
+        <class>requestfilter_service_csrf</class>
+    </service>
+
+    <service id="site.controller.construct">
+        <class>requestfilter_service_csrf</class>
+    </service>
+
+    <service id="requestfilter.forward">
+        <class>requestfilter_forward</class>
+    </service>
+
+    <service id="site_render_pre_display">
+        <class>requestfilter_view_prender</class>
+    </service>
+    <service id="mobile_render_pre_display">
+        <class>requestfilter_view_prender</class>
+    </service>
+</services>

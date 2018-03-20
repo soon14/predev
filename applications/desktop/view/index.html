@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
+<!--[if IE 9]> <html lang="en" class="ie9 no-js"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" class="no-js">
+<!--<![endif]-->
+<!-- BEGIN HEAD -->
+<head>
+<meta charset="utf-8"/>
+<title>VMCSHOP - CONSOLE</title>
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta content="width=device-width, initial-scale=1" name="viewport"/>
+<{css app=desktop src="desktop-theme.min.css"}>
+<link rel="shortcut icon" href="/favicon.ico"/>
+<style media="screen">
+	/*CSS FOR VMCSHOP*/
+	.table thead tr th,.table tbody tr td{
+		vertical-align:middle;
+	}
+</style>
+<script type="text/javascript">
+	var default_desktop_ctl = 'index.php?app=desktop&ctl=dashboard',
+	default_desktop_popstate_params = 'app=desktop&ctl=dashboard';
+</script>
+</head>
+<!-- END HEAD -->
+<!-- BEGIN BODY -->
+<body class="page-header-fixed page-sidebar-fixed  page-quick-sidebar-over-content page-sidebar-closed-hide-logo">
+<!-- BEGIN HEADER -->
+<div class="page-header navbar navbar-fixed-top">
+	<!-- BEGIN HEADER INNER -->
+	<div class="page-header-inner">
+		<!-- BEGIN LOGO -->
+		<div class="page-logo">
+			<a href="javascript:;">
+			<img height=25 src="data:image/png;base64,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" class="logo-default"/>
+			</a>
+			<div class="menu-toggler sidebar-toggler">
+				<!-- DOC: Remove the above "hide" to enable the sidebar toggler button on header -->
+			</div>
+		</div>
+		<div class="hor-menu hor-menu-light hidden-xs">
+			<ul class="nav navbar-nav">
+				  <{if $is_super}>
+          <{app_status name=vmcservice status=active}>
+				<li class="classic-menu-dropdown nav-appmarket">
+				  <a href="index.php?app=vmcservice&ctl=market&act=app">
+				  <i class="icon-social-dropbox font-red"></i>
+				  <span class="title">应用市场</span>
+				  <span class="selected"></span>
+				  </a>
+				</li>
+        <li class="nav-appmarket">
+				    <a href="index.php?app=vmcservice&ctl=market&act=service">
+				        <i class=" font-red"></i>
+				        <span class="title">服务中心</span>
+				        <span class="selected"></span>
+				    </a>
+				</li>
+        <{/app_status}>
+				<{/if}>
+				<li class="classic-menu-dropdown nav-wizard">
+				  <a href="index.php?ctl=default&act=wizard">
+				  <i class="icon-question font-red"></i>
+				  <span class="title">快速向导</span>
+				  <span class="selected"></span>
+				  </a>
+				</li>
+			</ul>
+		</div>
+		<!-- END LOGO -->
+		<!-- BEGIN RESPONSIVE MENU TOGGLER -->
+		<a href="javascript:;" class="menu-toggler responsive-toggler" data-toggle="collapse" data-target=".navbar-collapse">
+		</a>
+		<!-- END RESPONSIVE MENU TOGGLER -->
+		<!-- BEGIN TOP NAVIGATION MENU -->
+		<div class="top-menu">
+			<ul class="nav navbar-nav pull-right">
+				<!-- BEGIN USER LOGIN DROPDOWN -->
+				<!-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte -->
+				<li class="dropdown dropdown-user">
+					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+					<{if $avatar_img_url}>
+					<img  class="img-thumbnail img-circle" style="width:30px;height:30px;padding:2px;" src="<{$avatar_img_url}>"/>
+					<{/if}>
+					<span class="username">
+					您好,<{$uname}> </span>
+					<i class="fa fa-angle-down"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-default">
+						<li>
+							<a href="index.php?ctl=profile&act=index">
+							<i class="icon-user"></i> 个人信息 </a>
+						</li>
+						<li class="divider">
+						</li>
+						<li>
+							<a href="index.php?ctl=passport&act=logout" target="_command">
+							<i class="icon-logout"></i> 退出 </a>
+						</li>
+					</ul>
+				</li>
+				<li class="dropdown dropdown-user visible-md visible-lg">
+					<a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+						<span class="username">网站前台</span>
+						<i class="fa fa-angle-down"></i>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-default">
+						<li>
+							<a href="<{link router='site' app=site ctl=index}>" target="_blank">
+							<i class="icon-screen-desktop"></i> 浏览前台 </a>
+						</li>
+						<li class="divider">
+						</li>
+						<li>
+							<a href="index.php?app=desktop&ctl=cachestage">
+							<i class="fa fa-database"></i> 缓存管理 </a>
+						</li>
+					</ul>
+				</li>
+				<li class="dropdown dropdown-user visible-md visible-lg">
+					<a class="dropdown-toggle full-screen-handle" href="javascript:;">
+						<span class="username">全屏操作</span>
+						<i class="fa fa-expand"></i>
+						<i class="fa"></i>
+					</a>
+				</li>
+			</ul>
+		</div>
+		<!-- END TOP NAVIGATION MENU -->
+	</div>
+	<!-- END HEADER INNER -->
+</div>
+<!-- END HEADER -->
+<div class="clearfix">
+</div>
+<!-- BEGIN CONTAINER -->
+<div class="page-container">
+	<!-- BEGIN SIDEBAR -->
+	<div class="page-sidebar-wrapper">
+		<div class="page-sidebar navbar-collapse collapse">
+			<!-- BEGIN SIDEBAR MENU -->
+			<ul class="page-sidebar-menu" data-keep-expanded="false" data-auto-scroll="false" data-slide-speed="200">
+                <li class="start" data-wmenu="-1">
+                    <a href="index.php?app=desktop&ctl=dashboard" >
+                    <i class="icon-speedometer"></i>
+                    <span class="title">仪表盘</span>
+                    <span class="selected"></span>
+                    </a>
+                </li>
+                  <{foreach from=$fav_menus item=item name=groups0  key=key}>
+                  <{if $menus.menu.$item}>
+                  <{assign var=menu_group value=$menus.menu.$item}>
+                  <li <{if $env.foreach.groups0.last}>class="last"<{/if}> data-wmenu="<{$menus.workground.$item.menu_id}>">
+                      <a href="javascript:;">
+                          <i class="<{$menus.workground.$item.icon|default:'fa-square-o'}>"> </i>
+                          <span class="title"><{$menus.workground.$item.menu_title}></span>
+                          <span class="arrow "></span>
+						  <span class="selected"></span>
+                      </a>
+                     <ul class="sub-menu">
+                      <{foreach from=$menu_group item=groups name=groups1 key=key1}>
+                        <{foreach from=$groups item=group name=groups2}>
+                        <li  data-menu="<{$group.menu_id}>">
+                          <a href="index.php?<{$group.menu_path}>" <{if $group.target}> target="<{$group.target}>"<{/if}> ><i class="<{$group.icon_class}>"></i><{$group.menu_title}></a>
+                        </li>
+                        <{/foreach}>
+                      <{/foreach}>
+                    </ul>
+                  </li>
+                  <{/if}>
+                  <{/foreach}>
+
+                <{permission perm_id='admin_system_setting' noshow=1}>
+				  <li class="start"  data-wmenu="0">
+					<a href="index.php?app=desktop&ctl=adminpanel" >
+					<i class="icon-settings"></i>
+					<span class="title">系统设置</span>
+					<i class="fa fa-circle font-green check-system-update hidden"></i>
+					<span class="selected"></span>
+					</a>
+				  </li>
+                <{/permission}>
+			</ul>
+			<!-- END SIDEBAR MENU -->
+		</div>
+	</div>
+	<!-- END SIDEBAR -->
+	<!-- BEGIN CONTENT -->
+	<div class="page-content-wrapper">
+		<div class="page-content" data-updatecontainer='default'>
+			<!-- vmcshop-desktop-main-content -->
+		</div>
+	</div>
+	<!-- END CONTENT -->
+
+</div>
+<!-- END CONTAINER -->
+<!-- BEGIN FOOTER -->
+<!-- <div class="page-footer">
+	<div class="page-footer-inner">
+		 2015 &copy; 辰商软件科技.
+	</div>
+	<div class="scroll-to-top">
+		<i class="icon-arrow-up"></i>
+	</div>
+</div> -->
+<!-- END FOOTER -->
+<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
+<!--[if lt IE 9]>
+<{script app=desktop  src="../com/global/plugins/respond.min.js"}>
+<{script app=desktop  src="../com/global/plugins/excanvas.min.js"}>
+<![endif]-->
+<{script app=desktop  src="desktop-script.min.js"}>
+<script type="text/javascript">
+/**
+ * 检查本地应用更新
+ */
+$(function() {
+
+	$.getJSON('index.php?app=desktop&ctl=appcenter&act=checkupdate', function(obj) {
+		if (obj && obj.length) {
+			$('.check-system-update').removeClass('hidden')
+				.fadeOut()
+				.fadeIn().
+			fadeOut().
+			fadeIn().
+			fadeOut().
+			fadeIn();
+			window['app_check_update_list'] = obj;
+		}
+	});
+});
+</script>
+<!-- END JAVASCRIPTS -->
+</body>
+<!-- END BODY -->
+</html>

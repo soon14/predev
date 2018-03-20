@@ -1,0 +1,19 @@
+<{foreach from=$user_list key=k item=userInfo}>
+<tr>
+    <td>
+        <button class="btn btn-xs default" onclick="$(this).closest('tr').remove();" type="button">
+            <i class="fa fa-trash-o"></i>
+        </button>
+    </td>
+    <td>
+        <input type="hidden" name="user[]" value="<{$userInfo.user_id}>">
+        <{$userInfo.name}>
+    </td>
+    <td>
+        <{$userInfo.op_no}>
+    </td>
+    <td>
+        <{$userInfo.memo}>
+    </td>
+</tr>
+<{/foreach}>

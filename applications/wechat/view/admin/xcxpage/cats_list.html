@@ -1,0 +1,43 @@
+<div id="collection_goods_action">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="input-group">
+                <div class="input-icon right">
+                    <i class="fa fa-times-circle hide" onclick="$('#filter_cat_list_input').val('');filter_cat_list();"></i>
+                    <input type="text"  id="filter_cat_list_input" placeholder="名称/编号" class="form-control search-input" required="true">
+                </div>
+                <span class="input-group-btn">
+                    <button class="btn default " type="button" onclick="filter_cat_list()"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<form id="cat_list">
+    <{include file='admin/xcxpage/cats_list_page.html'}>
+</form>
+<script type="text/javascript">
+    var filter_cat_list = function () {
+        load_page('<{link ctl=admin_xcxpage app=wechat act=cats}>&p[0]=1&p[1]=' + encodeURIComponent($('#filter_cat_list_input').val()) + '&in_page=true', $('#cat_list'), {}, function () {
+            if ($.trim($('#filter_goods_list_input').val()) == '') {
+                $('#filter_cat_list_input').prev('.fa').addClass('hide');
+            } else {
+                $('#filter_cat_list_input').prev('.fa').removeClass('hide');
+            }
+        });
+    }
+    $('#filter_cat_list_input').on('keyup', function (e) {
+        if (e.keyCode == 13) {
+            filter_cat_list();
+        }
+    });
+    $('#filter_cat_list_input').on('blur', function (e) {
+        if ($(this).val() == '') {
+            filter_cat_list();
+        }
+    });
+    $('#cat_list').on('change','input.sel-handle',function(){
+        $('#cat_list tbody input:checkbox[name^="cat_id"]').attr('checked',this.checked);
+    });
+</script>
+

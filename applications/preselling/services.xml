@@ -1,0 +1,39 @@
+<services>
+    <service id="desktop_finder.preselling_mdl_activity" >
+        <class>preselling_finder_activity</class>
+    </service>
+    <service id="desktop_finder.preselling_mdl_orders"  >
+        <class>preselling_finder_orders</class>
+    </service>
+    <service id="b2c.member_menu_m_extends" opt="会员中心移动端菜单扩展">
+        <class>preselling_member_m_menuextends</class>
+    </service>
+    <service id="desktop_finder.preselling_mdl_participate_member">
+        <class>preselling_finder_participate_member</class>
+    </service>
+    <service id="preselling.order.create.finish">
+        <class>preselling_order_createfinish</class>
+    </service>
+    <service id="preselling.order.create.before">
+        <class>preselling_order_beforefinish</class>
+    </service>
+    <service id="ectools_refund.payment.bills">
+        <class>preselling_refund_paymentbills</class>
+    </service>
+    <!--订单付款流程-->
+    <service id="ectools.bill.payment.preselling.porder.succ" optname="支付完成处理">
+        <class orderby="30">preselling_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.payment.preselling.porder.progress" optname="定金支付到担保方完成处理">
+        <class orderby="30">preselling_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.refund.preselling.porder.succ" optname="订单退款完成处理">
+        <class orderby="30">preselling_order_refundfinish</class>
+    </service>
+    <service id="ectools.bill.refund.preselling.porder.progress" optname="订单退款到担保方完成处理">
+        <class orderby="30">preselling_order_refundfinish</class>
+    </service>
+    <service id="ectools.bill.refund.preselling.porder.ready" optname="订单退款支付单创建成功">
+        <class orderby="30">preselling_order_readyfinish</class>
+    </service>
+</services>

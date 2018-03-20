@@ -1,0 +1,18 @@
+<site>
+    <!-- <module controller='site_index'>
+        <name>index</name>
+        <title>首页</title>
+    </module> -->
+    <!-- <module controller='site_store'>
+        <name>store</name>
+        <title>地点</title>
+    </module>
+    <module controller='site_activity'>
+        <name>activity</name>
+        <title>活动</title>
+    </module>
+    <module controller='site_customer'>
+        <name>customer</name>
+        <title>顾客</title>
+    </module> -->
+</site>

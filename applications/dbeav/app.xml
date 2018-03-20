@@ -1,0 +1,14 @@
+<app>
+    <name>数据动态扩展</name>
+    <description>使用Entity-Attribute-Value模型动态扩展数据列，并提供数据回收站机制</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.0</version>
+    <license>http://www.vmcshop.com/license</license>
+    <depends>
+        <app>base</app>
+    </depends>
+</app>

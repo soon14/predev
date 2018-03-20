@@ -1,0 +1,50 @@
+<h3 class="page-title">
+    自定义菜单
+</h3>
+<hr>
+<div class="alert">
+    <h4><i class="fa fa-info-circle"></i> 请注意</h4>
+    <ol>
+        <li>自定义菜单最多包括3个一级菜单，每个一级菜单最多包含5个二级菜单。</li>
+        <li>一级菜单最多4个汉字，二级菜单最多7个汉字，多出来的部分将会以“...”代替。</li>
+        <li>自定义菜单保存后，由于微信客户端缓存，需要24小时微信客户端才会展现出来。测试时可以尝试取消关注公众账号后再次关注，则可以看到创建后的效果。</li>
+        <li>自定义菜单点击后可向公众号发送消息事件，可在"自动回复"功能中对事件做出回复，也可直接跳转到指定URL网址。</li>
+    </ol>
+    <a class="btn btn-link" target="_blank" href="http://mp.weixin.qq.com/wiki/13/43de8269be54a0a6f64413e4dfa94f39.html">自定义菜单详细说明</a>
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+        <div class="list-group bind-list">
+            <{foreach from=$wx_paccounts item=item}>
+                <a href="javascript:;" class="list-group-item" data-bindid="<{$item.id}>">
+                    <img src="<{$item.avatar|storager}>" class="img-circle" width="50" alt="" />
+                    <strong><{$item.name}></strong>
+                </a>
+            <{/foreach}>
+        </div>
+    </div>
+    <div class="col-md-10" id="menu_edit_container" ng-app="weixin_menu" ng-controller="menu">
+
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('.bind-list .list-group-item').on('click',function(e){
+            if($(this).hasClass('active'))return;
+            $('.bind-list .active').removeClass('active');
+            $(this).addClass('active');
+            $('#menu_edit_container').load('index.php?app=wechat&ctl=admin_menu&act=edit&p[0]='+$(this).attr('data-bindid'));
+
+        });
+        if($('.bind-list .list-group-item').length){
+            if(!$('.bind-list .list-group-item.active').length){
+                $('.bind-list .list-group-item').eq(0).trigger('click');
+            }
+        }else{
+            bootbox.alert('请先绑定微信公众号！',function(e){
+                load_page('index.php?app=wechat&ctl=admin_bind&act=bind_view');
+            });
+        }
+    });
+</script>

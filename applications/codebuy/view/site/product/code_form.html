@@ -1,0 +1,38 @@
+<form action="<{link app=codebuy ctl=site_activity act=use_code}>" class="form-horizontal" method="post" id="J_code_form">
+    <input type="hidden" value="<{$product_id}>" name="product_id"/>
+    <input type="hidden" value="<{$goods_id}>" name="goods_id"/>
+    <input type="hidden" value="<{$activity_id}>" name="activity_id"/>
+    <div class="form-group">
+        <div class="col-md-12">
+            <input type="text" name="code" class="form-control" placeholder="请输入优购码"/>
+        </div>
+        <span class="help-block" id="J_codebuy_help"></span>
+    </div>
+    <div class="form-group">
+        <div class="col-md-7">
+            <input type="text" name="vcode" class="form-control" placeholder="请输入验证码"/>
+        </div>
+        <div class="col-md-5">
+            <img src="<{link app=site ctl=vcode act=index args0='codebuy'}>" alt="验证码" />
+            <button type="button" class="btn btn-link btn-sm" onclick="$(this).prev().prop('src',$(this).attr('data-src')+'?'+new Date().getTime())" data-src="<{link app=site ctl=vcode act=index args0='codebuy'}>" >更换验证码</button>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn">提交</button>
+    </div>
+</form>
+<script>
+(function(){
+    $('#J_code_form').on('submit',function(e){
+        e.preventDefault();
+        var $el = $(this);
+        $.post($el.attr('action'),$el.serialize(),function(re){
+            if(re.error){
+                $('#J_codebuy_help').html(re.error);
+            }else{
+                $('#J_codebuy').load('<{link app=codebuy ctl=site_activity act=check_code}>',{'product_id':<{$product_id}>,'activity_id':<{$activity_id}>,'goods_id':<{$goods_id}>});
+            }
+        });
+    });
+})();
+</script>

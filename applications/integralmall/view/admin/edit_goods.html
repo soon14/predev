@@ -1,0 +1,197 @@
+<h3 class="page-title">积分商城配置</h3>
+<hr>
+<!--goods setting begin-->
+<div id="goods_action">
+<div class="row">
+    <div class="col-md-6">
+        <div class="well bg-grey-steel">
+            <h4 style="position:relative;margin-top:-10px">加入商品</h4>
+            <div class="row">
+                <div class="col-md-7">
+                    <{input type="object" object="goods@b2c" name="goods_id" multiple="true" callback_func="goods_sel_callback_func" placeholder="选择加入积分商城的商品"}>
+                </div>
+                <div class="col-md-5">
+                    <div class="fileinput-button pull-right" data-toggle="tooltip" data-placement="top" data-container="body" data-original-title="CSV数据格式：商品编号,兑换所需积分">
+                        <button class="btn btn-default" name="button"><i class="fa fa-file-text"></i><i class="fa fa-spinner font-yellow fa-spin hidden"></i> 从CSV加入</button>
+                        <input class="csv_file_input" type="file"  multiple data-url="index.php?app=integralmall&ctl=admin_setting&act=update_goods_bycsv" accept="text/csv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="well bg-grey-steel">
+            <h4 style="position:relative;margin-top:-10px">移除商品</h4>
+            <div class="row">
+                <div class="col-md-7">
+                    <{input type="object" object="goods@b2c" name="goods_id" multiple="true" callback_func="goods_unsel_callback_func" placeholder="选择需要从积分商城移除的商品"}>
+                </div>
+                <div class="col-md-5">
+                    <div class="fileinput-button pull-right"  data-toggle="tooltip" data-placement="top" data-container="body" data-original-title="CSV数据格式：每行一个商品编号">
+                        <button class="btn btn-default" name="button"><i class="fa fa-file-text"></i><i class="fa fa-spinner font-yellow fa-spin hidden"></i> 从CSV移除</button>
+                        <input class="csv_file_input" type="file"  multiple data-url="index.php?app=integralmall&ctl=admin_setting&act=update_goods_bycsv&p[0]=delete" accept="text/csv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <button class="btn default btn-remove-sel" type="button">移除选中</button>
+        <!-- <button class="btn default btn-remove-all" type="button">清空</button> -->
+    </div>
+    <div class="col-md-4">
+        <div class="input-group">
+            <div class="input-icon right">
+                <i class="fa fa-times-circle hide" onclick="$('#filter_goods_list_input').val('');filter_goods_list();"></i>
+                <input type="text"  id="filter_goods_list_input" placeholder="名称/编号/关键词搜索积分商城商品" class="form-control search-input" required="true">
+            </div>
+            <span class="input-group-btn">
+            <button class="btn default " type="button" onclick="filter_goods_list()"><i class="fa fa-search"></i></button>
+            </span>
+        </div>
+    </div>
+</div>
+</div>
+<form id="goods_list">
+    <{include file='admin/goods_list.html'}>
+</form>
+<!--goods setting end-->
+
+<script type="text/javascript">
+$('.fileinput-button').tooltip();
+    var refresh_goods_list = function(re){
+        if(re.error){
+            return Messagebox.error(re.error);
+        }
+        load_page('<{link ctl=admin_setting app=integralmall act=edit_goods}>&p[0]='+$('#goods_list input:hidden[name=page]').val()+'&in_page=true',$('#goods_list'),{},function(){
+            $('.badge-glist-count').text($('#goods_list input:hidden[name=goods_count]').val());
+        });
+    }
+
+    var filter_goods_list = function(){
+        load_page('<{link ctl=admin_setting app=integralmall act=edit_goods}>&p[0]=1&p[1]='+encodeURIComponent($('#filter_goods_list_input').val())+'&in_page=true',$('#goods_list'),{},function(){
+            if($.trim($('#filter_goods_list_input').val()) == ''){
+                $('#filter_goods_list_input').prev('.fa').addClass('hide');
+            }else{
+                $('#filter_goods_list_input').prev('.fa').removeClass('hide');
+            }
+        });
+    }
+    $('#filter_goods_list_input').on('keyup',function(e){
+        if(e.keyCode == 13){
+            filter_goods_list();
+        }
+    });
+    $('#filter_goods_list_input').on('blur',function(e){
+        if($(this).val() == ''){
+            filter_goods_list();
+        }
+    });
+
+    var goods_sel_callback_func = function(re_obj){
+        $.post('<{link ctl=admin_setting app=integralmall act=update_goods}>',re_obj,refresh_goods_list,'json');
+    };
+    var goods_unsel_callback_func = function(re_obj){
+        $.post('<{link ctl=admin_setting app=integralmall act=update_goods}>&p[0]=delete',re_obj,refresh_goods_list,'json');
+    }
+    $('#goods_list').on('change','input.sel-handle',function(){
+        $('#goods_list tbody input:checkbox[name^="goods_id"]').attr('checked',this.checked);
+    });
+    $('#goods_list').on('click','.btn-remove',function(){
+        $.post('<{link ctl=admin_setting app=integralmall act=update_goods}>&p[0]=delete',{goods_id:[$(this).closest('tr').find('input:checkbox[name^="goods_id"]').val()]},refresh_goods_list,'json');
+    });
+    $('#goods_action .btn-remove-sel').on('click',function(){
+        if(!$('#goods_list tbody input[name^="goods_id"]:checked').length){
+            return Messagebox.warning('未选中商品');
+        }
+        bootbox.confirm('确认移除选中？',function(flag){
+            if(!flag)return;
+            $.post('<{link ctl=admin_setting app=integralmall act=update_goods}>&p[0]=delete',$('#goods_list').serialize(),refresh_goods_list,'json');
+        });
+    });
+    $('#goods_action .btn-remove-all').on('click',function(){
+        bootbox.confirm('确认清空？',function(flag){
+            if(!flag)return;
+            $.post('<{link ctl=admin_setting app=integralmall act=update_goods}>&p[0]=delete',null,refresh_goods_list,'json');
+        });
+    });
+
+    /**
+     * CSV导入
+     */
+     $('.csv_file_input').fileupload({
+         add:function(e,data){
+             var target_input = $(e.target).addClass('hidden');
+             var button = target_input.prev('button');
+             button.find('.fa-file-text').addClass('hidden');
+             button.find('.fa-spin').removeClass('hidden');
+             data.submit();
+         },
+         progress:function(e){
+             //dosometing
+         },
+         progressall:function(e){
+             //dosometing
+         },
+         done:function(e,data){
+             var target_input = $(e.target).removeClass('hidden');
+             var button = target_input.prev('button');
+             button.find('.fa-file-text').removeClass('hidden');
+             button.find('.fa-spin').addClass('hidden');
+             try{
+                 var re = $.parseJSON(data.result);
+                 if(re.success){
+                     Messagebox.success(data.files[0].name+'上传成功');
+                 }else{
+                    return Messagebox.warning(data.files[0].name+'上传失败');
+                 }
+                 refresh_goods_list(re);
+             }catch(e){
+                 console.error(e);
+             }
+
+         }
+     });
+
+     $('#goods_list').on('focus','input.edit-col',function(e){
+         $(this).data('v',$(this).val());
+     });
+     $('#goods_list').on('blur','input.edit-col',function(e){
+         var edit_input = $(this),current_val = edit_input.val();
+         if(current_val == edit_input.data('v'))return;
+         if(isNaN(current_val))return;
+         var post_data = {
+             'goods_id':edit_input.attr('data-goodsid'),
+         };
+         post_data[edit_input.attr('data-name')] = edit_input.val();
+         $.post("<{link app=integralmall ctl=admin_setting act=update_relgoods}>",post_data,function(re){
+             if(re && ('success' in re)){
+                 edit_input.data('v',edit_input.val());
+                 edit_input.val('已修改').removeClass('font-red').fadeOut(function(){
+                     edit_input.val(edit_input.data('v'));
+                 }).fadeIn();
+             }else{
+                 edit_input.val('失败').addClass('font-red').fadeOut(function(){
+                     edit_input.val(edit_input.data('v')).removeClass('font-red');
+                 }).fadeIn();
+             }
+         },'json');
+     });
+
+     $('#goods_list').on('change','input.checkbox-col',function(e){
+         var edit_input = $(this),current_val = edit_input.val();
+         edit_input.val(edit_input.is(":checked")?'true':'false');
+         var post_data = {
+             'goods_id':edit_input.attr('data-goodsid'),
+             'marketable':edit_input.val()
+         };
+         $.post("<{link app=integralmall ctl=admin_setting act=update_relgoods}>",post_data,function(re){
+             if(re && ('success' in re)){
+                 Messagebox.success(re.success);
+             }
+         },'json');
+     });
+</script>

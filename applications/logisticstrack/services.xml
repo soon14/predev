@@ -1,0 +1,27 @@
+<services>
+	<service id="b2c_change_orderloglist">
+        <class>logisticstrack_orderlog</class>
+    </service>
+
+	<service id="desktop_finder.logisticstrack_mdl_logistic_log">
+        <class>logisticstrack_finder_log</class>
+    </service>
+    <service id="desktop_finder.logisticstrack_mdl_customer_logistic">
+        <class>logisticstrack_finder_custom</class>
+    </service>
+
+    <service id="openapi.logisticstrack" optname="openapi@物流接口">
+        <class>logisticstrack_openapi_logistic</class>
+    </service>
+
+    <service id="openapi.logisticapi" optname="openapi@物流反馈接口">
+        <class>logisticstrack_openapi_api</class>
+    </service>
+
+    <service id="b2c.order.delivery.send.finish" optname="订单发货操作完成触发">
+        <class orderby="50">logisticstrack_delivery</class>
+    </service>
+    <service id="b2c.order.delivery.reship.finish" optname="订单退货操作完成触发">
+        <class orderby="50">logisticstrack_reshipfinish</class>
+    </service>
+</services>

@@ -1,0 +1,73 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 图片导航 - 子组件 -->
+<template id="widget-child-imgnav">
+    <!--
+    limit 每行显示个数
+    img_width 图片宽度
+    img_height 图片高度
+    bottom_margin 底部间距
+    show_text 是否显示文字
+    item.url 网址
+    item.image.src 图片地址
+    item.image.mode 图片裁切模式 https://mp.weixin.qq.com/debug/wxadoc/dev/component/image.html
+    -->
+    <section class="widget-box widget-imgnav">
+        <ul v-if="widget.data.items.length > 0">
+            <li v-for="(item, item_key) in widget.data.items" :item_key="item_key" :style="{width:(100/(widget.data.limit || 4)) + '%', 'margin-bottom':(widget.data.bottom_margin ? widget.data.bottom_margin + 'px' : '')}">
+                <a :href="item.url" :class="item.image.mode || 'widthFix'">
+                    <!--<img :mode="item.image.mode || 'widthFix'" :src="item.image.src" :style="{'width': (widget.data.img_width ? widget.data.img_width + 'px' : '100%'), 'height': (widget.data.img_height ? widget.data.img_height + 'px' : '')}" />-->
+                    <div v-if="item.image.mode=='aspectFill'" :class="item.image.mode || 'widthFix'" :style="{'width': (widget.data.img_width ? widget.data.img_width + 'px' : '100%'), 'height': (widget.data.img_height ? widget.data.img_height + 'px' : ''),'backgroundSize':(item.image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':('url('+item.image.src+')')}"></div><!--:style="'backgroundImage:url('+item.image.src+')';"-->
+                    <img v-else-if="item.image.mode=='widthFix'" :src="item.image.src" :style="{'width': (widget.data.img_width ? widget.data.img_width + 'px' : '100%'), 'height':'auto'}" />
+                    <div v-else :class="item.image.mode || 'widthFix'" :style="{'width': (widget.data.img_width ? widget.data.img_width + 'px' : '100%'), 'height': (widget.data.img_height ? widget.data.img_height + 'px' : ''),'backgroundImage':('url('+item.image.src+')')}"></div><!--:style="'backgroundImage:url('+item.image.src+')';"-->
+                    
+                    <span :style="{'width': (widget.data.img_width ? widget.data.img_width + 'px' : '100%')}" v-if="widget.data.show_text">{{item.text}}</span>
+                </a>
+            </li>
+        </ul>
+        <ul v-else>
+            <li :style="{width:(100/(widget.data.limit || 4)) + '%', 'margin-bottom':(widget.data.bottom_margin ? widget.data.bottom_margin + 'px' : '')}">
+                <a href="javascript:;" class="widthFix">
+                    <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" :style="{'width': (widget.data.img_width ? widget.data.img_width + 'px' : '100%'), 'height': (widget.data.img_height ? widget.data.img_height + 'px' : '')}" />
+                    <span :style="{'width': (widget.data.img_width ? widget.data.img_width + 'px' : '100%')}" v-if="widget.data.show_text">请添加</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+</template>
+<script type="text/javascript">
+var arr = [];
+designStore.methods.updateData = function(vnode) {
+    this.root.page.currWidgets[vnode.index].data.items = arr;
+    console.log(this.root.page.currWidgets[vnode.index].data.items); 
+};
+var widget_child_imgnav = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-imgnav',
+    created:function(){
+    	var _t = this;
+    	if(this.widget.data.items.length!=0){
+    		for(var i=0;i<this.widget.data.items.length;i++){
+    			imgCompare(this.widget.data.items[i].image);
+    		}
+    	}
+    	arr = this.widget.data.items;
+    	designStore.methods.updateData(this);
+    }
+});
+function imgCompare(image){
+	var img = new Image();
+	img.onload = function(){
+		if(image.mode == 'aspectFill'){
+			if(this.width>this.height){
+		    	image['percent'] = 'width';
+		    }else{
+		    	image['percent'] = 'height';
+		    }
+		}else{
+			image['percent'] = 'normal';
+		}
+	    this.onload = null;
+	};
+	img.src = image.src;
+}
+</script>

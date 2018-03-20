@@ -1,0 +1,15 @@
+<!-- 万能表单 -->
+<template id="widget-omnipotentform">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-omnipotentform :widget="widget" :index="index"></widget-child-omnipotentform>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_omnipotentform = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-omnipotentform',
+    components: {
+        'widget-child-omnipotentform': widget_child_omnipotentform
+    }
+});
+</script>

@@ -1,0 +1,67 @@
+<h3 class="page-title">
+    添加普通文章
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="<{link app=content ctl=admin_article act=index}>">文章列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">添加普通文章</a>
+        </li>
+    </ul>
+</div>
+
+<form action="index.php?app=content&ctl=admin_article&act=save" method="post" id='article_form' class="form" >
+    <div class="form-horizontal">
+        <div class="form-body">
+			<div class="row">
+				<div class="col-md-4">
+					<{include file="admin/article/detail/basic.html"}>
+					<hr>
+					<{include file="admin/article/detail/seo.html"}>
+				</div>
+				<div class="col-md-8">
+					<{input type="html" name="article[bodys][content]" height=400  value=$article.bodys.content}>
+                    <div class="well well-sm">
+						<h4>热词链 <small>指定文章关键词,在前台自动加上链接</small></h4>
+                        <div class="row">
+                                <div class="col-md-4">
+                                    <h5>格式示例</h5>
+                                    <p class="help-block">
+                                        关键词1|链接1<br>
+                                        关键词2|链接2 <br>
+                                        关键词3|链接4 <br>
+                                    </p>
+                                </div>
+                                <div class="col-md-4">
+                                    <h5>注意事项</h5>
+                                    <p class="help-block">
+                                        关键词不要相互包含 <br>
+                                        关键词和链接不要包含特殊字符 <br>
+                                        多条记录用回车换行
+                                    </p>
+                                </div>
+                        </div>
+                        <{if $article.bodys.hot_link}>
+                        <textarea class="form-control" name="article[bodys][hot_link]" rows="5"><{foreach from=$article.bodys.hot_link item=item key=key}><{$item.keyword}>|<{$item.url}>
+                            <{/foreach}></textarea>
+                        <{else}>
+                        <{input placeholder="keyword1|http://url1.com\nkeyword2|http://url2.com\n..." type="textarea" name="article[bodys][hot_link]" class="form-control" rows=5}>
+                        <{/if}>
+
+					</div>
+				</div>
+			</div>
+
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-4 col-md-8">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>

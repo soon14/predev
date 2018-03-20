@@ -1,0 +1,143 @@
+<h3 class="page-title">短信平台配置</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?ctl=adminpanel">控制面板</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">短信平台配置</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=desktop&ctl=sms&act=save_setting" method="post" id='smsconfig_form' class="form" >
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <{if $vmc_socket}>
+            <div class="alert alert-success">
+            您正在使用VMCShop短信平台，只需配置短信签名
+            </div>
+            <{else}>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    短信平台名称
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <{input required=true  type=text name=sms_platform_name value=$sms_platform_name}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    短信平台API地址
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <{input required=true placeholder="" type=url name=sms_platform_api_url value=$sms_platform_api_url}>
+                    <span class="help-block">短信平台API URL网址.</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    短信平台UTF-8 POST请求参数
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-10">
+                    <{input data-encode=true required=true  type=textarea rows=3 name=sms_platform_api_params_tmpl value=$sms_platform_api_params_tmpl|default:'action={ENV_action}&mobile={ENV_target}&content={ENV_content}&tmpl_data={ENV_tmpl_data}&time={ENV_time}&sign={ENV_sign}'}>
+                    <span class="help-block">{ENV_xxx}为参数变量,调用平台API前会自动被填充.</span>
+                    <div class="well well-sm">
+                        <h5>变量参考</h5>
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td>ENV_target</td>
+                                    <td>String</td>
+                                    <td>短信发送目标手机号码</td>
+                                </tr>
+                                <tr>
+                                    <td>ENV_content</td>
+                                    <td>String</td>
+                                    <td>短信内容</td>
+                                </tr>
+                                <tr>
+                                    <td>ENV_tmpl_data</td>
+                                    <td>JSON</td>
+                                    <td>填充短信内容模板的参数。{参数1:值1,参数2:值2,参数N:值N,.....}</td>
+                                </tr>
+                                <tr>
+                                    <td>ENV_action</td>
+                                    <td>string</td>
+                                    <td>短信内容模板事件名《Action Name》例如订单发货时的事件名是“orders-shipping”,
+                                        获得手机注册验证码的事件名是“account-signup”<a href="index.php?app=b2c&ctl=admin_member_messenger">更多 <i class="fa fa-external-link"></i></a></td>
+                                </tr>
+                                <tr>
+                                    <td>ENV_action_alias</td>
+                                    <td>string</td>
+                                    <td>短信内容模板事件别名<a href="index.php?app=b2c&ctl=admin_member_messenger">更多 <i class="fa fa-external-link"></i></a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>ENV_time</td>
+                                    <td>yyyy-MM-dd HH:mm:ss</td>
+                                    <td>发送时间</td>
+                                </tr>
+                                <tr>
+                                    <td>ENV_sign</td>
+                                    <td>String</td>
+                                    <td>请求安全签名。签名规格：1、所有请求参数名按照字典升序，拼接成a=xxx&b=xxx&c=xxx。
+                                        2、再次拼接《短信平台API私钥约定》。3、对拼接字符串进行md5。</td>
+                                </tr>
+                                <tr>
+                                    <td>ENV_access_token</td>
+                                    <td>String</td>
+                                    <td>Access Token 获取地址?参数：
+                                        <{input placeholder="可空"  type=url name=sms_platform_api_access_token_action value=$sms_platform_api_access_token_action}>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    短信平台API私钥约定
+                </label>
+                <div class="col-md-5">
+                    <{input type=string name=sms_platform_params_secret value=$sms_platform_params_secret}>
+                    <span class="help-block">用于构建ENV_sign 参数变量</span>
+                </div>
+            </div>
+            <hr>
+            <{/if}>
+            <div class="form-group">
+                <label class="control-label col-md-2">
+                    短信内容签名
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <{input required=true placeholder="格式：【签名内容】" type=text name=sms_sign value=$sms_sign}>
+                    <span class="help-block">短信签名位于短信内容结尾,是短信通道运营商强制要求.</span>
+                </div>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button  type="submit" class="btn blue b-save">保存</button>
+                    </div>
+            </div>
+        </div>
+
+    <div>
+</form>
+<script type="text/javascript">
+    // $('#smsconfig_form').on('submit',function(e){
+    //
+    //     var txt_params_textarea = $(this).find('textarea[name="sms_platform_api_params_tmpl"]'),
+    //     txt_p_val = txt_params_textarea.val();
+    //
+    //     txt_params_textarea.val(encodeURIComponent(txt_p_val));
+    //
+    // });
+</script>

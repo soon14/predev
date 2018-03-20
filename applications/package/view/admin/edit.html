@@ -1,0 +1,178 @@
+<h3 class="page-title"><{if $package.id }>组合套餐活动编辑<{else}>添加组合套餐活动<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=package&ctl=admin_package&act=index">组合套餐活动列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $package.id}>组合套餐活动编辑<{else}>添加组合套餐活动<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=package&ctl=admin_package&act=save" method="post" class="form" >
+    <{if $package.id }>
+    <input type="hidden" name="id" value="<{$package.id}>">
+    <{/if}>
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                组合套餐活动名称
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="name" value="<{$package.name}>" required=true class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                组合套餐活动说明
+                </label>
+                <div class="col-md-5">
+                    <textarea name="intro" class="form-control">
+                        <{$package.intro}>
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                状态
+                </label>
+                <div class="col-md-5">
+                    <select name="status" class="form-control">
+                        <option value="0" <{if $package.status == '0'}>selected<{/if}>>有效</option>
+                        <option value="1" <{if $package.status == '1'}>selected<{/if}>>暂停</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                组合套餐活动起止时间
+                </label>
+                <div class="col-md-2">
+                    <{input type="time" value=$package.start name="start"}>
+                </div>
+                <div class="col-md-1 text-center">
+                    至
+                </div>
+                <div class="col-md-2">
+                    <{input type="time" value=$package.end name="end"}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">参与活动商品</label>
+                <div class="col-md-7" id="J_goods">
+                    <{input type="object" object="goods@b2c" multiple="true" callback_func="goods_callback_func"}>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>操作</th>
+                                <th>商品图片</th>
+                                <th>商品名称</th>
+                                <th>商品编号</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <{foreach from=$goods item=item key=key}>
+                            <tr>
+                                <td>
+                                    <button onclick="$(this).closest('tr').remove();" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+                                </td>
+                                <td>
+                                <img src="<{$item.image_default_id|storager:'s'}>" alt="<{$item.name}>" class="img-thumbnail" style="height:50px;"/>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="goods_id[]"  value="<{$item.goods_id}>">
+                                    <{$item.name}>
+                                </td>
+                                <td>
+                                    <{$item.gid}>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">套餐商品</label>
+                <div class="col-md-7" id="J_package_goods">
+                    <{input type="object" object="goods@b2c" multiple="true" callback_func="package_callback_func"}>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>操作</th>
+                                <th>商品图片</th>
+                                <th>商品名称</th>
+                                <th>数量</th>
+                                <th>套餐内价格</th>
+                                <th>价格</th>
+                                <th>商品编号</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <{foreach from=$package_goods item=item key=key}>
+                            <tr>
+                                <td>
+                                    <button onclick="$(this).closest('tr').remove();" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+                                </td>
+                                <td>
+                                <img src="<{$item.image_default_id|storager:'s'}>" alt="<{$item.name}>" class="img-thumbnail" style="height:50px;"/>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="package_goods[<{$key}>][goods_id]"  value="<{$item.goods_id}>">
+                                    <{$item.name}>
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="package_goods[<{$key}>][quantity]"  value="1">
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" name="package_goods[<{$key}>][package_price]"  value="<{$item.package_price}>">
+                                </td>
+                                <td>
+                                    <{$item.product.price}>
+                                </td>
+                                <td>
+                                    <{$item.gid}>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-9">
+                <button type="submit" class="btn blue">保存</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+var goods_callback_func = function(gids){
+    $.ajax({
+        'url':'<{link app=package ctl=admin_package act=get_goods}>',
+        'data':gids,
+        'type':'post',
+        'success':function(re){
+            $('#J_goods tbody').append(re);
+        }
+    });
+};
+var package_callback_func = function(gids){
+    $.ajax({
+        'url':'<{link app=package ctl=admin_package act=get_package_goods}>',
+        'data':gids,
+        'type':'post',
+        'success':function(re){
+            $('#J_package_goods tbody').append(re);
+        }
+    });
+};
+</script>

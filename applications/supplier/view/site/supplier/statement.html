@@ -1,0 +1,160 @@
+<{include file='site/supplier/layout/top.html' }>
+<{css src="../desktop/com/global/plugins/bootstrap-datepicker/css/datepicker3.css"}>
+<{css src="../desktop/com/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"}>
+<style media="screen">
+    .datetimepicker{
+        z-index: 3999!important;
+    }
+</style>
+<div class="my-main supplier-main">
+    <div class="row">
+        <div class="col-xs-2">
+            <{include file='site/supplier/layout/menu.html' }>
+        </div>
+        <div class="col-xs-10 my-page">
+            <div class="page-header clearfix">
+              <h1 class="pull-left">财务结算单 <small>Statement</small></h1>
+              <button class="btn btn-default pull-right" data-toggle="modal" data-target="#export_modal" type="button">导出</button>
+            </div>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            结算流水号
+                        </th>
+                        <th>
+                            支付平台流水号
+                        </th>
+                        <th>
+                            结算时间
+                        </th>
+                        <th>
+                            最后更新时间
+                        </th>
+                        <th>
+                            结算金额
+                        </th>
+                        <th>
+                            状态
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="statement_list_tbody">
+                    <{if !$statement_list}>
+                    <tr>
+                        <td colspan="7">
+                            <div class="alert">
+                                暂无数据
+                            </div>
+                        </td>
+                    </tr>
+                    <{else}>
+                    <{foreach from=$statement_list item=statement name=fr_statement}>
+                        <tr>
+                            <td>
+                                <{$statement.statement_id}>
+                            </td>
+                            <td>
+                                <{$statement.out_trade_no}>
+                            </td>
+                            <td>
+                                <{$statement.createtime|cdate}>
+                            </td>
+                            <td>
+                                <{$statement.last_modify|cdate}>
+                            </td>
+                            <td>
+                                <i class="fa fa-yen"></i> <{$statement.money|cur}>
+                            </td>
+                            <td>
+                                <span class="label label-success">已结算</span>
+                            </td>
+                            <td>
+                                <a href="<{link app=supplier ctl=site_supplier act=statement_detail args0=$statement.statement_id}>"  class="btn btn-sm btn-default" >查看</a>
+                            </td>
+                        </tr>
+                    <{/foreach}>
+                    <{/if}>
+                </tbody>
+                <{if $totalpage>1}>
+                <tfoot>
+                    <tr>
+                        <td colspan=5>
+                            <{pagers data=$pager}>
+                        </td>
+                        <td colspan=2>
+                            <div class="pagination pull-right">
+                                <select id="page_limit_sel" class="form-control">
+                                    <option value="20" data-action="<{link app=supplier ctl=site_supplier act=statement args0=$page args1=20}>">每页20条</option>
+                                    <option value="50" data-action="<{link app=supplier ctl=site_supplier act=statement args0=$page args1=50}>">每页50条</option>
+                                    <option value="100" data-action="<{link app=supplier ctl=site_supplier act=statement args0=$page args1=100}>">每页100条</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+                <{/if}>
+            </table>
+        </div>
+    </div>
+</div>
+<!-- export form -->
+<div class="modal fade" id="export_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">批量导出</h4>
+            </div>
+            <div class="form">
+                <form action="<{link app=supplier ctl=site_supplier act=export_list}>" method="post" class="form-horizontal" target="_blank">
+                    <input type="hidden" name="filter[status]" value="succ">
+                    <input type="hidden" name="export_object" value="statement">
+                    <div class="modal-body">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <div class="col-md-2 control-label">
+                                    时间段
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control datetime-picker" type="text" name="filter[createtime|bthan]" value="" placeholder="最早">
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control datetime-picker" type="text" name="filter[createtime|lthan]" value="" placeholder="最晚">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">确认导出</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end export form -->
+<script type="text/javascript">
+$('.datetime-picker').datetimepicker({
+    autoclose: true,
+    language:'zh-CN'
+});
+    var page_limit_match = location.href.match(/-statement-([\d]+?)-([\d]+?).html/);
+    if(page_limit_match && page_limit_match[2]){
+        $('#page_limit_sel option[value="'+page_limit_match[2]+'"]').prop('selected','selected');
+    }
+    $('#page_limit_sel').on('change',function(){
+        location = $(this.options[this.selectedIndex]).attr('data-action');
+    });
+    $('#export_modal form').on('submit',function(){
+        $('#export_modal').modal('hide');
+    });
+</script>

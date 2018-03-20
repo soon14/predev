@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="installer">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="title"/>
+                <xs:element ref="banner"/>
+                <xs:element ref="style"/>
+                <xs:element ref="finish"/>
+                <xs:element ref="writeable_check"/>
+                <xs:element ref="check"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="check">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="writeable"/>
+                <xs:element ref="version"/>
+                <xs:element ref="php_configure"/>
+                <xs:element ref="extension_library"/>
+                <xs:element ref="common_function"/>
+                <xs:element ref="other"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="list">
+        <xs:complexType>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="value" type="xs:string"/>
+            <xs:attribute name="description" type="xs:string"/>
+            <xs:attribute name="sign" type="xs:string"/>
+            <xs:attribute name="exec_function" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="dirname">
+        <xs:complexType>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="value" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="php">
+        <xs:complexType>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="value" type="xs:string"/>
+            <xs:attribute name="sign" type="xs:string"/>
+            <xs:attribute name="exec_function" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="mysql">
+        <xs:complexType>
+            <xs:attribute name="name" type="xs:string" use="required"/>
+            <xs:attribute name="value" type="xs:string"/>
+            <xs:attribute name="sign" type="xs:string"/>
+            <xs:attribute name="exec_function" type="xs:string"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="writeable_check">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="dir"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="version">
+        <xs:complexType>
+            <xs:attribute name="show_name" type="xs:string" use="required"/>
+            <xs:element ref="php"/>
+            <xs:element ref="mysql"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="php_configure">
+        <xs:complexType>
+            <xs:attribute name="show_name" type="xs:string" use="required"/>
+            <xs:element maxOccurs="unbounded" ref="list"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="extension_library">
+        <xs:complexType>
+            <xs:attribute name="show_name" type="xs:string" use="required"/>
+            <xs:element maxOccurs="unbounded" ref="list"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="common_function">
+        <xs:complexType>
+            <xs:attribute name="show_name" type="xs:string" use="required"/>
+            <xs:element maxOccurs="unbounded" ref="list"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="other">
+        <xs:complexType>
+            <xs:attribute name="show_name" type="xs:string" use="required"/>
+            <xs:element maxOccurs="unbounded" ref="list"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="writeable">
+        <xs:complexType>
+            <xs:attribute name="show_name" type="xs:string" use="required"/>
+            <xs:element maxOccurs="unbounded" ref="dir"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="finish">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="message"/>
+                <xs:element ref="links"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="links">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="app"/>
+                <xs:element maxOccurs="unbounded" ref="url"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="url">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="href" type="xs:string" use="required"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="licence">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="file" type="xs:string" use="required"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="product_name" type="xs:string"/>
+    <xs:element name="product_id" type="xs:string"/>
+    <xs:element name="product_version" type="xs:string"/>
+    <xs:element name="business_version" type="xs:string"/>
+    <xs:element name="publish_version" type="xs:string"/>
+    <xs:element name="product_key" type="xs:string"/>
+    <xs:element name="setting">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="key" type="xs:string" use="required"/>
+                <xs:attribute name="value" type="xs:string" use="required"/>
+                <xs:attribute name="app" type="xs:string" use="required"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="app">
+        <xs:complexType>
+            <xs:attribute name="id" type="xs:string" use="required"/>
+            <xs:attribute name="default" type="xs:boolen"/>
+            <xs:attribute name="locked" type="xs:boolen"/>
+            <xs:attribute name="hidden" type="xs:boolen"/>
+            <xs:attribute name="autostart" type="xs:boolen"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="package">
+        <xs:complexType>
+            <xs:attribute name="hidden" type="xs:string"/>
+            <xs:attribute name="collapse" type="xs:boolen"/>
+            <xs:attribute name="search_online" type="xs:boolen"/>
+            <xs:attribute name="search_filter" type="xs:boolen"/>
+            <xs:element maxOccurs="unbounded" ref="app"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="demodatas">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="demodata"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="demodata">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="name"/>
+                <xs:element ref="type"/>
+                <xs:element ref="default"/>
+                <xs:element ref="vtype"/>
+                <xs:element ref="required"/>
+                <xs:element maxOccurs="unbounded" ref="options"/>
+                <xs:element ref="title"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="options">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="key" type="xs:string"/>
+                <xs:attribute name="value" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="active_ceti">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="active_ceti_url"/>
+                <xs:element ref="active_ceti_info"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="active_ceti_info">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="email"/>
+                <xs:element ref="password"/>
+                <xs:element ref="tel"/>
+                <xs:element ref="province"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="email">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="type" type="xs:string"/>
+                <xs:attribute name="vtype" type="xs:string"/>
+                <xs:attribute name="title" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="password">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="type" type="xs:string"/>
+                <xs:attribute name="vtype" type="xs:string"/>
+                <xs:attribute name="title" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="tel">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="type" type="xs:string"/>
+                <xs:attribute name="vtype" type="xs:string"/>
+                <xs:attribute name="title" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="province">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:attribute name="type" type="xs:string"/>
+                <xs:attribute name="vtype" type="xs:string"/>
+                <xs:attribute name="title" type="xs:string"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="deploy">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element minOccurs="0" ref="licence"/>
+                <xs:element ref="product_name"/>
+                <xs:element ref="product_id"/>
+                <xs:element ref="product_version"/>
+                <xs:element ref="business_version"/>
+                <xs:element ref="publish_version"/>
+                <xs:element ref="product_key"/>
+                <xs:element ref="product_desc"/>
+                <xs:element ref="installer"/>
+                <xs:element ref="package"/>
+                <xs:element ref="demodatas"/>
+                <xs:element minOccurs="0" ref="active_ceti"/>
+                <xs:element maxOccurs="unbounded" ref="setting"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

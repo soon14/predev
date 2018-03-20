@@ -1,0 +1,19 @@
+<!-- 辅助线条 -->
+<template id="widget-linehelper">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-linehelper :widget="widget" :index="index"></widget-child-setting-linehelper>
+        <widget-child-linehelper :widget="widget" :index="index"></widget-child-linehelper>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_linehelper = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-linehelper',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-linehelper': widget_child_setting_linehelper,
+        'widget-child-linehelper': widget_child_linehelper
+    }
+});
+</script>

@@ -1,0 +1,19 @@
+<!-- 万能表单 -->
+<template id="widget-omnipotentform">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-omnipotentform :widget="widget" :index="index"></widget-child-setting-omnipotentform>
+        <widget-child-omnipotentform :widget="widget" :index="index"></widget-child-omnipotentform>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_omnipotentform = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-omnipotentform',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-omnipotentform': widget_child_setting_omnipotentform,
+        'widget-child-omnipotentform': widget_child_omnipotentform
+    }
+});
+</script>

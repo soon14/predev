@@ -1,0 +1,8 @@
+<services>
+    <service id="desktop_finder.serveradm_mdl_xhprof">
+        <class>serveradm_finder_xhprof</class>
+    </service>
+
+
+
+</services>

@@ -1,0 +1,17 @@
+<div  id="finder_body_<{$name}>">
+    <div class="body-content" data-filter-params='<{$filter_params|json_encode}>'>
+        <div class="table-scrollable">
+            <table class="table table-striped table-hover">
+                <thead>
+                        <{$subheader}>
+                </thead>
+            <tbody>
+                <{$body}>
+            </tbody>
+            </table>
+        </div>
+        <div class="finder-pager">
+            <{$pager}>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+<desktop>
+    <permissions>
+        <permission id="wechat" display='true'>查看公众号</permission>
+        <permission id="wechat_edit" display='true'>添加/编辑公众号</permission>
+        <permission id="wechat_delete" display='true'>删除公众号</permission>
+        <permission id="wechat_menu" display='true'>自定义菜单</permission>
+        <permission id="wechat_replyrule" display='true'>查看自动回复</permission>
+        <permission id="wechat_replyrule_edit" display='true'>添加/编辑自动回复</permission>
+        <permission id="wechat_replyrule_delete" display='true'>删除自动回复</permission>
+        <permission id="wechat_wxxcx" display='true'>微信小程序管理</permission>
+        <permission id="wechat_xcxpage" display='true'>小程序页面管理</permission>
+        <permission id="wechat_xcxpage_delete" display='true'>小程序页面删除</permission>
+        <permission id="wechat_xcxpage_edit" display='true'>小程序页面添加</permission>
+    </permissions>
+    <workground name="微信" icon="fa fa-weixin" id="workground.wechat" order='69'>
+        <menugroup name="微信公众号相关配置">
+            <menu controller='admin_bind' action='index' permission='wechat' display='true' order='20'>绑定公众号</menu>
+            <menu controller='admin_bind' action='bind_view' permission='wechat_edit' display='false'>添加公众号</menu>
+            <menu permission='wechat_delete' display='false'>删除公众号</menu>
+            <!-- <menu controller='admin_sso' action='index' permission='wechat' display='true' order='30'>公众号内免登配置</menu> -->
+            <menu controller='admin_autoreply' action='index' permission='wechat_replyrule' display='true' order='30'>自动回复</menu>
+            <menu controller='admin_autoreply' action='edit' permission='wechat_replyrule_edit' display='false' order='31'>添加自动回复</menu>
+            <menu permission='wechat_replyrule_delete' display='false' order='32'>删除自动回复</menu>
+            <menu controller='admin_menu' action='setting' permission='wechat_menu' display='true' order='33'>自定义菜单</menu>
+        </menugroup>
+        <menugroup name="微信小程序">
+            <menu controller='admin_wxxcx' action='setting' permission='wechat_wxxcx' display='false' >小程序配置</menu>
+            <menu controller='admin_wxxcx' action='qrcode' permission='wechat_wxxcx' display='true' order='40'>小程序二维码管理</menu>
+            <menu controller='admin_wxxcx' action='errorlog' permission='wechat_wxxcx' display='true' order='40'>小程序错误日志</menu>
+            <menu controller='admin_wxxcx' action='xcxtplmsg' permission='wechat_wxxcx' display='true' order='40'>小程序模板消息</menu>
+            <menu controller='admin_xcxpage' action='index' permission='wechat_xcxpage' display='true' order='50'>小程序页面管理</menu>
+            <menu controller='admin_xcxpage' action='edit' permission='wechat_xcxpage_edit' display='false'>小程序页面编辑</menu>
+        </menugroup>
+    </workground>
+</desktop>

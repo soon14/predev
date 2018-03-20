@@ -1,0 +1,156 @@
+<div class="content checkout-container">
+    <ul class="table-view">
+        <{if $flow_success=='1'}>
+            <li class="table-view-cell media">
+                    <span class="fa fa-check media-object pull-left text-success"></span>
+                    <div class="media-body">
+                        <h4 class="text-success"> 订单已成功提交！</h4>
+                        <p>
+                            订单号：<{$order.gb_id}>
+                        </p>
+                    </div>
+            </li>
+        <{/if}>
+        <{if $changepayment_errormsg}>
+        <li class="table-view-cell media">
+            <i class="fa fa-warning fa-lg media-object"></i>
+            <p class="media-body">
+                <{$changepayment_errormsg}>
+            </p>
+        </li>
+        <{/if}>
+        <li class="table-view-divider">订单概要</li>
+        <li class="table-view-cell">
+            订单号
+            <p class="pull-right">
+                <{$order.gb_id}>
+            </p>
+        </li>
+        <li class="table-view-cell">
+            创建时间
+            <p class="pull-right">
+                <{$order.createtime|cdate}>
+            </p>
+        </li>
+        <li class="table-view-cell">
+            订单包含商品数
+            <p class="pull-right">
+                <{$order.quantity}>
+            </p>
+        </li>
+        <li class="table-view-cell">
+            收货人
+            <p>
+                <strong><{$order.consignee.name}></strong>,
+                <{$order.consignee.area|region}>,<{$order.consignee.addr}>,<{$order.consignee.tel}>,<{$order.consignee.mobile}>,<{$order.consignee.email}>
+            </p>
+        </li>
+        <li class="table-view-divider">支付方式</li>
+        <li class="table-view-cell">
+            <a class="navigate-right" href="#payapp_modal">
+                <{$selected_payapp.display_name}>
+                <p>
+                    <{$selected_payapp.description}>
+                </p>
+                <span class="badge badge-inverted">更换支付方式</span>
+            </a>
+        </li>
+        <{if $order.payed>0}>
+        <li class="table-view-cell">
+            订单已支付
+            <p class="pull-right">
+                <{$order.payed|cur}>
+            </p>
+        </li>
+        <{/if}>
+    </ul>
+
+
+<!-- checkout-container end -->
+</div>
+
+
+<div id="payapp_modal" class="modal">
+  <header class="bar bar-nav">
+    <a class="icon icon-close pull-right" href="#payapp_modal"></a>
+    <h1 class="title">选择支付方式</h1>
+  </header>
+  <div class="content">
+    <ul class="table-view">
+        <{foreach from=$payapps key=k item=papp}>
+
+         <li class="table-view-cell i-right-middle">
+            <a href="<{link app=groupbooking ctl=mobile_checkout act=payment args0=$order.gb_id args1=0 args2=$papp.app_id}>" target="_self">
+                <{$papp.display_name|default:$papp.name}>
+                <p>
+                    <{$papp.description}>
+                </p>
+                <input type="radio" <{if $selected_payapp.app_id == $papp.app_id}>checked<{/if}> class="i-radio" id="_<{$papp.app_id}>">
+                <label class="fa right-center" for="_<{$papp.app_id}>"></label>
+            </a>
+        </li>
+        <{/foreach}>
+    </ul>
+  </div>
+</div>
+
+<div class="bar bar-tab  checkout-bar-footer">
+  <div class="tab-item tab-total">
+      <span class="order-total">应付总额：
+          <span class="text-danger"><small>￥</small><strong data-bind="total/order_total"><{$order.order_total-$order.payed|cur}></strong></span>
+      <span>
+  </div>
+  <div class="tab-item tab-submit">
+      <{if $order.is_cod!='Y'}>
+      <a id="btn_pay_submit"  href="<{link app=groupbooking ctl=mobile_checkout act=dopayment args0=$order.gb_id}>?pay=<{$order.pay_app}>" >付款</a>
+      <{else}>
+      <a  href="<{link app=groupbooking ctl=mobile_order act=detail args0=$order.gb_id}>" >查看订单详情</a>
+      <{/if}>
+  </div>
+</div>
+<{if $order.is_cod!='Y'}>
+<div id="payapp_tip_modal" class="modal">
+  <header class="bar bar-nav">
+    <a class="icon icon-close pull-right" href="#payapp_tip_modal"></a>
+    <h1 class="title">您是否已完成支付？</h1>
+  </header>
+  <div class="content">
+     <div class="content-padded">
+         <a class="btn btn-positive btn-block" target="_self" href="<{link app=groupbooking ctl=mobile_order act=detail args0=$order.gb_id}>">已完成支付</a>
+         <a class="btn btn-negative btn-block btn-outlined" href="#payapp_tip_modal">重新支付</a>
+     </div>
+  </div>
+</div>
+<{/if}>
+
+
+<script charset="utf-8">
+<{if $order.is_cod!='Y'}>
+    $('#btn_pay_submit').on('click',function(e){
+        setTimeout(function(){
+            $('#payapp_tip_modal').toggleClass('active');
+        },500);
+    });
+    /**
+     * 监测支付状态
+     */
+     var paystatus_check_timeout_arr =  [10,9,8,7,6,5,4,3,2,1.5];
+     setTimeout(function () {
+         var _fn = arguments.callee;
+         $.getJSON('<{link app=groupbooking ctl=mobile_checkout act=paystatus args0=$order.gb_id}>',function(re){
+             try{
+                 if(re.success){
+                     //支付成功时，自动刷新,如果支付成功,刷新本页会自动跳转
+                     location.reload();
+                     return;
+                 }
+             }catch(e){
+
+             }finally{
+                 var timeout = paystatus_check_timeout_arr.shift();
+                 setTimeout(_fn,timeout?timeout*1000:1500);
+             }
+         });
+     },paystatus_check_timeout_arr.shift()*1500);
+<{/if}>
+</script>

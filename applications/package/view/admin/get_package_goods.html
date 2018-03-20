@@ -1,0 +1,26 @@
+<{foreach from=$package_goods key=key item=item}>
+<tr>
+	<td>
+		<button onclick="$(this).closest('tr').remove();" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+	</td>
+    <td>
+    <img src="<{$item.image_default_id|storager:'s'}>" alt="<{$item.name}>" class="img-thumbnail" style="height:50px;"/>
+    </td>
+	<td>
+		<input type="hidden" name="package_goods[<{$key}>][goods_id]"  value="<{$item.goods_id}>">
+        <{$item.name}>
+	</td>
+    <td>
+		<input type="text" class="form-control" name="package_goods[<{$key}>][quantity]"  value="1">
+    </td>
+    <td>
+		<input type="text" class="form-control" name="package_goods[<{$key}>][package_price]"  value="<{$item.product.price}>">
+    </td>
+    <td>
+        <{$item.product.price}>
+    </td>
+    <td>
+        <{$item.gid}>
+    </td>
+</tr>
+<{/foreach}>

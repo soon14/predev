@@ -1,0 +1,57 @@
+<input type="hidden" name="article_id" value="<{$article.indexs.article_id}>" />
+<input type="hidden" name="article[indexs][type]" value="<{$article.indexs.type}>" />
+<div class="form-group">
+    <label class="col-md-4 control-label">
+        标题
+        <span class="required" aria-required="true">*</span>
+    </label>
+    <div class="col-md-8">
+        <{input type="text"  name="article[indexs][title]" required="true"  value=$article.indexs.title }>
+
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-md-4 control-label">
+        所属栏目
+        <span class="required" aria-required="true">*</span>
+    </label>
+    <div class="col-md-8">
+        <{input type='select' name='article[indexs][node_id]' value=$article.indexs.node_id   rows=$selectmaps valueColumn="node_id" labelColumn="node_name"}>
+    </div>
+</div>
+<{if $env.get.type!='2'}>
+<div class="form-group">
+    <label class="col-md-4 control-label">
+        作者
+    </label>
+    <div class="col-md-8">
+        <{input type="text" value=$article.indexs.author name="article[indexs][author]" }>
+    </div>
+</div>
+<{/if}>
+<div class="form-group">
+    <label class="col-md-4 control-label">
+        排序
+    </label>
+    <div class="col-md-5">
+        <{input type='number' name='article[indexs][ordernum]' value=$article.indexs.ordernum|default:0}>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-md-4 control-label">列表缩图</label>
+    <div class="col-md-8">
+        <{input type=image height="90" name="article[bodys][image_id]" value=$article.bodys.image_id}>
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-md-4 control-label">
+        是否发布
+        <span class="required" aria-required="true">*</span>
+    </label>
+    <div class="col-md-8">
+        <select class="form-control" name="article[indexs][ifpub]">
+            <option value='1'>是</option>
+            <option value="0" <{if $article.indexs.ifpub != 'true'}>selected<{/if}>>否</option>
+        </select>
+    </div>
+</div>

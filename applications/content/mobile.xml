@@ -1,0 +1,12 @@
+<site>
+    <module  controller='mobile_article' >
+        <name>p</name>
+        <title>文章页面</title>
+        <disable>false</disable>
+    </module>
+    <module  controller='mobile_node' >
+        <name>n</name>
+        <title>栏目页</title>
+        <disable>false</disable>
+    </module>
+</site> 

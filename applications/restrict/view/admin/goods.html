@@ -1,0 +1,25 @@
+<div data-updatecontainer="true">
+<{if $goods}>
+    <div class="table-scrollable">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>
+                        商品名称
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <{foreach from=$goods item=item}>
+                <tr>
+                    <td>
+                        <{$item.name}>
+                        </a>
+                    </td>
+                </tr>
+                <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+<{/if}>
+</div>

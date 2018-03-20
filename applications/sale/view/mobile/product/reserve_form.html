@@ -1,0 +1,9 @@
+<div class="content">
+    <form action="<{link app=sale ctl=mobile_sale act=save_reserve}>" class="form-horizontal content-padded content-form" id="J_reserve_form" method="post">
+        <input type="hidden" name="goods_id" value="<{$goods_id}>"/>
+        <input type="hidden" name="sale_id" value="<{$sale_id}>"/>
+        <input id="J_tel" type="text" class="form-control" required="true" autocomplete="off" name="tel" placeholder="请输入手机号码"/>
+        <span class="help-block" id="J_help"></span>
+        <button type="submit" class="btn btn-block btn-primary ">确定</button>
+    </form>
+</div>

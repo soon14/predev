@@ -1,0 +1,46 @@
+{
+    \"MachineCode\": \"123456789\",
+    \"SubmitDate\": \"20150929125645\",
+    \"Mac\": \" 73F3486AD29DA69C2D8EEA9B3105A5BA\",
+    \"FactName\": \"gjw\",
+    \"IDCard\": \"440103198601235714\",
+    \"Custom\": \"true\",
+    \"OrderFormContent\": {
+        \"ClientUrl\": \"http: //www.cn02020.com\",
+        \"BackStageUrl\": \"http: //www.cn02020.com\",
+        \"PayCopName\": \"易票联支付有限公司\",
+        \"OrderFormNo\": \"test-20002\",
+        \"Consignee\": \"gjw\",
+        \"Province\": \"广东省\",
+        \"City\": \"广州市\",
+        \"LiveAddress\": \"xxx路yy号zzz房\",
+        \"ZipCode\": \"510000\",
+        \"Remark\": \"调试使用\",
+        \"DeliveryType\": \"1\",
+        \"TransFee\": \"8.00\",
+        \"Tax\": \"0\",
+        \"OrderFormDetail\": [
+            {
+                \"ftz\": \"0\",
+                \"CopGNo\": \"4008976022329\",
+                \"Supplier\": \"GZKJT\",
+                \"Number\": \"1\",
+                \"WebsitePrice\": \"215\"
+            },
+            {
+                \"ftz\": \"0\",
+                \"CopGNo\": \"4008976022336\",
+                \"Supplier\": \"GZKJT\",
+                \"Number\": \"1\",
+                \"WebsitePrice\": \"215\"
+            },
+            {
+                \"ftz\": \"0\",
+                \"CopGNo\": \"4008976022343\",
+                \"Supplier\": \"GZKJT\",
+                \"Number\": \"1\",
+                \"WebsitePrice\": \"215\"
+            }
+        ]
+    }
+}

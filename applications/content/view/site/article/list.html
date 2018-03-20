@@ -1,0 +1,50 @@
+<ol class="breadcrumb article-path">
+  <li class='ap-home'><a href="<{link app=site ctl=index}>">首页</a></li>
+  <{foreach from=$path item=item name=apforeach}>
+  <{if $env.foreach.apforeach.last}>
+  <li class="active"><{$item.title}></li>
+  <{else}>
+  <li><a href="<{$item.link}>"><{$item.title}></a></li>
+  <{/if}>
+  <{/foreach}>
+</ol>
+<div class="article-list">
+<{foreach from=$alist item=article name=aleach}>
+    <div class="row article-item" >
+        <{if $article.body.image_id}>
+        <div class="col-md-4 col-xs-5">
+            <a href="<{link app=content ctl=site_article args0=$article.article_id}>" class="thumbnail">
+                <img src="<{$article.body.image_id|storager:'s'}>" alt="<{$article.title}>">
+            </a>
+        </div>
+        <div class="col-md-8 col-xs-7">
+            <h3 class="article-item-title"><a href="<{link app=content ctl=site_article args0=$article.article_id}>"><{$article.body.seo_title|default:$article.title}></a></h3>
+            <div class="article-item-intro">
+                <a href="<{link app=content ctl=site_article args0=$article.article_id}>">
+                <{if $article.body.seo_description}>
+                    <{$article.body.seo_description}>
+                <{else}>
+                    <{$article.body.content|strip_tags|cut:300:'...'}>
+                <{/if}>
+                </a>
+            </div>
+        </div>
+        <{else}>
+        <div class="col-md-12">
+            <h3 class="article-item-title"><a href="<{link app=content ctl=site_article args0=$article.article_id}>"><{$article.body.seo_title|default:$article.title}></a></h3>
+            <div class="article-item-intro">
+                <a href="<{link app=content ctl=site_article args0=$article.article_id}>">
+                <{if $article.body.seo_description}>
+                    <{$article.body.seo_description}>
+                <{else}>
+                    <{$article.body.content|strip_tags|cut:300:'...'}>
+                <{/if}>
+                </a>
+            </div>
+        </div>
+        <{/if}>
+        <div class="col-xs-12 divider"></div>
+    </div>
+<{/foreach}>
+</div>
+<{pagers data=$alist_pager}>

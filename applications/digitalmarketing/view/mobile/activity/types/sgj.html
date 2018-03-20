@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><{$title}></title>
+        <meta name="description" content="<{$description}>" />
+        <meta name="keywords" content="<{$keywords}>" />
+
+        <meta charset="utf-8">
+        <meta name="charset" content="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link type="image/x-icon" href="<{$env.conf.mobile.mobile_icon|storager}>" rel="apple-touch-icon-precomposed">
+
+
+        <link href="/themes/mobile/default/statics/activity/styles/common.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/themes/mobile/default/statics/activity/styles/sgj.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body class="page-sgj">
+        <header class="act-view-header view-ggl">
+            <nav class="top-navs">
+                <ul>
+                    <li>
+                        <a href="<{link app=mobile ctl=index}>"><i class="icon-arrow-left icons"></i></a>
+                    </li>
+                    <li>
+                        <span><{$title}></span>
+                    </li>
+                    <li></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="view-sgj">
+            <section class="main-top">
+                <a data-view-rule="true" href="javascript:;"><img src="/themes/mobile/default/statics/activity/images/sgj/rule-btn.png" /></a>
+            </section>
+            <section class="shuiguoji">
+                <div class="item-container">
+                    <div class="list-items" id="elActivity" data-url="/index.php/openapi/prize/win" data-id="<{$data.activity_id}>" data-ajax-url="<{link app=digitalmarketing ctl=mobile_activity act=ajax}>">
+                        <div class="item-box">
+                            <div class="h-item">
+                                <span data-item="1"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[0]}>" /></i></span>
+                                <span data-item="2"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[1]}>" /></i></span>
+                                <span data-item="3"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[2]}>" /></i></span>
+                                <span data-item="4"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[3]}>" /></i></span>
+                            </div>
+                        </div>
+                        <div class="item-box">
+                            <div class="v-item">
+                                <span data-item="12"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[11]}>" /></i></span>
+                                <span data-item="11"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[10]}>" /></i></span>
+                            </div>
+                            <div class="v-item">
+                                <span data-btn="run"><i><img src="/themes/mobile/default/statics/activity/images/sgj/kscj-btn.png" /></i></span>
+                            </div>
+                            <div class="v-item">
+                                <span data-item="5"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[4]}>" /></i></span>
+                                <span data-item="6"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[5]}>" /></i></span>
+                            </div>
+                        </div>
+                        <div class="item-box">
+                            <div class="h-item">
+                                <span data-item="10"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[9]}>" /></i></span>
+                                <span data-item="9"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[8]}>" /></i></span>
+                                <span data-item="8"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[7]}>" /></i></span>
+                                <span data-item="7"><i><img src="/themes/mobile/default/statics/activity/images/sgj/<{$data.prize_items[6]}>" /></i></span>
+                            </div>
+                        </div>
+                    </div>
+                   <audio style="display: none;" id="el-audio" controls=""></audio>
+                </div>
+            </section>
+            <section class="view-desc">
+                <p><{if $data.frequency_limit>0}><span>可抽奖次数：<var data-num="true"><{$data.frequency_limit-$chance.today_nums}></var>次</span><{/if}></p>
+            </section>
+        </main>
+        <div class="box opacity" id="opacity-box" style="display: none;"
+             data-id="<{$data.activity_id}>"
+             data-url="<{link app=digitalmarketing ctl=mobile_activity act=ajax}>"
+             >
+
+            <!-- 错误 -->
+            <div id="error-box" class="msg-show-box" style="display: none;">
+                <div class="view-box">
+                    <p class="msg-ico"><img src="/themes/mobile/default/statics/activity/images/cry.png" /></p>
+                    <h3>操作错误</h3>
+                    <div class="content-view">
+                        <p id="err-msg"></p>
+                    </div>
+                    <div class="button-view">
+                        <a data-close-btn="error" class="bl bl-danger" href="javascript:;">再试试</a>
+                        <a class="bl bl-warning" href="<{link app=mobile ctl=index}>">返回首页</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </body>
+    <script src="/themes/mobile/default/statics/activity/js/common.min.js" type="text/javascript"></script>
+    <script src="/themes/mobile/default/statics/activity/js/sgj.min.js" type="text/javascript"></script>
+</html>

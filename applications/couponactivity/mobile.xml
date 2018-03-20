@@ -1,0 +1,6 @@
+<site>
+    <module controller='mobile_coupons' id='couponactivity'>
+        <name>couponactivity</name>
+        <title>优惠券</title>
+    </module>
+</site>

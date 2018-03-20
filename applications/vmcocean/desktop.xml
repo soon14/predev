@@ -1,0 +1,7 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="vmcocean">VMCOcean</permission>
+    </permissions>
+    <panelgroup icon="fa fa-line-chat" id="vmcocean" order="99">VMCOcean</panelgroup>
+    <adminpanel action="index" controller="admin_setting" display="true" group="vmcocean_vmcocean" order='1' permission="vmcocean">基本配置</adminpanel>
+</desktop>

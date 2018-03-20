@@ -1,0 +1,10 @@
+<services>
+    <service id="b2c_promotion_tpl_order_apps">
+        <class>ruleplus_promotion_conditions_order_userdefined</class>
+    </service>
+
+    <service id="b2c_promotion_tpl_goods_apps">
+        <class>ruleplus_promotion_conditions_goods_userdefined</class>
+    </service>
+
+</services>

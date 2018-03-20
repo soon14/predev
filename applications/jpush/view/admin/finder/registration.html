@@ -1,0 +1,27 @@
+<script type="text/javascript">
+$(function(){
+     /**
+      * 客户端别名快速编辑
+      */
+    $('#finder_body_<{$name}>').on('focus','input.edit-col',function(e){
+        $(this).data('v',$(this).val());
+    });
+    $('#finder_body_<{$name}>').on('blur','input.edit-col',function(e){
+        var edit_input = $(this),current_val = edit_input.val();
+        if(current_val == edit_input.data('v'))return;
+        var post_data = {
+            'id':edit_input.attr('data-pkey'),
+        };
+        post_data[edit_input.prop('name')] = edit_input.val();
+        $.post("<{link app=jpush ctl=admin_registration act=quick_update_alias}>",post_data,function(re){
+            if(re && ('success' in re)){
+                edit_input.data('v',edit_input.val());
+                edit_input.val('已修改').fadeOut(function(){
+                    edit_input.val(edit_input.data('v'));
+                }).fadeIn();
+            }
+        },'json');
+    });
+
+});
+</script>

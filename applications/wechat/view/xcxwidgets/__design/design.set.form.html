@@ -1,0 +1,192 @@
+<!-- 设计面板 - 选择表单 -->
+<template id="design-form-single-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-12">
+            <div class="form-single-select-box" :id="widget.name + '_select_form_single_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectForm($event)">
+                        <i class="fa fa-list-alt"></i> 选择表单
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    表单名称
+                                </th>
+                                <th>
+                                    表单编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_form_single_selected_' + index">
+                            <tr v-for="(formitem, form_key) in form">
+                                <td><a href="javascript:;" @click.stop="removeForm(form_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{formitem.name}}</td>
+                                <td>{{formitem.form_id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" :id="widget.name + '_select_form_single_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<script type="text/javascript">
+// 设置表单筛选
+// 
+designStore.methods.setFilterFormId = function(vnode, form_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.push({form_id: form_id});
+};
+designStore.methods.removeFilterFormId = function(vnode, form_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.splice(0,1);
+};
+// 设计面板 - 选择表单
+var design_form_single_selector = Vue.extend({
+    props: ['widget', 'index', 'form_id'],
+    data: function() {
+        return {
+            form: {}
+        };
+    },
+    template: '#design-form-single-selector',
+    methods: {
+        //
+        listForm: function() {
+            this.form = {};
+            if (!this.form_id) return;
+            
+            var t = this;
+            let param = new URLSearchParams();
+            param.append('model','form');
+            param.append('app','universalform');
+            param.append('cols','name');
+            param.append('pkey','form_id');
+            param.append('json','true');
+            param.append('filter[form_id]',t.form_id);
+            axios.post(designStore.uformRowRemoteUrl, param)
+                .then(function(response) {
+                    if (!response.data)
+                        return false;
+                    t.form = response.data;
+                });
+        },
+        // 选择表单
+        onSelectForm: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.form-single-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_form_single_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                if (t.widget.data.filter.length >= 1) {
+                    t.removeForm(1);
+                    // Messagebox.warning('只能选择一个表单');
+                    // return false;
+                }
+                t.onFormSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load(designStore.uformSelectRemoteUrl, function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeForm: function(form_key) {
+            this.form_id = false;
+            this.form = {};
+            this.$parent.removeForm(form_key);
+        },
+        // 已改变
+        onFormSelected: function(selected) {
+            this.form_id = selected.length ? selected[0].value : false;
+            this.form = {};
+            if(!this.form_id) return;
+            this.listForm();
+            this.$parent.formChange(this.form_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.widget.data.filter.length) {
+                this.form_id = this.widget.data.filter[0].form_id ? this.widget.data.filter[0].form_id : false;
+                this.listForm();
+            }
+            
+        }
+    },
+    mounted: function() {
+        this.form = {};
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-form-single-selector', design_form_single_selector);
+
+</script>

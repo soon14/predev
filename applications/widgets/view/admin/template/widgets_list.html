@@ -1,0 +1,58 @@
+<{if $widgets_data}>
+<div class="table-scrollable">
+    <table class="table table-striped table-hover">
+        <thead>
+        <tr>
+            <th>板块模板名称</th>
+            <th>板块模板英文名</th>
+            <th>板块名称</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        <{foreach from=$widgets_data key=key item=item}>
+        <{if $item && !$item.group}>
+        <tr>
+            <td>
+                <{if $item.type}>
+                    <input type="hidden" value="<{$key}>" name="index"/>
+                <{/if}>
+                <{$item.tmp_name}>
+            </td>
+            <td>
+                <{$item.code}>
+            </td>
+            <td>
+                <{$item.name}>
+            </td>
+            <td>
+                <{if $item.type != ''}>
+                    <{if $item.type != '3'}>
+                    <a class="btn btn-xs btn-default" href="<{link app=widgets ctl=admin_template act=edit_widget}>&p[0]=<{$key}>&p[1]=<{$item.widgets_id}>&p[2]=<{$item.id}>&p[3]=<{$file_path}>&type=<{$type}>">
+                        <i class="fa fa-edit"></i>编辑
+                    </a>
+                    <{/if}>
+                <{else}>
+                    无此板块
+                <{/if}>
+            </td>
+        </tr>
+        <{/if}>
+        <{/foreach}>
+        </tbody>
+    </table>
+</div>
+<{else}>
+<div class="well">
+    该页面暂无板块数据
+</div>
+<div class="alert alert-info" id="widgets_help_alert">
+    <h3>如何在页面中加入一个板块？</h3>
+    <p>
+        只需在需要引入板块的HTML代码位置  <code class="code"> <\{widgets code="板块英文标识"\}></code> 即可
+    </p>
+</div>
+<script type="text/javascript">
+    $('#widgets_help_alert').html($('#widgets_help_alert').html().replace(/[\\]/g,''));
+</script>
+<{/if}>

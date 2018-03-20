@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>
+        <{$title}>
+    </title>
+    <meta name="description" content="<{$description}>" />
+    <meta name="keywords" content="<{$keywords}>" />
+    <meta charset="utf-8">
+    <meta name="charset" content="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Cache-Control" content="no-siteapp" />
+    <link type="image/x-icon" href="<{$env.conf.mobile.mobile_icon|storager}>" rel="apple-touch-icon-precomposed">
+    <link href="/themes/mobile/default/statics/activity/vue/styles/common.min.css" rel="stylesheet" type="text/css" />
+    <link href="/themes/mobile/default/statics/activity/vue/styles/ggl.min.css" rel="stylesheet" type="text/css" />
+</head>
+
+<body class="page-ggl">
+    <header class="act-view-header view-ggl">
+        <nav class="top-navs">
+            <ul>
+                <li>
+                    <a href="<{link app=mobile ctl=index}>"><i class="icon-arrow-left icons"></i></a>
+                </li>
+                <li>
+                    <span><{$title}></span>
+                </li>
+                <li></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="view-ggl" id="app-main">
+        <section class="view-text">
+            <p><img src="/themes/mobile/default/statics/activity/vue/images/ggl/ggl-text.png" /></p>
+        </section>
+        <section class="guaguale">
+            <div id="elActivity">
+                <div class="ggl-main-box" id="ggl-main-box">
+                    <div class="ggl-view" v-bind:style="ggl_style">{{ggl_text}}</div>
+                    <canvas class="ggl-canvas" id="ggl-canvas"></canvas>
+                </div>
+            </div>
+            <audio style="display: none;" id="el-audio" controls="">
+                <source src="" type="audio/mpeg">
+            </audio>
+        </section>
+        <section class="view-desc">
+            <p><span :show="limit">可抽奖次数：<var data-num="true">{{num}}</var>次</span></p>
+        </section>
+    </main>
+    <footer class="view-ggl" id="app-footer">
+        <a data-view-rule="true" href="javascript:;" class="view-rule" @click="showRule">活动规则</a>
+    </footer>
+    <div class="box opacity" id="opacity-box" v-show="showMask" style="display: none;">
+        <!-- 规则 -->
+        <div id="rule-box" class="rule-box" v-show="showRule" style="display: none;">
+            <p class="cloud-small cs-01"><img src="/themes/mobile/default/statics/activity/vue/images/bg-cloud-s.png" /></p>
+            <section class="rule-title"><img src="/themes/mobile/default/statics/activity/vue/images/balloon.png" /></section>
+            <section class="rule-text">
+                <a data-close-btn="rule" class="close-btn" href="javascript:;" @click="closeRule"><img src="/themes/mobile/default/statics/activity/vue/images/close.png" /></a>
+                <h3><{$title}></h3>
+                <div class="content-view">
+                    <p>
+                        开始时间：
+                        <{$data.from_time|cdate: 'FDATE_STIME'}>
+                            <br /> 截至时间：
+                            <{$data.to_time|cdate: 'FDATE_STIME'}>
+                    </p>
+                    <p>活动规则：</p>
+                    <p>
+                        <{$data.description|nl2br}>
+                    </p>
+                </div>
+            </section>
+            <p class="cloud-small cs-02"><img src="/themes/mobile/default/statics/activity/vue/images/bg-cloud-s.png" /></p>
+            <p class="cloud-small cs-03"><img src="/themes/mobile/default/statics/activity/vue/images/bg-cloud-s.png" /></p>
+            <p class="cloud-small cs-04"><img src="/themes/mobile/default/statics/activity/vue/images/bg-cloud-s.png" /></p>
+        </div>
+        <!-- 错误 -->
+        <div id="error-box" class="msg-show-box" v-show="showError" style="display: none;">
+            <div class="view-box">
+                <p class="msg-ico"><img src="/themes/mobile/default/statics/activity/vue/images/cry.png" /></p>
+                <h3>操作错误</h3>
+                <div class="content-view">
+                    <p id="err-msg">{{errMsg}}</p>
+                </div>
+                <div class="button-view">
+                    <a data-close-btn="error" class="bl bl-danger" href="javascript:;" @click="closeError">再试试</a>
+                    <a class="bl bl-warning" href="<{link app=mobile ctl=index}>">返回首页</a>
+                </div>
+            </div>
+        </div>
+        <!-- 未抽中 -->
+        <div id="loseBox" class="msg-show-box" v-show="showLose" style="display: none;">
+            <div class="view-box">
+                <p class="msg-ico"><img src="/themes/mobile/default/statics/activity/vue/images/cry.png" /></p>
+                <h3>很遗憾</h3>
+                <div class="content-view">
+                    <p>手气不好，什么都没抽到</p>
+                </div>
+                <div class="button-view">
+                    <a data-close-btn="msg" class="bl bl-danger" href="javascript:;" @click="closeLose">再试试</a>
+                    <a class="bl bl-warning" href="<{link app=mobile ctl=index}>">返回首页</a>
+                </div>
+            </div>
+        </div>
+        <!-- 积分 -->
+        <div id="scoreBox" class="msg-show-box" v-show="showScore" style="display: none;">
+            <div class="view-box">
+                <p class="msg-ico"><img src="/themes/mobile/default/statics/activity/vue/images/firework.png" /></p>
+                <h3>恭喜您中奖了</h3>
+                <div class="content-view">
+                    <p>{{scoreText}} 积分已放入您的账户</p>
+                </div>
+                <div class="button-view">
+                    <a class="bl bl-danger" href="<{link app=b2c ctl=mobile_member act=integral}>">查看</a>
+                    <a data-close-btn="msg" class="bl bl-warning" href="javascript:;" @click="closeScore">再试试</a>
+                </div>
+            </div>
+        </div>
+        <!-- 优惠券 -->
+        <div id="couponBox" class="msg-show-box" v-show="showCoupon" style="display: none;">
+            <div class="view-box">
+                <p class="msg-ico"><img src="/themes/mobile/default/statics/activity/vue/images/firework.png" /></p>
+                <h3>恭喜您中奖了</h3>
+                <div class="content-view">
+                    <p>{{couponText}} 优惠券已放入您的账户</p>
+                </div>
+                <div class="button-view">
+                    <a class="bl bl-danger" href="<{link app=b2c ctl=mobile_member act=coupon}>">查看</a>
+                    <a data-close-btn="msg" class="bl bl-warning" href="javascript:;" @click="closeCoupon">再试试</a>
+                </div>
+            </div>
+        </div>
+        <!-- 未抽中 -->
+        <div id="productBox" class="msg-show-box" v-show="showProduct" style="display: none;">
+            <div class="view-box">
+                <p class="msg-ico"><img src="/themes/mobile/default/statics/activity/vue/images/firework.png" /></p>
+                <h3>恭喜您中奖了</h3>
+                <div class="content-view">
+                    <p>您抽中{{productText}}，请填写收货人信息 以便我们尽快为您发货
+                    </p>
+                </div>
+                <div class="button-view">
+                    <a class="bl bl-danger" :href="partin_addr_url">选择收货地址</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/themes/mobile/default/statics/activity/vue/js/common.min.js" type="text/javascript"></script>
+<script type="text/javascript">
+var activity_id = '<{$data.activity_id}>';
+var ajax_url = '<{link app=digitalmarketing ctl=mobile_activity act=ajax}>';
+var api_url = '/index.php/openapi/prize/win';
+var addr_url = '<{link app=digitalmarketing ctl=mobile_activity act=addrs}>';
+var award_url = '/index.php/openapi/prize/award';
+</script>
+<script src="/themes/mobile/default/statics/activity/vue/js/global.min.js" type="text/javascript"></script>
+<script src="/themes/mobile/default/statics/activity/vue/js/ggl.min.js" type="text/javascript"></script>
+
+</html>

@@ -1,0 +1,19 @@
+
+<desktop>
+
+    <permissions>
+        <permission id="site" display='true' workground='site.wrokground'>站点管理</permission>
+        <permission id="theme" display='true' workground='site.wrokground'>模板管理</permission>
+        <permission id="seo" display='true' workground='site.wrokground'>搜索引擎优化</permission>
+    </permissions>
+
+    <workground name="电脑PC前台" icon="icon-screen-desktop" id="site.wrokground" app="site" controller="admin_module" action="index" order="70">
+        <menugroup name="模板管理">
+            <menu controller='admin_theme_manage' action='index' permission='theme' display='true' order="5">模板管理</menu>
+        </menugroup>
+        <menugroup name="站点管理">
+            <menu controller='admin_setting' action='index' permission='site' display='true' order="55">基本配置</menu>
+            <menu controller='admin_seo' action='index' permission='seo' display='true' order="60">SEO配置</menu>
+        </menugroup>
+    </workground>
+</desktop>

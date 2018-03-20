@@ -1,0 +1,56 @@
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <h3 class="modal-title">创建数据导出任务</h3>
+</div>
+<{if $check_policy}>
+<div class="alert alert-info">
+    <i class="fa  fa-info-circle"></i>
+    导出任务创建成功后,请前往<a href="index.php?app=importexport&ctl=admin_export&act=queue_export">导出任务队列</a>下载导出结果
+</div>
+<form method="post" action="index.php?app=o2ocds&ctl=admin_export&act=create_export"  calss="form" id="export_form">
+    <input type="hidden" id='filter' name="filter" value='<{$filter}>'>
+    <input type="hidden" id='params' name="params" value='<{$params}>'>
+    <div class="modal-body form-horizontal">
+        <div class="form-body">
+            <!--<div class="form-group">
+                <label class="col-md-3 control-label">导出文件类型
+                </label>
+                <div class="col-md-7">
+                    <select  name="filetype" class="form-control">
+                      <{foreach from=$export_type key=k item=v}>
+                      <option value='<{$k}>'><{$v}></option>
+                      <{/foreach}>
+                    </select>
+                </div>
+            </div>-->
+            <div class="form-group  ">
+                <label class="col-md-3 control-label">导出任务备注
+                </label>
+                <div class="col-md-7">
+                    <input type='text' required="true" name='name' class="form-control"/>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+<div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">立即创建导出任务</button>
+</div>
+
+
+</form>
+<script type="text/javascript">
+    $('#export_form').data('ajax:success',function(re){
+        $('#export_form').closest('.modal').modal('hide');
+    });
+</script>
+
+<{else}>
+<p>
+    <a class="btn btn-block btn-warning"  href="index.php?app=importexport&ctl=admin_system&act=setting">请先配置导出导出&raquo;</a>
+
+</p>
+
+<{/if}>

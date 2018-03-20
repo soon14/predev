@@ -1,0 +1,23 @@
+<services>
+    <service id="b2c.member_menu_extends" opt="会员中心菜单扩展">
+        <class>aftersales_member_menuextends</class>
+    </service>
+    <service id="b2c.member_menu_m_extends" opt="会员中心移动端菜单扩展">
+        <class>aftersales_member_m_menuextends</class>
+    </service>
+	<service id="desktop_finder.aftersales_mdl_request" opt="售后服务后台请求列表Finder扩展">
+        <class>aftersales_finder_request</class>
+    </service>
+    <service id="b2c.order.delivery.reship.update" optname="订单退货单据更新时触发">
+        <class>aftersales_reship_update</class>
+    </service>
+    <service id="b2c.order.delivery.reship.finish" optname="订单退货单据更新时触发">
+        <class>aftersales_reship_finish</class>
+    </service>
+    <service id="ectools.bill.refund.order.succ" optname="订单退款完成处理">
+        <class orderby="40">aftersales_refund_update</class>
+    </service>
+    <service id="ectools.bill.refund.b2c.order.succ" optname="订单退款完成处理">
+        <class orderby="40">aftersales_refund_update</class>
+    </service>
+</services>

@@ -1,0 +1,110 @@
+<services>
+    <!--后台分佣仪表盘挂件-->
+    <!--<service id="o2ocds.widgets" optname="分佣盘挂件">
+        <class>o2ocds_desktop_widgets_stats</class>
+        <class>o2ocds_desktop_widgets_overview</class>
+    </service>-->
+    <!--finder虚拟列-->
+    <service id="desktop_finder.o2ocds_mdl_type_extend">
+        <class>o2ocds_finder_type_extend</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_products_extend">
+        <class>o2ocds_finder_products_extend</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_orderlog">
+        <class>o2ocds_finder_orderlog</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_orderlog_achieve">
+        <class>o2ocds_finder_orderlog_achieve</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_products_count">
+        <class>o2ocds_finder_products_count</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_qrcode">
+        <class>o2ocds_finder_qrcode</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_enterprise">
+        <class>o2ocds_finder_enterprise</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_store">
+        <class>o2ocds_finder_store</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_statement">
+        <class>o2ocds_finder_statement</class>
+    </service>
+    <service id="desktop_finder.b2c_mdl_orders">
+        <class>o2ocds_finder_orders</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_notice">
+        <class>o2ocds_finder_notice</class>
+    </service>
+    <service id="desktop_finder.o2ocds_mdl_service_code">
+        <class>o2ocds_finder_service_code</class>
+    </service>
+
+    <!--分佣模式-->
+    <service id="o2ocds.mode" optname="分佣模式">
+        <class >o2ocds_service_mode_lvrelate</class>
+        <class >o2ocds_service_mode_lvnorelate</class>
+    </service>
+
+    <!--订单完成时，结算佣金-->
+    <service id="b2c.order.end.finish" optname="订单归档完成时触发">
+        <class orderby="50">o2ocds_service_order_allfinish</class>
+    </service>
+    <service id="view_helper">
+        <class >o2ocds_view_helper</class>
+    </service>
+    <service id="b2c.order.create.before" optname="订单创建前触发">
+        <class orderby="100">o2ocds_service_order_create</class>
+    </service>
+    <service id="b2c.order.create.finish" optname="订单创建完成时触发">
+        <class orderby="100">o2ocds_service_order_createfinish</class>
+    </service>
+    <service id="b2c.order.delivery.send.finish" optname="发货操作完成触发">
+        <class orderby="30">o2ocds_service_order_sendfinish</class>
+    </service>
+
+    <!--订单付款流程-->
+    <service id="ectools.bill.payment.b2c.order.succ" optname="订单支付完成处理">
+        <class orderby="30">o2ocds_service_order_payfinish</class>
+    </service>
+    <service id="ectools.bill.payment.b2c.order.progress" optname="订单支付到担保方完成处理">
+        <class orderby="30">o2ocds_service_order_payfinish</class>
+    </service>
+
+    <service id="store.create_after">
+        <class>o2ocds_service_store_createafter</class>
+    </service>
+    <service id="enterprise.create_after">
+        <class>o2ocds_service_enterprise_createafter</class>
+    </service>
+    <service id="importexport.o2ocds_mdl_products_extend">
+        <class>o2ocds_data_products_extend</class>
+    </service>
+    <service id="importexport.o2ocds_mdl_qrcode">
+        <class>o2ocds_data_qrcode</class>
+    </service>
+    <service id="importexport.o2ocds_mdl_orderlog_achieve">
+        <class>o2ocds_data_orderlog_achieve</class>
+    </service>
+    <service id="importexport.o2ocds_mdl_statement">
+        <class>o2ocds_data_statement</class>
+    </service>
+    <!--商品扩展数据同步-->
+    <service id="b2c.goods.save" optname="中间表数据同步">
+        <!--<class>o2ocds_service_type</class>-->
+        <class>o2ocds_service_products</class>
+    </service>
+
+    <service id="o2ocds.statement.create">
+        <class>o2ocds_statement_create</class>
+    </service>
+    <service id="o2ocds.statement.update">
+        <class>o2ocds_statement_finish</class>
+    </service>
+    <!--open api-->
+    <service id="openapi.scode" optname="openapi@服务码">
+        <class>o2ocds_openapi_scode</class>
+    </service>
+</services>

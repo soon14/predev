@@ -1,0 +1,43 @@
+<div id="goods_cat_filter_<{$name}>" class="pull-right">
+	<{assign var=callback_fn_store value='goods_store_filter_fix_fn_'.$name}>
+	<{input type="goodsstoreid" divider='全部店铺' store_ids=$extra_pagedata callback=$callback_fn_store value=$env.get.filter.storename}>
+
+	<{assign var=callback_fn value='goods_cat_filter_fix_fn_'.$name}>
+	<{input type="category" divider='全部分类' callback=$callback_fn value=$env.get.filter.cat_id}>
+</div>
+<script type="text/javascript">
+
+	/**
+	 * 商品分类筛选函数
+	 */
+	var <{$callback_fn}> = function(cat_id){
+
+		var actionUrl = $('#finder_form_<{$name}>').prop('action');
+		actionUrl = actionUrl.replace(/&filter\[cat_id\]([^&]+)/, '');
+		if (!!cat_id) {
+			actionUrl += '&filter[cat_id]=' + cat_id;
+		}
+
+		$('#finder_form_<{$name}>').prop('action', actionUrl);
+
+		update_finder_<{$name}>();
+	};
+	$('#goods_cat_filter_<{$name}>').appendTo($('#finder_title_<{$name}>').addClass('clearfix'));
+	$('#finder_title_<{$name}> .page-title').addClass('pull-left');
+
+	/**
+	 * 商品店铺筛选回调函数
+	 */
+	var <{$callback_fn_store}> = function(storename){
+
+		var actionUrl = $('#finder_form_<{$name}>').prop('action');
+		actionUrl = actionUrl.replace(/&filter\[storename\]([^&]+)/, '');
+		if (storename) {
+			actionUrl += '&filter[store_id]=' + storename;
+		}
+
+		$('#finder_form_<{$name}>').prop('action', actionUrl);
+
+		update_finder_<{$name}>();
+	};
+</script>

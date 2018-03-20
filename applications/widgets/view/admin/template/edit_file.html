@@ -1,0 +1,42 @@
+<h3 class="page-title">
+    编辑文件 <small><{$file_path}></small>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=widgets&ctl=admin_template&act=manage&p[0]=<{$type}>">文件列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">编辑文件</a>
+        </li>
+    </ul>
+</div>
+<form  action="<{link app=widgets ctl=admin_template act=save}>" method="post" id="J_page_save_form">
+    <input type="hidden" name="type" value="<{$type}>"/>
+    <input type="hidden" name="file_path" value="<{$file_path}>"/>
+    <div class="row">
+        <div class="col-md-12">
+            <div id="J_code">
+                <{input type='code' value=$contents height=700 name=content}>
+            </div>
+        </div>
+        <!--
+        <div class="col-md-6">
+            <div class="table-scrollable hide" id="J_list">
+                <input type="hidden" value="" id="J_line"/>
+                <input type="hidden" value="" id="J_line_number"/>
+                <table class="table  table-striped table-hover">
+                    <thead>
+                        <th>模块代码</th>
+                        <th>操作</th>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        -->
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">保存</button>
+</form>

@@ -1,0 +1,153 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 图文混合 - 子组件 -->
+<template id="widget-child-imagetext">
+    <!--
+    types 布局方式
+    isShowLine 是否显示边线
+    title 文字标题
+    content 文字内容
+    item.url 网址
+    item.image.src 图片地址
+    item.image.mode 图片裁切模式 https://mp.weixin.qq.com/debug/wxadoc/dev/component/image.html
+    -->
+    <section class="widget-box widget-imagetext " :class="widget.data.cols">
+        <div class="">
+            <div v-show="widget.data.type == 'surround'" :class="widget.data.isShowLine?'line-bottom':''">
+                <!-- 图文环绕 -->
+                <div :class="widget.data.type" class="clearfix imagetext">
+                    <a class="link" :href="widget.data.items.length > 0?widget.data.items[0].url:'javascript:;'">
+                    	<div class="image-block" v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='widthFix'">
+                            <img class="image" :style="{width:widget.data.imageWidth+'px',height:'auto'}" :src="widget.data.items[0].image.src" v-if="widget.data.items.length > 0">
+                        </div>
+                        <div class="image-block" v-else :style="{width:widget.data.imageWidth+'px',height:widget.data.imageHeight+'px',lineHeight:widget.data.imageHeight+'px'}">
+                            <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="{'backgroundSize':(widget.data.items[0].image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':'url('+widget.data.items[0].image.src+')'}"  v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='aspectFill'"></div>
+                            <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="'backgroundImage:url('+widget.data.items[0].image.src+')'"  v-else-if="widget.data.items.length > 0"></div>
+                            <img class="image" src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})"  v-else/>
+                        </div>
+                        <h4 class="title" :style="{textAlign:widget.data.title_align,fontSize:widget.data.titleSize +'px',color:widget.data.titleColor,marginLeft:widget.data.imageWidth+'px'}">{{widget.data.title}}</h4>
+                        <span class="content" :style="{letterSpacing:widget.data.letterSpacing + 'px',lineHeight:widget.data.lineHeight,fontSize:widget.data.contentSize +'px',color:widget.data.contentColor}">{{widget.data.content}}</span>
+                    </a>
+                </div>
+            </div>
+            <div v-show="widget.data.type == 'type_1' || widget.data.type == 'type_1_padding'"  :class="widget.data.isShowLine?'line-bottom':''">
+                <!-- 标题图片文字上下排列 -->
+                <div class="imagetext" :class="widget.data.type">
+                    <a class="link" :href="widget.data.items.length > 0?widget.data.items[0].url:'javascript:;'">
+                        <h4 class="title" :style="{textAlign:widget.data.title_align,fontSize:widget.data.titleSize +'px',color:widget.data.titleColor}">{{widget.data.title}}</h4>
+                        <div class="image-block" v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='widthFix'">
+                            <img class="image" :style="{width:'100%',height:'auto'}" :src="widget.data.items[0].image.src" v-if="widget.data.items.length > 0">
+                        </div>
+                        <div class="image-block" v-else  :style="{width:'100%',height:widget.data.imageHeight+'px',lineHeight:widget.data.imageHeight+'px'}">
+                            <!--<img class="image" :src="widget.data.items[0].image.src" v-if="widget.data.items.length > 0">-->
+                            	<!--<div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="'backgroundImage:url('+widget.data.items[0].image.src+')'"  v-if="widget.data.items.length > 0"></div>-->
+                             <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="{'backgroundSize':(widget.data.items[0].image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':'url('+widget.data.items[0].image.src+')'}"  v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='aspectFill'"></div>
+                            <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="'backgroundImage:url('+widget.data.items[0].image.src+')'"  v-else-if="widget.data.items.length > 0"></div>
+                            <img class="image" src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})"  v-else/>
+                        </div>
+                        <div class="content" :style="{letterSpacing:widget.data.letterSpacing + 'px',lineHeight:widget.data.lineHeight,fontSize:widget.data.contentSize +'px',color:widget.data.contentColor}">{{widget.data.content}}</div>
+                    </a>
+                </div>
+            </div>
+            <div v-show="widget.data.type == 'type_2' || widget.data.type == 'type_2_padding'"  :class="widget.data.isShowLine?'line-bottom':''">
+                <!-- 图片标题文字上下排列 -->
+                <div class="imagetext" :class="widget.data.type">
+                    <a class="link" :href="widget.data.items.length > 0?widget.data.items[0].url:'javascript:;'">
+                        <div class="image-block" v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='widthFix'">
+                            <img class="image" :style="{width:'100%',height:'auto'}" :src="widget.data.items[0].image.src" v-if="widget.data.items.length > 0">
+                        </div>
+                        <div class="image-block"  v-else :style="{width:'100%',height:widget.data.imageHeight+'px',lineHeight:widget.data.imageHeight+'px'}">
+                            <!--<img class="image" :src="widget.data.items[0].image.src" v-if="widget.data.items.length > 0">-->
+                            	<!--<div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="'backgroundImage:url('+widget.data.items[0].image.src+')'"  v-if="widget.data.items.length > 0"></div>-->
+                             <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="{'backgroundSize':(widget.data.items[0].image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':'url('+widget.data.items[0].image.src+')'}"  v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='aspectFill'"></div>
+                            <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="'backgroundImage:url('+widget.data.items[0].image.src+')'"  v-else-if="widget.data.items.length > 0"></div>
+                            <img class="image" src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})"  v-else/>
+                        </div>
+                        <h4 class="title" :style="{textAlign:widget.data.title_align,fontSize:widget.data.titleSize +'px',color:widget.data.titleColor}">{{widget.data.title}}</h4>
+                        <div class="content" :style="{letterSpacing:widget.data.letterSpacing + 'px',lineHeight:widget.data.lineHeight,fontSize:widget.data.contentSize +'px',color:widget.data.contentColor}">{{widget.data.content}}</div>
+                    </a>
+                </div>
+            </div>
+            <div v-show="widget.data.type == 'type_3'"  :class="widget.data.isShowLine?'line-bottom':''">
+                <!-- 左边图片右边文字 -->
+                <div :class="widget.data.type" class="imagetext clearfix">
+                    <a class="link" :href="widget.data.items.length > 0?widget.data.items[0].url:'javascript:;'">
+                        <div class="image-block" v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='widthFix'">
+                            <img class="image" :style="{width:widget.data.imageWidth+'px',height:'auto'}" :src="widget.data.items[0].image.src" v-if="widget.data.items.length > 0">
+                        </div>
+                        <div class="image-block" v-else :style="{width:widget.data.imageWidth+'px',height:widget.data.imageHeight+'px',lineHeight:widget.data.imageHeight+'px'}">
+                            <!--<img class="image" :src="widget.data.items[0].image.src" v-if="widget.data.items.length > 0">-->
+                            	<!--<div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="'backgroundImage:url('+widget.data.items[0].image.src+')'"  v-if="widget.data.items.length > 0"></div>-->
+                             <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="{'backgroundSize':(widget.data.items[0].image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':'url('+widget.data.items[0].image.src+')'}"  v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='aspectFill'"></div>
+                            <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="'backgroundImage:url('+widget.data.items[0].image.src+')'"  v-else-if="widget.data.items.length > 0"></div>
+                            <img class="image" src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})"  v-else/>
+                        </div>
+                        <div class="" :style="{paddingLeft:widget.data.imageWidth+'px',marginLeft:'10px'}">
+                            <h4 class="title" :style="{textAlign:widget.data.title_align,fontSize:widget.data.titleSize +'px',color:widget.data.titleColor}">{{widget.data.title}}</h4>
+                            <div class="content" :style="{letterSpacing:widget.data.letterSpacing + 'px',lineHeight:widget.data.lineHeight,fontSize:widget.data.contentSize +'px',color:widget.data.contentColor}">{{widget.data.content}}</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div v-show="widget.data.type == 'type_4'"  :class="widget.data.isShowLine?'line-bottom':''">
+                <!-- 左边文字右边图片 -->
+                <div :class="widget.data.type" class="imagetext clearfix">
+                    <a class="link" :href="widget.data.items.length > 0?widget.data.items[0].url:'javascript:;'">
+                        <div class="image-block" v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='widthFix'">
+                            <img class="image" :style="{width:widget.data.imageWidth+'px',height:'auto'}" :src="widget.data.items[0].image.src" v-if="widget.data.items.length > 0">
+                        </div>
+                        <div class="image-block" v-else :style="{width:widget.data.imageWidth+'px',height:widget.data.imageHeight+'px',lineHeight:widget.data.imageHeight+'px'}">
+                            <!--<img class="image" :src="widget.data.items[0].image.src" v-if="widget.data.items.length > 0">-->
+                            	<!--<div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="'backgroundImage:url('+widget.data.items[0].image.src+')'"  v-if="widget.data.items.length > 0"></div>-->
+                             <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="{'backgroundSize':(widget.data.items[0].image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':'url('+widget.data.items[0].image.src+')'}"  v-if="widget.data.items.length > 0&&widget.data.items[0].image.mode=='aspectFill'"></div>
+                            <div :class="widget.data.items[0].image.mode || 'aspectFit'" :style="'backgroundImage:url('+widget.data.items[0].image.src+')'"  v-else-if="widget.data.items.length > 0"></div>
+                            <img class="image" src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})"  v-else/>
+                        </div>
+                        <div class="" :style="{paddingRight:widget.data.imageWidth+'px',marginRight:'10px'}">
+                            <h4 class="title" :style="{textAlign:widget.data.title_align,fontSize:widget.data.titleSize +'px',color:widget.data.titleColor}">{{widget.data.title}}</h4>
+                            <div class="content" :style="{letterSpacing:widget.data.letterSpacing + 'px',lineHeight:widget.data.lineHeight,fontSize:widget.data.contentSize +'px',color:widget.data.contentColor}">{{widget.data.content}}</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+</template>
+<script type="text/javascript">
+var arr = [];
+designStore.methods.updateData = function(vnode) {
+    this.root.page.currWidgets[vnode.index].data.items = arr;
+     console.log('showcase'); 
+    console.log(this.root.page.currWidgets[vnode.index].data.items); 
+};
+var widget_child_imagetext = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-imagetext',
+	created:function(){
+    	var _t = this;
+    	if(this.widget.data.items.length!=0){
+    		for(var i=0;i<this.widget.data.items.length;i++){
+    			imgCompare(this.widget.data.items[i].image);
+    		}
+    	}
+    	arr = this.widget.data.items;
+    	designStore.methods.updateData(this);
+    }
+});
+function imgCompare(image){
+	var img = new Image();
+	img.onload = function(){
+		if(image.mode == 'aspectFill'){
+			if(this.width>this.height){
+		    	image['percent'] = 'width';
+		    }else{
+		    	image['percent'] = 'height';
+		    }
+		}else{
+			image['percent'] = 'normal';
+		}
+	    
+	    this.onload = null;
+	};
+	img.src = image.src;
+}
+</script>

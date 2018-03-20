@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+    <h4 class="modal-title">小程序挂件中心</h4>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <{foreach from=$list item=item}>
+        <div class="col-md-4 col-sm-6 col-xs-12">
+            <div class="dashboard-stat blue">
+                <a class="widget-append-view" data-widgetname="<{$iten.name}>" href="javascript:;">
+                    <div class="visual">
+    					<i class="fa fa-puzzle-piece"></i>
+                    </div>
+                    <div class="details">
+    					<div class="number">
+    						 <{$item.title}>
+    					</div>
+    					<div class="desc">
+    						 <{$item.desc}>
+    					</div>
+    				</div>
+                    <div class="more" >
+    				 <{$item.name}> <i class="fa fa-plus-circle"></i>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <{/foreach}>
+    </div>
+</div>

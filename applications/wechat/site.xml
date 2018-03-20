@@ -1,0 +1,7 @@
+<site>
+    <module controller='site_wxqrlogin' >
+        <name>wxqrlogin</name>
+        <title>微信二维码登录</title>
+        <disable>false</disable>
+    </module>
+</site>

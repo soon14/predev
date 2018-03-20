@@ -1,0 +1,68 @@
+<dl class="my-menu supplier-menu">
+          <dt class="mm-root">
+              商品管理
+          </dt>
+          <dd>
+              <ul class="nav nav-pills nav-stacked">
+                  <li>
+                      <a href="<{link app=supplier ctl=site_supplier act=stock}>">
+                          <span>库存管理</span>
+                      </a>
+                  </li>
+                  <!-- <li>
+                      <a href="#">
+                          <span>商品提报</span>
+                      </a>
+                  </li> -->
+              </ul>
+          </dd>
+          <dt class="mm-root">
+              订单管理
+          </dt>
+          <dd>
+              <ul class="nav nav-pills nav-stacked">
+                  <li>
+                      <a href="<{link app=supplier ctl=site_supplier act=order args0=1 args1=20 args2=ready}>">
+                          <span>待发货订单</span>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="<{link app=supplier ctl=site_supplier act=order args0=1 args1=20 args2=succ}>">
+                          <span>已发货订单</span>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="<{link app=supplier ctl=site_supplier act=order}>">
+                          <span>全部订单</span>
+                      </a>
+                  </li>
+              </ul>
+          </dd>
+          <dt class="mm-root">
+              结算管理
+          </dt>
+          <dd>
+              <ul class="nav nav-pills nav-stacked">
+                  <li>
+                      <a href="<{link app=supplier ctl=site_supplier act=voucher}>">
+                          <span>结算凭证</span>
+                      </a>
+                  </li>
+                  <li>
+                      <a href="<{link app=supplier ctl=site_supplier act=statement}>">
+                          <span>已结算对账</span>
+                      </a>
+                  </li>
+              </ul>
+          </dd>
+</dl>
+
+<script type="text/javascript">
+    $('.supplier-menu a').each(function(idx,item){
+        var hf = item.href;
+        var lhf = location.href;
+        if(hf.replace(/\d/ig,'').replace(/-/ig,'') == lhf.replace(/\d/ig,'').replace(/\?(.*)/ig,'').replace(/-/ig,'')){
+            $(item).closest('li').addClass('active');
+        }
+    });
+</script>

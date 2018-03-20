@@ -1,0 +1,8 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="admin_routeplus">自定义URL</permission>
+        <permission display='true' id="admin_routeplus_edit">编辑自定义URL</permission>
+    </permissions>
+    <adminpanel action="index" controller="admin_statics" display="true" group="desktop_system" order='55' permission="admin_routeplus">自定义URL</adminpanel>
+    <adminpanel action="edit" controller="admin_statics" display="false" group="desktop_system" order='56' permission="admin_routeplus">编辑自定义URL</adminpanel>
+</desktop>

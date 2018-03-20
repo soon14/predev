@@ -1,0 +1,72 @@
+<input type="hidden" name="page" value="<{$page}>">
+<{if !$members}>
+<div class="alert  margin-top-10">
+    <i class="fa fa-info"></i> 请加入需要禁用的会员
+</div>
+<{else}>
+<div data-updatecontainer="true">
+    <div class="table-scrollable">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" class="sel-handle">
+                </th>
+                <th>
+                    登录帐号
+                </th>
+                <th>
+                    订单数
+                </th>
+                <th>
+                   注册时间
+                </th>
+                <th>
+                    手机号
+                </th>
+                <th>
+                    EMAIl
+                </th>
+                <th>
+                    操作
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <{foreach from=$members item=item}>
+            <tr>
+                <td>
+                    <input type="checkbox" name="member_id[]" value="<{$item.member_id}>">
+                </td>
+                <td>
+                    <{if $pam_members[$item.member_id]}>
+                    <a href="<{link app=b2c ctl=admin_member act=detail args0=$item.member_id}>" target="_blank">
+                        <{$pam_members[$item.member_id].login_account}>
+                    </a>
+                    <{else}>
+                    匿名会员
+                    <{/if}>
+                </td>
+                <td>
+                    <{$item.order_num}>
+                </td>
+                <td>
+                    <{$item.regtime|cdate}>
+                </td>
+                <td>
+                    <{$item.mobile}>
+                </td>
+                <td>
+                    <{$item.email}>
+                </td>
+                <td>
+                    <button class="btn btn-xs default btn-remove" type="button"><i class="fa fa-times"></i> 移除</button>
+                </td>
+            </tr>
+            <{/foreach}>
+            </tbody>
+        </table>
+    </div>
+    <{pagers data=$pager}>
+</div>
+<{/if}>

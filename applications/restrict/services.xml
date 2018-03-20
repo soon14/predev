@@ -1,0 +1,24 @@
+<services>
+    <service id="desktop_finder.restrict_mdl_restrict"  optname="限购列表">
+        <class>restrict_finder_restrict</class>
+    </service>
+    <service id="desktop_finder.restrict_mdl_member_goods"  optname="购买记录">
+        <class>restrict_finder_memgoods</class>
+    </service>
+    <service id="restrict.restrict.add" optname="记录限购商品购买情况">
+        <class orderby="30">restrict_restrict</class>
+    </service>
+    <service id="restrict.check" optname="商品限购检查">
+        <class orderby="30">restrict_check</class>
+    </service>
+    <service id="b2c.order_check" optname="商品限购检查">
+        <class orderby="30">restrict_check</class>
+    </service>
+    <service id="b2c.order.create.finish" optname="订单创建完成时触发">
+        <class orderby="30">restrict_order_createfinish</class>
+    </service>
+    <service id="openapi.restrict" optname="openapi@限购信息相关">
+        <class>restrict_openapi_restrict</class>
+    </service>
+
+</services>

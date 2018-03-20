@@ -1,0 +1,7 @@
+<cronentries>
+<cron id="solr_tasks_init">
+  <description>搜索引擎索引初始化</description>
+  <schedule>* */1 * * *</schedule>
+  <enabled>false</enabled>
+</cron>
+</cronentries>

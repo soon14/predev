@@ -1,0 +1,20 @@
+<div class="ml-medias-wrap">
+    <{if $images}>
+    <{foreach from=$images item=img}>
+    <div class="ml-medias-item" data-media-id="<{$img.image_id}>" data-media-path="<{$img.image_path}>">
+        <div class="ml-media-item-box">
+            <div class="ml-media-img">
+                <img src="<{$img.image_path}>" />
+            </div>
+            <div class="ml-media-selector">
+                <div class="ml-media-selector-var">
+                    <i class="fa fa-circle-o"></i>
+                    <span class="selector-str">未选中</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <{/foreach}>
+    <{/if}>
+</div>
+<{pagers data=$pager}>

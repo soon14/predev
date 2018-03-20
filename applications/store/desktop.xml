@@ -1,0 +1,87 @@
+<desktop>
+    <permissions>
+        <permission id="store_dashboard" display='true'>门店仪表盘</permission>
+        <permission id="store_dashboard_widgets_stats" display='true'>仪表盘杂项</permission>
+        <permission id="store_dashboard_widgets_overview" display='true'>门店业务概览</permission>
+        <permission id="store_dashboard_widgets_revenue" display='true'>门店业务饼图</permission>
+
+        <permission id="store_manage" display='true'>门店管理</permission>
+        <permission id="store_pos" display='true'>店铺收银台</permission>
+
+        <permission id="center_cash_manage" display='true'>收银台管理</permission>
+        <permission id="center_cash" display='true'>中央收银台</permission>
+
+        <permission id="store_finder_edit_stock" display='true'>直接修改库存</permission>
+        <permission id="store_stock_list" display='true'>库存列表</permission>
+        <permission id="store_stock_manage" display='true'>进货管理</permission>
+        <permission id="store_income_stock" display='true'>损益盘点</permission>
+        <permission id="store_order_list" display='true'>订单列表</permission>
+        <permission id="store_goods_list" display='true'>商品列表</permission>
+        <permission id="store_cash_collections" display='true'>现金收款</permission>
+        <permission id="store_MMGOCard_collections" display='true'>MMGO专用卡收款</permission>
+        <permission id="store_MMGOCard_Balance" display='true'>MMGO专用卡余额查询</permission>
+        <permission id="store_report" display='true'>报表导出</permission>
+        <permission id="print_store_report" display='true'>店铺收银报表</permission>
+    </permissions>
+
+    <workground name="门店" icon="icon-home" id="wrokground.store" order='68'>
+        <menugroup name="门店仪表盘">
+            <menu controller='admin_store_dashboard' action='index' permission='store_dashboard' display='true' order='1'>门店仪表盘</menu>
+            <menu controller='admin_store_dashboard' action='miscellaneous' permission='store_dashboard_widgets_stats' display='false' order='2'>仪表盘杂项</menu>
+            <menu controller='admin_store_dashboard' action='overview' permission='store_dashboard_widgets_overview' display='false' order='3'>门店业务概览</menu>
+            <menu controller='admin_store_dashboard' action='curve' permission='store_dashboard_widgets_revenue' display='false' order='4'>门店业务饼图</menu>
+        </menugroup>
+
+        <menugroup name="报表导出">
+            <menu controller='admin_report' action='index' permission='store_report' display='true' order='1'>报表导出</menu>
+        </menugroup>
+
+        <menugroup name="店铺收银台">
+            <menu controller='admin_checkstand' action='index' permission='store_pos' display='true' order='5'>店铺收银台</menu>
+            <menu controller='admin_pay' action='cash_collections' permission='store_cash_collections' display='false' order='6'>现金收款</menu>
+            <menu controller='admin_pay' action='mmgo_card_collections' permission='store_MMGOCard_collections' display='false' order='6'>MMGO专用卡收款功能</menu>
+            <menu controller='admin_pay' action='store_MMGOCard_Balance' permission='store_MMGOCard_Balance' display='false' order='6'>MMGO专用卡余额查询</menu>
+            <menu controller='admin_report' action='print_store_report' permission='print_store_report' display='false' order='6'>打印店铺报表</menu>
+
+        </menugroup>
+
+        <menugroup name="中央收银台">
+            <menu controller='admin_center' action='select' permission='center_cash' display='true' order='5'>中央收银台</menu>
+        </menugroup>
+
+        <menugroup name="订单列表">
+            <menu controller='admin_orders' action='index' permission='store_order_list' display='true' order='7'>订单列表</menu>
+        </menugroup>
+
+
+        <menugroup name="商品列表">
+            <menu controller='admin_goods' action='index' permission='store_goods_list' display='true' order='8'>商品列表</menu>
+        </menugroup>
+
+        <menugroup name="门店管理">
+            <menu controller='admin_store' action='index' permission='store_manage' display='true' order='9'>门店管理</menu>
+            <menu controller='admin_store' action='edit' permission='store_manage' display='false' order="10">添加/编辑门店</menu>
+        </menugroup>
+
+        <menugroup name="收银台管理">
+            <menu controller='admin_center' action='index' permission='center_cash_manage' display='true' order='9'>收银台管理</menu>
+            <menu controller='admin_center' action='edit' permission='center_cash_manage' display='false' order="10">编辑</menu>
+        </menugroup>
+
+        <menugroup name="库存列表">
+            <menu controller='admin_stock' action='index' permission='store_stock_list' display='true' order='11'>库存列表</menu>
+            <menu controller='admin_stock' action='finder_edit_stock' permission='store_finder_edit_stock' display='false' order='12'>直接修改库存</menu>
+        </menugroup>
+
+        <menugroup name="进货管理">
+            <menu controller='admin_stock' action='purchases_manage' permission='store_stock_manage' display='true' order='13'>进货管理</menu>
+            <menu controller='admin_stock' action='edit_purchases_receipts' permission='store_stock_manage' display='false' order='13'>添加进货单</menu>
+        </menugroup>
+
+        <menugroup name="损益盘点">
+            <menu controller='admin_stock' action='income_stock' permission='store_income_stock' display='true' order='14'>损益盘点</menu>
+            <menu controller='admin_stock' action='edit_income_receipts' permission='store_income_stock' display='false' order='14'>添加损益单</menu>
+        </menugroup>
+    </workground>
+
+</desktop>

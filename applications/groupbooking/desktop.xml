@@ -1,0 +1,26 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="groupbooking_sales">拼团订单</permission>
+        <permission display='true' id="groupbooking_activity">拼团活动</permission>
+        <permission display='true' id="groupbooking_order">拼团订单</permission>
+        <permission display='true' id="groupbooking_participate_member">参与用户列表</permission>
+    </permissions>
+
+    <panelgroup icon="icon-present" id="sales" order="20">营销</panelgroup>
+    <adminpanel action="index" controller="admin_setting" display="true" group="groupbooking_sales" order='1' permission="groupbooking_sales">拼团设置</adminpanel>
+
+    <workground icon=" fa fa-users" id="groupbooking.wrokground" name="拼团" order="45">
+        <menugroup name="拼团活动">
+            <menu action='add' controller='admin_index' display='false' order='10' permission='groupbooking_activity'>添加拼团活动</menu>
+            <menu action='edit' controller='admin_index' display='false' order='11' permission='groupbooking_activity'>编辑拼团活动</menu>
+            <menu action='index' controller='admin_index' display='true' order='20' permission='groupbooking_activity'>拼团活动列表</menu>
+        </menugroup>
+        <menugroup name="拼团订单">
+            <menu action='index' controller='admin_order' display='true' order='21' params='p[0]:0' permission='groupbooking_order'>待成团订单</menu>
+            <menu action='index' controller='admin_order' display='true' order='22' params='p[0]:1' permission='groupbooking_order'>已成团订单</menu>
+        </menugroup>
+        <menugroup name="参与用户列表">
+            <menu action='index' controller='admin_member' display='true' order='30' permission='groupbooking_participate_member'>拼团参与用户列表</menu>
+        </menugroup>
+    </workground>
+</desktop>

@@ -1,0 +1,26 @@
+<root>
+    <register act="create_dir" ctl="admin_template" module='normal'  param="name">
+        <operate_type>创建模板目录</operate_type>
+        <template>%s</template>
+    </register>
+    <register act="create_file" ctl="admin_template" module='normal'  param="name">
+        <operate_type>创建模板文件</operate_type>
+        <template>%s</template>
+    </register>
+    <register act="remove" ctl="admin_template" module='normal'  param="p.1">
+        <operate_type>删除模板文件</operate_type>
+        <template>%s</template>
+    </register>
+    <register act="save" ctl="admin_template" module='normal'  param="file_path">
+        <operate_type>编辑模板文件内容</operate_type>
+        <template>文件 %s</template>
+    </register>
+    <register act="save" ctl="admin_index" module='normal' param="tmp_name">
+        <operate_type>新增或编辑挂件</operate_type>
+        <template>%s</template>
+    </register>
+    <register act="save" ctl="admin_category" module='normal' param="cat.title">
+        <operate_type>新增或编辑挂件分类</operate_type>
+        <template>%s</template>
+    </register>
+</root>

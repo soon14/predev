@@ -1,0 +1,52 @@
+<services>
+
+
+    <service id="ectools_payment.applications" optname="支付插件列表">
+        <class>ectools_payment_applications_cod</class>
+        <class>ectools_payment_applications_offline</class>
+        <class>ectools_payment_applications_alipay</class>
+        <class>ectools_payment_applications_malipay</class>
+        <!-- <class>ectools_payment_applications_alipayguarantee</class> 支付宝担保交易（不常用）-->
+        <class>ectools_payment_applications_chinapay</class>
+    </service>
+
+    <service id="view_compile_helper">
+        <class>ectools_view_compiler</class>
+    </service>
+
+    <service id="view_helper">
+        <class>ectools_view_helper</class>
+    </service>
+
+    <service id="desktop_finder.ectools_mdl_bills">
+        <class>ectools_finder_bills</class>
+    </service>
+
+    <service id="ectools_regions.ectools_mdl_regions" optname="地区包" opttype="select">
+        <class>ectools_regions_mainland</class>
+    </service>
+
+    <service id="html_input">
+        <class>ectools_view_input</class>
+    </service>
+
+    <service id="openapi.qrcode" optname="openapi@二维码">
+        <class>ectools_qrcode_api</class>
+    </service>
+    <service id="openapi.barcode" optname="openapi@条码">
+        <class>ectools_barcode_api</class>
+    </service>
+
+    <service id="openapi.ectools_payment" optname="openapi@支付相关">
+        <class>ectools_payment_api</class>
+    </service>
+    <!--为了缩短openapi URL-->
+    <service id="openapi.ecpay" optname="openapi@支付相关(短URL)">
+        <class>ectools_payment_api</class>
+    </service>
+
+    <service id="ectools_regions_apps">
+        <class>ectools_regions_operation</class>
+    </service>
+
+</services>

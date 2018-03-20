@@ -1,0 +1,62 @@
+<{include file='site/supplier/layout/top.html' }>
+<div class="my-main supplier-main">
+    <div class="row">
+        <div class="col-xs-2">
+            <{include file='site/supplier/layout/menu.html' }>
+        </div>
+        <div class="col-xs-10 my-page">
+            <div class="page-header clearfix">
+              <h1>供应商资料管理 <small>Profile</small></h1>
+            </div>
+              <form id="member_setting_form" class="form-horizontal" action="<{link app=supplier ctl=site_supplier act=profile args0=save}>" method="post">
+                  <div class="form-group">
+                      <label  class="col-xs-2 control-label">供应商编号</label>
+                      <div class="col-xs-3">
+                        <input type="text" readonly=true  name="supplier[supplier_bn]" class="form-control"  value="<{$supplier.supplier_bn}>">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label  class="col-xs-2 control-label">供应商名称</label>
+                      <div class="col-xs-5">
+                        <input type="text" readonly=true name="supplier[supplier_name]" class="form-control"  value="<{$supplier.supplier_name}>">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label  class="col-xs-2 control-label">地区</label>
+                      <div class="col-xs-7">
+                          <{input type=region app=ectools name="supplier[supplier_region]" value=$supplier.supplier_region}>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label  class="col-xs-2 control-label">地址</label>
+                      <div class="col-xs-7">
+                        <input type="text" required="true"  name="supplier[supplier_address]" class="form-control"  value="<{$supplier.supplier_address}>">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label  class="col-xs-2 control-label">联系人</label>
+                      <div class="col-xs-3">
+                        <input type="text"  required="true" name="supplier[supplier_manager]" class="form-control"  value="<{$supplier.supplier_manager}>">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label  class="col-xs-2 control-label">联系方式</label>
+                      <div class="col-xs-3">
+                        <input type="text"  required="true" name="supplier[supplier_link1]" class="form-control"  value="<{$supplier.supplier_link1}>">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label  class="col-xs-2 control-label">其他联系方式</label>
+                      <div class="col-xs-5">
+                        <input type="text"  required="true" name="supplier[supplier_link2]" class="form-control"  value="<{$supplier.supplier_link2}>">
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <div class="col-xs-offset-2 col-xs-5">
+                        <button type="submit" class="btn btn-primary">保存修改</button>
+                      </div>
+                  </div>
+              </form>
+        </div>
+    </div>
+</div>

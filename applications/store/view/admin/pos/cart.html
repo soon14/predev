@@ -1,0 +1,138 @@
+<{if $err_msg}>
+	<div class="alert alert-warning hide">
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span>
+		</button>
+		<ol>
+			<{foreach from=$err_msg item=msg}>
+				<li data-object='<{$msg.object|json_encode}>'><{$msg.warning}></li>
+			<{/foreach}>
+		</ol>
+	</div>
+<{/if}>
+
+<{assign var=objlength value=count($cart_info.objects.goods)}>
+<!-- <textarea class="form-control" rows=3>
+<{*dump var=$cart_info*}>
+</textarea> -->
+<{if $member_info}>
+	<ul class="list-group">
+		<li class="list-group-item" data-memberid="<{$member_info.member_id}>">
+			<div class="row">
+				<div class="col-md-2">
+					<img style="width:70px;height:70px;" src="<{$member_info.member_id|avatar}>" class="img-thumbnail img-circle"/>
+				</div>
+				<div class="col-md-9">
+					<h4>
+						<{if $member_info.name}>
+							<{$member_info.name|escape:'html'}>
+						<{elseif $member_info.local_uname}>
+							<{$member_info.local_uname}>
+						<{elseif $member_info.email}>
+							<{$member_info.email}>
+						<{elseif $member_info.login_account}>
+							<{$member_info.login_account}>
+						<{/if}>
+						<{if 1-$member_info.lv_discount>0}>
+			                <span class="btn-group btn-group-circle btn-group-xs">
+			                    <span class="btn  red"><{$member_info.levelname}></span>
+			                    <span class="btn  blue"><{$member_info.lv_discount*10}>折</span>
+			                </span>
+						<{else}>
+							<span class="btn btn-circle default btn-xs"><{$member_info.levelname}></span>
+						<{/if}>
+					</h4>
+					<ul class="list-inline">
+						<li>线上登陆账号：<{$member_info.login_account}></li>
+						<li>会员身份优惠金额：<{$cart_info.member_discount_amount|cur}></li>
+					</ul>
+				</div>
+				<div class="col-md-1">
+					<i class="fa fa-minus-circle text-danger"></i>
+				</div>
+			</div>
+		</li>
+	</ul>
+<{/if}>
+<{if $objlength}>
+	<ul class="list-group">
+		<{foreach from=$cart_info.objects.goods item=object}>
+			<{assign var=product value=$object.item.product}>
+			<li class="list-group-item" data-productid="<{$product.product_id}>" data-goodsid="<{$product.goods_id}>">
+				<div class="row">
+					<div class="col-md-2">
+						<div class="img-box" style="position:relative;">
+							<img src="<{$product.image_id|storager:'s'}>" class="img-thumbnail"/>
+							<b class="label label-primary" style="position:absolute;right:-12px;top:-5px;"><{$object.quantity}>
+								<{if $product.unit}>
+								<small><{$product.unit}></small>
+								<{/if}>
+							</b>
+						</div>
+
+					</div>
+					<div class="col-md-6">
+						<h5 class="list-group-item-heading"><{$product.name}><i>&nbsp;<{$product.spec_info}></i></h5>
+						<ul class="list-inline">
+							<{if $product.bn}>
+								<li>货号：<{$product.bn}></li>
+							<{/if}>
+							<{if $product.barcode}>
+								<li>条码：<{$product.barcode}></li>
+							<{/if}>
+						</ul>
+						<ul class="list-unstyled font-yellow-gold">
+							<{foreach from=$cart_info.promotions.goods.{$item.obj_ident} item=p}>
+								<li><i class="fa fa-check-square-o"></i><{$p.desc}></li>
+							<{/foreach}>
+						</ul>
+					</div>
+					<div class="col-md-3">
+						<h4><{$product.buy_price*$object.quantity|cur}></h4>
+					</div>
+					<div class="col-md-1">
+						<i class="fa fa-minus-circle text-danger"></i>
+					</div>
+				</div>
+			</li>
+		<{/foreach}>
+		<li class="list-group-item">
+			<div class="row">
+				<div class="col-md-4">
+					<h4>共<{$cart_info.goods_count}>件</h4>
+				</div>
+				<div class="col-md-4 text-right">
+					<h4>合计：</h4>
+				</div>
+				<div class="col-md-4">
+					<h4><{$cart_info.cart_amount|cur}></h4>
+				</div>
+
+			</div>
+		</li>
+	</ul>
+
+	<ul class="list-group">
+		<{if $cart_info.promotions && $cart_info.promotions.order }>
+			<li class="list-group-item">
+				<ul class="list-unstyled font-yellow-gold">
+					<{foreach from=$cart_info.promotions.order item=p}>
+						<li>
+							<div class="row">
+								<div class="col-md-8">
+									<i class="fa fa-check-square-o"></i><{$p.desc}>
+								</div>
+								<div class="col-md-4">
+									- <{$p.save|cur}>
+								</div>
+							</div>
+						</li>
+					<{/foreach}>
+				</ul>
+			</li>
+		<{/if}>
+	</ul>
+<{/if}>
+
+<script charset="utf-8">
+	$('#cart_total,.finaly-total').text("<{$cart_info.cart_amount-$cart_info.promotion_discount_amount|cur}>");
+</script>

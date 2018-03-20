@@ -1,0 +1,68 @@
+<{assign var=tcount value=count($themes)}>
+<h3 class="page-title">H5触屏端模板管理 <small>共<{$tcount}>套</small></h3>
+<hr>
+<div class="row">
+    <{foreach from=$themes item=theme}>
+    <div class="col-sm-4 col-md-3 col-xs-12">
+    	<div class="thumbnail">
+            <div class="text-center <{if $theme.is_used=='true'}>bg-info<{else}>bg-grey-cararra<{/if}>">
+                <i class='fa <{if $theme.is_used=='true'}>fa-heart<{else}>fa-heart-o<{/if}>' style="font-size:400%;height:100px;line-height:100px;"></i>
+            </div>
+    		<div class="caption">
+    			<h5><{$theme.name}></h5>
+    			<p>
+                    模板包目录：<{$theme.theme_dir}><br>
+                    ID：<{$theme.theme_id}><br>
+                    版本：<{$theme.version}><br>
+    			</p>
+                <ul class="list-unstyled hidden" <{if $theme.is_used!='true'}>style="visibility:hidden;"<{/if}>>
+                    <li>配置更新时间：<{$theme.last_modify|cdate:'SDATE_FTIME'}></li>
+                    <li>缓存更新时间：<{$theme.cache_version|cdate:'SDATE_FTIME'}></li>
+                </ul>
+                    <{if $theme.is_used!='true'}>
+                    <a target="_command" href="index.php?app=mobile&ctl=admin_theme_manage&act=set_default&p[0]=<{$theme.theme_dir}>" class="btn btn-default">
+                        启用
+                    </a>
+                    <a target="_blank" href="<{link router='mobile' ctl='theme' act='preview' args0=$theme.theme_dir}>" class="btn btn-default btn-preview">
+                        预览
+                    </a>
+                    <{else}>
+                    <span class="btn disabled btn-default">
+                        使用中 <i class="fa fa-check-circle font-green"></i>
+                    </span>
+                    <a target="_blank" href="<{link router='mobile' ctl='index'}>" class="btn btn-default btn-preview">
+                        查看
+                    </a>
+                    <{if $widgets_active}>
+                <{permission perm_id='widgets_mobile' noshow=1}>
+                    <a class="btn btn-default" href="index.php?app=widgets&ctl=admin_template&act=manage&p[0]=mobile">编辑</a>
+                <{/permission}>
+                    <{/if}>
+                    <a target="_command" href="index.php?app=mobile&ctl=admin_theme_manage&act=cache_version&p[0]=<{$theme.theme_dir}>" class="btn btn-default hidden">
+                        <i class="fa fa-recycle"></i>刷新模板缓存
+                    </a>
+                    <{/if}>
+
+
+    		</div>
+
+    	</div>
+    </div>
+    <{/foreach}>
+    <div class="col-sm-4 col-md-3 col-xs-12">
+        <div class="thumbnail">
+            <div class="text-center">
+                <h4 style="line-height:100px;height:100px;margin:0;padding:0;">更多模板装修方案？</h4>
+            </div>
+    		<div class="caption">
+                <h5>&nbsp;</h5>
+    			<p>
+                    &nbsp;<br>
+                    &nbsp;<br>
+                    &nbsp;<br>
+    			</p>
+                <a target="_blank" href="https://www.vmcshop.com/list.html?cat_id=2&p_4=60" class="btn blue btn-block btn-circle">前往模板装修市场 <i class="fa fa-external-link"></i></a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,370 @@
+<style media="screen">
+    .purchase-bar{
+        background: rgba(0,0,0,.7);
+        color:#fff;
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        z-index: 99;
+        left: 0;
+    }
+    .purchase-bar button.btn{
+        border-radius: 0!important;
+    }
+    .purchase-bar .cart-view{
+        display: block;
+        line-height: 45px;
+        padding:0 10px;
+        color: #fff;
+        text-align: right;
+        font-family: sans-serif;
+    }
+    .purchase-bar .go-top{
+        display: block;
+        line-height: 45px;
+        font-size: 14px;
+        color:#fff;
+        text-align: center;
+    }
+    .purchase-bar .col-xs-2{
+        padding: 0;
+    }
+    .purchase-bar .cart-view span span{
+        color: #f90;
+    }
+    .purchase-bar .glyphicon-shopping-cart{
+        font-size: 18px;
+    }
+    .purchase-bar .alert{
+        margin:7px 0 0 10px;
+        padding: 4px 10px;
+        text-align: center;
+    }
+    .purchase-panel{
+        font-size: 12px;
+        font-family: sans-serif;
+    }
+    .purchase-panel .dl-horizontal{
+        color:#666;
+        font-weight: normal;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px #e9e9e9 dotted;
+    }
+    .purchase-panel .dl-horizontal dt{
+        width: 40px;
+        text-align: left;
+        line-height: 30px;
+    }
+    .purchase-panel .dl-horizontal dd{
+        margin-left: 45px;
+        line-height: 30px;
+    }
+    .purchase-panel .goods-view{
+
+    }
+    .purchase-panel .goods-view img{
+        width: 45px;
+        margin-right: 10px;
+    }
+    .purchase-panel .caption,.purchase-panel .g-image{
+        float: left;
+    }
+    .purchase-panel .caption{
+        width: 160px;
+    }
+    .intro-col{
+        border-right: 1px  solid #ccc;
+        background: #fff!important;
+    }
+    .spinner-input.disabled{
+        background: #e9e9e9;
+    }
+    .cartadd-messagebox{
+        font-family: sans-serif;
+        font-size: 14px;
+        background: rgb(39,150,57);
+        width: 150px;
+        height: 150px;
+        padding-top: 25px;
+        text-align: center;
+        position: fixed;
+        top:50%;
+        left: 50%;
+        margin:-75px 0 0 -75px;
+        border-radius: 10px;
+        color:#fff;
+        display: none;
+    }
+    .cartadd-messagebox i{
+        font-size: 50px;
+    }
+    .cartadd-messagebox p{
+        line-height: 32px;
+    }
+</style>
+<div class="panel panel-default gfilter">
+    <{if !$brand && $cat_path}>
+    <ol class="breadcrumb">
+        <{if $cat_path}>
+        <li>
+            <a href="<{link app=fpurchase ctl=site_list act=index}>">全部商品</a>
+        </li>
+        <{foreach from=$cat_path item=cat name=cp}>
+        <{if $env.foreach.cp.last}>
+        <li class="active">
+            <{$cat.title}>
+                <span class="badge badge-primary"><{$count}></span>
+        </li>
+        <{else}>
+        <li>
+            <a href="<{link app=fpurchase ctl=site_list act=index}>?cat_id=<{$cat.ident}>"><{$cat.title}></a>
+        </li>
+        <{/if}>
+        <{/foreach}>
+        <{/if}>
+    </ol>
+    <{/if}>
+    <{if $data_screen}>
+  <div class="panel-body">
+      <dl class="dl-horizontal gfilter-list">
+          <{foreach from=$data_screen key=pkey item=item}>
+          <{assign var=options_count value=count($item.options)}>
+          <{if $options_count<1}><{continue;}><{/if}>
+          <{if !$env.get.cat_id && $pkey!='cat_id'}><{continue;}><{/if}>
+              <dt>
+                  <{$item.title}>
+              </dt>
+              <dd>
+                  <ul class="list-inline">
+                      <{if $pkey!='cat_id'}>
+                      <li><a href="<{link app=fpurchase ctl=site_list act=index}>?<{$query|merge_query:$pkey}>">不限</a></li>
+                      <{/if}>
+                      <{foreach from=$item.options key=vkey item=item}>
+                       <li>
+                           <{if $pkey=='cat_id'}>
+                           <a href="<{link app=fpurchase ctl=site_list act=index}>?cat_id=<{$vkey}>"><{$item}></a>
+                           <{else}>
+                           <a class="<{if $env.get.{$pkey} == $vkey}>active<{/if}>" href="<{link app=fpurchase ctl=site_list act=index}>?<{$query|merge_query:$pkey:$vkey}>"><{$item}></a>
+                           <{/if}>
+                       </li>
+                      <{/foreach}>
+                  </ul>
+              </dd>
+          <{/foreach}>
+          <dt>搜索</dt>
+          <dd>
+              <ul class="list-inline">
+                  <li>
+                      <input type="text" value="<{$env.get.keyword}>" id="purchase_input_keyword" class="form-control input-sm input-small" placeholder="筛选关键词\货号\条码">
+                  </li>
+                  <li>
+                      <button id="purchase_input_keyword_button" type="button" data-action="<{link app=fpurchase ctl=site_list act=index}>?<{$query|merge_query:'keyword'}>" onclick="location=$(this).attr('data-action')+'&keyword='+$('#purchase_input_keyword').val()" class="btn btn-sm btn-default">确定</button>
+                  </li>
+                  <{if $env.get.keyword}>
+                  <li>
+                      <button type="button" data-action="<{link app=fpurchase ctl=site_list act=index}>?<{$query|merge_query:'keyword'}>" onclick="location=$(this).attr('data-action')" class="btn btn-sm btn-default">清除关键词</button>
+                  </li>
+                  <{/if}>
+              </ul>
+            </dd>
+      </dl>
+  </div>
+  <{/if}>
+</div>
+<form id="fpurchase_form" class="fpurchase" action="<{link app=fpurchase ctl=site_cart act=add}>" method="post">
+    <div class="purchase-panel">
+        <div class="purchase-list">
+            <table class="table table-hover">
+                <thead>
+                    <tr class="active">
+                        <th width="250px">
+                            名称
+                        </th>
+                        <th>
+                            货号
+                        </th>
+                        <th>
+                            条码
+                        </th>
+                        <th>
+                            规格
+                        </th>
+                        <th>
+                            价格
+                        </th>
+                        <th>
+                            库存
+                        </th>
+                        <th width="150px">
+                            订购数量
+                        </th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <{foreach from=$data_list item=item}>
+                        <{foreach from=$item.product item=product name=peach}>
+                        <tr>
+                          <{if $env.foreach.peach.first}>
+                          <td rowspan="<{$item.product|count}>" class="intro-col">
+                                <div class="goods-view clearfix">
+                                    <a class="g-image" href="<{link app=b2c ctl=site_product args0=$item.product.0.product_id}>">
+                                        <img src="<{$item.image_default_id|storager:'xs'}>" alt="<{$item.name}>">
+                                    </a>
+                                    <div class="caption">
+                                     <a class="text-muted" href="<{link app=b2c ctl=site_product args0=$item.product.0.product_id}>"><{$item.name}></a>
+                                    </div>
+                                    <{if $product.promotion.plist}>
+                                    <ul class="list-unstyled promotion-list">
+                                        <{foreach from=$product.promotion.plist item=pitem}>
+                                        <li><span class="label label-danger"><{$pitem.tag}></span>&nbsp;<{$pitem.description}></li>
+                                        <{/foreach}>
+                                    </ul>
+                                    <{/if}>
+                                </div>
+                                <dl class="dl-horizontal">
+                                    <dt>分类</dt>
+                                    <dd><a href="<{link app=fpurchase ctl=site_list act=index}>?cat_id=<{$item.category.id}>"><{$item.category.cat_name}></a></dd>
+                                    <{if $item.brand.brand_name}>
+                                    <dt>品牌</dt>
+                                    <dd>
+                                        <img src="<{$item.brand.brand_logo|storager:'xs'}>" width="50">
+                                        <{$item.brand.brand_name}>
+                                    </dd>
+                                    <{/if}>
+                                </dl>
+                            </td>
+                            <{/if}>
+                            <td>
+                                <{$product.bn}>
+                            </td>
+                            <td>
+                                <{$product.barcode}>
+                            </td>
+                            <td>
+                                <{$product.spec_info}>
+                            </td>
+                            <td>
+                                <{if $product.promotion.sale_price && $product.promotion.sale_price!='null'}>
+                                <span class="text-muted"><del><{$product.buy_price|cur}></del></span>
+                                <span class="price-1 text-danger"><{$product.promotion.sale_price|cur}></span>
+                                <{else}>
+                                <span class="price-1 text-danger"><{$product.buy_price|cur}></span>
+                                <{/if}>
+                                /<{$product.unit}>
+                            </td>
+                            <td>
+                                <{$product.stock}>
+                            </td>
+                            <td>
+                                <div class="product-quantity input-group input-group-sm">
+                                    <div class="spinner-buttons input-group-btn">
+                                        <button type="button" class="btn btn-default">
+                                        -
+                                        </button>
+                                    </div>
+                                    <input type="text" data-min="0" data-max="<{$product.stock}>" name="cart_obj[<{$product.product_id}>]"  class="spinner-input form-control"  value="" autocomplete="off">
+                                    <div class="spinner-buttons input-group-btn">
+                                        <button type="button" class="btn btn-default">
+                                        +
+                                        </button>
+                                    </div>
+                                </div>
+                            </td>
+
+                        </tr>
+                        <{/foreach}>
+                    <{/foreach}>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="6">
+                            <{pagers data=$pager}>
+                        </td>
+                        <td>
+
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    </div>
+    <div class="purchase-bar">
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="alert alert-success hidden">
+                    <i class="glyphicon glyphicon-ok-circle"></i> 加入购物车成功
+                </div>
+            </div>
+            <div class="col-xs-4">
+                <a class="cart-view" href="<{link app=b2c ctl=site_cart act=index}>">
+                    <i class="glyphicon glyphicon-shopping-cart"></i>
+                    <span>购物车项:<span class="cart-count">0</span></span>
+                    <span>货品总数量:<span class="cart-quantity">0</span></span>
+                </a>
+            </div>
+            <div class="col-xs-2">
+                <button data-loading-text="正在提交..." type="submit" name="button" class="btn btn-danger btn-lg btn-block btn-submit">加入购物车</button>
+            </div>
+            <div class="col-xs-2">
+                <a  class="btn btn-success btn-lg btn-block" href="<{link app=b2c ctl=site_cart}>">去结算</a>
+            </div>
+            <div class="col-xs-1">
+                <a class="go-top" href="javascript:void(0)" onclick="$(document.body).scrollTop(0)"><i class="glyphicon glyphicon-chevron-up"></i></a>
+            </div>
+        </div>
+    </div>
+</form>
+<div class="cartadd-messagebox">
+    <i class="glyphicon glyphicon-ok-circle"></i>
+    <p>
+        加入购物车成功
+    </p>
+</div>
+
+<script type="text/javascript">
+var count_cart = function(){
+    $.getJSON('<{$base_url}>/openapi/cart/count',function(re){
+             try{
+                 var count = re.data.count;
+                 var quantity = re.data.quantity;
+                 $('.purchase-bar .cart-count').text(count||0);
+                 $('.purchase-bar .cart-quantity').text(quantity||0);
+             }catch(e){
+
+             }
+      });
+};
+count_cart();
+
+     $('.spinner-input').addClass('disabled').on('_change',function(e,val,num){
+        $(this)[val>0?'removeClass':'addClass']('disabled');
+        if(val == 0){
+            $(this).val('');
+        }
+    }).on('keydown',function(e){
+        if(e.keyCode == 13){
+            return false;
+        }
+    });
+    $('#fpurchase_form').on('submit',function(e){
+        var form = $(this);
+        var action = this.action;
+        form.find('.btn-submit').button('loading');
+        $.post(this.action,$(this).serializeArray(),function(res){
+            form.find('.btn-submit').button('reset');
+            $('.spinner-input').val('').trigger('_change');
+            if(!('success' in res))return;
+            count_cart();
+            $('.cartadd-messagebox').fadeIn('fast').delay(2000).fadeOut();
+            $('.glyphicon-shopping-cart').fadeOut('fast').fadeIn('fast');
+        },'json');
+        return false;
+    });
+    $('#purchase_input_keyword').on('keydown',function(e){
+        if(e.keyCode == 13){
+            $('#purchase_input_keyword_button').click();
+        }
+    });
+</script>

@@ -1,0 +1,15 @@
+<app>
+    <name>微信</name>
+    <description>微信管理</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.3.2</version>
+    <license>http://www.vmcshop.com/license</license>
+    <parent_model_class>dbeav_model</parent_model_class>
+    <depends>
+        <app>mobile</app>
+    </depends>
+</app>

@@ -1,0 +1,92 @@
+<h3 class="page-title"><{if $store.store_id }>编辑门店<{else}>添加门店<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=store&ctl=admin_store&act=index">门店列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $store.store_id }>编辑门店<{else}>添加门店<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=store&ctl=admin_store&act=save" method="post" id='store_form' class="form" >
+    <{if $store.store_id }><input type="hidden" name="store_id" value="<{$store.store_id}>"><{/if}>
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">门店名称
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="store_name" class="form-control" value="<{$store.store_name}>">
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">门店编号
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="store_bn" class="form-control" value="<{$store.store_bn}>">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">所在地区
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <{input type=region name=store_area value=$store.store_area}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">详细地址\门牌
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <{input type=textarea rows=1 name=store_address value=$store.store_address}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">联系方式
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-5">
+                    <{input type=text  name=store_contact value=$store.store_contact}>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">店铺操作员配置</label>
+
+                <div class="col-md-9">
+                    <{input type="object" object="users@desktop"  multiple="false" callback_func="store_link_callback_func"}>
+                    <div class="table-scrollable">
+                        <table class="table" id="storeUserTable">
+                            <tbody id="store_users">
+                            <{include file="admin/store/ajax_user_item.html"}>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <script charset="utf-8">
+                var store_link_callback_func = function(user_ids){
+                    $('<table></table>').load('<{link app=store ctl=admin_store act=ajax_store_users}>',user_ids,function(){
+                        $(this).find('tr').appendTo($('#store_users'));
+                    });
+                };
+            </script>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-9">
+                    <button type="submit" class="btn blue">保存</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

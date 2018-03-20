@@ -1,0 +1,346 @@
+<div class="product-container content">
+    <div class="product-page">
+        <ul class="table-view">
+            <li class="table-view-cell product-images">
+                    <div class="slider" id="pi_slider">
+                      <div class="slide-group">
+                          <{foreach from=$goods_detail.images item=image name=poi}>
+                          <div class="slide">
+                              <{if !$env.foreach.poi.first}>
+                              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAO/v7////yH5BAAHAP8ALAAAAAABAAEAAAICRAEAOw==" data-original="<{$image.image_id|storager:'l'}>" />
+                              <{else}>
+                               <img src="<{$image.image_id|storager:'l'}>" />
+                              <{/if}>
+                          </div>
+                          <{/foreach}>
+                      </div>
+                    </div>
+            </li>
+            <li class="table-view-cell product-info">
+                <h4>
+                    <{$subject.fg_title|default:goods_detail.name}><br><small><{$goods_detail.product.spec_info}></small>
+                </h4>
+                <p>
+                    <{$subject.fg_intro|default:$goods_detail.brief}>
+                </p>
+                <p class="price-availability-block">
+                    <{if $subject.goods_discount && $subject.goods_discount>0}>
+                    <small>￥</small><del class="text-muted"><{$goods_detail.product.buy_price|cur}></del>
+                    <span class='btn btn-primary g-price'>
+                        <small>￥</small>
+                        <span><{$goods_detail.product.finally_buy_price|cur}></span>
+                    </span>
+                    <{else}>
+                    <span class='btn btn-primary g-price'>
+                        <small>￥</small>
+                        <span><{$goods_detail.product.buy_price|cur}></span>
+                    </span>
+                    <{/if}>
+                </p>
+                <p class="time-limit">
+                    <span class="day-show"></span>
+                    <span class="hour-show"></span>
+                    <span class="minute-show"></span>
+                    <span class="second-show"></span>
+                </p>
+            </li>
+            <{if $goods_detail.spec_desc.t}>
+            <!-- 规格选择器 -->
+            <li class="table-view-divider">规格选择</li>
+            <li class="table-view-cell tvc-reset-padding">
+            <div class="product-spec-options">
+                <{foreach from=$goods_detail.spec_desc.t key=key item=item}>
+                    <h5><{$item}></h5>
+                    <{assign var=spec_options value=$goods_detail.spec_desc.v.{$key}}>
+                    <{foreach from=$spec_options item=option }>
+                        <a class="btn btn-outlined <{if $option.current}>active <{/if}><{if $option.marketable!='true'}> disabled<{/if}> <{if $option.p_image_id}>has-pimg<{/if}>" href="<{if $option.marketable!='true'}>javascript:;<{else}><{link app=fastgroup ctl=mobile_fastgroup act=subject args0=$subject.id args1=$option.product_id}><{/if}>">
+                            <{if $option.p_image_id}>
+                                <img src="<{$option.p_image_id|storager:'xs'}>">
+                            <{/if}>
+                            <{$option.label}>
+                        </a>
+                    <{/foreach}>
+                <{/foreach}>
+            </div>
+            </li>
+            <{/if}>
+            <li class="table-view-divider">详细介绍</li>
+            <li class="table-view-cell">
+                <a class="navigate-right gdesc-modal-handle" href="#goods_desc_modal">
+                        查看详情
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="bar bar-standard bar-footer product-bar-footer">
+    <a class="btn btn-outlined btn-buy btn-primary pull-left" href="<{link app=fastgroup ctl=mobile_fastgroup act=order_list}>"><i class="fa fa-history"></i> 查看订购纪录</a>
+    <a class="btn btn-positive btn-buy pull-right" href="#buy_modal">立即抢购</a>
+</div>
+
+<div id="goods_desc_modal" class="modal goods-desc">
+  <header class="bar bar-nav">
+    <a class="icon icon-close pull-right" href="#goods_desc_modal"></a>
+    <h1 class="title">商品详情介绍</h1>
+  </header>
+  <div class="content">
+      <{if $goods_detail.params}>
+          <{foreach from=$goods_detail.params key=key item=item}>
+              <table class="table">
+                  <tr>
+                      <td>
+                          <{$key}>
+                      </td>
+                      <td>
+                          <dl class="dl-horizontal">
+                              <{foreach from=$item key=k item=v}>
+                                  <dt><{$k}></dt>
+                                  <dd>
+                                      <{$v}>
+                                  </dd>
+                              <{/foreach}>
+                          </dl>
+                      </td>
+                  </tr>
+              </table>
+          <{/foreach}>
+      <{/if}>
+      <div class="content-desc">
+          <textarea>
+              <{$subject.fg_desc}>
+          </textarea>
+      </div>
+  </div>
+</div>
+
+
+<div id="paying_modal" class="modal">
+  <header class="bar bar-nav">
+    <h1 class="title">是否完成支付？</h1>
+  </header>
+  <div class="content">
+      <div class="content-padded">
+            <a href="<{link app=fastgroup ctl=mobile_fastgroup act=order_list}>" class="btn btn-positive btn-block">是,去查看我的订购历史</a>
+            <a href="#paying_modal" class="btn btn-negative btn-block">否,重新支付</a>
+      </div>
+  </div>
+</div>
+
+
+<div id="buy_modal" class="modal">
+  <header class="bar bar-nav">
+    <a class="icon icon-close pull-right" href="#buy_modal"></a>
+    <h1 class="title">快捷下单</h1>
+  </header>
+  <div class="content">
+      <form id="fast_order_form" action="<{link app=fastgroup ctl=mobile_fastgroup act=fastorder}>" method="post">
+      <input type="hidden" name="subject_id" value="<{$subject.id}>">
+      <input type="hidden" name="product_id" value="<{$goods_detail.product.product_id}>">
+      <input type="hidden" name="product_bn" value="<{$goods_detail.product.bn}>">
+      <div class="cart-container" style="margin:0;">
+          <ul class="table-view cart-body" style="margin:0;">
+              <li class="table-view-cell cart-item">
+                  <div class="ci-img pull-left">
+                      <img  src="<{$goods_detail.product.image_id|default:$goods_detail.image_default_id|storager:'xs'}>"/>
+                      <div class="img-cover">&nbsp;</div>
+                  </div>
+                  <div class="media-body">
+                      <span class="pull-right ci-price">
+                          <{if $subject.goods_discount}>
+                            <small>￥</small><del><{$goods_detail.product.buy_price|cur}></del><br>
+                          <{/if}>
+                          <small>￥</small><span><{$goods_detail.product.finally_buy_price|cur}></span>
+                      </span>
+                      <p>
+                          <strong><{$subject.fg_title|cut:40:'...'}></strong><{if $goods_detail.product.spec_info}><br>
+                          <{$goods_detail.product.spec_info}><{/if}>
+                      </p>
+                      <div class="product-quantity">
+                          <button type="button" class="btn btn-outlined pull-left"><span class="fa fa-minus"></span></button>
+                          <input type="text" name="quantity" pattern="[0-9]*" data-max="<{$subject.per_limit}>" class="spinner-input pull-left"  value="1" data-now="1">
+                          <button type="button" class="btn btn-outlined"><span class="fa fa-plus"></span></button>
+                      </div>
+                      <{if $subject.per_limit}>
+                      <p>
+                          最多可订购数量<strong><{$subject.per_limit}></strong><{$goods_detail.product.unit}>
+                      </p>
+                      <{/if}>
+                  </div>
+              </li>
+          </ul>
+      </div>
+      <div class="checkout-container" style="margin:0;">
+          <ul class="table-view">
+              <li class="table-view-divider">选择支付方式</li>
+              <{foreach from=$payapps key=k item=papp}>
+                  <li  class="table-view-cell checkout-payment">
+                      <input class='i-radio' id="rd_payapp_id_<{$papp.app_id}>" type="radio"  name="payapp_id" value="<{$papp.app_id}>">
+                      <label for="rd_payapp_id_<{$papp.app_id}>" class="fa"></label>
+                      <span class="payapp-name"><{$papp.display_name|default:$papp.name}></span>
+                  </li>
+              <{/foreach}>
+          </ul>
+      </div>
+      <div class="content-padded">
+          <div  class="form-horizontal">
+              <input type="text" name="mobile" value="" placeholder="请输入手机号">
+              <button type="button" class="btn btn-block btn-primary btn-outlined btn-mobile-vcode">获取手机验证码</button>
+              <input type="text" name="vcode" value="" placeholder="请输入手机验证码">
+              <{if $subject.customer_memo_title && $subject.customer_memo_title!=''}>
+                <p><{$subject.customer_memo_title}></p>
+                <{if $subject.customer_memo_options_enabled == 'true'}>
+                    <{assign var=cm_options value=","|explode:$subject.customer_memo_options}>
+                    <select name="customer_memo" <{if $subject.customer_memo_options_multiple=='true'}>multiple=true<{/if}>>
+                        <{if $subject.customer_memo_options_multiple!='true'}><option value="">请选择</option><{/if}>
+                        <{foreach from=$cm_options item=item}>
+                        <option value="<{$item}>"><{$item}></option>
+                        <{/foreach}>
+                    </select>
+                <{else}>
+                <textarea name="customer_memo" rows="2" placeholder="请输入备注内容"></textarea>
+                <{/if}>
+              <{/if}>
+              <button type="button" class="btn btn-submit btn-positive btn-block">
+                  <span class="btn-status normal-status">立即支付 <i class="fa fa-yen"></i><strong class="order-total" data-per-price="<{$goods_detail.product.finally_buy_price|cur}>"><{$goods_detail.product.finally_buy_price|cur}></strong></span>
+                  <span class="btn-status loading-status hidden">
+                      <i class="fa fa-circle-o-notch fa-spin"></i>
+                      <span>正在提交...</span>
+                  </span>
+              </button>
+          </div>
+      </div>
+  </form>
+  </div>
+</div>
+
+<script type="text/javascript" src="<{$base_url}>/openapi/goods/counter/goods_id/<{$goods_detail.goods_id}>/view_count/1/uv.js"></script>
+<script charset="utf-8">
+
+$(function(){
+    //延迟加载商品详情
+    var goods_desc_textarea = $('.goods-desc .content-desc textarea'),
+    goods_desc_textarea_val = $.trim(goods_desc_textarea.val()),
+    tmp_gdesc = $('<div></div>').append(goods_desc_textarea_val);
+    $.each(tmp_gdesc.find('img'),function(index,img){
+          var data_original = $(img).prop('src');
+          $(img).attr('data-original',data_original);
+          $(img).attr('src','data:image/gif;base64,R0lGODlhAQABAIAAAOzs7P///yH5BAAHAP8ALAAAAAABAAEAAAICRAEAOw==');
+    });
+    goods_desc_textarea.replaceWith(tmp_gdesc.html());
+    $('.gdesc-modal-handle').on('touchend',function(){
+        if($(this).data('lazyload'))return;
+        $(this).data('lazyload',true);
+        img_lazyload($('.goods-desc .content-desc'),{container:$('.goods-desc .content-desc').closest('.content')});
+    });
+
+    //模板填充工具
+    var substitute = function(str, obj) {
+        return str.replace(/\\?\{([^{}]+)\}/g, function(match, name) {
+            if (match.charAt(0) == '\\') return match.slice(1);
+            if(name.match(/\./)){
+                value = eval('obj.'+name);
+                return value?value:'';
+            }
+            return (obj[name] != undefined) ? obj[name] : '';
+        });
+    };
+    //倒计时
+    var remaining_time = function (intDiff,show_scope){
+        if(!show_scope)return;
+        setInterval((function(){
+            var day=0,
+                hour=0,
+                minute=0,
+                second=0;//时间默认值
+            if(intDiff > 0){
+                day = Math.floor(intDiff / (60 * 60 * 24));
+                hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            }
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            day>0&& show_scope.find('.day-show').html(""+day+"天");
+            hour>0&&show_scope.find('.hour-show').html('<s id="h"></s>'+hour+'时');
+            minute>0&& show_scope.find('.minute-show').html('<s></s>'+minute+'分');
+            show_scope.find('.second-show').html('<s></s>'+second+'秒 后结束');
+            intDiff--;
+            return arguments.callee;
+        })(), 1000);
+    };
+    var diff_time = (<{$subject.end_time}>000) - new Date().getTime();
+    remaining_time(diff_time/1000,$('.time-limit'));
+
+
+    //相册lazyload
+
+    $('#pi_slider').on('slide',function(e){
+        img_lazyload($('#pi_slider'),{container:$('#pi_slider'),effect:'fadeIn',load:function(){
+            $(this).removeAttr('data-original');
+        }});
+    });
+
+});
+
+/**
+ * fast checkout
+ */
+
+ $('#fast_order_form .product-quantity input').on('_change',function(e){
+     var ipt = $(this);
+     var cur_val = ipt.val();
+     $('#fast_order_form .order-total').text(new Number($('#fast_order_form .order-total').attr('data-per-price')*cur_val).toFixed(2));
+ });
+$('.table-view .checkout-payment').on('click',function(e){
+    $(this).find('input:radio').prop('checked',true);
+    $(this).closest('ul').find('.checkout-payment').removeClass('active');
+    $(this).addClass('active');
+});
+
+$('#fast_order_form .btn-submit').on('click',function(e){
+    e.stopPropagation();
+    var btn_submit = $(this);
+    btn_submit.addClass('disabled').find('.normal-status').addClass('hidden');
+    btn_submit.find('.loading-status').removeClass('hidden');
+    $.post("<{link app=fastgroup ctl=mobile_fastgroup act=validate_order}>",$('#fast_order_form').serialize(),function(re){
+        btn_submit.removeClass('disabled').find('.normal-status').removeClass('hidden');
+        btn_submit.find('.loading-status').addClass('hidden');
+        if(re.error){
+            Messagebox('error',re.error);
+        }else{
+            //$('#buy_modal').removeClass('active');
+            //$('#paying_modal').addClass('active');
+            $('#fast_order_form').submit();
+        }
+    },'json');
+});
+
+ //获得短信验证码
+ var _cutdown_sms = function(btn){
+     btn.addClass('disabled');
+     var cutdown = 120,btn_o_text = btn.text(),timer =
+     setInterval((function(){
+         btn.text('短信已发送,'+(cutdown--)+'秒后可重试');
+         if(cutdown<1){
+             clearInterval(timer);
+             btn.text(btn_o_text).removeClass('disabled');
+         }
+         return arguments.callee;
+     })(),1000);
+ };
+ $('#fast_order_form .btn-mobile-vcode').on('click',function(e){
+     var btn = $(this);
+     if(btn.hasClass('disabled'))return;
+     btn.addClass('disabled');
+     $.post('<{link app=fastgroup ctl=mobile_fastgroup act=get_vcode}>',{mobile:$('#fast_order_form input[name="mobile"]').val()},function(re){
+         if(re && re.error){
+             btn.removeClass('disabled');
+             Messagebox('error',re.error);
+         }
+         if(re && re.success){
+             _cutdown_sms(btn);
+         }
+     },'json');
+ });
+
+</script>

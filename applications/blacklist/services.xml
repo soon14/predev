@@ -1,0 +1,5 @@
+<services>
+    <service id="member.login_before" optname="会员黑名单检测">
+        <class orderby="10">blacklist_membercheck</class>
+    </service>
+</services>

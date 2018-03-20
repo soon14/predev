@@ -1,0 +1,10 @@
+<site>
+    <module controller='site_list'>
+        <name>purchase</name>
+        <title>快速购买</title>
+    </module>
+    <module controller='site_cart'>
+        <name>fpcart</name>
+        <title>快速购买购物车操作</title>
+    </module>
+</site>

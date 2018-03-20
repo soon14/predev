@@ -1,0 +1,23 @@
+<tr>
+<{if $use_buildin_selectrow}>
+<th style="width:40px;">
+	<{if $selectrow_type!='radio'}>
+	<label class="control-label">
+			<input type="checkbox" class="group-checkable" data-set="#finder_body_<{$name}> .checkboxes">
+	</label>
+	<{/if}>
+</th>
+<{/if}>
+<{$detail_th_html}>
+<{$column_th_html}>
+</tr>
+<{if $filter_column_html}>
+<tr class="filter">
+	<{if $use_buildin_selectrow}>
+	<td>
+	</td>
+	<{/if}>
+	<{$filter_td_html}>
+	<{$filter_column_html}>
+</tr>
+<{/if}>

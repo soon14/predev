@@ -1,0 +1,5 @@
+<ul>
+    <{foreach from=$data.data.pic item=item key=k}><li>
+    <a href="<{$item.link}>" title="<{$item.title}>"><img src="<{$item.id|storager}>"></a></li>
+    <{/foreach}>
+</ul>

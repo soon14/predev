@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>本班日报</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <style>
+        table {
+            width: 100%;
+            font-family: verdana,arial,sans-serif;
+            font-size:11px;
+            color:#333333;
+            border-width: 1px;
+            border-color: #666666;
+            border-collapse: collapse;
+        }
+        table th {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #dedede;
+        }
+        table td {
+            border-width: 1px;
+            padding: 8px;
+            border-style: solid;
+            border-color: #666666;
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <table>
+        <tr>
+            <td colspan="3" style="text-align: center">
+                <{if !$all_user}>
+                本班日报
+                <{else}>
+                店铺销售汇总表
+                <{/if}>
+            </td>
+        </tr>
+        <tr>
+            <td>店铺名称</td>
+            <td colspan="2"><{$store.store_name}></td>
+        </tr>
+        <{if !$all_user}>
+        <tr>
+            <td>收银员</td>
+            <td colspan="2"><{$user.name}></td>
+        </tr>
+        <tr>
+            <td>收款台</td>
+            <td colspan="2">店铺收银台</td>
+        </tr>
+        <{/if}>
+        <tr>
+            <td>打印时间</td>
+            <td colspan="2"><{$report_time.current}></td>
+        </tr>
+        <tr>
+            <td>统计周期</td>
+            <td colspan="2"><{$report_time.from}>-<{$report_time.to}></td>
+        </tr>
+        <tr>
+            <td>收款总次数</td>
+            <td colspan="2"><{$report.total_nums}></td>
+        </tr>
+        <tr>
+            <td>收款总金额</td>
+            <td colspan="2"><{$report.total_amount}></td>
+        </tr>
+        <tr>
+            <td>退款总次数</td>
+            <td colspan="2"><{$report.refund_nums}></td>
+        </tr>
+        <tr>
+            <td>退款总金额</td>
+            <td colspan="2"><{$report.refund_amount}></td>
+        </tr>
+        <tr>
+            <td>实收总金额</td>
+            <td colspan="2"><{$report.total_amount-$report.refund_amount}></td>
+        </tr>
+        <tr>
+            <td colspan="3"></td>
+        </tr>
+
+        <tr>
+            <td>收款方式</td>
+            <td>收款次数</td>
+            <td>收款金额</td>
+        </tr>
+        <{foreach from=$report.amount_group_pay item=list}>
+        <tr>
+            <td><{$list.pay_app}></td>
+            <td><{$list.nums}></td>
+            <td><{$list.total}></td>
+        </tr>
+        <{/foreach}>
+        <tr>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td>退款方式</td>
+            <td>退款次数</td>
+            <td>退款金额</td>
+        </tr>
+        <{foreach from=$report.refund_group_pay item=list}>
+        <tr>
+            <td><{$list.pay_app}></td>
+            <td><{$list.nums}></td>
+            <td><{$list.total}></td>
+        </tr>
+        <{/foreach}>
+        <tr>
+            <td colspan="3"></td>
+        </tr>
+        <tr>
+            <td colspan="2">未发货订单数量</td>
+            <td><{$report.no_send.nums}></td>
+        </tr>
+        <tr>
+            <td colspan="2">未发货订单金额</td>
+            <td ><{$report.no_send.total}></td>
+        </tr>
+        <tr>
+            <td colspan="2">已发货订单金额</td>
+            <td ><{$report.total_amount-$report.refund_amount-$report.no_send.total}></td>
+        </tr>
+
+    </table>
+</div>
+<script>
+    self.focus();
+    self.print();
+</script>
+</body>
+</html>

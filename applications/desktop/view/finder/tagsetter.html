@@ -1,0 +1,107 @@
+<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+        <h3 class="modal-title">打标签</h3>
+        对选择的<strong class="label label-default"><{$count}></strong>个条目应用标签
+</div>
+
+<form action="<{$url}>&action=settag" method="post" id="tag_form" >
+    <input type="hidden" name="filter" value='<{$filter}>' />
+
+    <div class="modal-body">
+        <{if $tags}>
+                <h5>已有标签</h5>
+                <div class="well well-sm">
+            <{foreach from=$tags item=t name=tag}>
+                <span class="btn-group">
+                <span class="btn btn-xs btn-default tag-item margin-bottom-5">
+                <{if $t.tag_id|in_array:$intersect}>
+                <i class="fa fa-check-square" ></i>
+                <{assign var=used_status value=0}>
+                <{elseif $t.tag_id|in_array:$used_tag}>
+                <i data-part='true' class="fa fa-minus-square"></i>
+                <{assign var=used_status value=2}>
+                <{else}>
+                <i class="fa fa-square-o" ></i>
+                <{assign var=used_status value=1}>
+                <{/if}>
+                     <{$t.tag_name}>
+                     <{if $t.rel_count}> (<{$t.rel_count}>)<{/if}>
+                     <input type="hidden" name="tag[<{$t.tag_id}>][name]" value="<{$t.tag_name}>" />
+                     <input type="hidden" name="tag[<{$t.tag_id}>][stat]" value="<{$used_status}>" />
+                     <input type="hidden" name="tag[<{$t.tag_id}>][tag_id]" value="<{$t.tag_id}>" />
+                     &nbsp;
+                </span>
+                <button type="button" data-tagid="<{$t.tag_id}>" class="btn remove-tag btn-xs btn-default"><i class="fa fa-trash-o"></i></button>
+                </span>
+                <{/foreach}>
+                </div>
+        <{/if}>
+                <h5>新标签</h5>
+                <div class="row">
+                        <div class="col-sm-6">
+                            <span class="btn green new-tag"><i class="fa fa-plus"></i></span>
+                        </div>
+                </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="modal-footer">
+            <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+            <button type="submit" class="btn blue">确定</button>
+    </div>
+</form>
+
+<textarea class="hide new-tag-tpl">
+<div class="col-sm-6">
+<span class="input-group input-small margin-bottom-5">
+    <input type="text" name="tag[{tag_tmp_id}][name]" required=true value="" class="form-control input-small input-sm" />
+    <input type="hidden" name="tag[{tag_tmp_id}][stat]"  value="0"/>
+    <span class="btn btn-xs input-group-addon" onclick="$(this).closest('.col-sm-6').remove()"><i class="fa fa-trash-o"></i></span>
+</span>
+</div>
+</textarea>
+
+<script>
+    $('#tag_form').on('click','.tag-item',function(e){
+            var item = $(this),
+            fa = item.find('.fa'),
+            has_part = fa.attr('data-part');
+            input_stat = item.find('input[name$="[stat]"]'),
+            class_arr = (has_part?['fa fa-check-square','fa fa-square-o','fa fa-minus-square']:['fa fa-check-square','fa fa-square-o']);
+            var stat = parseInt(input_stat.val());
+            switch (stat) {
+            case 0:
+                fa.get(0).className = class_arr[1];
+                input_stat.val(1);
+                break;
+            case 1:
+                fa.get(0).className = class_arr[has_part?2:0];
+                input_stat.val(has_part?2:0);
+                break;
+            case 2:
+                fa.get(0).className = class_arr[0];
+                input_stat.val(0);
+                break;
+            };
+
+    });
+    $('#tag_form').on('click','.remove-tag',function(e){
+        if(!confirm('确认删除?'))return false;
+         var item = $(this).closest('.btn-group');
+         $.getJSON('index.php?app=desktop&ctl=tags&act=remove&p[0]='+$(this).attr('data-tagid'),function(re){
+             if(re.success){
+                 item.fadeOut(function(){
+                     $(this).remove();
+                 });
+             }
+         });
+    });
+    $('#tag_form .new-tag').click(function(){
+        $(this).parent('.col-sm-6').before(substitute($('.new-tag-tpl').val(),{
+            'tag_tmp_id':'new_'+$('#tag_form .tag-item').length
+        }));
+    });
+</script>

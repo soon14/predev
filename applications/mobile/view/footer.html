@@ -1,0 +1,31 @@
+<!--footer common-->
+<!-- msgbox -->
+<div class="msgbox hidden" id="msgbox_success_addtocart">
+    <i class="fa fa-check-circle-o fa-lg"></i>&nbsp;<span data-msg-o="加入购物车成功">加入购物车成功</span>
+</div>
+<div class="msgbox hidden" id="msgbox_success">
+    <i class="fa fa-check-circle-o fa-lg"></i>&nbsp;<span data-msg-o="操作成功">操作成功</span>
+</div>
+<div class="msgbox msgbox-error hidden" id="msgbox_error">
+    <i class="fa fa-times-circle-o fa-lg"></i>&nbsp;<span data-msg-o="操作失败">操作失败</span>
+</div>
+<script type="text/javascript">
+$.extend($.easing,{
+    easeInExpo: function (x, t, b, c, d) {
+		return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+	}
+
+});
+var Messagebox = function(type,msg){
+    $('#msgbox_'+(type?type:'success')).finish().removeClass('hidden').animate({
+        'opacity':0
+    },3000,'easeInExpo',function(){
+        $(this).addClass('hidden').css('opacity',.8).find('span').text($(this).find('span').attr('data-msg-o'));
+    }).find('span').text(msg);
+}
+/*disabled 点击禁止*/
+$(document).on('click','.disabled',function(e){
+    e.stopPropagation();
+    return false;
+});
+</script>

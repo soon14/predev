@@ -1,0 +1,20 @@
+<{script src="wechat/vue.min.js"}>
+<{script src="wechat/axios.min.js"}>
+<{script src="wechat/weui.min.js"}>
+<{script src="wechat/placeholder.min.js"}>
+
+<!-- 基础数据 -->
+<{include file='mobile/xcxpage/preview.data.html'}>
+<!-- 引入定义设计方法 -->
+<{script src="wechat/page.data.js"}>
+
+<!-- 引入widgets组件 -->
+<{foreach from=$data.widget_tpls item=tpl_items}>
+<{foreach from=$tpl_items item=item}>
+<{include file=$item}>
+<{/foreach}>
+<{/foreach}>
+
+<{include file='xcxwidgets/__preview/preview.html'}>
+<{script src="wechat/preview.js"}>
+<{script src="wechat/xcxpage.js"}>

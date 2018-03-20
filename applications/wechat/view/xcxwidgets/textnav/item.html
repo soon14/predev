@@ -1,0 +1,15 @@
+<!-- 文字导航 -->
+<template id="widget-textnav">
+    <div class="page-view" :id="widget.name + '_item_' + index">
+        <widget-child-textnav :widget="widget" :index="index"></widget-child-textnav>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_textnav = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-textnav',
+    components: {
+        'widget-child-textnav': widget_child_textnav
+    }
+});
+</script>

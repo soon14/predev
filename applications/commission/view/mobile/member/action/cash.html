@@ -1,0 +1,90 @@
+<{if $member_info.bank_account}>
+<div class="content-padded">
+    <ul class="table-view">
+    	<li class="table-view-divider">提现账户</li>
+    	<li class="table-view-cell tx-account">
+    		<p><span><{$member_info.bank_type}>:&nbsp;</span><span><{$member_info.account_name}></span></p>
+    		<div class="pull-right card-owner">
+    			<p><span>持卡人:&nbsp;</span><span>&nbsp;</span></p>
+    		</div>
+    		<div class="card-num">
+    			<p><span>后四位:&nbsp;</span><span><{$member_info.bank_account}></span></p>
+    		</div>
+    	</li>
+    </ul>
+
+    <a href="<{link app=commission ctl=mobile_member act=bank}>">
+        <input type="button" class="btn btn-block btn-primary" value="修改账户" >
+    </a>
+    <{else}>
+    <a href="<{link app=commission ctl=mobile_member act=bank}>">
+        <input type="button" class="btn btn-block btn-primary" value="还未绑定提现账户，去绑定吧" >
+    </a>
+    <{/if}>
+</div>
+
+<div class="change-way">
+	<form class="content-padded content-form" onsubmit="return checkForm()">
+        <input type="text" name="vcode" placeholder="请输入验证码" required="true" id="vcode">
+        <input type="button" class="btn btn-primary btn-block btn-outlined" id="btn" <{if !$member_info.bank_account  || time()>$cash_rule.last_cash_time}>disabled<{/if}> value="获取验证码" required="true">
+        <input type="text" id="coin" class="form-control" placeholder="请输入提现闪币数" required="true" pattern="^\d+$">
+        <p>折算人民币：<span id="rmb">0</span>元</p>
+        <p>人民币折算闪币比例为1:<{$cash_rule.exchange}>&nbsp;&nbsp;&nbsp;&nbsp;最低额度为<{$cash_rule.min_cash|to_coin}>闪币</p>
+        <p class=" <{if time()<$cash_rule.last_cash_time}>hidden <{/if}>">本月最晚提现时间为：<{$cash_rule.last_cash_time|cdate}></p>
+        <button type="submit"  class="btn btn-block btn-primary" <{if !$member_info.bank_account  || time()>$cash_rule.last_cash_time}>disabled<{/if}> >确认提现</button>
+	</form>	
+</div>
+<script>
+	$(document.body).addClass('cash-body');
+
+    //发送验证码请求
+    $('#btn').on('click',function(e){
+        var btn = $(this);
+        if(btn.attr('disabled'))return;
+        btn.attr('disabled','true');
+        $.post('<{link app=commission ctl=mobile_member act=send_vcode_sms}>',function(re){
+            if(re && re.error){
+                btn.removeAttr('disabled');
+                Messagebox('error',re.error);return false;
+            }
+            if(re && re.success){
+                _cutdown_sms(btn);
+            }
+        },'json');
+    });
+
+    //获得短信验证码
+    var _cutdown_sms = function(btn){
+        var cutdown = 120,btn_o_text = btn.val(),timer =
+                setInterval((function(){
+                    btn.val('再次发送'+(cutdown--)+'秒');
+                    if(cutdown<1){
+                        clearInterval(timer);
+                        btn.val(btn_o_text).removeAttr('disabled');
+                    }
+                    return arguments.callee;
+                })(),1000);
+    };
+
+    //闪币换算
+    $('#coin').blur(function(){
+        $('#rmb').text(Number($('#coin').val())/Number('<{$cash_rule.exchange}>'));
+    });
+
+    //提交表单
+    function checkForm(){
+        var data = {vcode: $.trim($('#vcode').val()) , money:$.trim($('#coin').val()) };
+        $.post('<{link app=commission ctl=mobile_member act=cash}>' ,data ,function(re){
+            if(re && re.error){
+                $('#btn').removeAttr('disabled');
+                Messagebox('error',re.error);return false;
+            }
+            if(re && re.success){
+                window.location.href="<{link app=commission ctl=mobile_member act=account}>";
+            }
+        },'json');
+        return false;
+    }
+
+
+</script>

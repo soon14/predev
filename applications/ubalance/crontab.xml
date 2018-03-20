@@ -1,0 +1,7 @@
+<cronentries>
+    <cron id="ubalance_tasks_income_update">
+      <description>年化收益日结任务</description>
+      <schedule>0 0 * * *</schedule>
+      <enabled>true</enabled>
+    </cron>
+</cronentries>

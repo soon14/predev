@@ -1,0 +1,6 @@
+<site>
+    <module controller='site_publish'>
+        <name>communitypublish</name>
+        <title>社区内容发布</title>
+    </module>
+</site>

@@ -1,0 +1,104 @@
+<{if $ftp_server.defined == 'true'}>
+<div class="alert alert-info">
+    暂无配置项
+</div>
+<{else}>
+<h3 class="page-title">导入导出FTP存储配置</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?ctl=adminpanel">控制面板</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">用于导入导出的FTP配置</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=importexport&ctl=admin_system&act=save" method="post" id='importexport_setting_form' class="form" >
+    <{if !$params.support_ftp}>
+    <div class="alert alert-warning">
+        注意：PHP FTP扩展未安装
+    </div>
+    <{/if}>
+    <div class="form form-horizontal">
+        <div class="form-body">
+
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                 服务器地址（FTP host):
+            <span class="required">*</span>
+            </label>
+            <div class="col-md-5">
+                <{input type="text" required=true name='host' value=$ftp_server.host placeholder="FTP服务器地址"}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                 服务端口（FTP port):
+            <span class="required">*</span>
+            </label>
+            <div class="col-md-5">
+                <{input type="text" required=true name='port' value=$ftp_server.port|default:'21' placeholder="FTP端口号"}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                用户名:
+            <span class="required">*</span>
+            </label>
+            <div class="col-md-5">
+                <!-- 防止自动填充 -->
+                <input type="text" name="name" value="" disabled="disabled" style="display:none;">
+                <{input type=text required=true name='name' value=$ftp_server.name placehoder="FTP登录用户名"}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                密码:
+            <span class="required">*</span>
+            </label>
+            <div class="col-md-5">
+                <{input type=password required=true name='pass' value=$ftp_server.pass placehoder="FTP登录密码"}>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                FTP目录:
+            <span class="required">*</span>
+            </label>
+            <div class="col-md-5">
+                <{input type=text required=true name='dir' value=$ftp_server.dir}>
+                <span class="help-block">该目录需注意读写权限</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                打开FTP被动模式(PASV):
+            <span class="required">*</span>
+            </label>
+            <div class="col-md-5">
+                <select class="form-control" name="pasv">
+                    <option value='N'>否</option>
+                    <option value='Y' <{if $ftp_server.pasv=='Y'}>selected<{/if}>>是</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+        </div>
+    <div>
+</form>
+
+
+<{/if}>

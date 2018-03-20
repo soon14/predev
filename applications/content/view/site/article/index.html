@@ -1,0 +1,17 @@
+<ol class="breadcrumb article-path">
+  <li class='ap-home'><a href="<{link app=site ctl=index}>">首页</a></li>
+  <{foreach from=$path item=item name=apforeach}>
+  <{if $env.foreach.apforeach.last}>
+  <li class="active"><{$item.title}></li>
+  <{else}>
+  <li><a href="<{$item.link}>"><{$item.title}></a></li>
+  <{/if}>
+  <{/foreach}>
+</ol>
+<div class="article-main">
+    <h2 class="article-title"><{$detail.indexs.title}></h2>
+    <!-- <{$detail['indexs']['pubtime']|date:'Y-m-d H:i'}> -->
+    <div class="article-body">
+        <{$detail.bodys.content}>
+    </div>
+</div>

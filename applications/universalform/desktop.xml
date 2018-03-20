@@ -1,0 +1,21 @@
+<desktop>
+    <permissions>
+        <permission id="universalform_list" display='true'>超级表单列表</permission>
+        <permission id="universalform_edit_form" display='true'>编辑超级表单</permission>
+        <permission id="universalform_data_list" display='true'>编辑超级表单</permission>
+        <permission id="universalform_data_export" display='true'>表单数据导出</permission>
+    </permissions>
+    <workground name="超级表单" icon="" id="universalform.workground" order='21'>
+        <menugroup name="超级表单">
+            <menu action='index' controller='admin_form' display='true' order='20' permission='universalform_list'>超级表单列表</menu>
+            <menu action='edit' controller='admin_form' display='false' order='20' permission='universalform_edit_form'>操作超级表单</menu>
+            <menu action='save' controller='admin_form' display='false' order='20' permission='universalform_list'>保存超级表单</menu>
+        </menugroup>
+        <menugroup name="表单数据">
+            <menu action='index' controller='admin_data' display='true' order='20' permission='universalform_data_list'>表单数据列表</menu>
+        </menugroup>
+        <menugroup name="表单数据导出">
+            <menu action='export_page' controller='admin_data' display='true' order='20' permission='universalform_data_export'>表单数据导出</menu>
+        </menugroup>
+    </workground>
+</desktop>

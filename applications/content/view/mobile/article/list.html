@@ -1,0 +1,48 @@
+<div class="content">
+    <div class="article-list">
+        <div class="article-items">
+            <{foreach from=$alist item=article name=aleach}>
+                <ul class="table-view">
+                    <li class="table-view-cell">
+                        <a href="<{link app=content ctl=mobile_article args0=$article.article_id}>">
+                            <{if $article.body.image_id}>
+                                <img class="media-object" src="<{$article.body.image_id|storager:'m'}>">
+                            <{/if}>
+                          <div class="media-body">
+                            <{$article.body.seo_title|default:$article.title}>
+                            <p><{if $article.body.seo_description}>
+                                <{$article.body.seo_description}>
+                            <{else}>
+                                <{$article.body.content|strip_tags|cut:200:'...'}>
+                            <{/if}></p>
+                          </div>
+                        </a>
+                    </li>
+                </ul>
+            <{/foreach}>
+        </div>
+    </div>
+    <div class="content-padded content-morepage">
+        <{morepage data=$alist_pager}>
+    </div>
+</div>
+<script type="text/javascript">
+//翻页
+var current_page = 1;
+$('.btn-morepage').on('touchend',function(e){
+    e.stopPropagation();
+    var btn = $(this);
+    btn.find('.fa-circle-o-notch').removeClass('hidden');
+    var data_morepage = btn.attr('data-morepage');
+    data_morepage = $.parseJSON(data_morepage);
+    var new_page = $('<div></div>');
+    new_page.load(data_morepage.link.replace(data_morepage.token,++current_page)+" .article-items",function(){
+        $('.article-list').append(new_page.find('.article-items'));
+        btn.find('.fa-circle-o-notch').addClass('hidden');
+    });
+    if(current_page == data_morepage.total){
+        btn.remove();
+    }
+    return false;
+});
+</script>

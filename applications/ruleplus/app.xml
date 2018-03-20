@@ -1,0 +1,14 @@
+<app>
+    <name>促销规则扩展</name>
+    <description>促销-用户自定义促销条件</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>3.0</version>
+    <license>http://www.vmcshop.com/license</license>
+    <depends>
+        <app>b2c</app>
+    </depends>
+</app>

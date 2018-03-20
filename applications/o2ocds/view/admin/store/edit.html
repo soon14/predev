@@ -1,0 +1,439 @@
+<h3 class="page-title">店铺详情
+    <{if $store.name}>
+    <span class="label label-default"><{$store.name}>[<{$store.sno}>]</span>
+    <{/if}>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=o2ocds&amp;ctl=admin_store&amp;act=index">店铺列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $store.store_id}>编辑<{else}>新建<{/if}>店铺详情</a>
+        </li>
+    </ul>
+</div>
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">基础信息</a></li>
+        <li role="presentation" <{if !$store.store_id}>class="hidden"<{/if}>><a href="#order" aria-controls="order" role="tab" data-toggle="tab">店铺订单</a></li>
+        <li role="presentation" <{if !$store.store_id}>class="hidden"<{/if}>><a href="#clerk" aria-controls="clerk" role="tab" data-toggle="tab">店长\导购</a></li>
+    </ul>
+    <!-- Tab panes -->
+    <form class="form" id="store_info" action="<{link app=o2ocds ctl=admin_store act=save}>" method="post">
+        <input type="hidden" name="info[store_id]" value="<{$store.store_id}>">
+        <div class="form-horizontal form-body">
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane active" id="home">
+                    <div class="first">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">店铺状态</label>
+                            <div class="col-sm-4">
+                                <select name="info[status]" class="form-control">
+                                    <option value="0" <{if $store.status == '0'}>selected<{/if}>>待审核</option>
+                                    <option value="1" <{if $store.status == '1'}>selected<{/if}>>审核通过  </option>
+                                    <option value="2" <{if $store.status == '2'}>selected<{/if}>>审核未通过  </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">店铺编号 </label>
+                            <div class="col-sm-4">
+                                <input type="text" value="<{$store.sno}>" disabled  placeholder="系统自动生成" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">店铺名称 <span class="required" aria-required="true">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" value="<{$store.name}>" name="info[name]" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">地区</label>
+                            <div class="region col-sm-9 s_area" >
+                                <{input type=region app=ectools name="info[area]"  value=$store.area}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">负责人姓名 <span class="required" aria-required="true">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[director_name]" value="<{$store.director_name}>" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">负责人手机号码 <span class="required" aria-required="true">*</span></label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[mobile]" value="<{$store.mobile}>" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">负责人地址</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[addr]" value="<{$store.addr}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">负责人身份证</label>
+                            <div class="col-sm-4">
+                                <{input type="image" name="info[director_front]" value=$store.director_front}>
+                            </div>
+                            <div class="col-sm-4">
+                                <{input type="image" name="info[director_reverse]" value=$store.director_reverse}>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">相册
+
+                                <input type="hidden" name="info[image_default_id]" value="<{$store.image_default_id}>">
+                            </label>
+                            <div class="col-md-10">
+                                <div class="tiles goods-images-pane">
+                                    <{foreach from=$store.images item=gimage}>
+                                    <div class="tile image bg-grey <{if $store.image_default_id==$gimage.image_id}>selected<{/if}>">
+                                        <input type="hidden" name="info[images][]" value="<{$gimage.image_id}>">
+                                        <div class="tile-body">
+                                            <figure style="width:100%;height:100%;background-image:url(<{$gimage.image_id|storager:'s'}>);background-position:center;background-repeat:no-repeat;background-size:auto 127px;"></figure>
+                                        </div>
+                                        <div class="tile-object">
+                                            <div class="number">
+                                                <i class="fa fa-trash-o text-danger delete-image" data-image-id="<{$gimage.image_id}>"></i>
+                                            </div>
+                                        </div>
+                                        <{if $store.image_default_id==$gimage.image_id}>
+                                        <span class="badge badge-roundless badge-danger" style="position:absolute;top:0px;left:0px;">默认图</span>
+                                        <{/if}>
+                                    </div>
+                                    <{/foreach}>
+                                    <div class="tile bg-grey goods-images-upload-pane fileinput-button">
+                                        <div class="tile-body">
+                                            <i class="glyphicon glyphicon-plus"></i>
+                                        </div>
+                                        <input id="goods_images_fileupload" type="file"  multiple data-url="index.php?app=image&ctl=admin_manage&act=gimages_upload" accept="image/*">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <hr>
+                        <h4>结算信息</h4>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">账号类型</label>
+                            <div class="col-sm-4">
+                                <select name="info[account_type]" class="form-control">
+                                    <option value="0" <{if $store.account_type == '0'}>selected<{/if}>>对公</option>
+                                    <option value="1" <{if $store.account_type == '1'}>selected<{/if}>>对私  </option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开户名</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[account_name]" value="<{$store.account_name}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开户行支行名称</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[bank]" value="<{$store.bank}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">银行账号</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[account]" value="<{$store.account}>" class="form-control" >
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开户行支行联行号</label>
+                            <div class="col-sm-4">
+                                <input type="text" name="info[line_number]" value="<{$store.line_number}>" class="form-control" >
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-9">
+                                <a href="/index.php/console/index.php?app=o2ocds&ctl=admin_store&act=index" class="btn default"><i class="fa fa-angle-left"></i> 返回</a>
+                                <button id="next1" data-redirect="/index.php/console/index.php?app=o2ocds&ctl=admin_store&act=edit&p[0]={store_id}" type="submit" class="btn blue"><i class="fa fa-check"></i> 保存</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div role="order" class="tab-pane " id="order">
+                    <{include file='admin/store/order.html'}>
+                </div>
+                <div role="clerk" class="tab-pane " id="clerk">
+                    <{if $store.store_id}>
+                    <div class="table-scrollable">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                            <tr>
+                                <!-- <th>注册时间</th> -->
+                                <th>绑定时间</th>
+                                <th>登录账号</th>
+                                <th>姓名</th>
+                                <th>手机</th>
+                                <th>累计获得积分</th>
+                                <th>累计订单数</th>
+                                <th>累计销售额</th>
+                                <th>角色</th>
+                                <th>
+                                    操作
+                                </th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <{foreach from=$clerk_list item=item}>
+                            <tr>
+                                <!-- <td><{$item.reg_time|cdate}></td> -->
+                                <td><{$item.bind_time|cdate}></td>
+                                <td><{$item.login_account}></td>
+                                <td><img src="<{$item.avatar|storager}>" width="30" height="30" class="img-circle"/> <{$item.name}></td>
+                                <td><{$item.mobile}></td>
+                                <td><{$item.integral_sum|default:0}></td>
+                                <td><{$item.order_count|default:0}></td>
+                                <td><{$item.order_sum|default:0}></td>
+                                <td>
+                                    <{if $item.relation == 'manager'}>
+                                        <label class="label label-danger">店长</label>
+                                    <{/if}>
+                                    <{if $item.relation == 'salesclerk'}>
+                                            店员
+                                    <{/if}>
+                                </td>
+                                <td>
+                                    <a target="_command" data-confirm="解除关系后,该账号将无法查看任何‘<{$store.name}>’的信息." class="btn btn-xs btn-default" href="<{link app=o2ocds ctl=admin_store act=delete_relation}>&p[0]=<{$store.store_id}>&p[1]=<{$item.member_id}>">解除关系</a>
+                                    <{if $item.relation != 'manager'}>
+                                        <a target="_command" class="btn btn-xs btn-default" href="<{link app=o2ocds ctl=admin_store act=update_relation}>&p[0]=<{$store.store_id}>&p[1]=<{$item.member_id}>&p[2]=manager">设为店长</a>
+                                    <{else}>
+                                        <a target="_command" class="btn btn-xs btn-default"
+                                    href="<{link app=o2ocds ctl=admin_store act=update_relation}>&p[0]=<{$store.store_id}>&p[1]=<{$item.member_id}>&p[2]=salesclerk">取消店长权限</a>
+                                    <{/if}>
+                                </td>
+                            </tr>
+                            <{/foreach}>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="8">
+
+                                    </td>
+                                    <td>
+                                        <{input type="object" object="members@b2c" name="member_id"  callback_func="sel_member2sm" placeholder="选择会员成为店员"}>
+                                    </td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                    <{else}>
+                        <!-- todo -->
+                    <{/if}>
+                </div>
+
+
+            </div>
+
+        </div>
+    </form>
+<textarea class="hide gimage-box-process-tpl">
+    <div class="tile bg-grey-gallery">
+        <div class="tile-body">
+            <i class="fa fa-cloud-upload">
+            </i>
+        </div>
+        <div class="tile-object">
+            <div class="name">
+                <img src="<{$env.STATICS_HOST_URL}>/desktop/stylesheets/img/ajax-modal-loading.gif"/>
+            </div>
+            <div class="number">
+            </div>
+        </div>
+    </div>
+</textarea>
+<textarea class="hide gimage-box-done-tpl">
+    <div class="tile image bg-grey">
+        <input type="hidden" name="info[images][]" value="{image_id}">
+        <div class="tile-body">
+            <figure style="width:100%;height:100%;background-image:url({url});background-position:center;background-repeat:no-repeat;background-size:auto 127px;"></figure>
+        </div>
+        <div class="tile-object">
+            <div class="number">
+                <i class="fa fa-trash-o delete-image" data-image-id="{image_id}"></i>
+            </div>
+        </div>
+    </div>
+</textarea>
+<script>
+
+    $('.submit').on('click',function() {
+        $.post($(this).attr('data-url'),'',function(data) {
+            if(data.success){
+                Messagebox.success(data.success);
+                window.location.reload();
+            }else{
+                return Messagebox.error(data.error);
+            }
+        });
+    });
+
+    $('#store_info button[data-redirect]').on('click',function(e){
+        var find_required = false;
+        //定位到必填项,防止浏览器内部错误无提示
+        $.each($('#store_info input[required]'),function(i,ipt){
+            if(find_required)return;
+            if($.trim($(ipt).val()) == ''){
+                var tab = $('#store_info .nav-tabs li a[href$="#'+$(ipt).closest('.tab-pane').prop('id')+'"]');
+                tab.tab('show');
+                find_required = true;
+            }
+        });
+        var redirect = $(this).attr('data-redirect');
+        if(redirect.match(/store_id/)){
+            $('#store_info').data('ajax:success',function(re){
+                re = jsonDecode(re);
+                if(re.store_id){
+                    load_page(substitute(redirect,re));
+                }
+            });
+        }else{
+            $('<input type="hidden" name="redirect">').val(redirect).appendTo($(this.form));
+        }
+    });
+
+    select_member = function (selected) {
+        var cids = [];
+        $.each(selected, function (k, v) {
+            cids.push(v.value);
+        });
+        _render(cids);
+    };
+    var _render = function (cids) {
+        if(!cids.length)return;
+
+        $.post('<{link app=desktop ctl=finder act=object_row}>',{
+            'app':'b2c',
+            'model':'members',
+            'cols':'member_id,name',
+            'name':"info[member_id]",
+            'pkey':'member_id',
+            'filter':{member_id:cids}
+        },function(re){
+            $('#member_row').html(re);
+            var tmp = [];
+            $($.grep($('#member_row tr'),function(tr,i){
+                var cid = $(tr).attr('data-id');
+                if($.inArray(cid,tmp)>-1){
+                    return true;
+                }else{
+                    tmp.push(cid);
+                }
+            })).remove();
+        });
+        $('#member_row').closest('table').find('thead').removeClass('hidden');
+    };
+    <{if $store.relation.member_id}>
+    var ecids = [];
+    ecids.push("<{$store.relation.member_id}>");
+    _render(ecids);
+    <{/if}>
+</script>
+<script>
+    !function(){
+        $('.form-group [data-toggle="tooltip"]').tooltip();
+        /*商品相册上传选择逻辑*/
+        var substitute = function(str,obj){
+            return str.replace(/\\?\{([^{}]+)\}/g, function(match, name){
+                if (match.charAt(0) == '\\') return match.slice(1);
+                return (obj[name] != undefined) ? obj[name] : '';
+            });
+        }
+        /*相册拖动排序*/
+        $('.goods-images-pane').sortable({
+            cursor: "move",
+            items:'> .image'
+        });
+
+        var set_default = function(el_box){
+            $('.goods-images-pane .selected').removeClass('selected');
+            $(el_box).addClass('selected');
+            if($('.goods-images-pane .badge-danger').length){
+                $(el_box).append($('.goods-images-pane .badge-danger'));
+            }else{
+                $(el_box).append('<span class="badge badge-roundless badge-danger" style="position:absolute;top:0px;left:0px;">默认图</span>');
+            }
+            $('input[name="info[image_default_id]"]').val($(el_box).find('input[name="info[images][]"]').val());
+        }
+        //var tmp_doc_title = document.title,timer = 0;
+        $('#goods_images_fileupload').fileupload({
+            add:function(e,data){
+                var file_obj = data.files[0];
+                if(!file_obj['type'].match(/^image/)){
+                    return toastr.warning(data.files[0]['name']+'不是允许的图片类型','类型错误');
+                }
+                data.context = $($('.gimage-box-process-tpl').val());
+                data.context.find('.number')
+                        .html("<small>"+Math.round(parseFloat(file_obj.size/1024/1024)*100)/100+'MB</small>');
+                data.context.insertBefore($('.goods-images-upload-pane'));
+                data.submit();
+            },
+            progress:function(e){
+                // (function(){
+                //     document.title = (document.title=='正在上传......')?'正在上传...':'正在上传......';
+                //     timer = setTimeout(arguments.callee,500);
+                // })();
+            },
+            progressall:function(e){
+
+            },
+            done:function(e,data){
+                // clearTimeout(timer);
+                // document.title = tmp_doc_title;
+                try{
+                    var re = $.parseJSON(data.result);
+                    data.context.replaceWith(substitute($('.gimage-box-done-tpl').val(),re));
+                    if(!$('.goods-images-pane .selected').length){
+                        set_default($('.goods-images-pane .image:first'));
+                    }
+                }catch(e){
+                    $(data.context).fadeOut(function(){
+                        $(this).remove();
+                    });
+                }
+
+            }
+        });
+
+        $('.goods-images-pane').on('click','.image',function(e){
+            set_default(this);
+            return;
+        });
+        $('.goods-images-pane').on('click','.delete-image',function(e){
+            e.stopPropagation();
+            if(!confirm('确认移除？'))return;
+            $(this).closest('.image').remove();
+            if(!$('.goods-images-pane .selected').length){
+                if($('.goods-images-pane .image:first')){
+                    set_default($('.goods-images-pane .image:first'));
+                }else{
+                    $('input[name="info[image_default_id]"]').val('');
+                }
+            }
+
+        });
+    }();
+    var sel_member2sm = function(sel){
+        var member_id = sel[0].value;
+        $.ajax({
+            url:'<{link app=o2ocds ctl=admin_store act=add_relation}>&p[0]=<{$store.store_id}>&p[1]='+member_id,
+            method:'post',
+            success:function(res){
+                jsonCommond(res);//解读执行 php end
+                // console.info(res);
+            }
+        });
+    }
+    <{if $env.get.tab}>
+        $('.nav-tabs a')[<{$env.get.tab}>].click();
+    <{/if}>
+</script>

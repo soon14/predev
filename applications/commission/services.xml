@@ -1,0 +1,109 @@
+<services>
+    <!--会员中心菜单-->
+    <service id="b2c.member_menu_extends" opt="会员中心菜单扩展">
+        <class>commission_member_menuextends</class>
+    </service>
+    <!--后台分佣仪表盘挂件-->
+    <service id="commission.widgets" optname="分佣盘挂件">
+        <class>commission_desktop_widgets_stats</class>
+        <class>commission_desktop_widgets_overview</class>
+    </service>
+    <!--商品扩展数据同步-->
+    <service id="b2c.goods.save" optname="中间表数据同步">
+        <class>commission_service_type</class>
+        <class>commission_service_products</class>
+    </service>
+    <!--finder虚拟列-->
+    <service id="desktop_finder.commission_mdl_type_extend">
+        <class>commission_finder_type_extend</class>
+    </service>
+    <service id="desktop_finder.commission_mdl_products_extend">
+        <class>commission_finder_products_extend</class>
+    </service>
+    <service id="desktop_finder.commission_mdl_orderlog">
+        <class>commission_finder_orderlog</class>
+    </service>
+    <service id="desktop_finder.commission_mdl_products_count">
+        <class>commission_finder_products_count</class>
+    </service>
+    <service id="desktop_finder.commission_mdl_cash">
+        <class>commission_finder_cash</class>
+    </service>
+    <service id="desktop_finder.commission_mdl_member_relation">
+        <class>commission_finder_member_relation</class>
+    </service>
+    <!--扩展商品字段 -->
+    <!--
+    <service id="goods_extend" opt="goods-products扩展字段">
+        <class>commission_service_extend_products</class>
+    </service>
+    -->
+    <!--分佣模式-->
+    <service id="commission.mode" optname="分佣模式">
+        <class >commission_service_mode_lvrelate</class>
+        <class >commission_service_mode_lvnorelate</class>
+    </service>
+    <!--支付完成时，冻结佣金-->
+    <service id="ectools.bill.payment.order.succ" optname="订单支付完成完成时触发">
+        <class orderby="20">commission_service_order_finish</class>
+    </service>
+    <!--退款时，冻结佣金-->
+    <service id="ectools.bill.refund.order.succ" optname="订单退款时完成时触发">
+        <class orderby="50">commission_service_order_refund</class>
+    </service>
+    <!--订单完成时，结算佣金-->
+    <service id="b2c.order.end.finish" optname="订单归档完成时触发">
+        <class orderby="50">commission_service_order_allfinish</class>
+    </service>
+    <service id="view_helper">
+        <class >commission_view_helper</class>
+    </service>
+
+    <!-- openapi define begin-->
+    <service id="openapi.products">
+        <class>commission_openapi_products</class>
+    </service>
+    <!--end-->
+    <!-- pc浏览网页时-->
+    <service id="site.controller.construct">
+        <class>commission_service_member_browse</class>
+    </service>
+    <!-- wap浏览网页时-->
+    <service id="mobile.controller.construct">
+        <class>commission_service_member_browse</class>
+    </service>
+    <!-- 会员创建成功时-->
+    <service id="member.create_after">
+        <class>commission_service_member_create</class>
+
+    </service>
+    <!-- 退出登录时-->
+    <service id="member.logout_after">
+        <class>commission_service_member_logout</class>
+    </service>
+
+    <!-- 修改用户时-->
+    <service id="b2c.member.edit">
+        <class>commission_service_member_save</class>
+    </service>
+
+    <!-- 会员经验值增加时-->
+    <service id="b2c.member.exp.upgrade">
+        <class>commission_service_member_save</class>
+    </service>
+
+    <!-- 会员经验值减少时-->
+    <service id="b2c.member.exp.downgrade">
+        <class>commission_service_member_save</class>
+    </service>
+
+    <!--手机版会员中心菜单-->
+    <service id="b2c.member_menu_m_extends" opt="会员中心菜单扩展">
+        <class>commission_member_m_menuextends</class>
+    </service>
+
+    <service id="base_render_pre_display">
+        <class orderby="10000">commission_prender</class>
+    </service>
+
+</services>

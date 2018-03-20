@@ -1,0 +1,18 @@
+<app>
+    <name>积分兑换</name>
+
+    <description>会员积分兑换应用,如积分兑换优惠券</description>
+    <author>
+
+        <name>辰商软件</name>
+
+        <email>dev@vmcshop.com</email>
+
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <depends>
+        <app>b2c</app>
+    </depends>
+
+    <version>1.0</version>
+</app>

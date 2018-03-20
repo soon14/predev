@@ -1,0 +1,14 @@
+<site>
+    <module controller='mobile_store'>
+        <name>store</name>
+        <title>地点</title>
+    </module>
+    <module controller='mobile_activity'>
+        <name>activity</name>
+        <title>活动</title>
+    </module>
+    <module controller='mobile_customer'>
+        <name>customer</name>
+        <title>顾客</title>
+    </module>
+</site>

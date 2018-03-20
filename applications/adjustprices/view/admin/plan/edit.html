@@ -1,0 +1,85 @@
+<h3 class="page-title"><{if $plan.plan_id }>编辑限时降价活动<{else}>新建限时降价活动<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=adjustprices&ctl=admin_plan&act=index">限时降价活动列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $plan.plan_id }>编辑活动<{else}>新建活动<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=adjustprices&ctl=admin_plan&act=save" method="post" id='plan_form' class="form" >
+    <{if $plan.plan_id }><input type="hidden" name="plan_id" value="<{$plan.plan_id}>"><{/if}>
+    <div class="form form-horizontal">
+        <div class="form-body">
+             <div class="form-group">
+                 <label class="col-md-2 control-label">活动名称<span class="required" aria-required="true">*</span></label>
+                 <div class="col-md-5">
+                     <input type="text" name="plan_name" value="<{$plan.plan_name}>" required=true class="form-control" placeholder="请输入唯一的活动名称">
+                     <span class="help-block">
+                     活动名称全系统唯一，不能有重复 </span>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">活动描述</label>
+                 <div class="col-md-5">
+                     <{input type="textarea" name="plan_title" value=$plan.plan_title}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">降价执行时间点</label>
+                 <div class="col-md-3">
+                     <{input type="time" name="carry_out_time" value=$plan.carry_out_time}>
+                 </div>
+             </div>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">恢复原价时间点</label>
+                 <div class="col-md-3">
+                     <{input type="time" id="rollback_time_input" name="rollback_time" value=$plan.rollback_time}>
+                     <!-- <div class="help-block">
+                         <i class="fa fa-info"></i> 留空不回滚
+                     </div> -->
+                 </div>
+                 <!-- <div class="col-md-1">
+                     <button class="btn default" type="button" name="button" onclick="$('input[name=rollback_time]').val('')"><i class="fa fa-close"></i></button>
+                 </div> -->
+             </div>
+             <{permission perm_id='adjustprices_status_edit'}>
+             <div class="form-group">
+                 <label class="col-md-2 control-label">状态切换</label>
+                 <div class="col-md-3">
+                     <select class="form-control" name="plan_status">
+                         <option value='0' <{if $plan.plan_status=='0'}>selected<{/if}>>准备中</option>
+                         <option value='1' <{if $plan.plan_status=='1'}>selected<{/if}>>确认按计划执行</option>
+                         <!-- <option value='2' <{if $plan.plan_status=='2'}>selected<{/if}>>降价任务处理中</option> -->
+                         <!-- <option value='3' <{if $plan.plan_status=='3'}>selected<{/if}>>回滚中</option> -->
+                         <option value='4' <{if $plan.plan_status=='4'}>selected<{/if}>>已执行降价</option>
+                         <option value='5' <{if $plan.plan_status=='5'}>selected<{/if}>>已恢复原价</option>
+                     </select>
+                 </div>
+                 <div class="col-md-7 col-md-offset-2">
+                     <br>
+                     <div class="alert alert-warning ">
+                         <ul class="list-unstyled">
+                            <li><span class="badge">准备中</span>仅保存活动规则,不做任何执行。</li>
+                            <li><span class="badge">确认按计划执行</span>系统根据活动规则到时间执行。</li>
+                            <li><span class="badge">已执行降价</span> 系统根据活动规则到时间执行价格恢复。此时即使降价没有执行,也不会执行降价。</li>
+                            <li><span class="badge">已恢复原价</span> 整个活动已执行完毕</li>
+                         </ul>
+                     </div>
+                 </div>
+             </div>
+             <{/permission}>
+    </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+
+    <div>
+</form>

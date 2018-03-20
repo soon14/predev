@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><{$title}></title>
+        <meta name="description" content="<{$description}>" />
+        <meta name="keywords" content="<{$keywords}>" />
+
+        <meta charset="utf-8">
+        <meta name="charset" content="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link type="image/x-icon" href="<{$env.conf.mobile.mobile_icon|storager}>" rel="apple-touch-icon-precomposed">
+
+
+        <link href="/themes/mobile/default/statics/activity/styles/common.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/themes/mobile/default/statics/activity/styles/dzp.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body class="page-xydzp">
+        <header class="act-view-header view-xydzp">
+            <nav class="top-navs">
+                <ul>
+                    <li>
+                        <a href="<{link app=mobile ctl=index}>"><i class="icon-arrow-left icons"></i></a>
+                    </li>
+                    <li>
+                        <span><{$title}></span>
+                    </li>
+                    <li></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="view-xydzp">
+            <section class="main-top">
+                <a data-view-rule="true" href="javascript:;"><img src="/themes/mobile/default/statics/activity/images/dzp/rule-btn.png" /></a>
+                <h1><img src="/themes/mobile/default/statics/activity/images/dzp/xydzp-text.png" /></h1>
+            </section>
+            <section class="zhuanpan" id="zhuanpan">
+                <img id="zp-bg-empty" src="/themes/mobile/default/statics/activity/images/dzp/zp-bg-emp.png" />
+                <span id="zp-ring"></span> 
+                <div id='zp-text'>
+                    <ul id="elActivity" data-url="/index.php/openapi/prize/win" data-id="<{$data.activity_id}>" data-ajax-url="<{link app=digitalmarketing ctl=mobile_activity act=ajax}>">
+                        <{if $data.prize_items}>
+                        <{foreach from=$data.prize_items item=item}>
+                        <li><a href="#"><span><{$item}></span></a></li>
+                        <{/foreach}>
+                        <{/if}>
+                    </ul>
+                </div>
+                <span id="zp-arrow" data-btn="whirl"><img src="/themes/mobile/default/statics/activity/images/dzp/cj-arrow.png" /></span>
+                <audio style="display: none;" id="el-audio" controls=""></audio>
+            </section>
+        </main>
+
+        <footer class="view-xydzp">
+            <p><{if $data.frequency_limit>0}><span>可抽奖次数：<var data-num="true"><{$data.frequency_limit-$chance.today_nums}></var>次</span><{/if}></p>
+            <a data-btn="whirl"><img src="/themes/mobile/default/statics/activity/images/dzp/act-btn.png" /></a>
+        </footer>
+
+        <div class="box opacity" id="opacity-box" style="display: none;"
+             data-id="<{$data.activity_id}>"
+             data-url="<{link app=digitalmarketing ctl=mobile_activity act=ajax}>"
+             >
+            
+            <!-- 错误 -->
+            <div id="error-box" class="msg-show-box" style="display: none;">
+                <div class="view-box">
+                    <p class="msg-ico"><img src="/themes/mobile/default/statics/activity/images/cry.png" /></p>
+                    <h3>操作错误</h3>
+                    <div class="content-view">
+                        <p id="err-msg"></p>
+                    </div>
+                    <div class="button-view">
+                        <a data-close-btn="error" class="bl bl-danger" href="javascript:;">再试试</a>
+                        <a class="bl bl-warning" href="<{link app=mobile ctl=index}>">返回首页</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </body>
+    <script src="/themes/mobile/default/statics/activity/js/common.min.js" type="text/javascript"></script>
+    <script src="/themes/mobile/default/statics/activity/js/dzp.min.js" type="text/javascript"></script>
+</html>

@@ -1,0 +1,165 @@
+<h3 class="page-title"><{if $sale.id }>预约编辑<{else}>添加预约<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=sale&ctl=admin_index&act=index">预约列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $sale.id}>预约编辑<{else}>添加预约<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=sale&ctl=admin_index&act=save" method="post" class="form" >
+    <{if $sale.id }>
+    <input type="hidden" name="id" value="<{$sale.id}>">
+    <{/if}>
+    <div class="form form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                预约活动名称
+                </label>
+                <div class="col-md-5">
+                    <input type="text" name="name" value="<{$sale.name}>" required=true class="form-control"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                预约活动说明
+                </label>
+                <div class="col-md-5">
+                    <textarea name="intro" class="form-control">
+                        <{$sale.intro}>
+                    </textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                    活动图片
+                </label>
+                <div class="col-md-2">
+                    <{input type=image name=image value=$sale.image height=120 width=120}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                状态
+                </label>
+                <div class="col-md-5">
+                    <select name="status" class="form-control">
+                        <option value="0" <{if $sale.status == '0'}>selected<{/if}>>有效</option>
+                        <option value="1" <{if $sale.status == '1'}>selected<{/if}>>暂停</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                预约起止时间
+                </label>
+                <div class="col-md-2">
+                    <{input type="time" value=$sale.reserve_start name="reserve_start"}>
+                </div>
+                <div class="col-md-1 text-center">
+                    至
+                </div>
+                <div class="col-md-2">
+                    <{input type="time" value=$sale.reserve_end name="reserve_end"}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                售卖截止时间
+                </label>
+                <div class="col-md-2">
+                    <{input type="time" value=$sale.start name="start"}>
+                </div>
+                <div class="col-md-1 text-center">
+                    至
+                </div>
+                <div class="col-md-2">
+                    <{input type="time" value=$sale.end name="end"}>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">
+                <span class="required" aria-required="true">*</span>
+                开售提醒时间
+                </label>
+                <div class="col-md-5">
+                    <{input type="time" value=$sale.alert name="alert"}>
+                </div>
+                <div class="col-md-5">
+                    <div class="help">
+                    到达提醒时间会通过短信或邮件通知客户。 开售提醒方式/内容请查看系统设置-商店-消息通知设置
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">预约商品</label>
+                <div class="col-md-7" id="J_goods">
+                    <{if !$sale.id}>
+                        <{input type="object" object="goods@b2c" callback_func="goods_callback_func"}>
+                    <{/if}>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>操作</th>
+                                <th>商品图片</th>
+                                <th>商品名称</th>
+                                <th>商品编号</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <{if $goods}>
+                            <tr>
+                                <td>
+                                </td>
+                                <td>
+                                <img src="<{$goods.image_default_id|storager:'s'}>" alt="<{$goods.name}>" class="img-thumbnail" style="height:50px;"/>
+                                </td>
+                                <td>
+                                    <input type="hidden" name="goods_id"  value="<{$goods.goods_id}>">
+                                    <{$goods.name}>
+                                </td>
+                                <td>
+                                    <{$goods.gid}>
+                                </td>
+                            </tr>
+                            <{/if}>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">每人限购数量</label>
+                <div class="col-md-1" id="J_goods">
+                    <{input type="number" value="{$sale.number}" name="number"}>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-9">
+                <button type="submit" class="btn blue">保存</button>
+            </div>
+        </div>
+    </div>
+</form>
+<script>
+var goods_callback_func = function(gids){
+    $.ajax({
+        'url':'<{link app=sale ctl=admin_index act=get_goods}>',
+        'data':gids,
+        'type':'post',
+        'success':function(re){
+            $('#J_goods tbody').append(re);
+        }
+    });
+};
+</script>

@@ -1,0 +1,45 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">生成邀请码        </h3>
+</div>
+<form method="post" action="index.php?app=o2ocds&amp;ctl=admin_invitation&amp;act=save" id="invitation_from"  class="form">
+    <div class="modal-body  form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-3 control-label">发行种类：</label>
+                <div class="col-md-9">
+                    <select name="type" class="form-control">
+                        <option  value="0">邀请店铺</option>
+                        <option  value="1">邀请业务员</option>
+                        <option  value="2">邀请店员</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">备注：</label>
+                <div class="col-md-9">
+                    <{input type=textarea rows=2 name="remark" value=$qrcode.remark}>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">保存</button>
+    </div>
+</form>
+<script>
+    $("#invitation_from").on('submit',function() {
+        $.post($(this).attr('action'),$(this).serialize(),function (re) {
+            if(re.success) {
+                $('#invitation_content').load(re.redirect);
+            }else{
+                toastr['error'](re.error,'错误');
+            }
+            return false;
+        });
+        return false;
+    });
+</script>
+
+

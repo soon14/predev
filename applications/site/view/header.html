@@ -1,0 +1,19 @@
+<{css src="bootstrap.min.css"}>
+<{script src="jquery.min.js"}>
+<{script src="jquery.cookie.js"}>
+<{script src="bootstrap.min.js"}>
+<!--site header common-->
+<!--[if lt IE 9]>
+<{if $res_url!=$res_url_local}>
+<{*******************
+    响应式布局IE6-8处理
+    开启资源镜像后处理跨域问题
+*********************}>
+<{script src="html5fix.js" res_url=$res_url_local}>
+<link href="<{$res_url}>/misc/respond_proxy/respond-proxy.html" id="respond-proxy" rel="respond-proxy" />
+<link href="<{$res_url_local}>/misc/respond_proxy/respond.proxy.gif" id="respond-redirect" rel="respond-redirect" />
+<script src="<{$res_url_local}>/misc/respond_proxy/respond.proxy.js"></script>
+<{else}>
+<{script src="html5fix.js"}>
+<{/if}>
+<![endif]-->

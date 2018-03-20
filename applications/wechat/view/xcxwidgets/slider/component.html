@@ -1,0 +1,74 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 图片滚动 - 子组件 -->
+<template id="widget-child-slider">
+    <!--
+    indicator_dots 是否显示面板指示点
+    autoplay 是否自动切换
+    interval 自动切换时间间隔
+    duration 滑动动画时长
+    circular 是否采用衔接滑动
+    height 图片高度
+    item.url 网址
+    item.image.src 图片地址
+    item.image.mode 图片裁切模式 https://mp.weixin.qq.com/debug/wxadoc/dev/component/image.html
+    -->
+    <section class="widget-box widget-slider" :data-indicator-dots="widget.data.indicator_dots ? 'true' : 'false'" :data-autoplay="widget.data.autoplay ? 'true' : 'false'" :data-interval="widget.data.interval || 5000" :data-duration="widget.data.duration || 500" :data-circular="widget.data.circular ? 'true' : 'false'">
+        <ul class="slider-bd" v-if="widget.data.items.length > 0">
+            <li v-for="(item, item_key) in widget.data.items" :item_key="item_key" :style="{'display': item_key ? 'none' : ''}">
+                <a :href="item.url" :class="item.image.mode || 'widthFix'"  :style="{'height': (widget.data.height || 160) + 'px'}">
+                    <!--<img :src="item.image.src" :mode="item.image.mode || 'widthFix'"/>-->
+                    <div v-if="item.image.mode=='aspectFill'" :class="item.image.mode || 'widthFix'" :style="{'backgroundSize':(item.image.percent=='width'?'auto 100%':'100% auto'),'backgroundImage':'url('+item.image.src+')'}"></div>
+                    <div v-else :class="item.image.mode || 'widthFix'" :style="'backgroundImage:url('+item.image.src+')'"></div>
+                </a>
+            </li>
+        </ul>
+        <ul class="slider-bd" v-else>
+            <li>
+                <a href="javascript:;" class="widthFix">
+                    <img src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})" style="width: 100%;" :style="{'height': (widget.data.height || 160) + 'px'}" />
+                </a>
+            </li>
+        </ul>
+        <ul class="slider-nav" v-if="widget.data.indicator_dots&&widget.data.items.length>1">
+            <li v-for="(item, item_key) in widget.data.items" :class="{'active': item_key < 1}"><a href="">{{item_key + 1}}</a></li>
+        </ul>
+    </section>
+</template>
+<script type="text/javascript">
+var arr = [];
+designStore.methods.updateData = function(vnode) {
+    this.root.page.currWidgets[vnode.index].data.items = arr;
+    console.log(this.root.page.currWidgets[vnode.index].data.items); 
+};
+var widget_child_slider = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-slider',    
+    created:function(){
+    	var _t = this;
+    	if(this.widget.data.items.length!=0){
+    		for(var i=0;i<this.widget.data.items.length;i++){
+    			imgCompare(this.widget.data.items[i].image);
+    		}
+    	}
+    	arr = this.widget.data.items;
+    	designStore.methods.updateData(this);
+    }
+});
+function imgCompare(image){
+	var img = new Image();
+	img.onload = function(){
+		if(image.mode == 'aspectFill'){
+			if(this.width>this.height){
+		    	image['percent'] = 'width';
+		    }else{
+		    	image['percent'] = 'height';
+		    }
+		}else{
+			image['percent'] = 'normal';
+		}
+	    
+	    this.onload = null;
+	};
+	img.src = image.src;
+}
+</script>

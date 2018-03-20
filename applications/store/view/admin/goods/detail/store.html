@@ -1,0 +1,40 @@
+<div class="form-group">
+    <label class="col-md-2 control-label">门店上架 </label>
+    <div class="col-md-4">
+        <label class="radio-inline"><input  type="radio" name="goods[store_enable]" value="1" <{if $store_relation.store_enable == "1"}>checked<{/if}>>是</label>
+        <label class="radio-inline"><input   type="radio" name="goods[store_enable]" value="0" <{if $store_relation.store_enable != "1"}> checked<{/if}> value="0" >否</label>
+    </div>
+</div>
+
+<div class="form-group" id="goods_relation_store_panel">
+    <label class="col-md-2 control-label">所属店铺</label>
+    <div class="col-md-8">
+        <div class="selected-store">
+            <{input type="object" object="store@store" base_filter=$store_filter callback_func="select_store_callback_func"}>
+        </div>
+        <span class="help-block">选择商品在哪个店铺销售,不选只能在线上销售,不能在店铺销售</span>
+        <div class="selected-store">
+            <table class="table" id="selected_store_tb">
+                <{if $store_relation}>
+                <tr>
+                    <td>
+                        <button onclick="$(this).closest('tr').remove();" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+                    </td>
+                    <td>
+                        <input type="hidden" name="goods[store_id][]"  value="<{$store_relation.store_id}>">
+                        <{$store_relation.store_name}>
+                    </td>
+                    <td><{$store_relation.store_bn}></td>
+                </tr>
+                <{/if}>
+            </table>
+        </div>
+    </div>
+</div>
+<script charset="utf-8">
+    var select_store_callback_func = function(store_id){
+        $('#selected_store_tb').load('<{link app=store ctl=admin_goods act=ajax_get_goods_store}>',store_id,function(){
+
+        });
+    };
+</script>

@@ -1,0 +1,16 @@
+<desktop>
+    <permissions>
+        <permission id="aftersales_do" display='true' workground='aftersales.wrokground'>售后审核</permission>
+        <permission id="aftersales_list" display='true' workground='aftersales.wrokground'>查看售后请求列表</permission>
+        <permission id="aftersales_setting" display='true' workground='aftersales.wrokground'>售后功能配置</permission>
+        <permission id="aftersales_set_tag" display='true' workground='aftersales.wrokground'>售后标签</permission>
+    </permissions>
+     <workground name="售后" icon="icon-heart" order='25'  id="aftersales.wrokground">
+        <menugroup name="售后服务管理">
+            <menu controller='admin_request' action='index' permission='aftersales_list' display='true' order='0'>售后请求列表</menu>
+            <menu controller='admin_setting' action='index' permission='aftersales_setting' display='true' order='1'>售后功能配置</menu>
+            <menu permission='aftersales_set_tag' display='false' order='1'>售后标签</menu>
+            <menu permission='aftersales_do' display='false' order='1'>售后审核</menu>
+        </menugroup>
+    </workground>
+</desktop>

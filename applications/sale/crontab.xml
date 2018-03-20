@@ -1,0 +1,7 @@
+<cronentries>
+    <cron id="sale_tasks_send_message">
+        <description>预约活动到时提醒</description>
+        <schedule>* 1 * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+</cronentries>

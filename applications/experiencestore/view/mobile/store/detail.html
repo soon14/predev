@@ -1,0 +1,58 @@
+<div class="content">
+    <div class="slider" id="store_gallery_slider">
+          <div class="slide-group">
+           <{foreach from=$store_gallery item=image}>
+                <div class="slide">
+                  <img src="<{$image.image_id|storager:'m'}>">
+                  <span class="slide-text">
+                    <span class="icon icon-left-nav"></span>
+                  </span>
+                </div>
+            <{/foreach}>
+          </div>
+      </div>
+      <ul class="table-view">
+          <li class="table-view-cell">
+            <strong><{$store.name}></strong>
+            <dl class="ssc-basic">
+                <dt><strong>地址：</strong></dt>
+                <dd><{$store.region|regionpart:'city'}><{$store.address}></dd>
+                <dt><strong>电话：</strong></dt>
+                <dd><{$store.phone}></dd>
+                <dt class="ssc-basic-hours-lebel"><strong>营业时间：</strong></dt>
+                <dd class="ssc-basic-hours"><{$store.hours}></dd>
+                <dt class="ssc-waytogo-label"><strong>前往方法：</strong></dt>
+                <dd class="ssc-waytogo">
+                    <{$store.waytogo}>
+                </dd>
+            </dl>
+          </li>
+      </ul>
+      <div class="store-desc">
+          <{$store.desc}>
+      </div>
+      <div class="store-map">
+          <iframe src="about:blank" onload="if($(this).data('loaded')){return;}$(this).data('loaded',true);$(this).attr('src',$(this).attr('data-url')+'/width/'+$(this).width());" data-url="<{$base_url}>/openapi/baidumap/view/lng/<{$store.lng}>/lat/<{$store.lat}>" width="100%" height="400px"></iframe>
+      </div>
+</div>
+
+<div class="bar bar-standard bar-footer-secondary">
+  <table width="100%">
+      <col width="48%"></col>
+      <col width="4%"></col>
+      <col width="48%"></col>
+      <tbody>
+          <tr>
+              <td>
+                  <a class="btn btn-block btn-outlined btn-primary">维修预约</a>
+              </td>
+              <td>
+                  &nbsp;
+              </td>
+              <td>
+                  <a class="btn btn-block  btn-primary" href="<{link app=experiencestore ctl=mobile_activity act=subject args0=$store.id}>">活动预约</a>
+              </td>
+          </tr>
+      </tbody>
+  </table>
+</div>

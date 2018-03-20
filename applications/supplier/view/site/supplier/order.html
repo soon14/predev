@@ -1,0 +1,265 @@
+<{include file='site/supplier/layout/top.html' }>
+<{css src="../desktop/com/global/plugins/bootstrap-datepicker/css/datepicker3.css"}>
+<{css src="../desktop/com/global/plugins/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datepicker/js/locales/bootstrap-datepicker.zh-CN.js"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"}>
+<{script src="../desktop/com/global/plugins/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"}>
+<style media="screen">
+    .datetimepicker{
+        z-index: 3999!important;
+    }
+</style>
+<div class="my-main supplier-main">
+    <div class="row">
+        <div class="col-xs-2">
+            <{include file='site/supplier/layout/menu.html' }>
+        </div>
+        <div class="col-xs-10 my-page">
+            <div class="page-header clearfix">
+              <h1 class="pull-left">订单管理 <small>Orders</small></h1>
+              <div class="btn-group pull-right">
+                  <button class="btn btn-default" data-toggle="modal" data-target="#export_modal" type="button">导出</button>
+                  <button class="btn btn-default" data-toggle="modal" data-target="#csv2delivery_modal" type="button" name="button">批量导入发货状态</button>
+              </div>
+            </div>
+            <ul class="nav nav-tabs">
+                <li role="presentation" <{if $type=='all'}> class="active"<{/if}>><a href="<{link app=supplier ctl=site_supplier act=order args0=1 args1=20 args2=all}>">全部</a></li>
+                <li role="presentation" <{if $type=='ready'}> class="active"<{/if}>><a href="<{link app=supplier ctl=site_supplier act=order args0=1 args1=20 args2=ready}>">待发货</a></li>
+                <li role="presentation" <{if $type=='succ'}> class="active"<{/if}>><a href="<{link app=supplier ctl=site_supplier act=order args0=1 args1=20 args2=succ}>">已发货</a></li>
+            </ul>
+            <p></p>
+            <div class="well">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-inline" id="order_filter_form">
+                            <select class="form-control">
+                                <option value="delivery_id">单号</option>
+                                <option value="consignee_name|head">收货人</option>
+                                <option value="consignee_mobile|head">收货人手机</option>
+                            </select>
+                            <{assign var=fv value='::'|explode:$env.get.filter}>
+                            <input type="text" value="<{$fv.1}>" class="form-control" id="order_filter" placeholder="">
+                            <button type="button" class="btn btn-default" name="button"><i class="glyphicon glyphicon-filter"></i> 筛选</button>
+                            <{if $fv.1}>
+                            <a href="<{link app=supplier ctl=site_supplier act=order args0=$page args1=$limit}>" class="btn btn-default">取消筛选</a>
+                            <{/if}>
+                            <script type="text/javascript">
+                                $('#order_filter_form select option[value="<{$fv.0}>"]').prop('selected','selected');
+                            </script>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+
+                        <p class="form-control-static pull-right text-muted">
+                            共 <{$count}> 条记录
+                        </p>
+                    </div>
+                </div>
+
+            </div>
+            <table class="table table-hover table-striped">
+                <thead>
+                    <tr>
+                        <th>
+                            单号
+                        </th>
+                        <th>
+                            收货人
+                        </th>
+                        <th>
+                            创建时间
+                        </th>
+                        <th>
+                            最后更新时间
+                        </th>
+                        <th>
+                            状态
+                        </th>
+                        <th>
+                            操作
+                        </th>
+                    </tr>
+                </thead>
+                <tbody id="order_list_tbody">
+                    <{if !$delivery_list}>
+                    <tr>
+                        <td colspan="6">
+                            <div class="alert">
+                                暂无数据
+                            </div>
+                        </td>
+                    </tr>
+                    <{else}>
+                    <{foreach from=$delivery_list item=delivery name=fr_delivery}>
+                        <tr>
+                            <td>
+                                <{$delivery.delivery_id}>
+
+                            </td>
+                            <td>
+                                <p class="text-muted">
+                                    <{$delivery.consignee_name}>,<{$delivery.consignee_mobile}>
+                                    <br><{$delivery.consignee_area|region}> <{$delivery.consignee_addr}><{if $delivery.consignee_zip}><{$delivery.consignee_zip}><{/if}>
+                                </p>
+
+                            </td>
+                            <td>
+                                <{$delivery.createtime|cdate}>
+                            </td>
+                            <td>
+                                <{$delivery.last_modify|cdate}>
+                            </td>
+                            <td>
+                                <{switch from=$delivery.status}>
+                                <{case value='ready'}>
+                                <span class="label label-warning">未发货</span>
+                                <{case value='succ'}>
+                                <span class="label label-success">已发货</span>
+                                <{case value='cancel'}>
+                                已取消
+                                <{/switch}>
+                            </td>
+                            <td>
+                                <a href="<{link app=supplier ctl=site_supplier act=order_detail args0=$delivery.delivery_id}>"  class="btn btn-sm btn-default" >查看</a>
+                            </td>
+                        </tr>
+                    <{/foreach}>
+                    <{/if}>
+                </tbody>
+                <{if $totalpage>1}>
+                <tfoot>
+                    <tr>
+                        <td colspan=4>
+                            <{pagers data=$pager}>
+                        </td>
+                        <td colspan=2>
+                            <div class="pagination pull-right">
+                                <select id="page_limit_sel" class="form-control">
+                                    <option value="20" data-action="<{link app=supplier ctl=site_supplier act=order args0=$page args1=20 args2=$type}><{if $env.get.filter}>?filter=$env.get.filter<{/if}>">每页20条</option>
+                                    <option value="50" data-action="<{link app=supplier ctl=site_supplier act=order args0=$page args1=50 args2=$type}><{if $env.get.filter}>?filter=$env.get.filter<{/if}>">每页50条</option>
+                                    <option value="100" data-action="<{link app=supplier ctl=site_supplier act=order args0=$page args1=100 args2=$type}><{if $env.get.filter}>?filter=$env.get.filter<{/if}>">每页100条</option>
+                                    <option value="500" data-action="<{link app=supplier ctl=site_supplier act=order args0=$page args1=500 args2=$type}><{if $env.get.filter}>?filter=$env.get.filter<{/if}>">每页500条</option>
+                                </select>
+                            </div>
+                        </td>
+                    </tr>
+                </tfoot>
+                <{/if}>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- export form -->
+<div class="modal fade" id="export_modal" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <h4 class="modal-title">批量导出</h4>
+            </div>
+            <div class="form">
+                <form action="<{link app=supplier ctl=site_supplier act=export_list}>" method="post" class="form-horizontal" target="_blank">
+                    <input type="hidden" name="export_object" value="order">
+                    <div class="modal-body">
+                        <div class="form-body">
+                            <div class="form-group">
+                                 <div class="col-md-2 control-label">
+                                     状态
+                                 </div>
+                                 <div class="col-md-3">
+                                     <select class="form-control" name="filter[status]">
+                                         <option value="">全部状态</option>
+                                         <option value="ready">待发货</option>
+                                         <option value="succ">已发货</option>
+                                     </select>
+                                 </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-2 control-label">
+                                    时间段
+                                    <span class="text-danger">*</span>
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control datetime-picker" required="true" type="text" name="filter[createtime|bthan]" value="" placeholder="最早">
+                                </div>
+                                <div class="col-md-5">
+                                    <input class="form-control datetime-picker" required="true" type="text" name="filter[createtime|lthan]" value="" placeholder="最晚">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10 col-md-offset-2">
+                                    <div class="alert alert-warning">
+                                        单据时间段范围必填,且时间范围不能大于3个月
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary">确认导出</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    </div>
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+<!-- end export form -->
+
+<div class="modal fade" id="csv2delivery_modal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">从csv文件批量导入发货信息</h4>
+      </div>
+      <div class="modal-body">
+          <div class="alert alert-info">
+              <h5>csv格式说明</h5>
+              <pre>
+单号,物流公司代码,物流单号
+单号,物流公司代码,物流单号
+....
+              </pre>
+              <a href="<{link app=supplier ctl=site_supplier act=logistics_bn_list}>">物流公司代码查询</a>
+          </div>
+         <form  action="<{link app=supplier ctl=site_supplier act=update_order_bycsv}>" enctype="multipart/form-data" method="post" class="form-inline">
+             <div class="form-group">
+                 <input class="form-control" type="file" name="ordercsv" value="">
+             </div>
+             <button type="submit" class="btn btn-primary">确认导入</button>
+         </form>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript">
+    var page_limit_match = location.href.match(/-order-([\d]+?)-([\d]+?)-/);
+    if(page_limit_match && page_limit_match[2]){
+        $('#page_limit_sel option[value="'+page_limit_match[2]+'"]').prop('selected','selected');
+    }
+    $('#page_limit_sel').on('change',function(){
+        location = $(this.options[this.selectedIndex]).attr('data-action');
+    });
+    $('#order_filter_form button').on('click',function(e){
+        var fv = $.trim($('#order_filter_form input').val()),fk = escape($('#order_filter_form select').val());
+        if(fv ==''){
+            return $('#order_filter_form input').eq(0).focus();
+        }
+        var redirect = "<{link app=supplier ctl=site_supplier act=order args0=$page args1=$limit}>?filter="+[fk,fv].join('::');
+        location = redirect;
+    });
+    $('.datetime-picker').datetimepicker({
+        autoclose: true,
+        language:'zh-CN'
+    });
+    $('#export_modal form').on('submit',function(){
+        $('#export_modal').modal('hide');
+    });
+</script>

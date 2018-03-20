@@ -1,0 +1,104 @@
+<h3 class="page-title">
+    图片缩略尺寸设置
+</h3>
+<hr>
+<div class="alert alert-info">
+    <{if $storager=='oss'}>
+        <small>当前图片云存储平台为阿里云OSS，当上传一张图片时，系统会调用阿里云OSS API 上传原图并存储，并生成多个动态尺寸URL</small>
+    <{elseif $storager=='upyun'}>
+        <small>当前图片云存储平台为又拍云，当上传一张图片时，系统会调用又拍云 API 上传原图并存储，并生成多个自定义版本URL</small>
+        <ol>
+            <li>使用UPYUN存储图片前，请绑定独立二级域名到UPYUN,并指定!间隔符,l、m、s、xs (大、中、小、微 自定义版本)</li>
+        </ol>
+    <{else}>
+    <small>当上传一张图片时，系统会自动处理为多种尺寸图片,并存储。</small>
+    <{/if}>
+</div>
+<form method="post" action="<{$this_url}>&act=imageset" id="imageset_form" class="form">
+    <{assign var=cur_size value=$env.conf.image.size}>
+        <div class="row form-body">
+            <div class="col-md-3">
+                <h1><i class="icon-picture" style="font-size:80px"></i>大L</h1>
+                <{if $storager=='upyun'}>
+                <p>
+                    将最终生成 (图片原图URL)!l
+                </p>
+                <{else}>
+                <div class="input-group input-small margin-top-10">
+                    <span class="input-group-addon">宽(px)</span>
+                    <input type="number" value="<{$cur_size.L.width|default:600}>" name="imageset[L][width]" class="form-control" placeholder="宽">
+
+                </div>
+                <div class="input-group input-small margin-top-10">
+                    <span class="input-group-addon">高(px)</span>
+                    <input type="number" value="<{$cur_size.L.height|default:600}>" name="imageset[L][height]" class="form-control" placeholder="高">
+
+                </div>
+                <{/if}>
+            </div>
+            <div class="col-md-3">
+                <h2><i class="icon-picture" style="font-size:60px"></i>中M</h2>
+                <{if $storager=='upyun'}>
+                <p>
+                    将最终生成 (图片原图URL)!m
+                </p>
+                <{else}>
+                <div class="input-group input-small margin-top-10">
+                    <span class="input-group-addon">宽(px)</span>
+                    <input type="number" value="<{$cur_size.M.width|default:450}>" name="imageset[M][width]" class="form-control" placeholder="宽">
+
+                </div>
+                <div class="input-group input-small margin-top-10">
+                    <span class="input-group-addon">高(px)</span>
+                    <input type="number" value="<{$cur_size.M.height|default:450}>" name="imageset[M][height]" class="form-control" placeholder="高">
+
+                </div>
+                <{/if}>
+            </div>
+            <div class="col-md-3">
+                <h3><i class="icon-picture" style="font-size:30px"></i>小S</h3>
+                <{if $storager=='upyun'}>
+                <p>
+                    将最终生成 (图片原图URL)!s
+                </p>
+                <{else}>
+                <div class="input-group input-small margin-top-10">
+                    <span class="input-group-addon">宽(px)</span>
+                    <input type="number" value="<{$cur_size.S.width|default:250}>" name="imageset[S][width]" class="form-control" placeholder="宽">
+                </div>
+                <div class="input-group input-small margin-top-10">
+                    <span class="input-group-addon">高(px)</span>
+                    <input type="number" value="<{$cur_size.S.height|default:250}>" name="imageset[S][height]" class="form-control" placeholder="高">
+
+                </div>
+                <{/if}>
+            </div>
+            <div class="col-md-3">
+                <h4><i class="icon-picture"></i>微XS</h4>
+                <{if $storager=='upyun'}>
+                <p>
+                    将最终生成 (图片原图URL)!xs
+                </p>
+                <{else}>
+                <div class="input-group input-small margin-top-10">
+                    <span class="input-group-addon">宽</span>
+                    <input type="number" value="<{$cur_size.XS.width|default:100}>" name="imageset[XS][width]" class="form-control" placeholder="宽">
+                </div>
+                <div class="input-group input-small margin-top-10">
+                    <span class="input-group-addon">高</span>
+                    <input type="number" value="<{$cur_size.XS.height|default:100}>" name="imageset[XS][height]" class="form-control" placeholder="高">
+                </div>
+                <{/if}>
+            </div>
+        </div>
+        <{if $storager!='upyun'}>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-12">
+                        <button type="submit" class="btn blue">保存设置</button>
+                        <!-- <button type="button" class="btn default">关闭</button> -->
+                    </div>
+                </div>
+            </div>
+        <{/if}>
+</form>

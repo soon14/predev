@@ -1,0 +1,69 @@
+<ul class="table-view">
+    <li class="table-view-divider">
+        售后服务处理 #<{$req_detail.request_id}>
+        <{switch from=$req_detail.status}>
+            <{case value='1'}>
+            <span class="badge">申请中</span>
+            <{case value='2'}>
+            <span class="badge">被拒绝</span>
+            <{case value='3'}>
+            <{if $delivery.logistics_no}>
+                <span class="badge">退货处理中</span>
+            <{else}>
+                <span class="badge">已接受申请,请完善物流信息</span>
+            <{/if}>
+            <{case value='4'}>
+            <span class="badge">退款处理中</span>
+            <{case value='5'}>
+            <span class="badge">处理完成</span>
+        <{/switch}>
+    </li>
+    <li class="table-view-cell tvc-reset-padding media">
+        <{$req_detail.remarks|default:'暂无备注'}>
+    </li>
+    <{foreach from=$delivery.delivery_items item=item}>
+    <li class="table-view-cell tvc-reset-padding media">
+        <img width=30 class="img-thumbnail media-object pull-left" src="<{$item.image_id|storager:'s'}>" alt="<{$item.name}>" />
+        <p class="media-body">
+            <{$item.name}>
+            <{$item.spec_info}>
+        </p>
+        <span class="badge"><{$item.sendnum}></span>
+    </lid>
+    <{/foreach}>
+    <{if $delivery}>
+    <li class="table-view-cell tvc-reset-padding">
+            快递至：
+            <{$delivery.consignee.area|region}>,<{$delivery.consignee.addr}>.
+            <{if $delivery.consignee.zip}>,邮编:<{$delivery.consignee.zip}><{/if}>
+            <{if $delivery.consignee.mobile}>,手机:<{$delivery.consignee.mobile}><{/if}>
+            <{if $delivery.consignee.tel}>,固话:<{$delivery.consignee.tel}><{/if}>
+            <{if $delivery.consignee.email}>,Email:<{$delivery.consignee.email}><{/if}>
+    </li>
+    <{if $delivery.logistics_no}>
+    <li class="table-view-cell tvc-reset-padding">
+        快递运单号：<{$delivery.logistics_no}>
+    </li>
+    <{/if}>
+    <{/if}>
+</ul>
+
+<{if $delivery && !$delivery.logistics_no}>
+<form  action="<{link app=aftersales ctl=mobile_member act=update_delivery}>" method="post" >
+    <input type="hidden" name="request_id" value="<{$req_detail.request_id}>">
+    <input type="hidden" name="delivery[delivery_id]" value="<{$delivery.delivery_id}>">
+<ul class="table-view">
+    <li class="table-view-divider">完善退货物流信息</li>
+    <li class="table-view-cell tvc-reset-padding">
+        <{input type="select" id="dlycorp_select" required="true" name="delivery[dlycorp_id]" rows=$dlycorp_list labelColumn='name' valueColumn='corp_id'}>
+        <script type="text/javascript">
+            $('#dlycorp_select').append('<option value="-1">其他</option>');
+        </script>
+        <{input type="text" required="true" name="delivery[logistics_no]" placeholder="快递单号" }>
+    </li>
+</ul>
+<div class="content-padded">
+    <button type="submit" class="btn btn-block btn-primary">提交物流信息</button>
+</div>
+</form>
+<{/if}>

@@ -1,0 +1,32 @@
+<!-- ############### 设计区域 ############### -->
+<!-- 设计区域 -->
+<template id="xcxpage-preview">
+    <div class="xcxpage-main">
+        <div :is="widget.name" :widget="widget" :index="index" v-for="(widget, index) in widgets"></div>
+    </div>
+</template>
+<script type="text/javascript">
+// 设计区域
+var xcxpage_preview = Vue.extend({
+    template: '#xcxpage-preview',
+    props: ['widgets'],
+    components: {
+        'searchbar': widget_searchbar,
+        'slider': widget_slider,
+        'imgnav': widget_imgnav,
+        'textnav': widget_textnav,
+        'goodslist': widget_goodslist,
+        'goodslist*': widget_goodslist,
+        'showcase': widget_showcase,
+        'blankhelper': widget_blankhelper,
+        'linehelper': widget_linehelper,
+        'videos':widget_videos,
+        'omnipotentform':widget_omnipotentform,
+        'imagetext':widget_imagetext,
+        'articlelist':widget_articlelist,
+        'activecard':widget_activecard,
+        'activecard':widget_activecard
+    }
+});
+Vue.component('xcxpage-preview', xcxpage_preview);
+</script>

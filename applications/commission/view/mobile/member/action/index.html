@@ -1,0 +1,118 @@
+<ul class="table-view">
+  <li class="table-view-cell">
+    <a class="navigate-right" href="#myModalexample1">
+      分佣规则
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a class="navigate-right" href="#myModalexample2">
+      分佣关系
+    </a>
+  </li>
+  <li class="table-view-cell">
+    <a class="navigate-right" href="#myModalexample3">
+      分佣记录统计
+    </a>
+  </li>
+</ul>
+<div id="myModalexample1" class="modal">
+  <header class="bar bar-nav">
+    <a href="#myModalexample1" class="icon icon-close pull-right"></a>
+    <h1 class="title">分佣规则</h1>
+  </header>
+  <div class="content rules">
+      <pre><{$commission_rule}></pre>
+  </div>
+</div>
+<div id="myModalexample2" class="modal">
+  <header class="bar bar-nav">
+    <a href="#myModalexample2" class="icon icon-close pull-right"></a>
+    <h1 class="title">分佣关系</h1>
+  </header>
+  <div class="content rules">
+    <div class="content-padded">
+      <ul class="table-view">
+
+          <{if $parent}>
+          <li class="table-view-cell media">
+            <img src="/../themes_m/shanyaohui/images/head-img1.jpg" alt="" class="media-object pull-left">
+            <div class="media-body">
+              上级账号:
+              <p><{$parent.local_uname}></p>
+            </div>
+          </li>
+          <{/if}>
+          <{if $children}>
+          <{foreach from=$children item=child}>
+          <li class="table-view-cell media">
+            <p class="pull-right how-much-money"><{$child.bring_commission|to_coin}></p>
+            <img src="/../themes_m/shanyaohui/images/head-img1.jpg" alt="" class="media-object pull-left">
+            <div class="media-body">
+              下级账号:
+              <p><{$child.local_uname}></p>
+            </div>
+
+        </li>
+
+          <{/foreach}>
+          <{/if}>
+
+      </ul>
+      <div class="content-padded">
+          <{morepage data=$pager}>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="myModalexample3" class="modal">
+  <header class="bar bar-nav">
+    <a href="#myModalexample3" class="icon icon-close pull-right"></a>
+    <h1 class="title">分佣记录统计</h1>
+  </header>
+  <div class="content rules">
+    <div class="content-padded">
+      <ul class="table-view pager">
+          <{foreach from=$orderlog item=list}>
+          <li class="table-view-cell media fy-detail">
+            <p class="pull-right how-much-money"><{$list.achieve_fund|to_coin}>&nbsp;(<{$list.settle_status|settle}>)</p>
+            <div class="media-body">
+              订单号:
+              <span><{$list.order_id}></span>
+              <p class="order-time"><{$list.createtime|cdate:FDATE}></p>
+            </div>
+        </li>
+
+        <{/foreach}> 
+      </ul>
+      <div class="content-padded">
+          <{morepage data=$pager}>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  $(document.body).addClass('sub-commission-body');
+
+  $(function(){
+      //翻页
+      var current_page = 1;
+      $('.btn-morepage').on('touchend',function(e){
+          e.stopPropagation();
+          var btn = $(this);
+          btn.find('.fa-circle-o-notch').removeClass('hidden');
+          var data_morepage = btn.attr('data-morepage');
+          data_morepage = $.parseJSON(data_morepage);
+
+          $.get(data_morepage.link.replace(data_morepage.token,++current_page) ,function(re){
+              var items = $(re).find('.pager');
+              $('.pager').append(items);
+          });
+
+          if(current_page == data_morepage.total){
+              btn.remove();
+          }
+          return false;
+      });
+  });
+
+</script>

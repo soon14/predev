@@ -1,0 +1,8 @@
+<services>
+    <service id="mobile_view_helper">
+        <class orderby='199'>hybirdapp_vhelper</class>
+    </service>
+    <service id="openapi.hybirdappsetting">
+        <class orderby='199'>hybirdapp_openapi_setting</class>
+    </service> 
+</services>

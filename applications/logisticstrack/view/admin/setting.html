@@ -1,0 +1,81 @@
+<h3 class="page-title">设置物流状态同步API <small class="pull-right">powered by <img src="http://cdn.kuaidi100.com/images/logo.gif" alt="" height=40/></small></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=logisticstrack&ctl=admin_tracker&act=index">物流状态跟踪列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">设置物流状态同步API</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=logisticstrack&ctl=admin_tracker&act=apiset" method="post" id='tracker_form' class="form" >
+    <div class="form form-horizontal">
+        <div class="form-body">
+        <div class="form-group">
+            <label class="col-md-2 control-label">是否启用物流跟踪</label>
+            <div class="col-md-2">
+                <select class="form-control" name="system_order_tracking">
+                    <option value="true">是</option>
+                    <option value="false" <{if $system_order_tracking == 'false'}>selected<{/if}>>否</option>
+                </select>
+            </div>
+        </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">api类型</label>
+                <div class="col-md-2">
+                    <select class="form-control" name="key_type">
+                        <option value="1" <{if $key_type == '1'}>selected<{/if}>>免费版</option>
+                        <option value="2" <{if $key_type == '2'}>selected<{/if}>>企业版</option>
+                    </select>
+                </div>
+            </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">快递查询API授权key
+            <span class="required">*</span>
+            </label>
+            <div class="col-md-2">
+                <input type="text" required=true name="kuaidi100Key" class="form-control" value="<{$kuaidi100Key}>">
+                <a class="btn btn-link" href="http://www.kuaidi100.com/openapi/applyapi.shtml" target="_blank"><i class="fa fa-external-link"></i> 申请快递100 API key</a>
+
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-md-2 control-label">单个发货单API调用周期
+            <span class="required">*</span>
+            </label>
+            <div class="col-md-2">
+                <input type="text" required=true name="kuaidi100delay" class="form-control" value="<{$kuaidi100delay|default:45}>">
+                <span class="help-block">单位(分钟)</span>
+            </div>
+        </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">接口数据缓存时长
+                    <span class="required">*</span>
+                </label>
+                <div class="col-md-2">
+                    <input type="text" required=true name="cache_time" class="form-control" value="<{$cache_time|default:0}>">
+                    <span class="help-block">单位(秒),0为不缓存</span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-md-2 control-label">公司编号
+                </label>
+                <div class="col-md-2">
+                    <input type="text" name="customer" class="form-control" value="<{$customer}>">
+                    <span class="help-block">企业接口必填</span>
+                </div>
+            </div>
+    </div>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+
+    <div>
+</form>

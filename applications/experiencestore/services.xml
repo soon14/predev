@@ -1,0 +1,36 @@
+<services>
+
+    <service id="openapi.baidumap" optname="openapi@百度地图">
+        <class>experiencestore_openapi_baidumap</class>
+    </service>
+    <service id="openapi.tencentmap" optname="openapi@腾讯地图">
+        <class>experiencestore_openapi_tencentmap</class>
+    </service>
+    <service id="desktop_finder.experiencestore_mdl_store">
+        <class>experiencestore_finder_store</class>
+    </service>
+
+    <service id="desktop_finder.experiencestore_mdl_activity_subject">
+        <class>experiencestore_finder_activity_subject</class>
+    </service>
+
+    <service id="desktop_finder.experiencestore_mdl_activity_schedule">
+        <class>experiencestore_finder_activity_schedule</class>
+    </service>
+
+
+    <service id="view_helper">
+        <class>experiencestore_view_helper</class>
+    </service>
+
+    <service id="ectools.bill.payment.experiencestore.order.succ" optname="订单支付完成处理[experiencestore地点预约订单]">
+        <class orderby="30">experiencestore_activity_order_payfinish</class>
+    </service>
+
+    <!-- <service id="html_input">
+        <class>experiencestore_view_input</class>
+    </service> -->
+    <service id="b2c.messenger.actions">
+        <class>experiencestore_messenger_activity</class>
+    </service>
+</services>

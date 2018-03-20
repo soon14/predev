@@ -1,0 +1,390 @@
+<!-- 设计面板 - 选择商品多选 -->
+
+<!-- 设计面板 - 选择团购 -->
+<template id="design-group-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-11">
+            <div class="group-select-box" :id="widget.name + '_select_group_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectGroup($event)">
+                        <i class="fa fa-list-alt"></i> 选择团购
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_group_selected_' + index">
+                            <tr v-for="(group, group_key) in groups">
+                                <td><a href="javascript:;" @click.stop="removeGroup(group_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{group.name}}</td>
+                                <td>{{group.activity_id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" :id="widget.name + '_select_group_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+<!-- 设计面板 - 选择预售 -->
+<template id="design-presale-selector">
+    <div class="form-group form-group-sm">
+        <div class="col-sm-11">
+            <div class="presale-select-box" :id="widget.name + '_select_presale_' + index">
+                <div>
+                    <button type="button" class="btn btn-warning btn-xs btn-block" @click.stop="onSelectPresale($event)">
+                        <i class="fa fa-list-alt"></i> 选择预售
+                    </button>
+                </div>
+                <div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>
+                                    名称
+                                </th>
+                                <th>
+                                    编号
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody :id="widget.name + '_presale_selected_' + index">
+                            <tr v-for="(presale, presale_key) in presales">
+                                <td><a href="javascript:;" @click.stop="removePresale(presale_key)"><i class="fa fa-trash-o"></i></a></td>
+                                <td>{{presale.name}}</td>
+                                <td>{{presale.activity_id}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" :id="widget.name + '_select_presale_modal_' + index">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+                                <h3 class="modal-title">请选择</h3>
+                            </div>
+                            <div class="modal-body">
+                                loading...
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn default btn-close">关闭</button>
+                                <button type="button" class="btn blue btn-submit">确认</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+<script type="text/javascript">
+
+designStore.methods.setFilterGroupId = function(vnode, group_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.group_id = group_id;
+    // this.root.page.currWidgets[vnode.index].data.filter = {
+    //     group_id: group_id
+    // };
+};
+designStore.methods.removeFilterGroupId = function(vnode, group_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.group_id.splice(group_key, 1);
+};
+// 
+designStore.methods.setFilterPresaleId = function(vnode, presale_id) {
+    this.root.page.currWidgets[vnode.index].data.filter.presale_id = presale_id;
+    // this.root.page.currWidgets[vnode.index].data.filter = {
+    //     presale_id: presale_id
+    // };
+};
+designStore.methods.removeFilterPresaleId = function(vnode, presale_key) {
+    this.root.page.currWidgets[vnode.index].data.filter.presale_id.splice(presale_key, 1);
+};
+
+// 设计面板 - 选择团购
+var design_group_selector = Vue.extend({
+    props: ['widget', 'index', 'group_id'],
+    data: function() {
+        return {
+            groups: {}
+        };
+    },
+    template: '#design-group-selector',
+    methods: {
+        //
+        listGroups: function(group_id) {
+            this.groups = {};
+            if (!group_id) return;
+            var t = this;
+            $.post('/index.php/console/index.php?app=desktop&ctl=finder&act=object_row',{
+		            'app':'groupbooking',
+		            'model':'activity',
+		            'cols':'*',
+		            filter: {
+		            	activity_id:group_id
+		            },
+		            'json': true
+		       },function(response){
+		       	console.log(response);
+		                  if (!response)
+		                      return false;
+		                  t.groups = response;
+		        }, 'json');
+              
+        },
+        // 选择团购
+        onSelectGroup: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.group-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_group_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onGroupSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load('/index.php/console/index.php?app=desktop&ctl=finder&act=object_select&finder_mdl=groupbooking_mdl_activity', function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removeGroup: function(group_key) {
+            this.groups.splice(group_key, 1);
+            this.$parent.removeGroup(group_key);
+        },
+        // 已改变
+        onGroupSelected: function(selected) {
+            var group_id = this.group_id ? designStore.clone(this.group_id) : [];
+            if(!(group_id instanceof Array)){
+                var tmp = group_id;
+                group_id = [tmp];
+            }
+            this.groups = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!group_id || group_id.indexOf(selected[n].value) < 0) {
+                        group_id.push(selected[n].value);
+                    }
+                }
+            }
+            this.listGroups(group_id);
+            this.$parent.groupChange(group_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.group_id) this.listGroups(this.group_id);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-group-selector', design_group_selector);
+
+// 设计面板 - 选择预售
+var design_presale_selector = Vue.extend({
+    props: ['widget', 'index', 'presale_id'],
+    data: function() {
+        return {
+            presales: {}
+        };
+    },
+    template: '#design-presale-selector',
+    methods: {
+        //
+        listPresales: function(presale_id) {
+            this.presales = {};
+            if (!presale_id) return;
+            var t = this;
+$.post('/index.php/console/index.php?app=desktop&ctl=finder&act=object_row',{
+		            'app':'preselling',
+		            'model':'activity',
+		            'cols':'*',
+		            filter: {
+		            	activity_id:presale_id
+		            },
+		            'json': true
+		       },function(response){
+		       	console.log(response);
+		                  if (!response)
+		                      return false;
+		                  t.presales = response;
+		        }, 'json');
+        },
+        // 选择商品
+        onSelectPresale: function(e) {
+            e.stopPropagation();
+            var t = this;
+            var e = $(event.target);
+            var box = e.parents('div.presale-select-box:first');
+            var modalBox = $('.modal#' + this.widget.name + '_select_presale_modal_' + this.index + ':first');
+            var modalBody = modalBox.find('.modal-body');
+
+            // 行选择
+            modalBox.on('click', 'tbody tr', function(e) {
+                if (e) e.stopPropagation();
+                $(this).find(':radio').prop('checked', 'checked').trigger('change');
+                var checkbox = $(this).find(':checkbox');
+                checkbox.prop('checked', !checkbox.is(':checked')).trigger('change');
+            });
+
+            // 选框选择
+            modalBox.on('click', 'tbody tr :checkbox,tbody tr :radio', function(e) {
+                if (e) e.stopPropagation();
+            });
+
+            // 关闭按钮
+            modalBox.find('.btn-close').on('click', function(e) {
+                if (e) e.stopPropagation();
+                modalBox.modal('hide');
+            });
+
+            // 
+            modalBox.find('.btn-submit').on('click', function(e) {
+                if (e) e.stopPropagation();
+                var checked = $('tbody', modalBody).find(':checked');
+                if (!checked.length) {
+                    Messagebox.warning('未选择任何数据项');
+                    return false;
+                }
+                t.onPresaleSelected(checked);
+                modalBox.find('.btn-submit').off('click');
+                modalBox.modal('hide');
+            });
+
+            // 对话框显示事件
+            modalBox.on('show.bs.modal', function() {
+                modalBox.appendTo('body');
+            });
+
+            // 对话框关闭事件
+            modalBox.on('hidden.bs.modal', function() {
+                modalBox.find('.modal-body').empty();
+            });
+
+            // 打开过直接打开
+            if (modalBox.find('.modal-body .finder-pager').length) {
+                return modalBox.modal('show');
+            }
+
+            // 载入数据并打开
+            modalBox.find('.modal-body').load('/index.php/console/index.php?app=desktop&ctl=finder&act=object_select&finder_mdl=preselling_mdl_activity', function() {
+                modalBox.modal('show');
+            });
+
+            return false;
+        },
+        removePresale: function(presale_key) {
+            this.presales.splice(presale_key, 1);
+            this.$parent.removePresale(presale_key);
+        },
+        // 已改变
+        onPresaleSelected: function(selected) {
+        	console.log(selected);
+            var presale_id = this.presale_id ? designStore.clone(this.presale_id) : [];
+            if(!(presale_id instanceof Array)){
+                var tmp = presale_id;
+                presale_id = [tmp];
+            }
+            this.presales = {};
+            if (selected.length) {
+                for (var n = 0; n < selected.length; n++) {
+                    if (!presale_id || presale_id.indexOf(selected[n].value) < 0) {
+                        presale_id.push(selected[n].value);
+                    }
+                }
+            }
+            this.listPresales(presale_id);
+            this.$parent.presaleChange(presale_id);
+        },
+        // 初始化
+        onInit: function() {
+            if (this.presale_id) this.listPresales(this.presale_id);
+        }
+    },
+    mounted: function() {
+        this.onInit();
+    }
+});
+// 注册
+Vue.component('design-presale-selector', design_presale_selector);
+
+</script>

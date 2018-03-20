@@ -1,0 +1,75 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 产品列表 - 子组件 -->
+<template id="widget-child-omnipotentform">
+    <!--
+    -->
+    <div class="">
+        <div class="form_outer" v-if="widget.data.items.length == 0">
+            请选择要添加的表单
+        </div>
+        <div class="form_outer" v-else>
+            {{widget.data.items[0].name}}
+        </div>
+        <!-- <form class="form-block" method="post" action="" class="form-block" v-else>
+            <input type="hidden" name="form_id" v-model="widget.data.items[0].form_id">
+            <div class="weui-cells__title" :style="{fontSize:widget.data.form_name_size+'px',color:widget.data.form_name_color,textAlign:widget.data.form_name_iscenter?'center':'left'}" v-show="widget.data.is_show_form_name">{{widget.data.items[0].name}}</div>
+            <div class="weui-cells weui-cells_form">
+                <div class="vmc-form-block" v-for="(inputItem,idx) in widget.data.items[0].items">
+                    <div class="" v-if="inputItem.type == 'text' && inputItem.show == 'true'">
+                        <form-single-selector-text :widget="inputItem" :index="idx" :config="widget"></form-single-selector-text>
+                    </div>
+                    <div class="" v-else-if="inputItem.type == 'select' && inputItem.show == 'true'">
+                        <form-single-selector-radio :widget="inputItem" :index="idx" :config="widget"></form-single-selector-radio>
+                    </div>
+                    <div class="" v-else-if="inputItem.type == 'checkbox' && inputItem.show == 'true'">
+                        <form-single-selector-checkbox :widget="inputItem" :index="idx" :config="widget"></form-single-selector-checkbox>
+                    </div>
+                    <div class="" v-else-if="inputItem.type == 'date' && inputItem.show == 'true'">
+                        <form-single-selector-date :widget="inputItem" :index="idx" :config="widget"></form-single-selector-date>
+                    </div>
+                    <div class="" v-else-if="inputItem.type == 'region' && inputItem.show == 'true'">
+                        <form-single-selector-region :widget="inputItem" :index="idx" :config="widget"></form-single-selector-region>
+                    </div>
+                    <div class="" v-else-if="inputItem.type == 'image' && inputItem.show == 'true'">
+                        <form-single-selector-singleimage :widget="inputItem" :index="idx" :config="widget"></form-single-selector-singleimage>
+                    </div>
+                    <div class="" v-else-if="inputItem.type == 'images' && inputItem.show == 'true'">
+                        <form-single-selector-multipleimage :widget="inputItem" :index="idx" :config="widget"></form-single-selector-multipleimage>
+                    </div>
+                </div>
+            </div>
+            <div class="submit-btn-block" :style="{textAlign: widget.data.btn_align}">
+                <button type="submit" class="form-submit" :style="{width:widget.data.btn_width+'px',height:widget.data.btn_height+'px',backgroundColor:widget.data.btn_bgcolor,borderColor:widget.data.btn_border_color,color:widget.data.btn_color,fontSize:widget.data.btn_fontSize+'px',borderRadius:widget.data.btn_radius+'px'}">{{widget.data.btn_content}}</button>
+            </div>
+        </form> -->
+    </div>
+</template>
+<script type="text/javascript">
+// 更新表单列表
+designStore.methods.onFormUpdate = function(vnode) {
+    var _widget = this.root.clone(this.root.page.currWidgets[vnode.index].data);
+    var _t = this;
+    _t.root.page.currWidgets[vnode.index].data.items = [];
+    if (_widget.filter.length) {
+        _t.root.page.currWidgets[vnode.index].data.items = [];
+        axios.get(designStore.uformRemoteUrl, {
+                params: {
+                    'filter[form_id]': _widget.filter[0].form_id
+                }
+            })
+            .then(function(response) {
+                console.log(response);
+                //渲染表单
+                _t.root.page.currWidgets[vnode.index].data.items = response.data.data;
+            });
+    }
+};
+var widget_child_omnipotentform = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-omnipotentform',
+    created: function() {
+        //designStore.methods.initFilter(this);
+        return designStore.methods.onFormUpdate(this);
+    }
+});
+</script>

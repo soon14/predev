@@ -1,0 +1,12 @@
+<table cellpadding="0" cellspacing="0">
+<{if $server}>
+    <{foreach from=$server item=item}>
+    <tr>
+        <th><{$item.name}></th>
+    	<td><{$item.value}></td>
+    </tr>
+    <{/foreach}>
+<{else}>
+    <td>你悲剧了,你没有安装XHProf扩展</td>
+<{/if}>
+</table>

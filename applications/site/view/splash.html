@@ -1,0 +1,38 @@
+<!--
+    页面跳转提示页
+    @status error 失败,success 成功
+-->
+<{if $status=='error'}>
+<{assign var=splash_class value='danger'}>
+<{else}>
+<{assign var=splash_class value='success'}>
+<{/if}>
+<div class="container">
+<div class="page-header  text-<{$splash_class}>">
+    <h1>
+        <!-- <{if $status=='error'}>
+        <i class="glyphicon glyphicon-remove-circle"></i>
+        <{else}>
+        <i class="glyphicon glyphicon-ok-circle"></i>
+        <{/if}> -->
+        <{$msg}> <{if $redirect}>&nbsp;&nbsp;&nbsp;&nbsp;<small><span id="redirect_timer">3</span> 秒后跳转...</small><{/if}>
+    </h1>
+</div>
+<{if $redirect}>
+<p><a class="btn btn-<{$splash_class}> btn-lg" href="<{$redirect}>" role="button">立即跳转</a></p>
+<script charset="utf-8">
+$(function(){
+    var timer = 3,t=
+    setInterval(function() {
+        $('#redirect_timer').text(--timer);
+        if(timer<1){
+            clearInterval(t);
+            location = "<{$redirect}>";
+        }
+    }, 1000);
+});
+</script>
+<{else}>
+<p><a class="btn btn-default btn-lg" href="javascript:;" onclick="history.go(-1)" role="button">立即返回</a></p>
+<{/if}>
+</div>

@@ -1,0 +1,119 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 活动卡片 - 子组件 -->
+<template id="widget-child-activecard">
+    <!--
+    types 布局方式
+    isShowLine 是否显示边线
+    title 文字标题
+    content 文字内容
+    item.url 网址
+    item.image.src 图片地址
+    item.image.mode 图片裁切模式 https://mp.weixin.qq.com/debug/wxadoc/dev/component/image.html
+    -->
+    <section class="widget-box widget-activecard " :class="widget.data.cols">
+        <div class="">
+            <!-- 图片标题文字上下排列 -->
+            <div class="activecard" :class="{'has_radius':widget.data.isShowRadius,'has_gap':widget.data.isShowGap}"   v-if="widget.data.items.length > 0">
+                <a class="link" :href="widget.data.items.length > 0?widget.data.items[0].url:'javascript:;'">
+                    <div class="image-block">
+                        <img class="image" :style="{width:'100%',height:'auto'}" :src="widget.data.items[0].image.src">
+                    </div>
+                    <div class="content" v-if="(widget.data.isShowTitle&&widget.data.title!='')||(widget.data.isShowTime&&widget.data.time!='')||(widget.data.isShowAddress&&widget.data.address!='')||(widget.data.isShowBrief&&widget.data.brief!='')">
+	                    <h4 class="title" v-if="widget.data.isShowTitle">{{widget.data.title}}</h4>
+	                    <div class="brief"  v-if="widget.data.isShowBrief">{{widget.data.brief}}</div>
+	                    <div class="time"  v-if="widget.data.isShowTime">{{widget.data.time}}</div>
+	                    <div class="address"  v-if="widget.data.isShowAddress">{{widget.data.address}}</div>
+                    </div>
+                </a>
+            </div>
+            <div class="activecard" :class="{'has_radius':widget.data.isShowRadius,'has_gap':widget.data.isShowGap}"   v-else>
+                <a class="link" :href="widget.data.items.length > 0?widget.data.items[0].url:'javascript:;'">
+                    <div class="image-block">
+                        <img class="image" :style="{width:'100%',height:'auto'}" src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})"/>
+                    </div>
+                    <div class="content">
+	                    <h4 class="title" v-if="widget.data.isShowTitle">请添加</h4>
+	                    <div class="brief"  v-if="widget.data.isShowBrief">请添加</div>
+	                    <div class="time"  v-if="widget.data.isShowTime">请添加</div>
+	                    <div class="address"  v-if="widget.data.isShowAddress">请添加</div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+</template>
+<script type="text/javascript">
+
+designStore.methods.initFilter = function(vnode) {
+    if (!this.root.page.currWidgets[vnode.index].data.filter_type) {
+        this.root.page.currWidgets[vnode.index].data.filter_type = 'activity_id';
+    }
+    if (!this.root.page.currWidgets[vnode.index].data.filter) {
+        this.root.page.currWidgets[vnode.index].data.filter = {
+            column_id: '首页推荐'
+        };
+    }
+};
+// 更新产品列表
+designStore.methods.onActivityUpdate = function(vnode) {
+    var _widget = this.root.page.currWidgets[vnode.index].data;
+console.log(_widget);
+    var _t = this;
+
+//     	var activity_id = _widget.filter['activity_id'];
+//  	var str = activity_id.join(',');
+//  	axios.get('/index.php/openapi/content_node/articles_body/article_id/'+str+'/article_limit/'+_widget.limit,{
+//  	}).then(function(response) {
+//  		console.log(response.data.data);
+//				if (!response.data || !response.data.data)
+//	                return false;
+//	                var arr = [];
+//	                for(var i=0;i<response.data.data.length;i++){
+//	                	if(!response.data.data[i].image_id){
+//	                		arr.push('');
+//	                	}else{
+//	                		
+//	                		arr.push(response.data.data[i].image_id);
+//	                	}
+//	                	
+//	                }
+//	                getImg(arr,'',function(imgs){
+//	                		for(var i=0;i<imgs.length;i++){
+//			                	response.data.data[i].src = imgs[i];
+//			                }
+//	                		_t.root.page.currWidgets[vnode.index].data.items = response.data.data;
+//	                })
+//	    });
+};
+var widget_child_activecard = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-activecard',
+    created: function() {
+      designStore.methods.initFilter(this);
+      return designStore.methods.onActivityUpdate(this);
+    }
+});
+function fix_img_url(url) {
+    if (url.match(/^http([s]*):/)) {
+        return url;
+    }
+    return 'http:' + url;
+}
+function getImg(ident, size, callback) {
+    size || (size = 'l');
+    if (['o', 'xs', 's', 'm', 'l'].indexOf(size) < 0) {
+        size = 'l';
+    }
+    $.post('/openapi/storager/' + size, {
+        'images': ident
+    }, function(res) {
+        if (res && res.result == 'success' && res.data && callback) {
+            var imgs = [];
+            for (var i in res.data) {
+                imgs.push(fix_img_url(res.data[i]));
+            }
+            callback(imgs);
+        }
+    })
+}
+</script>

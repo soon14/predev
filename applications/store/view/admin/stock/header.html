@@ -1,0 +1,11 @@
+<ul class="nav nav-pills nav-justified">
+	<li class="<{if $tab === 'kucunmanage'}>active<{/if}>" role="kucunmanage">
+		<a href="<{link app=store ctl=admin_kucun act=index tab=kucunmanage}>">库存管理</a>
+	</li>
+	<li class="<{if $tab === 'jinhuodan'}>active<{/if}>" role="jinhuodan">
+		<a href="<{link app=store ctl=admin_kucun act=index tab=jinhuodan}>">进货单</a>
+	</li>
+	<li class="<{if $tab === 'sunyidan'}>active<{/if}>" role="sunyidan">
+		<a href="<{link app=store ctl=admin_kucun act=index tab=sunyidan}>">盘点损益单</a>
+	</li>
+</ul>

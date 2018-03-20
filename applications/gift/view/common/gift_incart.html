@@ -1,0 +1,10 @@
+<ul class="list-unstyled list-gift">
+    <{foreach from=$gift_items item=item}>
+    <li class="list-gift-item" data-productid="<{$item.product_id}>" data-productbn="<{$item.product.bn}>" data-quantity="<{$item.quantity}>">
+         <img height="35" src="<{$item.product.image_id|storager:'xs'}>"/>
+         <a target="_blank" href="<{$item.url}>">
+            【赠品】<{$item.product.name}><{$item.product.spec_info}> x <{$item.quantity}>
+         </a>
+    </li>
+    <{/foreach}>
+</ul>

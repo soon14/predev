@@ -1,0 +1,146 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">编辑二维码</h3>
+</div>
+<form method="post" action="index.php?app=o2ocds&ctl=admin_qrcode&act=batch_save"  class="form">
+    <input type="hidden" name="filter" value="<{$filter}>">
+    <div class="modal-body form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">所属企业
+                </label>
+                <div class="col-md-8">
+                    <{if !$qrcode.enterprise_id}>
+                    <{input type="object"   object="enterprise" base_filter="" name="enterprise_id"  callback_func="select_enterprise" placeholder="选择需要加入企业"}>
+                    <{/if}>
+                    <table class="object-collection-rows table">
+                        <thead class="hidden">
+                        <tr>
+                            <td></td>
+                            <td>企业名称</td>
+                        </tr>
+                        </thead>
+                        <tbody id="enterprise_row">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">所属店铺
+                </label>
+                <div class="col-md-8">
+                    <{if !$qrcode.enterprise_id}>
+                    <{input type="object" object="store" base_filter="" name="store_id"  callback_func="select_store" placeholder="选择需要加入店铺"}>
+                    <{/if}>
+                    <table class="object-collection-rows table">
+                        <thead class="hidden">
+                        <tr>
+                            <td></td>
+                            <td>店铺名称</td>
+                        </tr>
+                        </thead>
+                        <tbody id="store_row">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">备注
+                </label>
+                <div class="col-md-8">
+                    <{input type=textarea rows=2 name="remark" value=$qrcode.remark}>
+                </div>
+            </div>
+            <div class="form-actions">
+                <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button data-action="index.php?app=o2ocds&ctl=admin_qrcode&act=save" type="submit" class="btn blue b-save">
+                            保存
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<script>
+
+    $(function(){
+        select_enterprise = function (selected) {
+            var cids = [];
+            $.each(selected, function (k, v) {
+                cids.push(v.value);
+            });
+            _render(cids);
+        };
+        var _render = function (cids) {
+            if(!cids.length)return;
+
+            $.post('<{link app=o2ocds ctl=finder act=object_row}>',{
+                'app_name':'o2ocds',
+                'model':'enterprise',
+                'cols':'enterprise_id,name',
+                'name':"enterprise_id",
+                'pkey':'enterprise_id',
+                'filter':{enterprise_id:cids}
+            },function(re){
+                $('#enterprise_row').html(re);
+                var tmp = [];
+                $($.grep($('#enterprise_row tr'),function(tr,i){
+                    var cid = $(tr).attr('data-id');
+                    if($.inArray(cid,tmp)>-1){
+                        return true;
+                    }else{
+                        tmp.push(cid);
+                    }
+                })).remove();
+            });
+            $('#enterprise_row').closest('table').find('thead').removeClass('hidden');
+        };
+
+        select_store = function (selected) {
+            var cids = [];
+            $.each(selected, function (k, v) {
+                cids.push(v.value);
+            });
+            store_render(cids);
+        };
+        var store_render = function (cids) {
+            if(!cids.length)return;
+
+            $.post('<{link app=o2ocds ctl=finder act=object_row}>',{
+                'app_name':'o2ocds',
+                'model':'store',
+                'cols':'store_id,name',
+                'name':"store_id",
+                'pkey':'store_id',
+                'filter':{store_id:cids}
+            },function(re){
+                $('#store_row').html(re);
+                var tmp = [];
+                $($.grep($('#store_row tr'),function(tr,i){
+                    var cid = $(tr).attr('data-id');
+                    if($.inArray(cid,tmp)>-1){
+                        return true;
+                    }else{
+                        tmp.push(cid);
+                    }
+                })).remove();
+            });
+            $('#store_row').closest('table').find('thead').removeClass('hidden');
+        };
+        <{if $qrcode.enterprise_id}>
+            var ecids = [];
+            ecids.push("<{$qrcode.enterprise_id}>");
+            _render(ecids);
+            <{/if}>
+                <{if $qrcode.store_id}>
+                    var scids = [];
+                    scids.push("<{$qrcode.store_id}>");
+                    store_render(scids);
+                    <{/if}>
+                        });
+
+</script>
+

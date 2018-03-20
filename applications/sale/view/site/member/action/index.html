@@ -1,0 +1,62 @@
+<div class="page-header">
+  <h1>我的预约</h1>
+</div>
+<table class="table table-striped table-hover ">
+    <thead class="text-nowrap">
+        <tr>
+            <th></th>
+            <th>预约商品</th>
+            <th>活动名称</th>
+            <th class="text-center">单价(元)</th>
+            <th class="text-center">开售时间</th>
+            <th class="text-center">状态</th>
+            <th class="text-center">操作</th>
+        </tr>
+    </thead>
+    <tbody>
+        <{foreach from=$reserve item=item key=key}>
+        <tr class="order-item">
+            <td>
+                <a href="<{link app=b2c ctl=site_product act=index arg0=$item.product_id}>">
+                <img class="img-thumbnail" src="<{$item.image_id|storager:'s'}>" alt="<{$item.name}>" width="50px"/>
+                </a>
+            </td>
+            <td>
+                <a class="text-muted" href="<{link app=b2c ctl=site_product act=index arg0=$item.product_id}>"><{$item.name}></a>
+            </td>
+            <td>
+            <{$item.sale_name}>
+            </td>
+            <td class="text-center">
+                <div class="col-xs-12 text-center text-danger text-mtop">
+                ￥<{$item.price|cur}>
+                </div>
+            </td>
+            <td class="text-center">
+                <div class="text-muted text-mtop">
+                    <{$item.createtime|cdate}>
+                </div>
+            </td>
+            <td class="text-nowrap text-center">
+                <div class="text-muted text-mtop">
+                    <{if $item.status == "1"}>
+                    已结束
+                    <{elseif $item.start > $now}>
+                    预约成功等待开售
+                    <{elseif $item.start < $now && $item.end > $now}>
+                    正在抢购
+                    <{elseif $item.end < $now}>
+                    已结束
+                    <{/if}>
+                </div>
+            </td>
+            <td class="text-nowrap text-center handle" style="padding-left:0;padding-right:0;">
+                <div class="text-muted text-mtop">
+                    <a href="<{link app=b2c ctl=site_product act=index arg0=$item.product_id}>" class="btn btn-default buy-now/disabled">立即抢购</a>
+                </div>
+            </td>
+        </tr>
+        <{/foreach}>
+    </tbody>
+</table>
+<{pagers data=$pager}>

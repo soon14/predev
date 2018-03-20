@@ -1,0 +1,36 @@
+<div class="table-scrollable">
+    <table class="table">
+        <thead>
+        <tr>
+            <th>货号</th>
+            <th>条码</th>
+            <th>名称</th>
+            <th>进货数量</th>
+            <th>进价</th>
+        </tr>
+        </thead>
+        <tbody>
+        <{foreach from=$items key=key item=product}>
+        <tr>
+            <td>
+                <{$product.goods_bn}>
+            </td>
+            <td>
+                <{$product.goods_barcode}>
+            </td>
+            <td>
+                <{$product.goods_name}>
+            </td>
+
+            <td>
+                <{$product.goods_num}>
+            </td>
+            <td>
+                <small>￥</small><{$product.purchases_goods_money|cur}>
+            </td>
+
+        </tr>
+        <{/foreach}>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,15 @@
+<desktop>
+    <permissions>
+        <!--商品-->
+        <permission display='true' id="package">组合套餐管理</permission>
+        <permission display='true' id="package_setting">组合套餐配置</permission>
+    </permissions>
+    <adminpanel action="index" controller="admin_setting" display="true" group="b2c_shop" order='1' permission="package_setting">组合套餐配置</adminpanel>
+    <workground icon="icon-diamond" id="b2c.wrokground.sale" name="营销" order="10">
+        <menugroup name="优购码管理">
+            <menu action='add' controller='admin_package' display='false' order='10' permission='package'>添加组合套餐</menu>
+            <menu action='edit' controller='admin_package' display='false' order='11' permission='package'>编辑组合套餐</menu>
+            <menu action='index' controller='admin_package' display='true' order='20' permission='package'>组合套餐活动列表</menu>
+        </menugroup>
+    </workground>
+</desktop>

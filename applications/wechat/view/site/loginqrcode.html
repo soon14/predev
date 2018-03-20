@@ -1,0 +1,53 @@
+<ol class="breadcrumb">
+  <li><a href="<{link app=site ctl=index}>">首页</a></li>
+  <li><a href="<{link app=b2c ctl=site_passport act=login args0=$forward}>">登录</a></li>
+  <li class="active">扫一扫微信二维码登录</li>
+</ol>
+<div class="page-header">
+    <div class="container">
+        <h1>扫一扫登录</h1>
+    </div>
+</div>
+<div class="loginqrcode-container">
+    <p class="text-center">
+        扫一扫下方微信二维码,轻松登录 <br>
+        <{$surl|qrcode}>
+    </p>
+    <div class="alert alert-success hidden" id="success_alert">
+        <i class='glyphicon glyphicon-ok-sign'></i> 扫码登录成功,2秒后跳转...<br>点击立即跳转
+    </div>
+</div>
+<script type="text/javascript">
+/**
+ * 监测登录状态
+ */
+ $(function(){
+    var check_timeout_arr =  [5,4,3,2,1.5];
+    setTimeout(function () {
+        var _fn = arguments.callee;
+        $.get('<{link app=wechat ctl=site_wxqrlogin act=watch_login}>',function(re){
+            try{
+                if($.trim(re) == 'success'){
+                    var forward = "<{$forward}>";
+                    if(forward == ''){
+                        forward = '<{link app=site ctl=index}>';
+                    }
+                    $('#success_alert').removeClass('hidden').on('click',function(){
+                        location = forward;
+                    });
+                    setTimeout(function(){
+                        location = forward;
+                    },2000);
+
+                    return;
+                }
+            }catch(e){
+
+            }finally{
+                var timeout = check_timeout_arr.shift();
+                setTimeout(_fn,timeout?timeout*1000:1500);
+            }
+        });
+    },check_timeout_arr.shift()*1500);
+});
+</script>

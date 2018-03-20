@@ -1,0 +1,6 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="request_filter_setting">前端安全配置</permission>
+    </permissions>
+    <adminpanel action="index" controller="setting" display="true" group="desktop_system" order='55' permission="request_filter_setting">前端安全配置</adminpanel>
+</desktop>

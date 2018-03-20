@@ -1,0 +1,30 @@
+<div class="table-scrollable">
+    <table class="table  table-striped table-hover">
+        <thead>
+        <tr>
+            <th>时间</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <{foreach from=$history item=item}>
+        <tr>
+            <td>
+                <{$item.createtime|cdate:'FDATE_FTIME'}>
+            </td>
+            <td>
+                <span class="btn btn-xs btn-default J-show-code" data-url="<{link app=widgets ctl=admin_template act=show_history_code}>&p[0]=<{$item.log_id}>">
+                    <i class="fa fa-list"></i>查看
+                </span>
+                <a data-confirm="确认恢复到当前版本？" target="_command" class="btn btn-xs btn-default" href="<{link app=widgets ctl=admin_template act=recovery}>&p[0]=<{$item.log_id}>">
+                    恢复到当前
+                </a>
+            </td>
+        </tr>
+        <{/foreach}>
+
+        </tbody>
+    </table>
+    <{pagers data=$pager}>
+</div>

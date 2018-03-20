@@ -1,0 +1,17 @@
+<desktop>
+    <permissions>
+        <!--优惠券-->
+        <permission display='true' id="sales_activity">领券活动列表</permission>
+        <permission display='true' id="sales_activity_add">领券活动添加</permission>
+        <permission display='true' id="sales_activity_edit">领券活动编辑</permission>
+        <permission display='true' id="sales_activity_list">领券活动记录</permission>
+    </permissions>
+    <workground icon="icon-present" id="b2c.wrokground.sale" name="营销" order="40">
+        <menugroup name="优惠券">
+            <menu  action='index' controller='admin_activity' display='true' order='60' permission='sales_activity'>领券活动</menu>
+            <menu  action='add' controller='admin_activity' display='false' order='60' permission='sales_activity_add'>领券活动添加</menu>
+            <menu  action='edit' controller='admin_activity' display='false' order='60' permission='sales_activity_edit'>领券活动编辑</menu>
+            <menu  action='achieve' controller='admin_activity' display='false' order='60' permission='sales_activity_list'>领券记录</menu>
+        </menugroup>
+    </workground>
+</desktop>

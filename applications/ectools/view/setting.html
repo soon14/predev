@@ -1,0 +1,38 @@
+<h3 class="page-title">价格精度设置</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?ctl=adminpanel">控制面板</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">价格精度设置</a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=ectools&ctl=setting&act=save" method="post" id='ectoole_setting_form' class="form" >
+
+    <div class="form form-horizontal">
+        <div class="form-body">
+
+        <{foreach from=$form_inputs item=input}>
+        <div class="form-group">
+            <label class="col-md-2 control-label">
+                <{$input.label}>
+            <span class="required">*</span>
+            </label>
+            <div class="col-md-5">
+                <{input type=$input.type options=$input.options value=$input.value name=$input.name}>
+            </div>
+        </div>
+        <{/foreach}>
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+            </div>
+        </div>
+        </div>
+    <div>
+</form>

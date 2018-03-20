@@ -1,0 +1,7 @@
+<cronentries>
+    <cron id="preselling_tasks_activity_cancel">
+        <description>自动关闭已结束预售活动</description>
+        <schedule>*/30 * * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+</cronentries>

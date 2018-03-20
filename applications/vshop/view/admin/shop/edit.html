@@ -1,0 +1,267 @@
+<!-- 此页面是后台管理界面 页面的class及元素定义依赖 bootstrap UI框架 -->
+
+<h3 class="page-title"><{if $shop.shop_id }>编辑店铺信息<{else}>新店铺<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=vshop&ctl=admin_shop&act=index">店铺列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $shop.shop_id }>编辑店铺信息<{else}>新店铺<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=vshop&ctl=admin_shop&act=save" method="post" id='shop_form' class="form" >
+
+    <div class="form form-horizontal">
+        <!-- <ul class="nav nav-tabs">
+				<li class="active">
+					<a href="#tab_edit_basic" data-toggle="tab">基本信息</a>
+				</li>
+                <li>
+					<a href="#tab_edit_orders" data-toggle="tab">店铺订单</a>
+				</li>
+                <li>
+					<a href="#tab_edit_earnings" data-toggle="tab">店铺收益</a>
+				</li>
+		</ul> -->
+		<div  class="tab-content">
+				<div id="tab_edit_basic" class="tab-pane active  form-body">
+                    <{if $shop.shop_id }>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">店铺ID</label>
+                            <div class="col-md-5">
+                                <input type="text" name="shop[shop_id]" value="<{$shop.shop_id}>" readonly="true" class="form-control" >
+                            </div>
+                        </div>
+                    <{/if}>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">店铺状态</label>
+                        <div class="col-md-3">
+                            <select class="form-control" name="shop[status]">
+                                <option value="validate">验证中</option>
+                                <option value="active" <{if $shop.status=='active'}>selected<{/if}>>正常合作中</option>
+                                <option value="pause" <{if $shop.status=='pause'}>selected<{/if}>>暂停营业中</option>
+                            </select>
+                        </div>
+                    </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label"> <span class="required" aria-required="true">*</span>关联会员账号</label>
+                             <div class="col-md-5">
+                                 <button type="button" data-toggle="modal" data-target="#member_search_modal" class="btn btn-memsearch btn-link"><i class="fa fa-search"></i> 查找会员账号</button>
+                                 <{if $shop_member_account}>
+                                 <div class="well well-sm clearfix">
+                                     <button type="button" class="btn btn-xs pull-right remove-member-well"><i class="fa fa-trash"></i></button>
+                                     <input type="hidden" name="shop[member_id]" value="<{$shop_member_account.member_id}>">
+                                     <h5 class="pull-left"><{$shop_member_account.login_account}></h5>
+                                 </div>
+                                 <{/if}>
+                             </div>
+                         </div>
+                         <!-- <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 授权码:
+                             </label>
+                             <div class="col-md-5">
+                                 <span><{if $shop.auth_code}><{$shop.auth_code}><{else}>无<{/if}></span>
+                             </div>
+                         </div> -->
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 <span class="required" aria-required="true">*</span>
+                                 店铺名称
+                             </label>
+                             <div class="col-md-3">
+                                 <input type="text" name="shop[name]" value="<{$shop.name}>" required=true class="form-control" placeholder="请输入店铺名称">
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 <span class="required" aria-required="true">*</span>
+                                 店铺LOGO
+                             </label>
+                             <div class="col-md-5">
+                                 <{input type=image name="shop[logo]" value=$shop.logo }>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 店招图片
+                             </label>
+                             <div class="col-md-5">
+                                 <{input type=image name="shop[gallery_image_id]" value=$shop.gallery_image_id width="400"}>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 <span class="required" aria-required="true">*</span>
+                                 店主姓名
+                             </label>
+                             <div class="col-md-3">
+                                 <{input type="text" name="shop[shopkeeper]" value=$shop.shopkeeper}>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 <span class="required" aria-required="true">*</span>
+                                 联系方式
+                             </label>
+                             <div class="col-md-3">
+                                 <{input type="text" name="shop[contacts_phone]" required="true" value=$shop.contacts_phone}>
+                             </div>
+                         </div>
+                        <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 QQ
+                             </label>
+                             <div class="col-md-3">
+                                 <{input type="text" name="shop[qq]" value=$shop.qq}>
+                             </div>
+                         </div>
+                        <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 微信号
+                             </label>
+                             <div class="col-md-3">
+                                 <{input type="text" name="shop[wechat]" value=$shop.wechat}>
+                             </div>
+                         </div>
+                        <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 所属城区
+                             </label>
+                             <div class="col-md-5">
+                                 <{input type=region app=ectools name="shop[region]" value=$shop.region}>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 实体店地址
+                             </label>
+                             <div class="col-md-5">
+                                 <{input type="text" name="shop[address]" value=$shop.address}>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 <span class="required" aria-required="true">*</span>
+                                 店铺等级
+                             </label>
+                             <div class="col-md-3">
+                                 <{input type='select' name='shop[shop_lv_id]' required="true" options=$shop_lv_type.options value=$shop_lv_type.value}>
+                             </div>
+                         </div>
+                    <!--证件上传-->
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            身份证(正面）
+                        </label>
+                        <div class="col-md-10">
+                            <{input type=image name="shop[idcard_front_image_id]" value=$shop.idcard_front_image_id width="300"}>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            身份证(背面）
+                        </label>
+                        <div class="col-md-10">
+                            <{input type=image name="shop[idcard_back_image_id]" value=$shop.idcard_back_image_id width="300"}>
+                        </div>
+                    </div>
+                    <div class="form-actions">
+                        <div class="row">
+                            <div class="col-md-offset-2 col-md-9">
+                                <button type="submit" class="btn blue">保存</button>
+                                <a href="index.php?app=vshop&ctl=admin_shop&act=index" class="btn default">返回列表</a>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+
+                <div id="tab_edit_orders" class="tab-pane form-body">
+                    店铺订单
+                </div>
+                <!-- tab end -->
+                <div id="tab_edit_earnings" class="tab-pane form-body">
+                    店铺收益
+                </div>
+        </div><!-- tab content end -->
+    <div>
+</form>
+
+<!--查找会员账号-->
+<div class="modal fade" id="member_search_modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">关闭</span></button>
+                <h4 class="modal-title">查找会员账号</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <input type="text"  placeholder="请输入会员登录名(手机号\昵称\邮箱)查找" class="form-control member-search-ipt">
+                <span class="input-group-btn">
+                  <button class="btn btn-default member-search-btn" type="button"><i class="fa fa-search"></i></button>
+                </span>
+                </div><!-- /input-group -->
+                <div class="list-group member-search-result">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+    $(function(){
+        var search_btn = $('#member_search_modal .member-search-btn'),
+                search_ipt = $('#member_search_modal .member-search-ipt'),
+                search_result = $('#member_search_modal .member-search-result');
+        search_btn.on('click',function(e){
+            var s = $.trim(search_ipt.val());
+            if(!s||s == '')return search_result.empty();
+            search_btn.find('fa').removeClass('fa-search').addClass('fa-spinner fa-spin');
+            $.post('<{link app=vshop ctl=admin_shop act=member_search}>',{
+                'account':s
+            },function(re){
+                search_btn.find('fa').removeClass('fa-spinner fa-spin').addClass('fa-search');
+                search_result.empty();
+                if(re){
+                    $.each(re,function(idx,item){
+                        search_result.append('<a href="javascript:;" class="list-group-item" data-memberid="'+item.member_id+'">'+item.login_account+'</a>');
+                    });
+                }
+            },'json');
+        });
+        var timer = 0;
+        search_ipt.on('keyup',function(){
+            clearTimeout(timer);
+            timer = setTimeout(function(){
+                search_btn.trigger('click');
+            },400);
+        });
+        search_ipt.on('keydown',function(e){
+            if(e.keyCode == 13){
+                clearTimeout(timer);
+                search_btn.trigger('click');
+            }
+        });
+        search_result.on('click','a[data-memberid]',function(e){
+            e.stopPropagation();
+            var login_account = $(this).text(),
+                    member_id = $(this).attr('data-memberid');
+            btn_memsearch = $('#shop_form .btn-memsearch');
+            btn_memsearch.next().remove();
+            $('<div class="well well-sm clearfix"></div>').insertAfter(btn_memsearch).append('<button type="button" class="btn btn-xs pull-right remove-member-well"><i class="fa fa-trash"></i></button><input type="hidden" name="shop[member_id]" value="' + member_id + '"><h5 class="pull-left">' + login_account + '</h5>');
+            $('#member_search_modal').modal('hide');
+        });
+        $('#shop_form').on('click','.remove-member-well',function(re){
+            $(this).closest('.well').remove();
+        });
+    });
+
+</script>

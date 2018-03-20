@@ -1,0 +1,293 @@
+<h3 class="page-title"><{if $restrict.res_id }>编辑限购：<{$restrict.res_name}><{else}>添加限购<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=restrict&ctl=admin_restrict&act=index">限购列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $restrict.res_id }>编辑限购<{else}>添加限购<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=restrict&ctl=admin_restrict&act=save" method="post" id='collection_form' >
+    <{if $restrict.res_id }><input type="hidden" name="restrict[res_id]" value="<{$restrict.res_id}>"><{/if}>
+    <div class=" form-horizontal">
+        <div class="form-body">
+            <div class="col-md-10">
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">限购活动名称<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-8">
+                        <input type="text" name="restrict[res_name]" value="<{$restrict.res_name}>" required=true
+                               class="form-control" placeholder="">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">限购活动描述<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-8">
+                        <{input type="textarea" name="restrict[res_description]" value=$restrict.res_description required=true}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">优先级权重</label>
+                    <div class="col-md-6">
+                        <{input type="text" name="restrict[res_orderby]" value=$restrict.res_orderby|default:0 type='number'}>
+                        <span class="label label-default">数字越大优先级越高，如设置优先级相同则添加越早优先级越高</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">是否启用<span class="required" aria-required="true">*</span> </label>
+                    <div class="col-md-6">
+                        <label class="radio-inline">
+                            <input type="radio" required=true name="restrict[status]" <{if $restrict.status != '0'}>checked<{/if}> value="1">是
+                        </label>
+                        <label class="radio-inline">
+                            <input type="radio" required=true name="restrict[status]" <{if $restrict.status == '0'}>checked<{/if}> value="0">否
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">开始时间<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-6">
+                        <{input type="time" name="restrict[from_time]" value=$restrict.from_time }>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">结束时间<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-6">
+                        <{input type="time" name="restrict[to_time]"  value=$restrict.to_time }>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">限购对象
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="col-md-5">
+                        <ul class="list-inline">
+                            <!--<li>
+                                <label class="control-label"><input readonly='true' type="checkbox" value="-1" name="restrict[member_lv_ids][]" <{if ($restrict.member_lv_ids == '') || in_array('-1',$restrict.member_lv_ids)}>checked<{/if}>/>顾客</label>
+                            </li>-->
+                            <{foreach from=$member_level item=ml}>
+                                <li>
+                                    <label class="control-label"><input readonly='true' type="checkbox" value="<{$ml.member_lv_id}>" name="restrict[member_lv_ids][]" <{if ($restrict.member_lv_ids == '') || in_array($ml.member_lv_id,$restrict.member_lv_ids)}>checked<{/if}>/><{$ml.name}></label>
+                                </li>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">订单最多购买数量</label>
+                    <div class="col-md-3">
+                        <{input type="text" name="restrict[default_order]" value=$restrict.default_order|default:0 type='number'}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">用户每天限购次数</label>
+                    <div class="col-md-3">
+                        <{input type="text" name="restrict[default_day_times]" value=$restrict.default_day_times|default:0 type='number'}>
+                        <span class="label label-default">设置了用户限购次数，用户每天限购数量 失效</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">用户每天限购数量</label>
+                    <div class="col-md-3">
+                        <{input type="text" name="restrict[default_day_member]" value=$restrict.default_day_member|default:0 type='number'}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">用户最多购买数量</label>
+                    <div class="col-md-3">
+                        <{input type="text" name="restrict[default_member]" value=$restrict.default_member|default:0 type='number'}>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">最多购买总数量</label>
+                    <div class="col-md-3">
+                        <{input type="text" name="restrict[default_sum]" value=$restrict.default_sum|default:0 type='number'}>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-md-3  control-label">选择商品</label>
+                    <div class="col-md-9">
+                        <{input type="object" object="goods@b2c" base_filter="goods_type=normal" placeholder="选择限购商品信息"
+                        callback_func="goods_callback_func" multiple="true"}>
+                        <table class="object-goods-rows table">
+                            <thead class="vat_group_time hidden">
+                            <tr>
+                                <td>操作</td>
+                                <td>商品名称</td>
+                                <td>商品编号</td>
+                                <td>订单最多购买数量</td>
+                                <td>用户每天限购次数</td>
+                                <td>用户每天限购数量</td>
+                                <td>用户最多购买数量</td>
+                                <td>最多购买总数量</td>
+                            </tr>
+                            </thead>
+                            <tbody id="goods_rows_vat" class="vat_group_time">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-md-3  control-label">选择货品</label>
+                    <div class="col-md-9">
+                        <{input type="object" object="products@b2c" base_filter="goods_type=normal" placeholder="选择限购货品信息"
+                        callback_func="products_callback_func" multiple="true"}>
+                        <table class="object-goods-rows table">
+                            <thead class="vat_group_time hidden">
+                            <tr>
+                                <td>操作</td>
+                                <td>货品名称</td>
+                                <td>SKU</td>
+                                <td>订单最多购买数量</td>
+                                <td>用户每天限购次数</td>
+                                <td>用户每天限购数量</td>
+                                <td>用户最多购买数量</td>
+                                <td>最多购买总数量</td>
+                            </tr>
+                            </thead>
+                            <tbody id="products_rows_vat" class="vat_group_time">
+                            </tbody>
+                        </table>
+                        <span class="label label-default">如设置货品限购，货品优先级高于商品</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-6">
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(function () {
+        goods_callback_func = function(selected){
+            var cids = [];
+            $.each(selected,function(k,v){
+                cids.push(v.value);
+            });
+            goods_render(cids);
+        };
+        var goods_render = function(cids,goods_limit){
+            if(!cids.length)return;
+
+            $.post('<{link app=desktop ctl=finder act=object_row}>',{
+                'model': 'goods',
+                'cols': 'goods_id,name,gid',
+                'name':'restrict[goods_id][]',
+                'pkey':'goods_id',
+                'filter':{goods_id:cids}
+            },function(re){
+                $('#goods_rows_vat').append(re);
+                var tmp = [];
+                $($.grep($('#goods_rows_vat tr'),function(tr,i){
+                    var id = $(tr).attr('data-id');
+                    if($.inArray(id,tmp)>-1){
+                        return true;
+                    }else{
+                        tmp.push(id);
+                        try{
+                            //精确判断,会有语法错误
+                            var order_limit = goods_limit[id]['order_limit']?goods_limit[id]['order_limit']:$("input[name='restrict[default_order]']").val();
+                            var day_times_limit = goods_limit[id]['day_times_limit']?goods_limit[id]['day_times_limit']:$("input[name='restrict[day_times_limit]']").val();
+                            var day_member_limit = goods_limit[id]['day_member_limit']?goods_limit[id]['day_member_limit']:$("input[name='restrict[day_member_limit]']").val();
+                            var member_limit = goods_limit[id]['member_limit']?goods_limit[id]['member_limit']:$("input[name='restrict[default_member]']").val();
+                            var sum = goods_limit[id]['sum']?goods_limit[id]['sum']:$("input[name='restrict[default_sum]']").val();
+                        }catch(e) {
+                            order_limit = $("input[name='restrict[default_order]']").val();
+                            day_times_limit = $("input[name='restrict[default_day_times]']").val();
+                            day_member_limit = $("input[name='restrict[default_day_member]']").val();
+                            member_limit = $("input[name='restrict[default_member]']").val();
+                            sum = $("input[name='restrict[default_sum]']").val();
+                        }
+                        if(!$(tr).children('td').eq(3).length) {
+                            $(tr).append('<td><input type="text" style="width:80px" name="goods_limit[' + id + '][order_limit]" value="' + order_limit + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="goods_limit[' + id + '][day_times_limit]" value="' + day_times_limit + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="goods_limit[' + id + '][day_member_limit]" value="' + day_member_limit + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="goods_limit[' + id + '][member_limit]" value="' + member_limit + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="goods_limit[' + id + '][sum]" value="' + sum + '"></td>');
+                        }
+                    }
+                })).remove();
+            });
+            $('#goods_rows_vat').closest('table').find('thead').removeClass('hidden');
+        };
+        products_callback_func = function(selected){
+            var cids = [];
+            $.each(selected,function(k,v){
+                cids.push(v.value);
+            });
+            products_render(cids);
+        };
+        var products_render = function(cids,product_limit){
+            if(!cids.length)return;
+
+            $.post('<{link app=desktop ctl=finder act=object_row}>',{
+                'model': 'products',
+                'cols': 'product_id,name,bn',
+                'name':'restrict[product_id][]',
+                'pkey':'product_id',
+                'filter':{product_id:cids}
+            },function(re){
+                $('#products_rows_vat').append(re);
+                var tmp = [];
+                $($.grep($('#products_rows_vat tr'),function(tr,i){
+                    var id = $(tr).attr('data-id');
+                    if($.inArray(id,tmp)>-1){
+                        return true;
+                    }else{
+                        tmp.push(id);
+                        try{
+                            //精确判断,会有语法错误
+                            var order_limit = product_limit[id]['order_limit']?product_limit[id]['order_limit']:$("input[name='restrict[default_order]']").val();
+                            var day_times_limit = product_limit[id]['day_times_limit']?product_limit[id]['day_times_limit']:$("input[name='restrict[day_times_limit]']").val();
+                            var day_member_limit = product_limit[id]['day_member_limit']?product_limit[id]['day_member_limit']:$("input[name='restrict[day_member_limit]']").val();
+                            var member_limit = product_limit[id]['member_limit']?product_limit[id]['member_limit']:$("input[name='restrict[default_member]']").val();
+                            var sum = product_limit[id]['sum']?product_limit[id]['sum']:$("input[name='restrict[default_sum]']").val();
+                        }catch(e){
+                            order_limit = $("input[name='restrict[default_order]']").val();
+                            day_times_limit = $("input[name='restrict[default_day_times]']").val();
+                            day_member_limit = $("input[name='restrict[default_day_member]']").val();
+                            member_limit = $("input[name='restrict[default_member]']").val();
+                            sum = $("input[name='restrict[default_sum]']").val();
+                        }
+                        if(!$(tr).children('td').eq(3).length) {
+                            $(tr).append('<td><input type="text" style="width:80px" name="product_limit[' + id + '][order_limit]" value="' + order_limit + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="product_limit[' + id + '][day_times_limit]" value="' + day_times_limit + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="product_limit[' + id + '][day_member_limit]" value="' + day_member_limit + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="product_limit[' + id + '][member_limit]" value="' + member_limit + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="product_limit[' + id + '][sum]" value="' + sum + '"></td>');
+                        }
+                    }
+                })).remove();
+            });
+            $('#products_rows_vat').closest('table').find('thead').removeClass('hidden');
+        };
+        <{if $goods_ids}>
+            var goods_ids = <{$goods_ids}>;
+            var goods_limit = <{$goods_limit}>;
+            goods_render(goods_ids,goods_limit);
+        <{/if}>
+        <{if $product_ids}>
+            var product_ids = <{$product_ids}>;
+            var product_limit = <{$product_limit}>;
+             products_render(product_ids,product_limit);
+        <{/if}>
+    });
+
+</script>

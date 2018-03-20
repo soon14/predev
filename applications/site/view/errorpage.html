@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8" />
+    <title>
+        <{$params.code}> <{$params.mean}>
+    </title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <style media="screen">
+        body{
+            padding:0;
+            margin:0;
+            background: #efefef;
+            color:#666;
+            font-size: 12px;
+            font-family: "Open Sans",verdana, sans-serif;
+            padding: 150px;
+            border-top: 10px solid #e9e9e9;
+        }
+        a{
+            color:#333;
+        }
+
+
+    </style>
+</head>
+<body>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABIAQMAAABvIyEEAAAABlBMVEUAAABTU1OoaSf/AAAAAXRSTlMAQObYZgAAAENJREFUeF7tzbEJACEQRNGBLeAasBCza2lLEGx0CxFGG9hBMDDxRy/72O9FMnIFapGylsu1fgoBdkXfUHLrQgdfrlJN1BdYBjQQm3UAAAAASUVORK5CYII=" alt="<{$params.code}>" />
+    <h1><{$params.msg}></h1>
+    <small><{$params.code}>&nbsp;&nbsp;&nbsp;&nbsp;<{$params.mean}></small>
+    <hr>
+    <p>
+        <a href="<{link app=site ctl='default' }>">返回首页</a>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <a href="javascript:;" onclick="history.go(-1);">&laquo;返回上一页</a>
+    </p>
+</body>
+
+</html>

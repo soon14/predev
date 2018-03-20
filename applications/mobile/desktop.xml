@@ -1,0 +1,14 @@
+<desktop>
+
+    <permissions>
+        <permission id="h5basic" display='true'>HTML5前台基本配置</permission>
+        <permission id="h5theme" display='true'>HTML5模板管理</permission>
+    </permissions>
+
+    <workground name="HTML5触屏前台" icon="fa fa-html5" id="mobile.workground.theme" controller="admin_theme_manage" action="index" order='80'>
+        <menugroup name="触屏端配置">
+            <menu controller='admin_theme_manage' action='index' permission='h5theme' display='true' order='10'>模板管理</menu>
+            <menu controller='admin_setting' action='index' permission='h5basic' display='true' order='20'>基本配置</menu>
+        </menugroup>
+    </workground>
+</desktop>

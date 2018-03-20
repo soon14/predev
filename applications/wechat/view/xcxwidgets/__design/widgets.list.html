@@ -1,0 +1,31 @@
+<!-- ############### 可选组件 ############### -->
+<template id="widgets-list-item">
+    <span class="list-group-item">
+        <h4 class="list-group-item-heading">{{widget.title}}</h4>
+        <p class="list-group-item-text">
+            {{widget.desc}}
+        </p>
+    </span>
+</template>
+<template id="widgets-list">
+    <div class="list-group" v-sortable="{group: {name: 'widgets-list',pull: 'clone', put: false},sort: false}">
+        <div :is="'widgets-list-item'" :widget="widget" :index="index" v-for="(widget, index) in widgets"></div>
+    </div>
+</template>
+<script type="text/javascript">
+// 可选组件
+var widgets_list_item = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widgets-list-item'
+});
+
+var widgets_list = Vue.extend({
+    template: '#widgets-list',
+    props: ['widgets'],
+    components: {
+        'widgets-list-item': widgets_list_item
+    }
+});
+
+Vue.component('widgets-list', widgets_list);
+</script>

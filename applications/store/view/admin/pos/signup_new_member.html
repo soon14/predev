@@ -1,0 +1,138 @@
+<div class="modal-header">
+	<button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+	<h3 class="modal-title">新会员</h3>
+</div>
+<form class="form" id="new_member_form" action="index.php?app=store&ctl=admin_pos&act=ajaxZhuCeXinhuiyuanAction" method="post">
+	<div class="modal-body">
+
+		<div class="form-horizontal">
+			<div class="form-body">
+				<!-- <div class="form-group">
+					<label class="col-md-3 control-label">头像</label>
+
+					<div class="col-md-8 avatar">
+						<{input type=image width=100 height=100 name=avatar value=$profile.avatar|default: ''}>
+							<span class="help-block">建议上传正方形图片</span>
+							<script charset="utf-8">
+							//    $('.avatar .fileinput-new.thumbnail').removeAttr('style').css({border:'none'});
+							//    $('.avatar .fileinput-new.thumbnail img').addClass('img-circle');
+							//    $('.avatar .fileinput-new.thumbnail img').css({'width':'10rem',height:'10rem'});
+							</script>
+					</div>
+				</div> -->
+				<div class="form-group">
+					<label class="col-md-3 control-label">登录账号
+						<span class="required">*</span>
+					</label>
+					<div class="col-md-8">
+						<{input  type=text required=true name='pam_account[login_name]' placeholder="字符/邮箱/手机号"}>
+						<span class="help-block"></span>
+					</div>
+				</div>
+
+				<div class="form-group  ">
+					<label class="col-md-3 control-label">初始密码
+						<span class="required">*</span>
+					</label>
+					<div class="col-md-8">
+						<{input class="form-control" required=true type=password  name='pam_account[login_password]' }>
+					</div>
+				</div>
+				<div class="form-group  ">
+					<label class="col-md-3 control-label">确认初始密码
+						<span class="required">*</span>
+					</label>
+					<div class="col-md-8">
+						<{input class="form-control" type=password required=true  name='pam_account[psw_confirm]' }>
+					</div>
+				</div>
+				<div class="form-group  ">
+					<label class="col-md-3 control-label">初始会员等级
+						<span class="required">*</span>
+					</label>
+					<div class="col-md-8">
+						<{input type='select' name='member_lv[member_group_id]' required="true" options=$mem.lv.options value=$mem.lv.value }>
+					</div>
+				</div>
+
+				<hr>
+
+				<{foreach from=$attr item=item name="item" key='row'}>
+					<div class="form-group  ">
+						<label class="col-md-3 control-label"><{$item.attr_name}>
+							<{if $item.attr_required eq 'true'}><span class="required">*</span><{/if}>
+						</label>
+						<div class="col-md-8">
+							<{if $item.attr_type =='date'}>
+								<{input class="form-control" type='date' name=$item.attr_column value=$item.attr_value}>
+							<{/if}>
+							<{if $item.attr_type =='region'}>
+								<{input  app=ectools type="region" name=$item.attr_column }>
+							<{/if}>
+							<{if $item.attr_type =='gender'}>
+								<{input  type='gender' name=$item.attr_column value=$item.attr_value }>
+							<{/if}>
+							<{if $item.attr_type =='select'}>
+								<select class="form-control" name='<{$item.attr_column}>'>
+									<option value=''></option>
+									<{foreach from=$item.attr_option item=option name="option"}>
+										<option value='<{$option}>' <{if $item.attr_value == $option}>selected<{/if}>>
+											<{$option}>
+										</option>
+									<{/foreach}>
+								</select>
+							<{/if}>
+
+							<{if $item.attr_type == 'text'}>
+								<input class="form-control" type='text' name=<{$item.attr_column}> value='<{$item.attr_value}>' vtype='<{if $item.attr_required eq 'true'}>required&&<{/if}><{$item.attr_valtype}>' />
+							<{/if}>
+
+							<{if $item.attr_type == 'number'}>
+								<input class="form-control" type='text' name=<{$item.attr_column}> value='<{$item.attr_value}>' vtype='<{if $item.attr_required eq 'true'}>required&&<{/if}><{$item.attr_valtype}>' />
+							<{/if}>
+
+							<{if $item.attr_type == 'alpha'}>
+								<input class="form-control" type='text' name=<{$item.attr_column}> value='<{$item.attr_value}>' vtype='<{if $item.attr_required eq 'true'}>required&&<{/if}><{$item.attr_type}>' />
+							<{/if}>
+
+							<{if $item.attr_type =='checkbox'}>
+								<{foreach from=$item.attr_option item=checkbox name="checkbox" }>
+									<label><input type='checkbox' name=box:<{$item.attr_column}>[] value='<{$checkbox}>'><{$checkbox}></label>
+								<{/foreach}>
+								<input type='hidden' name='<{$item.attr_column}>[]' value='%no%'>
+							<{/if}>
+						</div>
+					</div>
+				<{/foreach}>
+			</div>
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn default" data-dismiss="modal">取消</button>
+		<button type="submit" class="btn blue">确定</button>
+	</div>
+</form>
+
+<script charset="utf-8">
+	$('#new_member_form').data('ajax:success',function(re){
+		re  = jsonDecode(re);
+		if(re.member_id){
+			var callback_func = "<{$env.get.callback_func}>";
+			if(callback_func in window){
+				window[callback_func](re.member_id);
+			}
+		}
+		$('#new_member_form').closest('.modal').modal('hide');
+	});
+
+	//检查用户名是否已经被使用
+	$('input[name="pam_account[login_name]"]').on('blur',function(){
+		if($(this).val() == '') {
+
+			return false;
+		}
+		$(this).next().load('<{link app=b2c ctl=admin_member act=namecheck}>',{
+			'pam_account[login_name]':$(this).val()
+		});
+	});
+</script>

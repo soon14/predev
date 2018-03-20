@@ -1,0 +1,186 @@
+<script type="text/javascript">
+    /**
+     * WebViewJavascriptBridge
+     * FOR iOS & Android WEBVIEW
+     */
+    $(function() {
+        var controller_name = "<{$ctl_name}>",
+            action_name = "<{$act_name}>",
+            action_params = <{if $act_params}><{$act_params|json_encode}><{else}>[]<{/if}> ;
+        var required_login_regexp = new RegExp("\/("+['my','cart-fastbuy','checkout','integral'].join('|')+")",'i');
+        var present_regexp = new RegExp("\/("+['passport'].join('|')+")",'i');
+        var is_login = ($.cookie('UNAME') && $.cookie('MEMBER_IDENT'));
+
+        function setupWebViewJavascriptBridge(callback) {
+            if (window.WebViewJavascriptBridge) {
+                return callback(WebViewJavascriptBridge);
+            }
+            if (window.WVJBCallbacks) {
+                return window.WVJBCallbacks.push(callback);
+            }
+            window.WVJBCallbacks = [callback];
+            var WVJBIframe = document.createElement('iframe');
+            WVJBIframe.style.display = 'none';
+            WVJBIframe.src = 'wvjbscheme://__BRIDGE_LOADED__';
+            document.documentElement.appendChild(WVJBIframe);
+            setTimeout(function() {
+                document.documentElement.removeChild(WVJBIframe);
+            }, 0);
+        }
+        setupWebViewJavascriptBridge(function(bridge) {
+            window['HybirdappJSbirdge'] = bridge;
+            /**
+             * 导航条更多事件监听
+             */
+            bridge.registerHandler('NavMore', function(data, responseCallback) {
+                $('#sitemap').length && $('#sitemap').toggleClass('active');
+                responseCallback(data);
+            });
+            /**
+             * 模态框处理
+             */
+             bridge.registerHandler('inPresent', function(data, responseCallback) {
+                 $.cookie('vmc-hybirdapp-inpresent','YES',{ path: '/' });
+                 //处理splash跳转返回按钮
+                 $('.btn-splash-go-1').on('click',function(e){
+                     e.stopPropagation();
+                     bridge.callHandler('disPresent', {
+                         refreshParent:'YES'
+                     }, function(responseData) {});
+                     return false;
+                 });
+             });
+             bridge.registerHandler('onDisPresent', function(data, responseCallback) {
+                 responseCallback();
+                 $.cookie('vmc-hybirdapp-inpresent',null);
+             });
+
+            /**
+             * 回退拦截
+             */
+            $('.history-go-1').off('click').on('click', function(e) {
+                e.preventDefault();
+                bridge.callHandler('back');
+                return;
+            });
+            $('.history-go-root').off('click').on('click', function(e) {
+                e.preventDefault();
+                bridge.callHandler('backroot');
+                return;
+            });
+            /**
+             * 页面链接拦截
+             */
+             if(!is_login){
+                $('.favorite-button').off('click');
+             }
+            var normal_click_match = 'a:not(a[href^="javascript:"],a.history-go-1,a[href^="#"],a[target="_self"],a[data-toggle],a[data-toauth],a[data-target],a[data-event],a[data-hybirdapp-pop])';
+            $('body').on('click', normal_click_match, function(e) {
+                e.preventDefault();
+                var link = $(this).attr('href');
+                var json = {
+                    style: 'style01', //style01 带顶部导航，style02 不带顶部导航
+                    url: link
+                };
+                //下一页不带顶部
+                if($(this).attr('data-push-style') == "1"){
+                    json.style = 'style02';
+                }
+                if(link.match(required_login_regexp) && !is_login){
+                    json.url = "<{link app=b2c ctl=mobile_passport act=login}>";
+                }
+                json.present = (json.url.match(present_regexp)?'YES':'NO');
+                bridge.callHandler('push', json, function(responseData) {});
+                return false;
+            });
+            /**
+             * 分享按钮拦截
+             */
+            if(typeof(vmchybirdapp_share_define) != "undefined"){
+                if(!vmchybirdapp_share_define.url.match(/^http/)){
+                    vmchybirdapp_share_define.url = 'http:'+vmchybirdapp_share_define.url;
+                }
+                $('.btn-share').on('click',function(e){
+                    e.stopPropagation();
+                    bridge.callHandler('share', vmchybirdapp_share_define, function(responseData) {});
+                    return false;
+                });
+            }
+
+            /**
+             * 信任登陆
+             */
+             $('[data-toauth]').on('click',function(e){
+                 e.stopPropagation();
+                 var channel = $(this).attr('data-toauth'),
+                 callback_url = this.href.match(/redirect_uri=([^&]+)/),
+                 state = this.href.match(/state=([^&]+)/);
+                 if(callback_url && callback_url[1]){
+                     callback_url = callback_url[1];
+                 }else{
+                     return false;
+                 }
+                 if(state && state[1]){
+                   state = state[1];
+                 }else{
+                    state = "";
+                 }
+                 bridge.callHandler('trustLogin', {
+                     'channel':channel,
+                     'callback':callback_url,
+                     'state':state
+                 }, function(responseData) {
+
+                 });
+                 return false;
+             });
+
+             //pop返回
+             $('[data-hybirdapp-pop]').on('click',function(e){
+                 e.stopPropagation();
+                 bridge.callHandler('pop', $(this).attr('data-hybirdapp-pop'), function(responseData) {});
+             });
+
+             //购物车相关
+             $('.btn-addtocart').on('click',function(e){
+                 bridge.callHandler('addcart', {}, function(responseData) {});
+             });
+
+             //退出登陆监听
+             $('.btn-logout').on('click',function(e){
+                 bridge.callHandler('logoutsuccess', {}, function(responseData) {});
+             });
+
+             //Jpush registrationId 上报
+             if(is_login){
+                 //登录状态
+                 //isCommitedMemberRegistrationId
+                 if(!$.cookie('isCMRID')){
+                     bridge.callHandler('getPushRegistrationId', {}, function(registration_id) {
+                          if(registration_id){
+                              $.get('<{$base_url}>/openapi/jpush/bind_registration/id/'+registration_id,function(re){
+                                  if(re.result == 'success'){
+                                      $.cookie('isCMRID', registration_id, { expires: 45, path: '/' });
+                                  }
+                              });
+                          }
+                     });
+                 }
+             }else{
+                 //访客状态
+                 //isCommitedRegistrationId
+                 if(!$.cookie('isCRID')){
+                     bridge.callHandler('getPushRegistrationId', {}, function(registration_id) {
+                         if(registration_id){
+                             $.get('<{$base_url}>/openapi/jpush/bind_registration/id/'+registration_id,function(re){
+                                    if(re.result == 'success'){
+                                        $.cookie('isCRID', registration_id, { expires: 45, path: '/' });
+                                    }
+                             });
+                         }
+                     });
+                 }
+             }
+        });
+    });
+</script>

@@ -1,0 +1,50 @@
+<desktop>
+    <permissions>
+        <permission display='true' id="widgets">查看板块</permission>
+        <permission display='true' id="widgets_edit">添加/编辑板块</permission>
+        <permission display='true' id="widgets_delete">删除板块</permission>
+        <permission display='true' id="node_template_edit">栏目模板管理</permission>
+
+        <permission display='true' id="widgets_type">查看板块分类</permission>
+        <permission display='true' id="widgets_type_edit">添加/编辑板块分类</permission>
+        <permission display='true' id="widgets_type_delete">删除板块分类</permission>
+
+        <permission display='true' id="widgets_pc">查看PC模板文件</permission>
+        <permission display='true' id="widgets_pc_edit">添加/编辑PC模板文件</permission>
+        <permission display='true' id="widgets_pc_delete">删除PC模板文件</permission>
+
+        <permission display='true' id="widgets_mobile">查看Mobile模板文件</permission>
+        <permission display='true' id="widgets_mobile_edit">添加/编辑Mobile模板文件</permission>
+        <permission display='true' id="widgets_mobile_delete">删除Mobile模板文件</permission>
+
+    </permissions>
+    <workground name="板块" icon="fa fa-puzzle-piece" id="widgets.workground" order="51">
+        <menugroup name="板块管理">
+            <menu action='index' controller='admin_index' display='true' order='20' permission='widgets'>板块列表</menu>
+            <menu action='add' controller='admin_index' display='false' order='10' permission='widgets_edit'>添加板块</menu>
+            <menu action='edit' controller='admin_index' display='false' order='11' permission='widgets_edit'>编辑板块模板</menu>
+            <menu display='false' order='12' permission='widgets_delete'>删除板块模板</menu>
+            <menu action='edit_node_template' controller='admin_template' display='false' order='11' permission='node_template_edit'>栏目模板管理</menu>
+        </menugroup>
+        <menugroup name="板块分类管理">
+            <menu action='index' controller='admin_category' display='true' order='21' permission='widgets_type'>板块分类</menu>
+            <menu action='add' controller='admin_category' display='false' order='10' permission='widgets_type_edit'>添加板块分类</menu>
+            <menu action='edit' controller='admin_category' display='false' order='11' permission='widgets_type_edit'>编辑板块分类</menu>
+            <menu display='false' order='12' permission='widgets_type_delete'>删除板块分类</menu>
+        </menugroup>
+    </workground>
+
+    <workground name="电脑PC前台" icon="icon-screen-desktop" id="site.wrokground" order="70">
+        <menugroup name="模板文件管理">
+            <menu action='manage' controller='admin_template' params='p[0]:pc' display='false' permission='widgets_pc'>PC模板文件列表</menu>
+            <menu action='edit' controller='admin_template' params='p[0]:pc' display='false' permission='widgets_pc_edit'>PC模板文件编辑</menu>
+        </menugroup>
+    </workground>
+
+    <workground name="HTML5触屏前台" icon="fa fa-html5" id="mobile.workground.theme" order="80">
+        <menugroup name="模板文件管理">
+            <menu action='manage' controller='admin_template' params='p[0]:mobile' display='false' permission='widgets_mobile'>Mobile模板文件列表</menu>
+            <menu action='edit' controller='admin_template' params='p[0]:mobile' display='false' permission='widgets_mobile_edit'>Mobile模板文件编辑</menu>
+        </menugroup>
+    </workground>
+</desktop>

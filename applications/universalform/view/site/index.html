@@ -1,0 +1,111 @@
+<{if $form}>
+<form class="form-horizontal" action="<{link app=universalform ctl=site_form act=save}>" method="post" id="universal_form">
+    <input type="hidden" name="form_id" value="<{$form.form_id}>">
+    <{foreach from=$form.modules item=module}>
+    <div class="form-group">
+        <label  class="col-xs-2 control-label"><{$module.module_name}>
+            <{if $module.required == 'true'}><span class="text-danger">*</span><{/if}>
+        </label>
+        <div class="col-xs-7">
+            <{formmodule data=$module }>
+        </div>
+    </div>
+    <{/foreach}>
+    <{if $form.vmobile == 'true'}>
+        <div class="form-group">
+            <label  for="input_phone" class="col-md-2 control-label">手机号码<span class="text-danger">*</span></label>
+            <div class="col-xs-7">
+                <input type="text" required="true" noneI="true" isPhone="true" name="mobile" class="mobile_num form-control"
+                       id="input_phone" placeholder="" ">
+            </div>
+        </div>
+        <div class="form-group" id="form-group_vcode">
+        <label for="input_vcode" class="col-md-2 control-label">手机验证码<span class="text-danger">*</span></label>
+
+        <div class="col-md-3">
+            <input type="text" name="vmobile" class="form-control" id="input_vcode"
+                   placeholder="手机验证码">
+            <div id="yzmstr" class="error" style="position: absolute;width: 383px;height: 50px;line-height: 50px;left: 450px;top: 0; display: none;"></div>
+        </div>
+        <div class="col-md-2">
+            <div class="vcode">
+                <button type="button" id="free_code" style="color:black" class="btn btn-default">获取手机验证码</button>
+            </div>
+        </div>
+    </div>
+        <script type="text/javascript">
+        var wait=60;
+        document.getElementById("free_code").disabled = false;
+        function time(o) {
+            if (wait == 0) {
+                o.removeAttribute("disabled");
+                o.innerHTML="免费获取验证码";
+                wait = 60;
+            } else {
+                o.setAttribute("disabled", true);
+                o.innerHTML="重新发送(" + wait + ")";
+                wait--;
+                setTimeout(function() {
+                            time(o)
+                        },
+                        1000)
+            }
+        }
+        //获得短信验证码
+        var _cutdown_sms = function (btn) {
+            btn.addClass('disabled');
+            var cutdown = 120, btn_o_text = btn.text(), timer =
+                    setInterval((function () {
+                        btn.text('短信已发送,' + (cutdown--) + '秒后可重试');
+                        if (cutdown < 1) {
+                            clearInterval(timer);
+                            btn.text(btn_o_text).removeClass('disabled');
+                        }
+                        return arguments.callee;
+                    })(), 1000);
+        };
+        $("#universal_form").find('#free_code').on('click', function (e) {
+            var mobile = /^1[3|4|5|7|8]\d{9}$/;
+            var _thisbtn=this,mobile_num = $('.mobile_num').val();
+            if(!(mobile.test(mobile_num))){
+                $('.mobile_num').focus();
+                return false;
+            }
+            var btn = $(this);
+            $.post('<{link app=universalform ctl=site_form act=vmobile}>', {mobile: mobile_num}, function (re) {
+                if (re && re.error) {
+                    $('#yzmstr').html(re.error).show();
+                }
+                if (re && re.success) {
+                    time(_thisbtn);
+                    $('#yzmstr').html('').hide();
+                }
+            }, 'json');
+        });
+    </script>
+    <{/if}>
+    <{if $form.vcode == 'true'}>
+        <div class="form-group">
+            <label for="input_vcode" class="col-md-2 control-label">验证码</label>
+            <div class="col-xs-2">
+                <input name="vcode" style="display:none" disabled="disabled">
+                <input type="text" required="true" name="vcode" class="form-control" id="input_password" placeholder="验证码">
+            </div>
+            <div class="col-xs-7">
+                <img src="<{link app=site ctl=vcode act=index args0='universalform'}>" alt="验证码" />
+                <button type="button" class="btn btn-link btn-sm" onclick="$(this).prev().prop('src',$(this).attr('data-src')+'?'+new Date().getTime())" data-src="<{link app=site ctl=vcode act=index args0='universalform'}>" >更换验证码</button>
+            </div>
+        </div>
+    <{/if}>
+    <div class="form-group">
+        <div class="col-xs-7 col-xs-offset-2">
+            <button type="submit" class="btn btn-lg btn-primary">保存
+            </button>
+        </div>
+    </div>
+</form>
+
+<{else}>
+<h1>未知表单</h1>
+<{/if}>
+

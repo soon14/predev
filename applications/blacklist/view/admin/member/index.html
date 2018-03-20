@@ -1,0 +1,146 @@
+<h3 class="page-title">
+    会员黑名单管理
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="javascript:;">会员黑名单管理 <span class="badge badge-glist-count"><{$items_count}></span></a>
+        </li>
+    </ul>
+</div>
+<div id="plan_members_action">
+    <div class="row">
+        <div class="col-md-6">
+            <div class="well bg-grey-steel">
+                <div class="row">
+                    <div class="col-md-10">
+                        <{input type="object" object="members@b2c" name="member_id" multiple="true" callback_func="members_sel_callback_func" placeholder="选择需要禁用的会员"}>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="input-group">
+                <div class="input-icon right">
+                    <i class="fa fa-times-circle hide" onclick="$('#filter_members_list_input').val('');filter_members_list();"></i>
+                    <input type="text"  id="filter_members_list_input" placeholder="用户名/手机号/邮箱" class="form-control search-input" required="true">
+                </div>
+            <span class="input-group-btn">
+            <button class="btn default " type="button" onclick="filter_members_list()"><i class="fa fa-search"></i></button>
+            </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-3">
+            <button class="btn default btn-remove-sel" type="button">移除选中</button>
+            <button class="btn default btn-remove-all" type="button">清空</button>
+        </div>
+        <div class="col-md-4">
+
+        </div>
+    </div>
+</div>
+<form id="plan_members_list">
+    <{include file='admin/member/items.html'}>
+</form>
+<script type="text/javascript">
+    $('.fileinput-button').tooltip();
+    var refresh_members_list = function(re){
+        if(re.error){
+            return Messagebox.error(re.error);
+        }
+        load_page('<{link ctl=admin_member app=blacklist act=index}>&p[0]='+$('#plan_members_list input:hidden[name=page]').val()+'&in_page=true',$('#plan_members_list'),{},function(){
+            $('.badge-glist-count').text($('#plan_members_list input:hidden[name=members_count]').val());
+        });
+    }
+
+    var filter_members_list = function(){
+        load_page('<{link ctl=admin_member app=blacklist act=index}>&p[0]=1&p[1]='+$('#filter_members_list_input').val()+'&in_page=true',$('#plan_members_list'),{},function(){
+            if($.trim($('#filter_members_list_input').val()) == ''){
+                $('#filter_members_list_input').prev('.fa').addClass('hide');
+            }else{
+                $('#filter_members_list_input').prev('.fa').removeClass('hide');
+            }
+        });
+    }
+    $('#filter_members_list_input').on('keyup',function(e){
+        if(e.keyCode == 13){
+            filter_members_list();
+        }
+    });
+    $('#filter_members_list_input').on('blur',function(e){
+        if($(this).val() == ''){
+            filter_members_list();
+        }
+    });
+
+    var members_sel_callback_func = function(re_obj){
+        $.post('<{link ctl=admin_member app=blacklist act=update_members}>',re_obj,refresh_members_list,'json');
+    };
+    var members_unsel_callback_func = function(re_obj){
+        $.post('<{link ctl=admin_member app=blacklist act=update_members}>&p[0]=delete',re_obj,refresh_members_list,'json');
+    }
+    $('#plan_members_list').on('change','input.sel-handle',function(){
+        $('#plan_members_list tbody input:checkbox[name^="member_id"]').attr('checked',this.checked);
+    });
+    $('#plan_members_list').on('click','.btn-remove',function(){
+        $.post('<{link ctl=admin_member app=blacklist act=update_members}>&p[0]=delete',{member_id:[$(this).closest('tr').find('input:checkbox[name^="member_id"]').val()]},refresh_members_list,'json');
+    });
+    $('#plan_members_action .btn-remove-sel').on('click',function(){
+        if(!$('#plan_members_list tbody input[name^="member_id"]:checked').length){
+            return Messagebox.warning('未选中商品');
+        }
+        bootbox.confirm('确认移除选中？',function(flag){
+            if(!flag)return;
+            $.post('<{link ctl=admin_member app=blacklist act=update_members}>&p[0]=delete',$('#plan_members_list').serialize(),refresh_members_list,'json');
+        });
+    });
+    $('#plan_members_action .btn-remove-all').on('click',function(){
+        bootbox.confirm('确认清空？',function(flag){
+            if(!flag)return;
+            $.post('<{link ctl=admin_member app=blacklist act=update_members}>&p[0]=delete',null,refresh_members_list,'json');
+        });
+    });
+
+
+
+
+    /**
+     * CSV导入
+     */
+    $('.csv_file_input').fileupload({
+        add:function(e,data){
+            var target_input = $(e.target).addClass('hidden');
+            var button = target_input.prev('button');
+            button.find('.fa-file-text').addClass('hidden');
+            button.find('.fa-spin').removeClass('hidden');
+            data.submit();
+        },
+        progress:function(e){
+            //dosometing
+        },
+        progressall:function(e){
+            //dosometing
+        },
+        done:function(e,data){
+            var target_input = $(e.target).removeClass('hidden');
+            var button = target_input.prev('button');
+            button.find('.fa-file-text').removeClass('hidden');
+            button.find('.fa-spin').addClass('hidden');
+            try{
+                var re = $.parseJSON(data.result);
+                if(re.success){
+                    Messagebox.success(data.files[0].name+'上传成功');
+                }else{
+                    return Messagebox.warning(data.files[0].name+'上传失败');
+                }
+                refresh_members_list(re);
+            }catch(e){
+                console.error(e);
+            }
+
+        }
+    });
+</script>

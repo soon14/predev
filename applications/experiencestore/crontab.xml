@@ -1,0 +1,12 @@
+<cronentries>
+    <cron id="experiencestore_tasks_activity_finish">
+        <description>活动结束后</description>
+        <schedule>*/30 * * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+    <cron id="experiencestore_tasks_activity_sendmsg">
+        <description>门店活动提醒</description>
+        <schedule>*/2 * * * *</schedule>
+        <enabled>true</enabled>
+    </cron>
+</cronentries>

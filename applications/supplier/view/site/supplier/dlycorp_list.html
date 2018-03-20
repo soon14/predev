@@ -1,0 +1,33 @@
+<{include file='site/supplier/layout/top.html' }>
+<div class="my-main supplier-main">
+    <div class="page-header clearfix">
+      <h1 class="pull-left">物流公司编码查询 <small>Logistics Code</small></h1>
+    </div>
+    <div class="alert alert-info">
+        以下表格为目前平台支持的物流\快递公司代码
+    </div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    物流公司名称
+                </th>
+                <th>
+                    物流公司代码
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <{foreach from=$dlycorp_list item=dlycorp}>
+                <tr>
+                    <td>
+                        <{$dlycorp.name}>
+                    </td>
+                    <td>
+                        <{$dlycorp.corp_code}>
+                    </td>
+                </tr>
+            <{/foreach}>
+        </tbody>
+    </table>
+</div>

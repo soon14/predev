@@ -1,0 +1,57 @@
+<section class="store-list ">
+    <div class="row">
+        <{foreach from=$store_list item=store}>
+        <div class="col-md-6">
+            <div class="store-item <{if $select_store.id == $store.id}>selected<{/if}>">
+                        <ul class="list-unstyled s-basic">
+                            <li><span class="city"><{$store.region|regionpart:'city'}></span>,<a href="<{link app=experiencestore ctl=mobile_activity act=subject args0=$store.id}>"><{$store.name}></a></li>
+                            <li><{$store.region|regionpart:'city'}><{$store.address}></li>
+                            <li><{$store.phone}></li>
+                        </ul>
+            </div>
+        </div>
+        <{/foreach}>
+    </div>
+</section>
+<section class="subject-list">
+    <{foreach from=$subjects item=subject}>
+    <div class="subject-item">
+        <div class="row">
+            <div class="col-md-3 schedule-handle">
+                <img class="img-responsive img-rounded" src="<{$subject.default_image_id|storager}>" alt="<{$subject.title}>" />
+            </div>
+            <div class="col-md-9 schedule-handle">
+                <h3 class="subject-title"><{$subject.title}></h3>
+                <{assign var=keywords value=","|explode:$subject.keywords}>
+                <ul class="list-unstyled keywords">
+                    <{foreach from=$keywords item=kw}>
+                        <li><{$kw}></li>
+                    <{/foreach}>
+                </ul>
+                <p class="text-primary">了解详情 <i class="glyphicon glyphicon-download"></i></p>
+            </div>
+            <div class="col-md-12 hidden schedule-panel">
+                <div class="well well-sm">
+                    <button type="button" class="btn btn-close-well btn-lg btn-link pull-left" onclick="$(this).closest('.schedule-panel').addClass('hidden');$(this).closest('.subject-item').removeClass('active');"><i class="glyphicon glyphicon-remove-circle"></i></button>
+                    <h2 class="subject-title"><{$subject.title}></h2>
+                    <p class="text-muted subject-intro">
+                        <{$subject.intro}>
+                    </p>
+                    <hr>
+                    <div class="schedule-box" data-storeid="<{$select_store.id}>" data-subjectid="<{$subject.id}>"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <{/foreach}>
+</section>
+<script type="text/javascript">
+$('.subject-item').on('click','.schedule-handle',function(e){
+    var schedule_panel = $(this).next('.schedule-panel').toggleClass('hidden');
+    schedule_panel.closest('.subject-item').toggleClass('active');
+    var schedule_box = schedule_panel.find('.schedule-box');
+    if(!schedule_box.find('.schedule-datepicker').length){
+        schedule_box.load("<{link app=experiencestore ctl=mobile_activity act=schedule args0=_storeid_ args1=_subjectid_}>".replace("_storeid_",schedule_box.attr('data-storeid')).replace("_subjectid_",schedule_box.attr('data-subjectid')));
+    }
+});
+</script>

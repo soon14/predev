@@ -1,0 +1,418 @@
+<h3 class="page-title">
+    互动营销
+    <small><{$type_name}></small>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=digitalmarketing&ctl=admin_activity&act=index">互动营销</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{$type_name}></a>
+        </li>
+    </ul>
+</div>
+<div class="form">
+    <div class="form-horizontal">
+        <div class="form-wizard">
+            <form id="activity_form" action="index.php?app=digitalmarketing&ctl=admin_activity&act=save" method="post" class="form-body">
+                <input type="hidden" value=<{$activity.activity_id}> name="activity_id">
+                <input type="hidden" value=<{$activity.type?$activity.type:$type}> name="type">
+                <ul class="nav nav-pills nav-justified steps">
+                    <li class="active">
+                        <a href="#tab1" data-toggle="tab" class="step">
+                            <span class="number">1 </span>
+                            <span class="desc">
+                                <i class="fa fa-check"></i>活动基础设置
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tab2" data-toggle="tab" class="step">
+                            <span class="number">2 </span>
+                            <span class="desc">
+                                <i class="fa fa-check"></i> 用户参与设置
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tab3" data-toggle="tab" class="step">
+                            <span class="number">3 </span>
+                            <span class="desc">
+                                <i class="fa fa-check"></i> 中奖设置
+                            </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tab4" data-toggle="tab" class="step">
+                            <span class="number">4 </span>
+                            <span class="desc">
+                                <i class="fa fa-check"></i> 完成
+                            </span>
+                        </a>
+                    </li>
+
+                </ul>
+                <div id="activity_progress_bar" class="progress progress-striped" role="progressbar">
+                    <div class="progress-bar progress-bar-success" style="width: 25%;">
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">互动活动名称
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-3">
+                                <{input type=text name=title value=$activity.title }>
+                            </div>
+
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">开始时间
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-3">
+                                <{input type=time name=from_time value=$activity.from_time }>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">结束时间
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-3">
+                                <{input type=time name=to_time value=$activity.to_time }>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">活动说明
+
+                            </label>
+                            <div class="col-md-4">
+                                <{input type=textarea name=description value=$activity.description }>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a href="javascript:;" class="btn blue button-next">下一步 <i class="m-icon-swapright m-icon-white"></i></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">消耗积分
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" class="form-control" name="use_score" value="<{$activity.use_score}>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">参与对象
+                            </label>
+                            <div class="col-md-7">
+                                <{foreach from=$member_level item=ml}>
+                                    <label class="control-label"><input type="checkbox" value="<{$ml.member_lv_id}>" name="member_lv[]" <{if ($activity.member_lv == '') || in_array($ml.member_lv_id,$activity.member_lv)}>checked<{/if}>/><{$ml.name}></label>
+                                <{/foreach}>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">参与次数
+
+                            </label>
+                            <div class="col-md-3">
+                                <{input type="text" name=frequency_limit value=$activity.frequency_limit}>
+                                <span class="help-block">
+                                    每个用户每天最多次数
+                                </span>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a href="javascript:;" class="btn default button-previous" >
+                                        <i class="m-icon-swapleft"></i> 上一步 </a>
+                                    <a href="javascript:;" class="btn blue button-next" >
+                                        <i class="m-icon-swapright m-icon-white"></i>
+                                        下一步
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="tab3">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">中奖概率
+
+                            </label>
+                            <div class="col-md-4">
+                                <{input type="text" name=point value=$activity.point}>
+                            </div>
+                            <span class="help-inline">%</span>
+                        </div>
+                        <div class="col-md-offset-3">
+                        <ul class="nav nav-tabs">
+                            <{foreach from=$prize item=item key=key}>
+                            <li class="<{if $key=='1'}>active<{/if}>">
+                                  <a href="#tab_<{$key}>" data-toggle="tab"><{$item.name}></a>
+                            </li>
+                            <{/foreach}>
+                        </ul>
+                        <div class="tab-content">
+                            <{foreach from=$prize item=item key=key}>
+                            <input type='hidden'  name='prize[<{$key}>][prize_id]' value="<{$activity.prize[$key][prize_id]}>">
+                            <div class="tab-pane <{if $key=='1'}>active<{/if}>" id="tab_<{$key}>">
+                                <div class="form-group select-prize">
+                                    <label class="control-label col-md-2">选择奖品
+
+                                    </label>
+                                    <div class="col-md-6">
+                                        <label class="radio-inline"><input type="radio" name="prize[<{$key}>][prize_type]" value="score" <{if $activity.prize[$key][prize_type]=='score'}>checked<{/if}>>赠送积分</label>
+                                        <label class="radio-inline"><input type="radio" name="prize[<{$key}>][prize_type]" value="coupon" <{if $activity.prize[$key][prize_type]=='coupon'}>checked<{/if}>>送优惠券</label>
+                                        <label class="radio-inline"><input type="radio" name="prize[<{$key}>][prize_type]" value="product" <{if $activity.prize[$key][prize_type]=='product'}>checked<{/if}>>赠品</label>
+                                    </div>
+                                </div>
+
+                                <div class="form-group prize <{if $activity.activity_id && $activity.prize[$key][prize_type]!='score'}>hide<{/if}>" data-relation="score">
+                                    <label class="control-label col-md-2">赠送积分
+
+                                    </label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control"  name="prize[<{$key}>][addon][score]" value=<{$activity.prize[$key][addon][score]}>>
+                                    </div>
+                                </div>
+                                <div class="form-group prize <{if $activity.prize[$key][prize_type]!='coupon'}>hide<{/if}>" data-relation="coupon">
+                                    <label class="control-label col-md-2">选择优惠券
+
+                                    </label>
+                                    <div class="col-md-4">
+                                        <{input type="object" object="coupons@b2c" base_filter=$cpns_filter name="prize[{$key}][addon][coupon]"  callback_func="coupon_callback_func"}>
+                                        <div class="table-scrollable coupon_body <{if !$activity.prize[$key].item}>hide<{/if}>">
+                                            <table class="table">
+                                                <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <button onclick="$(this).closest('.coupon_body').addClass('hide');$(this).closest('.coupon_body').find('input').val('');" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+                                                        <input type="hidden" name="prize[<{$key}>][addon][coupon]" value="<{$activity.prize[$key][addon][coupon]}>">
+                                                    </td>
+                                                    <td data-bind="cpns_name">
+                                                        <{$activity.prize[$key].item.cpns_name}>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group prize <{if $activity.prize[$key][prize_type]!='product'}>hide<{/if}>" data-relation="product">
+                                    <label class="control-label col-md-2">赠品
+
+                                    </label>
+                                    <div class="col-md-4">
+                                        <{input type="object" object="products@b2c" base_filter=$cpns_filter name="prize[{$key}][addon][product]" callback_func="product_callback_func"}>
+                                        <div class="table-scrollable product_body <{if !$activity.prize[$key].item}>hide<{/if}>">
+                                            <table class="table">
+                                                <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <button onclick="$(this).closest('.product_body').addClass('hide');$(this).closest('.coupon_body').find('input').val('');" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+                                                        <input type="hidden" name="prize[<{$key}>][addon][product]" value="<{$activity.prize[$key][addon][product]}>">
+                                                    </td>
+                                                    <td data-bind="name">
+                                                        <{$activity.prize[$key].item.name}>
+                                                    </td>
+                                                </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">奖品数量
+
+                                    </label>
+                                    <div class="col-md-4">
+                                        <input type="text" class="form-control" name="prize[<{$key}>][nums]" value="<{$activity.prize[$key][nums]}>">
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label class="control-label col-md-2">中奖结果说明
+
+                                    </label>
+                                    <div class="col-md-4">
+                                        <textarea class="form-control" name="prize[<{$key}>][desc]"><{$activity.prize[$key][desc]}></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <{/foreach}>
+                        </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a href="javascript:;" class="btn default button-previous" >
+                                        <i class="m-icon-swapleft"></i> 上一步 </a>
+                                    <button class="btn blue button-complete" >
+                                        <i class="m-icon-swapright m-icon-white"></i>
+                                        下一步
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="tab4">
+                        <div class="form-group">
+                            <label class="control-label col-md-3">链接地址
+                            </label>
+                            <div class="col-md-7">
+                                <p id="activity_url" class="form-control-static"><{$activity.url}></p>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">二维码
+
+                            </label>
+                            <div class="col-md-4">
+                                <p id="activity_qrcode">
+                                    <{if $activity.url}>
+                                    <{$activity.url|qrcode}>
+                                    <{/if}>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-actions">
+                            <div class="row">
+                                <div class="col-md-offset-3 col-md-9">
+                                    <a href="javascript:;" class="btn default button-previous" >
+                                        <i class="m-icon-swapleft"></i> 上一步 </a>
+                                    <a href="index.php?app=digitalmarketing&ctl=admin_activity&act=activity&p[0]=<{$type}>" class="btn blue button-next" >
+                                        完成
+                                    </a>
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script charset="utf-8">
+    $(function(){
+        $('#activity_form').data('ajax:success',function(re){
+            if(typeof(re)!='object')
+                try{
+                    re = JSON.parse(re);
+                }catch(e){
+                    re = $.parseJSON(re);
+                }
+            if(re.success){
+                <{if !$activity.activity_id}>
+                $('#activity_form input[name="activity_id"]').val(re.success.activity_id);
+                $('#activity_url').text(re.success.url);
+                $('#activity_qrcode').html('<img src="'+re.success.qrcode+'" class="x-qrcode">');
+                <{/if}>
+                $('#activity_form .steps li:eq(3) a').click();
+            }
+        });
+
+         $('.button-next').on('click',function(){
+             var tab = $(this).closest('.tab-pane').next().attr('id');
+             $('#activity_form .steps li a[href="#'+tab+'"]').click();
+         });
+         $('.button-previous').on('click',function(){
+             var tab = $(this).closest('.tab-pane').prev().attr('id');
+             $('#activity_form .steps li a[href="#'+tab+'"]').click();
+         });
+         $('.select-prize input').on('change',function(){
+             var relation = $(this).val();
+             $(this).closest('.tab-pane').find('.prize').addClass('hide');
+             $(this).closest('.tab-pane').find('.prize[data-relation="'+relation+'"]').removeClass('hide');
+         });
+
+     });
+
+     $('#activity_form .steps li:eq(0)').on('shown.bs.tab', function (e) {
+
+         $('#activity_progress_bar .progress-bar').animate({width:'25%'},200);
+
+     });
+     $('#activity_form .steps li:eq(0)').on('hidden.bs.tab', function (e) {
+
+         $('#activity_progress_bar .progress-bar').animate({width:'0%'},200);
+
+     });
+
+     $('#activity_form .steps li:eq(1)').on('shown.bs.tab', function (e) {
+
+         $('#activity_progress_bar .progress-bar').animate({width:'50%'},200);
+
+     });
+     $('#activity_form .steps li:eq(1)').on('hidden.bs.tab', function (e) {
+
+         $('#activity_progress_bar .progress-bar').animate({width:'25%'},200);
+
+     });
+
+
+     $('#activity_form .steps li:eq(2)').on('shown.bs.tab', function (e) {
+
+         $('#activity_progress_bar .progress-bar').animate({width:'75%'},200);
+
+     });
+     $('#activity_form .steps li:eq(2)').on('hidden.bs.tab', function (e) {
+
+         $('#activity_progress_bar .progress-bar').animate({width:'50%'},200);
+
+     });
+
+     $('#activity_form .steps li:eq(3)').on('shown.bs.tab', function (e) {
+
+         $('#activity_progress_bar .progress-bar').animate({width:'100%'},200);
+
+     });
+     $('#activity_form .steps li:eq(3)').on('hidden.bs.tab', function (e) {
+
+         $('#activity_progress_bar .progress-bar').animate({width:'75%'},200);
+
+     });
+
+
+    var coupon_callback_func = function(ids ,input){
+        $.post('index.php?app=digitalmarketing&ctl=admin_activity&act=get_coupon' ,ids ,function(res){
+            console.log(res.success);
+            input.closest('.form-group').find('.coupon_body input').val(res.success.cpns_id);
+            input.closest('.form-group').find('.coupon_body tr td[data-bind="cpns_name"]').text(res.success.cpns_name);
+            input.closest('.form-group').find('.coupon_body').removeClass('hide');
+        },'json');
+    }
+
+    var product_callback_func = function(ids,input){
+        $.post('index.php?app=digitalmarketing&ctl=admin_activity&act=get_product' ,ids ,function(res){
+            input.closest('.form-group').find('.product_body input').val(res.success.product_id);
+            input.closest('.form-group').find('.product_body tr td[data-bind="name"]').text(res.success.name);
+            input.closest('.form-group').find('.product_body').removeClass('hide');
+        },'json');
+    }
+</script>

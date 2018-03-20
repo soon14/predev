@@ -1,0 +1,53 @@
+<root>
+<!-- 模块：快递单管理(order) -->
+<!-- 单据管理 -->
+    <register act="save" ctl="admin_payment" module="order" param="bill_id">
+        <operate_type>编辑应收款单据</operate_type>
+        <template>编辑应收款单据 %s</template>
+    </register>
+
+
+    <register act="save" ctl="admin_refund" module="order" param="bill_id">
+        <operate_type>编辑应付款单据</operate_type>
+        <template>编辑应付款单据 %s</template>
+    </register>
+
+<!-- 模块：系统管理(system) -->
+<!-- 支付与货币 -->
+    <register act="setting" ctl="payment_apps" module="system" param="setting.display_name">
+        <operate_type>支付方式管理</operate_type>
+        <template>配置支付方式 %s</template>
+    </register>
+
+    <register act="save" ctl="setting" module="system" param="set">
+        <operate_type>价格精度设置</operate_type>
+        <template>价格精度设置 %s</template>
+    </register>
+
+<!-- 模块：系统管理(system) -->
+<!-- 地区管理 -->
+    <register act="addDlArea" ctl="regions" module="system" param="local_name">
+        <operate_type>添加地区</operate_type>
+        <template>添加地区 %s</template>
+    </register>
+
+    <register act="saveDlArea" ctl="regions" module="system" param="local_name">
+        <operate_type>编辑地区</operate_type>
+        <template>编辑地区 %s</template>
+    </register>
+
+    <register act="save_regions_package" ctl="regionssetting" module="system" param="">
+        <operate_type>设置地区包</operate_type>
+        <template>设置地区包</template>
+    </register>
+
+    <register act="save_depth" ctl="regionssetting" module="system" param="area_depth">
+        <operate_type>设置默认地区层级</operate_type>
+        <template>设置默认地区层级 %s</template>
+    </register>
+
+    <register act="setDefault" ctl="regionssetting" module="system">
+        <operate_type>恢复初始数据</operate_type>
+        <template>恢复初始数据</template>
+    </register>
+</root>

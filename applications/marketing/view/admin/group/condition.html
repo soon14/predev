@@ -1,0 +1,12 @@
+
+<input type="hidden" name="conditions[conditions][<{$type}>][<{$position}>][attribute]" value="<{$name}>">
+<{$condition.label}>
+<select class="input-sm" name="conditions[conditions][<{$type}>][<{$position}>][operator]" size="1">
+    <{foreach from=$condition.operator key=key item=item}>
+    <option value="<{$key}>"><{$item}></option>
+    <{/foreach}>
+</select>
+<input type="text" class="input-sm" name="conditions[conditions][<{$type}>][<{$position}>][value]" required="true" value="">
+<span style="position:absolute;right:0;bottom:0;" class="btn btn-xs red" onclick="$(this).closest('.list-group-item').remove();">
+    <i class="fa fa-trash-o"></i>
+</span>

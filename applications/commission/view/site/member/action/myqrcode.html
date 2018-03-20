@@ -1,0 +1,15 @@
+<div class="order-processing-title">
+    <div class="page-header">
+        <h1>我的分佣二维码</h1>
+    </div>
+</div>
+<div class="vcode-img">
+    <{$url|qrcode}>
+</div>
+
+<form class="form-inline">
+    <div class="form-group">
+        <input type="text" class="form-control" id="txt" value="<{$url}>" style="width:300px;">
+    </div>
+    <button type="button" class="btn btn-primary">复制</button>
+</form>

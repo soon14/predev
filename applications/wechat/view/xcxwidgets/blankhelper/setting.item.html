@@ -1,0 +1,19 @@
+<!-- 辅助空白 -->
+<template id="widget-blankhelper">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-blankhelper :widget="widget" :index="index"></widget-child-setting-blankhelper>
+        <widget-child-blankhelper :widget="widget" :index="index"></widget-child-blankhelper>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_blankhelper = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-blankhelper',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-blankhelper': widget_child_setting_blankhelper,
+        'widget-child-blankhelper': widget_child_blankhelper
+    }
+});
+</script>

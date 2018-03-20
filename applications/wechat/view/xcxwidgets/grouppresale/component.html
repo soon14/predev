@@ -1,0 +1,130 @@
+<!-- ############### 子组件区域 ############### -->
+<!-- 团购预售 - 子组件 -->
+<template id="widget-child-grouppresale">
+    <!--
+    types 布局方式
+    isShowLine 是否显示边线
+    title 文字标题
+    content 文字内容
+    item.url 网址
+    item.image.src 图片地址
+    item.image.mode 图片裁切模式 https://mp.weixin.qq.com/debug/wxadoc/dev/component/image.html
+    -->
+    <section class="widget-box widget-grouppresale">
+        <div class=""  v-if="widget.data.items.length>0">
+            <!-- 图片标题文字上下排列 -->
+            <div class="grouppresale" :class="{'has_radius':(widget.data.display_type=='card'),'has_gap':(widget.data.display_type=='card')}" v-if="widget.data.filter_type=='group_id'">
+                <a class="link" href="javascript:;">
+                    <div class="image-block">
+                        <img class="image" :style="{width:'100%',height:'auto'}" :src="widget.data.imgSrc" v-if="widget.data.imgSrc">
+                        <img class="image" :style="{width:'100%',height:'auto'}" src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})"  v-else/>
+						<span class="flag" :style="{'background':widget.data.bgColor,'color':(widget.data.bgColor!='#ffffff'?'#ffffff':'#000')}">{{widget.data.items[0].activity.people_number}}人团</span>               
+                    </div>
+                    <div class="content">
+	                    <h4 class="title">{{widget.data.title?widget.data.title:widget.data.items[0].activity.name}}</h4>
+	                    <div>
+	                    	<span class="new_price">{{widget.data.items[0].current_product.price}}</span>
+	                    	<del class="old_price">单买价{{widget.data.items[0].data_detail.product.price}}</del>
+	                    	<a class="group_btn" href="javascript:;" :style="{'background':widget.data.bgColor,'color':(widget.data.bgColor!='#ffffff'?'#ffffff':'#000')}" v-if="widget.data.items[0].status=='process'">去开团</a>
+	                    	<a class="group_btn" href="javascript:;" style="background:#999;" v-else>去开团</a>
+	                    </div>
+                    </div>
+                </a>
+            </div>
+            <div class="grouppresale" :class="{'has_radius':(widget.data.display_type=='card'),'has_gap':(widget.data.display_type=='card')}" v-else-if="widget.data.filter_type=='presale_id'">
+                <a class="link" href="javascript:;">
+                    <div class="image-block">
+                        <img class="image" :style="{width:'100%',height:'auto'}" :src="widget.data.imgSrc" v-if="widget.data.imgSrc">
+                        <img class="image" :style="{width:'100%',height:'auto'}" src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})"  v-else/>       
+						<span class="flag" :style="{'background':widget.data.bgColor,'color':(widget.data.bgColor!='#ffffff'?'#ffffff':'#000')}">￥{{widget.data.items[0].deposit}}抵扣￥{{widget.data.items[0].deposit_deduction}} </span>                    
+                    </div>
+                    <div class="content">
+	                    <h4 class="title">{{widget.data.title?widget.data.title:widget.data.items[0].name}}</h4>
+	                    <div>
+	                    	<span class="new_price">预售价{{widget.data.items[0].presell_price}}</span>
+	                    	<del class="old_price">原价{{widget.data.items[0].product.price}}</del>
+	                    	<a class="group_btn" href="javascript:;" :style="{'background':widget.data.bgColor,'color':(widget.data.bgColor!='#ffffff'?'#ffffff':'#000')}" v-if="widget.data.items[0].status=='process'">马上预约</a>
+	                    	<a class="group_btn" href="javascript:;" style="background:#999;" v-else>马上预约</a>
+	                    </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class=""  v-else>
+            <!-- 图片标题文字上下排列 -->
+            <div class="grouppresale" :class="{'has_radius':(widget.data.display_type=='card'),'has_gap':(widget.data.display_type=='card')}">
+                <a class="link" href="javascript:;">
+                    <div class="image-block">
+                        <img class="image" :style="{width:'100%',height:'auto'}" src="" onerror="this.src=placeholder.getData({text: 'Img', bgcolor: '#006bb8',  color: '#ffffff'})"/>              
+                    </div>
+                    <div class="content">
+	                    <h4 class="title">请选择</h4>
+	                    <div>
+	                    	<span class="new_price">???</span>
+	                    	<del class="old_price">????</del>
+	                    	<a class="group_btn" href="javascript:;" :style="{'background':widget.data.bgColor,'color':(widget.data.bgColor!='#ffffff'?'#ffffff':'#000')}">???</a>
+	                    </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </section>
+</template>
+<script type="text/javascript">
+designStore.methods.initFilter = function(vnode) {
+    if (!this.root.page.currWidgets[vnode.index].data.filter_type) {
+        this.root.page.currWidgets[vnode.index].data.filter_type = 'group_id';
+    }
+    if (!this.root.page.currWidgets[vnode.index].data.filter) {
+        this.root.page.currWidgets[vnode.index].data.filter = {
+            
+        };
+    }
+};
+// 更新产品列表
+designStore.methods.onGroupUpdate = function(vnode) {
+    var _widget = this.root.page.currWidgets[vnode.index].data;
+
+    var _t = this;
+
+	if( _widget.filter_type=="group_id"){
+    	var activity_id = _widget.filter['group_id'][0];
+	    _t.root.page.currWidgets[vnode.index].data.items = [];
+	    if(!activity_id){
+	    	return false;
+	    }
+	    var header = {headers:{'X-Requested-isWXAPP':'YES'}};
+	   axios.get('/index.php/m/gbitem-' +activity_id+ '.html',header)
+        .then(function(response) {
+        	console.log(response);
+        	console.log(response.data);
+            if (!response.data)
+                return false;
+            _t.root.page.currWidgets[vnode.index].data.items.push(response.data);
+        });
+    }else{
+    	var activity_id = _widget.filter['presale_id'];
+    	_t.root.page.currWidgets[vnode.index].data.items = [];
+	    if(!activity_id){
+	    	return false;
+	    }
+   var header = {headers:{'X-Requested-isWXAPP':'YES'}};
+	   axios.get('/index.php/m/psllist-' +activity_id+ '.html',header)
+        .then(function(response) {
+        	console.log(response);
+            if (!response.data)
+                return false;
+            _t.root.page.currWidgets[vnode.index].data.items = response.data.data_list;
+        });
+    }
+};
+var widget_child_grouppresale = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-child-grouppresale',
+    created: function() {
+    designStore.methods.initFilter(this);
+      return designStore.methods.onGroupUpdate(this);
+    }
+});
+
+</script>

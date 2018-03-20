@@ -1,0 +1,263 @@
+<h3 class="page-title">
+    微信公众号绑定
+    <small>通过与微信公众号的绑定，在这里也可以轻松管理微信</small>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=wechat&ctl=admin_bind&act=index">微信公众号</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">微信公众号绑定操作</a>
+        </li>
+    </ul>
+</div>
+<div class="form">
+    <div class="form-horizontal">
+        <div class="form-wizard">
+            <form id="wechat_bind_form" action="index.php?app=wechat&ctl=admin_bind&act=save_bind" method="post" class="form-body">
+                <input type="hidden" name="status" value='active'>
+                <{if $data.id}>
+                    <input type="hidden" value=<{$data.id}> name="id">
+                <{/if}>
+                <{if $data.eid}>
+                    <input type="hidden" value=<{$data.eid}> name="eid">
+                <{/if}>
+                <{if $data.url}>
+                    <input type="hidden" value=<{$data.url}> name="url">
+                <{/if}>
+                <{if $data.token}>
+                    <input type="hidden" value=<{$data.token}> name="token">
+                <{/if}>
+                <ul class="nav nav-pills nav-justified steps">
+                    <li class="active">
+                        <a href="#tab1" data-toggle="tab" class="step">
+                            <span class="number">
+                                1 </span>
+                            <span class="desc">
+                                <i class="fa fa-check"></i> 填入微信公众号开发信息 </span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#tab2" data-toggle="tab" class="step">
+                            <span class="number">
+                                2 </span>
+                            <span class="desc">
+                                <i class="fa fa-check"></i> 回填服务器信息 </span>
+                        </a>
+                    </li>
+
+                </ul>
+                <div id="wechat_bind_progress_bar" class="progress progress-striped" role="progressbar">
+                    <div class="progress-bar progress-bar-success" style="width: 50%;">
+                    </div>
+                </div>
+
+                <div class="tab-content">
+                    <div class="tab-pane active" id="tab1">
+                        <h3 class="block">以下信息请至微信公众平台(<a href="http://mp.weixin.qq.com" target="_blank">mp.weixin.qq.com</a>) 获得</h3>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">头像
+                            </label>
+                            <div class="col-md-3">
+                                <{input type=image name=avatar value=$data.avatar height=100 width=100}>
+                                <span class="help-block">
+                                    从微信公众平台&raquo;公众号设置&raquo;账号详情 获得 </span>
+                            </div>
+                            <label class="control-label col-md-1">二维码
+                            </label>
+                            <div class="col-md-3">
+                                <{input type=image name=qr value=$data.qr height=100 width=100}>
+                                <span class="help-block">
+                                    从微信公众平台&raquo;公众号设置&raquo;账号详情 获得 </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">名称
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control" name="name" required="true" value="<{$data.name}>">
+                                <span class="help-block">
+                                    从微信公众平台&raquo;公众号设置&raquo;账号详情 获得 </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">微信号
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-4">
+                                <{input type="text" name="wechat_account" value=$data.wechat_account required="true" }>
+                                    <span class="help-block">
+                                        从微信公众平台&raquo;公众号设置&raquo;账号详情 获得 </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">类型
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-4">
+                                <{input type="select" required=true name='wechat_type' options=$wechat_type_select value=$data.wechat_type required="true" }>
+                                    <span class="help-block">
+                                        从微信公众平台&raquo;公众号设置&raquo;账号详情 获得 </span>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">登录邮箱
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-4">
+                                <{input type="text" name="email" value=$data.email  required="true"  }>
+                                    <span class="help-block">
+                                        从微信公众平台&raquo;公众号设置&raquo;账号详情 获得 </span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label col-md-3">原始ID
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-4">
+                                <{input type="text" name="wechat_id" value=$data.wechat_id  required="true" size=40  }>
+                                    <span class="help-block">
+                                        从微信公众平台&raquo;公众号设置&raquo;账号详情 获得 </span>
+                            </div>
+                        </div>
+
+                        <hr>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">AppID(应用ID)
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-4">
+                                <{input type="text" name="appid" value=$data.appid required="true" }>
+                                    <span class="help-block">
+                                        从微信公众平台&raquo;开发者中心&raquo;配置项 获得 </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">AppSecret(应用密钥)
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-4">
+                                <{input type="text" name="appsecret" value=$data.appsecret required="true"  }>
+                                    <span class="help-block">
+                                        从微信公众平台&raquo;开发者中心&raquo;配置项 获得 </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">EncodingAESKey(消息加密秘钥)
+                                <span class="required">* </span>
+                            </label>
+                            <div class="col-md-4">
+                                <{input type="text" name="aeskey" value=$data.aeskey required="true"  }>
+                                    <span class="help-block">
+                                        消息加密秘钥将用于消息加密过程(需要42个字符) </span>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+										<div class="row">
+											<div class="col-md-offset-3 col-md-9">
+                                                <button type="submit" class="btn blue button-next">下一步 <i class="m-icon-swapright m-icon-white"></i></button>
+											</div>
+										</div>
+						</div>
+                    </div>
+                    <div class="tab-pane" id="tab2">
+                        <h3 class="block">以下信息请复制回填至微信公众平台(<a href="http://mp.weixin.qq.com" target="_blank">mp.weixin.qq.com</a>) 开发者中心 </h3>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">URL
+                            </label>
+                            <div class="col-md-7">
+                                <input type="text" class="form-control" readonly=true name="url" value="<{$data.url}>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">Token
+                            </label>
+                            <div class="col-md-7">
+                                    <input type="text" class="form-control" readonly=true name="token" value="<{$data.token}>">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">EncodingAESKey(消息加密秘钥)
+
+                            </label>
+                            <div class="col-md-4">
+                                <{input type="text" id="aeskey" value=$data.aeskey readonly="true"  }>
+                                    <span class="help-block">
+                                        消息加密秘钥将用于消息加密过程 </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-3">消息加解密方式
+                            </label>
+                            <div class="col-md-4">
+                                <input type="text" class="form-control"  value="安全模式（推荐）" readonly=true>
+                            </div>
+                        </div>
+                        <div class="form-actions">
+                                        <div class="row">
+                                            <div class="col-md-offset-3 col-md-9">
+                                                <a href="javascript:;" class="btn default button-previous" >
+                                                <i class="m-icon-swapleft"></i> 上一步 </a>
+                                                <a href="index.php?app=wechat&ctl=admin_bind&act=index" class="btn blue button-complete" >
+                                                    完成
+                                                </a>
+
+                                            </div>
+                                        </div>
+                        </div>
+
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script charset="utf-8">
+    //注册FORM表单提交
+    $('#wechat_bind_form').data('ajax:success',function(re){
+        if(typeof(re)!='object')
+        try{
+            re = JSON.parse(re);
+        }catch(e){
+            re = $.parseJSON(re);
+        }
+        if(re.success){
+            if(!$('#wechat_bind_form input[name="id"]').length){
+                $('#wechat_bind_form').append('<input type=hidden name=id value='+re.id+' >');
+            }
+            $('#aeskey').val($('#wechat_bind_form input[name="aeskey"]').val());
+            $('#wechat_bind_form .steps li:eq(1) a').click();
+        }
+    });
+
+
+    $('#wechat_bind_form a.button-previous').on('click',function(){
+            $('#wechat_bind_form .steps li:eq(0) a').click();
+    });
+
+    $('#wechat_bind_form a.button-complete').on('click',function(){
+            //$('#wechat_bind_form .steps li:eq(0) a').click();
+    });
+
+    $('#wechat_bind_form .steps li:eq(1)').on('shown.bs.tab', function (e) {
+
+            $('#wechat_bind_progress_bar .progress-bar').animate({width:'100%'},200);
+
+      });
+    $('#wechat_bind_form .steps li:eq(1)').on('hidden.bs.tab', function (e) {
+
+            $('#wechat_bind_progress_bar .progress-bar').animate({width:'50%'},200);
+
+    });
+
+
+</script>

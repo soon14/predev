@@ -1,0 +1,25 @@
+<{foreach from=$goods key=k item=item}>
+<tr>
+    <td>
+        <button onclick="$(this).closest('tr').remove();" type="button" class="btn btn-xs default"><i class="fa fa-trash-o"></i></button>
+    </td>
+    <td>
+        <{input type="image" width=120 height=120 tag="商品图片" name="data[goods][{$item.goods_id}][custom_default_id]" value="{$item.image_default_id}"}>
+    </td>
+    <td>
+        <input type="hidden" name="data[goods][<{$item.goods_id}>][goods_id]"  value="<{$item.goods_id}>">
+        <input type="hidden" name="data[goods_id][]"  value="<{$item.goods_id}>">
+        <input type="text" class="form-control" name="data[goods][<{$item.goods_id}>][name]" value="<{$item.name}>"/>
+    </td>
+    <td>
+        <{input type="text" name="data[goods][{$item.goods_id}][brief]" value="{$item.brief}"}>
+    </td>
+    <td>
+        <{$item.gid}>
+        <input type="hidden" name="data[goods][<{$item.goods_id}>][gid]"  value="<{$item.gid}>">
+    </td>
+    <td>
+        <input type="text" class="form-control input-xsmall" name="data[goods][<{$item.goods_id}>][sort]" value="<{$item.sort|default:0}>">
+    </td>
+</tr>
+<{/foreach}>

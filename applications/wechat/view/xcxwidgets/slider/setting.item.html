@@ -1,0 +1,19 @@
+<!-- 图片滚动 -->
+<template id="widget-slider">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-slider :widget="widget" :index="index"></widget-child-setting-slider>
+        <widget-child-slider :widget="widget" :index="index"></widget-child-slider>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_slider = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-slider',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-slider': widget_child_setting_slider,
+        'widget-child-slider': widget_child_slider
+    }
+});
+</script>

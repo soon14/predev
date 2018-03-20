@@ -1,0 +1,19 @@
+<!-- 智能橱窗 -->
+<template id="widget-articlelist">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-articlelist :widget="widget" :index="index"></widget-child-setting-articlelist>
+        <widget-child-articlelist :widget="widget" :index="index"></widget-child-articlelist>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_articlelist = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-articlelist',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-articlelist': widget_child_setting_articlelist,
+        'widget-child-articlelist': widget_child_articlelist
+    }
+});
+</script>

@@ -1,0 +1,70 @@
+<h3 class="page-title">
+    编辑文件 <small><{$file_path}></small>
+</h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=widgets&ctl=admin_template&act=manage&p[0]=<{$type}>">文件列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;">编辑文件</a>
+        </li>
+    </ul>
+</div>
+<div id="J_page_tabs">
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active">
+        <a href="#J_page_widgets" aria-controls="J_page_widgets" role="tab" data-toggle="tab" data-url="<{link app=widgets ctl=admin_template act=get_widgets}>&p[0]=<{$type}>&p[1]=<{$file_path}>"><i class="fa fa-puzzle-piece"></i> 页面板块管理</a>
+    </li>
+    <li role="presentation">
+        <a href="#J_page_code" aria-controls="J_page_code" role="tab" data-toggle="tab" id="J_page_code_tab" data-url="<{link app=widgets ctl=admin_template act=get_page_code}>&p[0]=<{$type}>&p[1]=<{$file_path}>"><i class="fa fa-code"></i> 文件源码编辑</a>
+    </li>
+      <li role="presentation">
+          <a href="#J_history" aria-controls="J_history" role="tab" data-toggle="tab" id="J_history_tab" data-url="<{link app=widgets ctl=admin_template act=get_history}>&p[0]=<{$file_path}>&p[1]=<{$type}>"><i class="fa fa-list"></i> 修改历史</a>
+      </li>
+  </ul>
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="J_page_widgets">...</div>
+    <div role="tabpanel" class="tab-pane" id="J_page_code">
+    </div>
+      <div role="tabpanel" class="tab-pane" id="J_history"></div>
+  </div>
+</div>
+
+<div class="modal fade" id="J_history_modal" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+
+<script>
+(function(){
+    $('#J_page_tabs .nav a').on('click',function(e){
+        var $el = $(this),
+        content = $($el.attr('href'));
+        content.load($el.data('url'));
+    }).first().trigger('click');
+    $('#J_page_widgets').on('click','.J-show',function(e){
+        var $el = $(this);
+        $('#J_page_widgets').load($el.data('url'));
+    });
+})();
+</script>
+
+<script>
+    $('#J_history').on('click','.pagination li',function(e){
+        e.preventDefault();
+        e.stopPropagation();
+        if($(this).hasClass('disabled')){
+            return false;
+        }
+        var page = $(this).children('a').attr('href');
+        $('#J_history').load(page);
+
+    }).on('click','.J-show-code',function(){
+        $('#J_history_modal .modal-content').load($(this).attr('data-url'));
+        $('#J_history_modal').modal('show');
+    });
+</script>

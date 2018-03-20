@@ -1,0 +1,117 @@
+<div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">关闭</button>
+    <h3 class="modal-title">新建财务结算单</h3>
+</div>
+<form id="statement_edit_form" action="index.php?app=vshop&ctl=admin_statement&act=docreate<{if $multiple_vshop == 'true'}>_multiple<{/if}>" method="post">
+    <input type="hidden" name="voucher_id_serialize" value="<{$voucher_id_serialize}>">
+    <div class="modal-body">
+        <div class="well">
+            <button type="button" class="close" onclick="$(this).parent().hide();"><span>&times;</span></button>
+            <{assign var=voucher_count value=count($voucher_id_arr)}>
+            已选择<span class="label label-success"><{$voucher_count}></span>张结算凭证
+            <ul class="list-unstyled">
+                <{foreach from=$voucher_id_arr item=voucher_id name=fr_via}>
+                    <{if $env.foreach.fr_via.first}>
+                    <li><{$voucher_id}></li>
+                    <li>.....</li>
+                    <{/if}>
+                    <{if $env.foreach.fr_via.last}>
+                    <li><{$voucher_id}></li>
+                    <{/if}>
+                <{/foreach}>
+            </ul>
+        </div>
+        <{if $multiple_vshop == 'true'}>
+        <input type="hidden" name="statement[status]" value="process">
+        <div class="alert alert-warning">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <h4>正在为多个供应商生成财务结算单</h4>
+            <p>
+                对多个供应商生成财务结算单据后，可在财务结算单列表完善单据信息和状态。
+            </p>
+        </div>
+        <{else}>
+        <div class="form form-horizontal">
+            <div class="form-body">
+                <div class="form-group">
+                    <label class="col-md-3 control-label">收款人</label>
+                    <div class="col-md-6">
+                        <input type="text" name="statement[payee]" value="<{$statement.payee}>" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">收款银行</label>
+                    <div class="col-md-6">
+                        <input type="text" name="statement[payee_bank]" value="<{$statement.payee_bank}>" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">收款账户</label>
+                    <div class="col-md-6">
+                        <input type="text" name="statement[payee_account]" value="<{$statement.payee_account}>" class="form-control">
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">付款人</label>
+                    <div class="col-md-6">
+                        <input type="text" name="statement[payer]" value="<{$statement.payer}>" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">付款银行</label>
+                    <div class="col-md-6">
+                        <input type="text" name="statement[payer_bank]" value="<{$statement.payer_bank}>" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">付款账户</label>
+                    <div class="col-md-6">
+                        <input type="text" name="statement[payer_account]" value="<{$statement.payer_account}>" class="form-control">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">支付平台流水号</label>
+                    <div class="col-md-6">
+                        <input type="text" name="statement[out_trade_no]" value="<{$statement.out_trade_no}>" class="form-control">
+                    </div>
+                </div>
+                <!-- <div class="form-group">
+                    <label class="col-md-3 control-label">结算金额  <span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-6">
+                        <input type="text" required="true" name="statement[money]" value="<{$statement.money}>" class="form-control">
+                    </div>
+                </div> -->
+                <hr>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">备注</label>
+                    <div class="col-md-6">
+                        <{input type="textarea" name="statement[memo]" value=$statement.memo }>
+                    </div>
+                </div>
+                <hr>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">结算状态</label>
+                    <div class="col-md-3">
+                        <select class="form-control" name="statement[status]">
+                            <option value="process">处理中</option>
+                            <option value="succ" <{if $statement.status == 'succ'}>selected<{/if}>>已结算</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <{/if}>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn default" data-dismiss="modal">关闭</button>
+        <button type="submit" class="btn blue">确定</button>
+    </div>
+</form>
+<script type="text/javascript">
+    $('#statement_edit_form').data('ajax:success',function(re){
+        if(re && 'success' in re){
+            $('#statement_edit_form').closest('.modal').modal('hide');
+        }
+    });
+</script>

@@ -1,0 +1,57 @@
+<div class="fileinput fileinput-new" data-provides="fileinput" id="image_upload_box_<{$id}>">
+    <div class="fileinput-new thumbnail" style="position: relative;width: <{$width|default:200}>px; height: <{$height|default:150}>px;line-height:<{$height|default:150}>px;">
+        <{if $image_id && $url}>
+        <img src="<{$url}>" />
+        <input type="hidden" name="<{$name}>" value="<{$image_id}>">
+        <{else}>
+        <i class="fa fa-photo"></i>
+        <{/if}>
+        <{if $image_id}>
+        <div class="image-remove" style="width: 20px;height: 20px;position: absolute;right: 0;z-index: 1000;bottom: 0;line-height: 20px;">
+            <i class="fa fa-trash-o text-danger delete-image" data-image-id="<{$image_id}>"></i>
+        </div>
+        <{/if}>
+    </div>
+
+    <div>
+                <span class="btn blue-madison btn-sm btn-file btn-block">
+                <span class="fileinput-new fileinput-btn-text">
+                从本地选择图片 </span>
+                <input  type="file" accept="image/*" data-url="index.php?app=image&ctl=admin_manage&act=upload">
+                </span>
+    </div>
+</div>
+<script charset="utf-8">
+    $('#image_upload_box_<{$id}> input[type=file]').fileupload({
+    <{if $tag}>
+    formData:{tag:'<{$tag}>'},
+    <{/if}>
+        add:function(e,data){
+            if(!data.files[0]['type'].match(/^image/)){
+                return toastr.warning(data.files[0]['name']+'不是允许的图片类型','类型错误');
+            }
+            $('#image_upload_box_<{$id}> .fileinput-btn-text').text('正在上传...');
+            data.submit();
+        },
+        done:function(e,data){
+            var re = $.parseJSON(data.result);
+            if(!$('#image_upload_box_<{$id}> .thumbnail img').length){
+                $('#image_upload_box_<{$id}> .thumbnail').empty().append('<img src="'+re.url+'"  /><input type="hidden" name="<{$name}>" value="'+re.image_id+'">'
+                +'<div class="image-remove" style="width: 20px;height: 20px;position: absolute;right: 0;z-index: 1000;bottom: 0;line-height: 20px;">'
+                +'<i class="fa fa-trash-o text-danger delete-image" data-image-id="'+re.image_id+'"></i> </div>');
+            }else{
+                $('#image_upload_box_<{$id}> .thumbnail img').attr('src',re.url);
+                $('#image_upload_box_<{$id}> .thumbnail input').val(re.image_id);
+                $('#image_upload_box_<{$id}> .thumbnail .delete-image').attr('data-image-id',re.image_id);
+            }
+            $('#image_upload_box_<{$id}> .fileinput-btn-text').text('从本地选择图片');
+        }
+    });
+</script>
+<script>
+    $(function(){
+        $('body').on('click','#image_upload_box_<{$id}> .thumbnail .delete-image',function(){
+            $('#image_upload_box_<{$id}> .thumbnail').empty().append(' <i class="fa fa-photo"></i><input type="hidden" name="<{$name}>" value="" >');
+        });
+    });
+</script>

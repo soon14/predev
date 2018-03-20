@@ -1,0 +1,501 @@
+<div class="product-container content">
+    <div class="product-page">
+        <div class="slider product-images" id="pi_slider">
+          <div class="slide-group">
+              <{foreach from=$data_detail.images item=image name=poi}>
+              <{if !$env.foreach.poi.first}>
+              <div class="slide" style='background-image:url(data:image/gif;base64,R0lGODlhAQABAIAAAO/v7////yH5BAAHAP8ALAAAAAABAAEAAAICRAEAOw==)' data-original="<{$image.image_id|storager:'m'}>"></div>
+              <{else}>
+              <div class="slide" style="background-image:url(<{$image.image_id|storager:'m'}>)"></div>
+              <{/if}>
+              <{/foreach}>
+          </div>
+        </div>
+        <ul class="table-view">
+            <li class="table-view-cell product-info">
+                <h4>
+                    <{$data_detail.name}><br><small><{$data_detail.product.spec_info}></small>
+                </h4>
+                <{if $is_hybirdapp}>
+                  <i class="fa fa-share-alt fa-lg btn-share share-inhybird"></i>
+                <{/if}>
+                <p>
+                    <{$data_detail.brief}>
+                </p>
+                <p class="price-availability-block">
+                    <span class='btn btn-primary g-price'><small>￥</small><span><{$data_detail.product.buy_price|cur}></span></span>
+                    <!-- TODO TAGS -->
+
+                </p>
+                <a class="btn btn-outlined favorite-button" href='<{link app=b2c ctl=mobile_member act=favorite args0=add args1=$data_detail.goods_id}>'>
+                    <span class="fa fa-heart-o"></span>
+                    <small>喜欢<em></em></small>
+                </a>
+            </li>
+            <li>
+                <{foreach from=$orders_list  item=order}>
+                    <div>
+                        有<{$order.count}>人参加<a class="btn btn-negative btn-buy"
+                        href="<{link app=groupbooking ctl=mobile_product act=offered args0=$activity.activity_id args1=$current_product.product_id args2=$order.gb_id}>">
+                        <{if $order.is_member}>
+                            参加过了
+                        <{else}>
+                            参加
+                        <{/if}>
+                    </a>
+                    </div>
+                <{/foreach}>
+            </li>
+            <li class="table-view-cell tvc-reset-padding goods-plist">
+                <ul class="promotion-list">
+                </ul>
+            </li>
+            <{if $data_detail.spec_desc.t}>
+            <!-- 规格选择器 -->
+            <li class="table-view-divider"></li>
+            <li class="table-view-cell tvc-reset-padding">
+                <div class="product-spec-options">
+                    <{foreach from=$data_detail.spec_desc.t key=key item=item}>
+                        <table class="table">
+                            <tr>
+                                <td width="20%">
+                                    <p><{$item}></p>
+                                </td>
+                                <td>
+                                    <{assign var=spec_options value=$data_detail.spec_desc.v.{$key}}>
+                                    <{foreach from=$spec_options item=option }>
+                                        <a class="btn btn-outlined <{if $option.current}>active <{/if}><{if $option.marketable!='true'}> disabled<{/if}> <{if $option.p_image_id}>has-pimg<{/if}>" href="<{if $option.marketable!='true'}>javascript:;<{else}><{link app=groupbooking ctl=mobile_product arg0=$activity.activity_id args1=$option.product_id}><{/if}>" target="_self">
+                                            <{if $option.p_image_id}>
+                                                <img src="<{$option.p_image_id|storager:'xs'}>">
+                                            <{/if}>
+                                            <{$option.label}>
+                                        </a>
+                                    <{/foreach}>
+                                </td>
+                            </tr>
+                        </table>
+                    <{/foreach}>
+                </div>
+            </li>
+            <{/if}>
+            <li class="table-view-divider"></li>
+            <li class="table-view-cell">
+                <a class="navigate-right" href="<{link app=b2c ctl=mobile_comment act=show args0=$data_detail.goods_id}>">
+                       商品评价
+                       <span class="pull-right"><span class="text-warning"><{$data_detail.mark_star|star}></span> <small><{$data_detail.mark_star|number_format:'1'}></small></span>
+                </a>
+            </li>
+            <li class="table-view-divider"></li>
+            <li class="goods-desc">
+                      <table class="table">
+                          <thead>
+                              <tr>
+                                  <th>品牌</th>
+                                  <th>分类</th>
+                                  <{if $data_detail.keywords}>
+                                  <th>关键词</th>
+                                  <{/if}>
+                              </tr>
+                          </thead>
+                          <tbody>
+                              <tr>
+                                  <td>
+                                      <{if $data_detail.brand.brand_id}>
+                                              <a target="_blank" href="<{link app=b2c ctl=mobile_list args0=$data_detail.brand.brand_id}>">
+                                                  <{if $data_detail.brand.brand_logo}>
+                                                  <img width=70 src="<{$data_detail.brand.brand_logo|storager:'xs'}>" alt="<{$data_detail.brand.brand_name}>" />
+                                                  <br>
+                                                  <{$data_detail.brand.brand_name}>
+                                                  <{else}>
+                                                  <{$data_detail.brand.brand_name}>
+                                              <{/if}>
+                                              </a>
+                                      <{else}>
+                                          无
+                                      <{/if}>
+                                  </td>
+                                  <td>
+                                      <{if $data_detail.category.cat_id}>
+                                              <a href="<{link app=b2c ctl=mobile_list}>?cat_id=<{$data_detail.category.cat_id}>">
+                                                  <{$data_detail.category.cat_name}>
+                                              </a>
+                                      <{else}>
+                                          无
+                                      <{/if}>
+                                  </td>
+                                  <{if $data_detail.keywords}>
+                                  <td>
+                                      <{foreach from=$data_detail.keywords item=item}>
+                                          <a class="btn btn-outlined" href="<{link app=b2c ctl=mobile_list}>?keyword=<{$item.keyword}>">
+                                                  <{$item.keyword}>
+                                          </a>
+                                      <{/foreach}>
+                                  </td>
+                                  <{/if}>
+                              </tr>
+                          </tbody>
+                      </table>
+                      <{if $data_detail.params}>
+                          <{foreach from=$data_detail.params key=key item=item}>
+                              <table class="table">
+                                  <tr>
+                                      <td>
+                                          <{$key}>
+                                      </td>
+                                      <td>
+                                          <dl class="dl-horizontal">
+                                              <{foreach from=$item key=k item=v}>
+                                                  <dt><{$k}></dt>
+                                                  <dd>
+                                                      <{$v}>
+                                                  </dd>
+                                              <{/foreach}>
+                                          </dl>
+                                      </td>
+                                  </tr>
+                              </table>
+                          <{/foreach}>
+                      <{/if}>
+                      <div class="content-desc">
+                          <textarea class="hidden">
+                              <{$data_detail.description}>
+                          </textarea>
+                      </div>
+            </li><!--商品详情开始-->
+        </ul>
+
+
+        <!--商品详情结束-->
+
+        <div class="content-padded">
+            <div class="segmented-control">
+              <a class="control-item active" href="#goods_related">
+                相关商品
+              </a>
+              <a class="control-item" href="#view_history">
+                浏览历史
+              </a>
+            </div>
+        </div>
+        <div class="control-content goods-rel-items active clearfix" id="goods_related">
+            <div class="column"></div>
+            <div class="column"></div>
+        </div>
+        <div class="control-content goods-rel-items view-history" id="view_history">
+            <div class="column"></div>
+            <div class="column"></div>
+        </div>
+
+    </div><!--product-page end-->
+</div><!--content end-->
+<div class="go-top"><span class="icon icon-up"></span></div>
+<!--动态模板-->
+<textarea class="hide" id='related_tpl'>
+    <div class="goods-item">
+        <div class="card">
+            <div class="gi-image-wrapper">
+                <a href="{product.item_url}">
+                    <img data-original="{image}" alt="{name}">
+                </a>
+            </div>
+            <div class="caption">
+                <h5 class="g-name"><a href="{product.item_url}">{name}</a></h5>
+                <span class='btn btn-primary g-price'><small>￥</small>{product.buy_price}</span>
+            </div>
+        </div>
+    </div>
+</textarea>
+<div class="bar bar-standard bar-footer product-bar-footer">
+    <{if $buy_area}>
+    <{$buy_area}>
+    <{else}>
+    <a class="btn btn-negative btn-buy pull-right" href="<{link app=groupbooking ctl=mobile_checkout act=index args0=$activity.activity_id args1=$current_product.product_id}>">
+        <small>￥</small><span><{$current_product.price|cur}></span>
+        &nbsp;<{$activity.people_number}>人团
+    </a>
+    <a class="btn btn-negative btn-buy pull-right" href="<{link app=b2c ctl=mobile_cart act=fastbuy args0=$data_detail.product.product_id args1=1}>">
+        <small>￥</small><span><{$data_detail.product.buy_price|cur}></span>
+        单独购买
+    </a>
+    <{/if}>
+</div>
+
+<!--浏览计数-->
+<script type="text/javascript" src="<{$base_url}>/index.php/openapi/goods/counter/goods_id/<{$data_detail.goods_id}>/view_count/1/uv.js"></script>
+<script charset="utf-8">
+    /*
+    * 商品详情页脚本
+    * @author vmcshop.com
+    * @version 1.150813
+    */
+$(function(){
+    //延迟加载商品详情
+    var goods_desc_textarea = $('.goods-desc .content-desc textarea'),
+    goods_desc_textarea_val = $.trim(goods_desc_textarea.val()),
+    tmp_gdesc = $('<div></div>').append(goods_desc_textarea_val);
+    $.each(tmp_gdesc.find('img'),function(index,img){
+          var data_original = $(img).prop('src');
+          $(img).attr('data-original',data_original);
+          $(img).attr('src','data:image/gif;base64,R0lGODlhAQABAIAAAOzs7P///yH5BAAHAP8ALAAAAAABAAEAAAICRAEAOw==');
+    });
+    goods_desc_textarea.replaceWith(tmp_gdesc.html());
+    $('.goods-desc .content-desc img').each(function(idx,img){
+        try{
+            var original_size_match = $(img).attr('data-original').match(/_OW([\d]+)_OH([\d]+)/),original_size;
+            if(!original_size_match){
+                original_size_match = $(img).attr('data-original').match(/_H([\d]+)_W([\d]+)/);
+                original_size = {height:original_size_match[1],width:original_size_match[2]};
+            }else{
+                original_size = {width:original_size_match[1],height:original_size_match[2]};
+            }
+            img.height = original_size.height*($(img).closest('.content-desc').width()/original_size.width);
+        }catch(e){
+            console.info(e);
+        }
+    }).lazyload({
+        container:$('.content')
+    });
+
+    //模板填充工具
+    var substitute = function(str, obj) {
+        return str.replace(/\\?\{([^{}]+)\}/g, function(match, name) {
+            if (match.charAt(0) == '\\') return match.slice(1);
+            if(name.match(/\./)){
+                value = eval('obj.'+name);
+                return value?value:'';
+            }
+            return (obj[name] != undefined) ? obj[name] : '';
+        });
+    };
+    //倒计时
+    var remaining_time = function (intDiff,show_scope){
+        if(!show_scope)return;
+        setInterval((function(){
+            var day=0,
+                hour=0,
+                minute=0,
+                second=0;//时间默认值
+            if(intDiff > 0){
+                day = Math.floor(intDiff / (60 * 60 * 24));
+                hour = Math.floor(intDiff / (60 * 60)) - (day * 24);
+                minute = Math.floor(intDiff / 60) - (day * 24 * 60) - (hour * 60);
+                second = Math.floor(intDiff) - (day * 24 * 60 * 60) - (hour * 60 * 60) - (minute * 60);
+            }
+            if (minute <= 9) minute = '0' + minute;
+            if (second <= 9) second = '0' + second;
+            show_scope.find('.day-show').html(""+day+"天");
+            show_scope.find('.hour-show').html('<s id="h"></s>'+hour+'时');
+            show_scope.find('.minute-show').html('<s></s>'+minute+'分');
+            show_scope.find('.second-show').html('<s></s>'+second+'秒 后结束');
+            intDiff--;
+            return arguments.callee;
+        })(), 1000);
+    };
+
+    /**商品 openapi 调用**/
+    var goods_id = "<{$data_detail.goods_id}>";
+
+    //商品促销
+    var goods_promotions_api = "<{$base_url}>/index.php/openapi/goods/promotion/goods_id/<{$data_detail.goods_id}>/price/<{$data_detail.product.buy_price}>";
+
+    $.getJSON(goods_promotions_api,function(recv){
+        var phtml = '';
+        if(recv.result == 'success' && recv.data){
+            $.each(recv.data.plist,function(idx,p){
+                phtml+='<li data-ruleid="'+p.rule_id+'" data-remaining="'+(p.to_time-p.now)+'"><span class="label label-danger">'+p.tag+'</span>&nbsp;'+p.description+' <span class="time-show"><span class="day-show"></span><span class="hour-show"></span><span class="minute-show"></span><span class="second-show"></span></span></li>';
+            });
+            $('.promotion-list').append(phtml);
+            $.each($('.promotion-list [data-remaining]'),function(idx,item){
+                item = $(item);
+                if(item.attr('data-remaining')>60*60*24*7){
+                    $(item.find('.time-show')).remove();
+                }else{
+                    remaining_time(item.attr('data-remaining'),$(item.find('.time-show')));
+                }
+            });
+            if(recv.data.sale_price && recv.data.sale_price!='null'){
+                $('.price-availability-block .g-price span').text(recv.data.sale_price);
+            }
+        }
+        if(phtml == ''){
+            $('.goods-plist').remove();
+        }
+    });
+
+    //库存确认openAPI
+    <{if $data_detail.nostore_sell != '1'}>
+    var stock_confirm_api = "<{$base_url}>/index.php/openapi/stock/confirm/";
+    $.post(stock_confirm_api,{sku:'<{$data_detail.product.bn}>'},function(recv){
+        try{
+            data = recv.data;
+            if(!data || !data['<{$data_detail.product.bn}>'] || data['<{$data_detail.product.bn}>']['num']<1){
+                //无法确认库存,或无库存
+                //DO SOMETHING
+                $('.btn-buy').addClass('disabled');
+                $('<div class="bar bar-standard bar-footer-secondary"><span class="btn btn-link"><span class="fa fa-warning"></span> 库存不足.</span></div>')
+                .insertBefore($('.bar.bar-footer').eq(0));
+            }else{
+                var stock_num = data['<{$data_detail.product.bn}>']['num'];
+                //$('.product-quantity input').attr('data-maxbuy',stock_num);//TODO
+            }
+        }catch(e){
+            //console.error(e);
+        }
+
+    },'json');
+    <{/if}>
+    //相关商品openAPI
+    var related_api = "<{$base_url}>/index.php/openapi/goods/related/";
+    $.getJSON(related_api,{goods_id:goods_id},function(recv){
+        try{
+            var cloumns = $('#goods_related .column');
+            cloumns.css('width',100/cloumns.length+'%')
+            cloumns = cloumns.toArray();
+            $.each(recv.data,function(k,v){
+                var loop_c = cloumns.shift();
+                if(v.product.promotion.sale_price && v.product.promotion.sale_price!='null'){
+                    v.product.buy_price = v.product.promotion.sale_price;
+                }
+                $(loop_c).append(substitute($('#related_tpl').val(),v));
+                cloumns.push(loop_c);
+            });
+
+            img_lazyload($(cloumns),{container:$('.content').eq(0),failure_limit:$('#goods_related .column').eq(0).find('img').length});
+        }catch(e){
+            //console.error(e);
+        }
+    });
+    //喜欢收藏openAPI
+    var check_fav_api = "<{$base_url}>/index.php/openapi/goods/check_fav/";
+    $.getJSON(check_fav_api,{member_id:$.cookie('MEMBER_IDENT'),'goods_id':goods_id},function(recv){
+        try{
+            data = recv.data;
+            if(data.is_fav && data.is_fav>0){
+                $('.favorite-button .fa').removeClass('fa-heart-o').addClass('fa-heart');
+                //$('.favorite-button').addClass('disabled');
+            }
+            $('.favorite-button em').text(' ('+data.fav_count+')');
+
+        }catch(e){
+        }
+
+
+
+    });
+    $('.favorite-button').on('click',function(e){
+        e.stopPropagation();
+        var _this = $(this);
+        if(_this.find('.fa-heart').length)return false;
+        $.get(_this.prop('href'),function(re){
+            if(re && re.success){
+                _this.find('.fa').removeClass('fa-heart-o').addClass('fa-heart');
+                var current_count = parseInt(_this.find('em').text().replace(/[\(|\)]/g,''));
+                if(isNaN(current_count))current_count = 0;
+                _this.find('em').text(' ('+(++current_count)+')');
+            }else{
+                Messagebox('error',re.error);
+                if(re.redirect){
+                    location = re.redirect;
+                }
+            }
+        },'json');
+        return false;
+    });
+
+
+    $('.btn-addtocart').on('click',function(e){
+        $.getJSON($(this).attr('href'),function(re){
+            if(re.success){
+                //成功
+                $('.cart-count').removeClass('hidden').text(re.data.goods_count);
+                Messagebox('success_addtocart');
+            }else{
+                //失败
+                Messagebox('error');
+            }
+        });
+        return false;
+    });
+
+    //加载购物车内容数量
+    var load_cart_count = (function(){
+        $.getJSON('<{$base_url}>/index.php/openapi/cart/count',function(re){
+            try{
+                if(re.data.quantity>0){
+                    $('.cart-count').removeClass('hidden').text(re.data.quantity);
+                }
+            }catch(e){
+
+            }
+        });
+        arguments.callee;
+    })();
+
+    //相册lazyload
+    $('#pi_slider').on('slide',function(e){
+        $('#pi_slider .slide').lazyload({container:$('#pi_slider')});
+    });
+
+    //加载浏览历史
+    $('#view_history').on('firstshow',function(e){
+        $.getJSON('<{$base_url}>/index.php/openapi/goods/history',function(recv){
+            try{
+                var cloumns = $('#view_history .column');
+                cloumns.css('width',100/cloumns.length+'%')
+                cloumns = cloumns.toArray();
+                $.each(recv.data,function(k,v){
+                    var loop_c = cloumns.shift();
+                    if(v.product.promotion.sale_price && v.product.promotion.sale_price!='null'){
+                        v.product.buy_price = v.product.promotion.sale_price;
+                    }
+                    $(loop_c).append(substitute($('#related_tpl').val(),v));
+                    cloumns.push(loop_c);
+                });
+                img_lazyload($(cloumns),{container:$('.content').eq(0),failure_limit:$('#view_history .column').eq(0).find('img').length});
+            }catch(e){
+                //console.error(e);
+            }
+        });
+    });
+    var tmp_slide_height = $('.product-images .slide').height();
+
+    $('.content').scroll(function(e){
+        var scroll_top_scale = e.target.scrollTop/e.target.scrollHeight;
+        if(scroll_top_scale*100 >40){
+            $('.go-top').addClass('active');
+        }else{
+            $('.go-top').removeClass('active');
+        }
+    });
+    $('.go-top').on('click',function(e){
+        $(this).removeClass('active');
+        $('.content').scrollTop(0);
+    });
+    //规格选择 滚动条记忆
+    if('localStorage' in window){
+        //滚动条记忆
+        if(localStorage.scrollTopCache){
+            $('.content')[0].scrollTop = localStorage.scrollTopCache;
+            delete(localStorage.scrollTopCache);
+        }
+        $('.product-spec-options').on('click','.btn',function(e){
+            localStorage.scrollTopCache = $('.product-container')[0].scrollTop;
+        });
+    }
+});
+</script>
+<{if $is_hybirdapp}>
+<script type="text/javascript">
+//vmchybirdapp_share_define  定义了，就可以支持分享
+//监听页面中.btn-share
+    var vmchybirdapp_share_define = {
+        'title':'<{$data_detail.name}>',
+        'desc':'<{$data_detail.brief}>',
+        'icon':'<{$data_detail.image_default_id|storager:"m"}>',
+        'url':"<{link app=b2c ctl=mobile_product act=index args0=$data_detail.product.product_id full=1}>"
+    };
+    if(!vmchybirdapp_share_define['icon'].match(/^http/i)){
+        vmchybirdapp_share_define['icon'] = 'http:'+vmchybirdapp_share_define['icon'];
+    }
+</script>
+<{/if}>

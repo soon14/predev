@@ -1,0 +1,24 @@
+<desktop>
+    <permissions>
+        <permission id="experiencestore" display='true'>线下活动地点管理</permission>
+        <permission id="experiencestore_activity" display='true'>线下活动管理</permission>
+    </permissions>
+    <workground name="线下活动" icon="icon-pointer" id="workground.experiencestore" order='66'>
+        <menugroup name="地点管理">
+            <menu controller='admin_store' action='index' permission='experiencestore' display='true' order='1'>活动地点管理</menu>
+            <menu controller='admin_store' action='edit' permission='experiencestore' display='false' order='1'>新增\编辑地点</menu>
+            <menu controller='admin_store' action='save' permission='experiencestore' display='false' order='1'>地点保存</menu>
+        </menugroup>
+        <menugroup name="活动管理">
+            <menu controller='admin_activity' action='subject' permission='experiencestore_activity' display='true' order='1'>活动主题管理</menu>
+            <menu controller='admin_activity' action='edit_subject' permission='experiencestore_activity' display='false' order='1'>活动编辑</menu>
+            <menu controller='admin_activity' action='save_subject' permission='experiencestore_activity' display='false' order='1'>活动保存</menu>
+            <menu controller='admin_activity' action='schedule' permission='experiencestore_activity' display='true' order='1'>活动场次管理</menu>
+            <menu controller='admin_activity' action='edit_schedule' permission='experiencestore_activity' display='false' order='1'>活动场次编辑</menu>
+            <menu controller='admin_activity' action='save_schedule' permission='experiencestore_activity' display='false' order='1'>活动场次保存</menu>
+            <menu controller='admin_activity' action='order' permission='experiencestore_activity' display='true' order='1'>活动预约管理</menu>
+            <menu controller='admin_activity' action='edit_order' permission='experiencestore_activity' display='false' order='1'>活动预约编辑</menu>
+            <menu controller='admin_activity' action='save_order' permission='experiencestore_activity' display='false' order='1'>活动预约保存</menu>
+        </menugroup>
+    </workground>
+</desktop>

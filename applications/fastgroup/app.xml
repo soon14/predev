@@ -1,0 +1,19 @@
+<app>
+  <name>快团</name>
+
+  <description>快速通过手机免登录团购线下票券,生成手机确认码，提供线下确认界面，以快速确认。达到Online To Offline 目的</description>
+
+  <author>
+      <name>辰商软件</name>
+      <email>dev@vmcshop.com</email>
+      <url>http://www.vmcshop.com</url>
+  </author>
+
+  <version>1.0</version>
+  <license>http://www.vmcshop.com/license</license>
+
+  <depends>
+      <app>b2c</app>
+  </depends>
+
+</app>

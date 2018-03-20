@@ -1,0 +1,254 @@
+<h3 class="page-title"><{if $activity.activity_id }>编辑预售活动：<{$activity.name}><{else}>预售活动<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=preselling&ctl=admin_index&act=index">预售列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $activity.activity_id }>编辑预售活动<{else}>预售活动<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=preselling&ctl=admin_index&act=save" method="post" id='collection_form' >
+    <{if $activity.activity_id }><input type="hidden" name="activity_id" value="<{$activity.activity_id}>"><{/if}>
+    <input type="hidden" name="goods_id" value="<{$activity.goods_id}>">
+    <input type="hidden" name="product_id" value="<{$activity.product_id}>">
+    <div class=" form-horizontal">
+        <div class="form-body">
+            <div class="col-md-10">
+                <div class="form-group">
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">预售活动名称<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-4">
+                        <input type="text" name="name" value="<{$activity.name}>" required='true' class="form-control" placeholder="">
+                        <span class="help-block"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">订金支付开始时间<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-4">
+                        <{input type="time" name="deposit_starttime" value=$activity.deposit_starttime }>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">订金支付结束时间<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-4">
+                        <{input type="time" name="deposit_endtime"  value=$activity.deposit_endtime }>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">尾款支付开始时间<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-4">
+                        <{input type="time" name="balance_starttime"  value=$activity.balance_starttime }>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">尾款支付结束时间<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-4">
+                        <{input type="time" name="balance_endtime" value=$activity.balance_endtime }>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">预计发货时间<span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-4">
+                        <{input type="time" name="send_time" value=$activity.send_time }>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">定金是否退还 <span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-4">
+                        <label class="radio-inline"><input  type="radio" name="is_refund" value="true" <{if $activity.is_refund != "false"}>checked<{/if}>>是</label>
+                        <label class="radio-inline"><input   type="radio" name="is_refund"<{if $activity.is_refund == "false"}> checked<{/if}> value="false" >否</label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"> </label>
+                    <div class="col-md-4">
+                        <textarea type="textarea" rows="6" name="description"  class="form-control"><{$activity.description}></textarea>                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">限购对象
+                        <span class="required" aria-required="true">*</span>
+                    </label>
+                    <div class="">
+                        <ul class="list-inline">
+                            <{foreach from=$member_level item=ml}>
+                            <li>
+                                <label class="control-label"><input readonly='true' type="checkbox" value="<{$ml.member_lv_id}>" name="member_lv_ids[]" <{if ($activity.member_lv_ids == '') || in_array($ml.member_lv_id,$activity.member_lv_ids)}>checked<{/if}>/><{$ml.name}></label>
+                            </li>
+                            <{/foreach}>
+                        </ul>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    <label class="col-md-3  control-label">参与商品</label>
+                </div>
+                <div class="form-group">
+                    <div class="col-md-12">
+                        <{input type="object" object="goods@b2c" base_filter="goods_type=normal" placeholder="选择预售货品"
+                        callback_func="products_callback_func" }>
+                        <table class="object-goods-rows table">
+                            <thead class="vat_group_time hidden">
+                            <tr>
+                                <td>操作</td>
+                                <td>货品名称</td>
+                                <td>规格</td>
+                                <td>SKU</td>
+                                <td>原始售价</td>
+                                <td>订金</td>
+                                <td>预售价</td>
+                                <td>订金可抵扣</td>
+                                <td>尾款</td>
+                                <td>运费</td>
+                                <td>限购数量</td>
+                                <td>是否默认</td>
+                                <td>库存</td>
+                            </tr>
+                            </thead>
+                            <tbody id="products_rows_vat" class="vat_group_time">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label">商详页温馨提示 <span class="required" aria-required="true">*</span></label>
+                    <div class="col-md-4">
+                        <textarea type="textarea" rows="6" name="warm_prompt"  class="form-control"><{$activity.warm_prompt}></textarea>                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-md-3 control-label"></label>
+                    <div class="col-md-6">
+                        <button type="submit" class="btn blue">保存</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="form-actions">
+        <div class="row">
+            <div class="col-md-offset-2 col-md-6">
+            </div>
+        </div>
+    </div>
+</form>
+
+<script type="text/javascript">
+    $(function () {
+        products_callback_func = function(selected){
+            $("input[name=product_id]").val('');
+            var cids = [];
+            $.each(selected,function(k,v){
+                cids.push(v.value);
+            });
+            products_render(cids);
+        };
+        var products_render = function(cids,data){
+            var filter;
+            if(!cids.length) {
+                return;
+            }else if(cids.length > 1) {
+                filter = {product_id:cids};
+            }else{
+                filter  = {goods_id:cids};
+            }
+            $.post('<{link app=desktop ctl=finder act=object_row}>',{
+                'model': 'products',
+                'cols': 'product_id,name,spec_info,bn,price',
+                'pkey':'product_id',
+                'filter':filter
+            },function(re){
+                $('#products_rows_vat').html('');
+                $('#products_rows_vat').append(re);
+                $("input[name=goods_id]").val(cids[0]);
+                var tmp = [];
+                var product_id = $("input[name=product_id]").val();
+                $($.grep($('#products_rows_vat tr'),function(tr,i){
+                    var id = $(tr).attr('data-id');
+                    if($.inArray(id,tmp)>-1){
+                        return true;
+                    }else{
+                        tmp.push(id);
+                        try {
+                            $(tr).append('<td><input data-name="deposit"  class="calculate" type="text" style="width:80px" name="conditions[' + id + '][deposit]" value="' + data[id]['deposit'] + '"></td>');
+                            $(tr).append('<td><input data-name="presell_price" class="calculate" type="text" style="width:80px" name="conditions[' + id + '][presell_price]" value="' + data[id]['presell_price'] + '"></td>');
+                            $(tr).append('<td><input data-name="deposit_deduction" class="calculate" type="text" style="width:80px" name="conditions[' + id + '][deposit_deduction]" value="' + data[id]['deposit_deduction'] + '"></td>');
+                            $(tr).append('<td> <input readonly data-name="balance_payment" type="text" style="width:80px" name="conditions[' + id + '][balance_payment]" value="' + data[id]['balance_payment'] + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="conditions[' + id + '][freight]" value="' + data[id]['freight'] + '"></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="conditions[' + id + '][restrict_number]" value="' + data[id]['restrict_number'] + '"></td>');
+                            $(tr).append('<input type="hidden" style="width:80px" name="conditions[' + id + '][product_id]" value="' + id + '">');
+                            if(product_id == id) {
+                                $(tr).append('<td><input type="radio" style="width:80px" name="product_id"  checked value="'+id+'"></td>');
+                            }else{
+                                $(tr).append('<td><input type="radio" style="width:80px" name="product_id"  value="'+id+'"></td>');
+                            }
+                        }catch(e) {
+                            $(tr).append('<td><input data-name="deposit" class="calculate" type="text" style="width:80px" name="conditions[' + id + '][deposit]" value=""></td>');
+                            $(tr).append('<td><input data-name="presell_price" class="calculate" type="text" style="width:80px" name="conditions[' + id + '][presell_price]" value=""></td>');
+                            $(tr).append('<td><input data-name="deposit_deduction" class="calculate" type="text" style="width:80px" name="conditions[' + id + '][deposit_deduction]" value=""></td>');
+                            $(tr).append('<td><input readonly data-name="balance_payment" type="text" style="width:80px" name="conditions[' + id + '][balance_payment]" value=""></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="conditions[' + id + '][freight]" value=""></td>');
+                            $(tr).append('<td><input type="text" style="width:80px" name="conditions[' + id + '][restrict_number]" value=""></td>');
+                            $(tr).append('<input type="hidden" style="width:80px" name="conditions[' + id + '][product_id]" value="' + id + '">');
+                            if(product_id == id) {
+                                $(tr).append('<td><input type="radio" style="width:80px" name="product_id" checked value="'+id+'"></td>');
+                            }else{
+                                $(tr).append('<td><input type="radio" style="width:80px" name="product_id"  value="'+id+'"></td>');
+                            }
+                        }
+
+                        var stock_confirm_api = "index.php?app=preselling&ctl=admin_index&act=get_stock";
+                        $.post(stock_confirm_api,{product_id:id},function(recv){
+                            try{
+                                if(recv.success) {
+                                    $(tr).append('<td>'+recv.quantity+'</td>');
+                                }
+                            }catch(e){
+                                //console.error(e);
+                            }
+                        },'json');
+                    }
+                })).remove();
+                $(".calculate").on('change',function() {
+                    var presell_price = parseFloat($(this).parent().parent('tr').find("td").find('input[data-name=presell_price]').val());
+                    var deposit_deduction = parseFloat($(this).parent().parent('tr').find("td").find('input[data-name=deposit_deduction]').val());
+                    var deposit = parseFloat($(this).parent().parent('tr').find("td").find('input[data-name=deposit]').val());
+                    var balance_payment;
+                    if(deposit_deduction < deposit) {
+                        $(this).parent().parent('tr').find("td").find('input[data-name=deposit_deduction]').val(deposit);
+                         balance_payment = (isNaN(deposit)==true?0:deposit)-(isNaN(deposit_deduction)==true?0:deposit_deduction);
+                    }else{
+                         balance_payment = (isNaN(presell_price)==true?0:presell_price)-(isNaN(deposit_deduction)==true?0:deposit_deduction);
+                    }
+                    if(presell_price < deposit_deduction) {
+                        $(this).parent().parent('tr').find("td").find('input[data-name=presell_price]').val(deposit_deduction);
+                        balance_payment = 0;
+                    }
+                    balance_payment = balance_payment.toFixed(2);
+                    $(this).parent().parent('tr').find("td").find('input[data-name=balance_payment]').val(balance_payment);
+                });
+            });
+            $('#products_rows_vat').closest('table').find('thead').removeClass('hidden');
+        };
+
+
+        <{if $activity.conditions}>
+            var product_ids = [];
+            var data = [];
+            <{foreach from=$activity.conditions key=key item=item}>
+                product_ids[<{$key}>] = <{$key}>;
+                data[<{$key}>] = [];
+                data[<{$key}>]['price'] = <{if $item.price}><{$item.price}><{else}>0<{/if}>;
+                data[<{$key}>]['deposit'] = <{if $item.deposit}><{$item.deposit}><{else}>0<{/if}>;
+                data[<{$key}>]['presell_price'] = <{if $item.presell_price}><{$item.presell_price}><{else}>0<{/if}>;
+                data[<{$key}>]['deposit_deduction'] = <{if $item.deposit_deduction}><{$item.deposit_deduction}><{else}>0<{/if}>;
+                data[<{$key}>]['balance_payment'] = <{if $item.balance_payment}><{$item.balance_payment}><{else}>0<{/if}>;
+                data[<{$key}>]['restrict_number'] = <{if $item.restrict_number}><{$item.restrict_number}><{else}>0<{/if}>;
+                data[<{$key}>]['freight'] = <{if $item.freight}><{$item.freight}><{else}>0<{/if}>;
+            <{/foreach}>
+                products_render(product_ids,data);
+                <{/if}>
+        });
+
+</script>

@@ -1,0 +1,6 @@
+<site>
+    <module controller='site_exchange' id='integralexchange'>
+        <name>integralexchange</name>
+        <title>积分兑换</title>
+    </module>
+</site>

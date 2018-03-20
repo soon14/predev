@@ -1,0 +1,19 @@
+<!-- 辅助空白 -->
+<template id="widget-videos">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index"></design-action>
+        <widget-child-setting-videos :widget="widget" :index="index"></widget-child-setting-videos>
+        <widget-child-videos :widget="widget" :index="index"></widget-child-videos>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_videos = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-videos',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-videos': widget_child_setting_videos,
+        'widget-child-videos': widget_child_videos
+    }
+});
+</script>

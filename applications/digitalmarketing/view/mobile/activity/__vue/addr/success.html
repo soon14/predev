@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title><{$title}></title>
+        <meta name="description" content="<{$description}>" />
+        <meta name="keywords" content="<{$keywords}>" />
+
+        <meta charset="utf-8">
+        <meta name="charset" content="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+        <meta name="renderer" content="webkit">
+        <meta name="format-detection" content="telephone=no">
+        <meta http-equiv="Cache-Control" content="no-siteapp" />
+        <link type="image/x-icon" href="<{$env.conf.mobile.mobile_icon|storager}>" rel="apple-touch-icon-precomposed">
+
+        <link href="/themes/mobile/default/statics/activity/vue/styles/common.min.css" rel="stylesheet" type="text/css"/>
+        <link href="/themes/mobile/default/statics/activity/vue/styles/addr.min.css" rel="stylesheet" type="text/css"/>
+    </head>
+    <body class="page-addr">
+        <header class="act-view-header view-addr">
+            <nav class="top-navs">
+                <ul>
+                    <li>
+                        <a href="<{link app=mobile ctl=index}>"><i class="icon-arrow-left icons"></i></a>
+                    </li>
+                    <li>
+                        <span><{$title}></span>
+                    </li>
+                    <li></li>
+                </ul>
+            </nav>
+        </header>
+        <main class="view-addr">
+            <div class="act-res-showbox">
+                <section class="item-msgs">
+                    <p><i class="icon-check icons"></i></p>
+                    <h4>恭喜您获得 <{$product.name}></h4>
+                </section>
+                <section class="item-orders">
+                    <var>订单号</var>
+                    <code><{$order.order_id}></code>
+                </section>
+                <section class="item-addrs">
+                    <i class="left-icon icon-location-pin icons"></i>
+                    <h5>
+                        <u>收货人：<{$order.consignee.name}></u>
+                        <i><{$order.consignee.mobile}></i>
+                    </h5>
+                    <p>
+                        <{$order.consignee.area|region}> <{$order.consignee.addr}>
+                    </p>
+                </section>
+                <section class="item-btns">
+                    <a href="<{link app=b2c ctl=mobile_order act=detail args0=$order.order_id}>">订单详情</a>
+                    <a href="<{link app=mobile ctl=index}>">返回首页</a>
+                </section>
+            </div>
+        </main>
+    </body>  
+    <script src="/themes/mobile/default/statics/activity/vue/js/common.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        var activity_id = '<{$data.activity_id}>';
+        var partin_id = '<{$partin.partin_id}>';
+        var ajax_url = '<{link app=digitalmarketing ctl=mobile_activity act=ajax}>';
+        var api_url = '/index.php/openapi/prize/win';
+        var addr_url = '<{link app=digitalmarketing ctl=mobile_activity act=addrs}>';
+        var award_url = '/index.php/openapi/prize/award';
+        var success_url = addr_url + '?type=success&partin_id=' + partin_id + '&win_id=';
+    </script>
+    <script src="/themes/mobile/default/statics/activity/vue/js/global.min.js" type="text/javascript"></script>
+</html>

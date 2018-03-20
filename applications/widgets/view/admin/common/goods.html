@@ -1,0 +1,20 @@
+<ul>
+    <{foreach from=$data.data.goods item=item key=k}>
+    <li>
+        <a href="<{link app=b2c ctl=site_product arg0=$item.product.product_id}>" title="<{$item.name}>">
+            <!--大图
+            <img src="<{$item.image_default_id|storager:'l'}>">
+            -->
+            <!--中图-->
+            <img src="<{$item.image_default_id|storager:'m'}>">
+            <!--小图
+            <img src="<{$item.image_default_id|storager:'s'}>">
+            -->
+            <!--迷你图
+            <img src="<{$item.image_default_id|storager:'xs'}>">
+            -->
+        </a>
+        <{$item.brief}>
+    </li>
+    <{/foreach}>
+</ul>

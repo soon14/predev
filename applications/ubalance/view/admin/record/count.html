@@ -1,0 +1,137 @@
+<h3 class="page-title">
+    余额宝概览
+</h3>
+<hr>
+<div class="dashboard-stat red-intense">
+    <div class="visual">
+        <i class="fa fa-money"></i>
+    </div>
+    <div class="details">
+        <div class="number">
+        <{$all.amount|number_format:'3'}>
+        </div>
+        <div class="desc">
+            会员账户总余额
+        </div>
+    </div>
+    <a class="more" href="javascript:;">
+    当前所有会员账户总余额 <i class="icon-info tooltips"></i>
+    </a>
+</div>
+<hr>
+<div class="well well-sm">
+    <div class="row">
+        <div class="col-md-3">
+            <button type="button" class="btn btn-default pull-left">从</button>
+            <{input type="time" name="from" value=$from}>
+        </div>
+        <div class="col-md-3">
+            <button type="button" class="btn btn-default pull-left">至</button>
+            <{input type="time" name="to" value=$to}>
+        </div>
+        <div class="col-md-3">
+            <div class="btn-group from-to">
+    			<button type="button" class="btn btn-default sub-btn"><i class="fa fa-reeshfr"></i> 刷新</button>
+                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-angle-down"></i>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li data-ftrange="<{$from_arr.w}>~<{$tody}>">
+                        <a href="javascript:;">最近一周</a>
+                    </li>
+                    <li data-ftrange="<{$from_arr.m}>~<{$tody}>">
+                        <a href="javascript:;">最近一个月</a>
+                    </li>
+                    <li data-ftrange="<{$from_arr.q}>~<{$tody}>">
+                        <a href="javascript:;">最近一季度</a>
+                    </li>
+                    <!-- <li class="divider">
+                    </li>
+                    <li>
+                        <a href="#">Separated link </a>
+                    </li> -->
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="dashboard-stat purple-plum">
+            <div class="visual">
+                <i class="fa fa-credit-card"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <{$recharge.amount|number_format:'3'}>
+                </div>
+                <div class="desc">
+                    累计充值额
+                </div>
+            </div>
+            <a class="more" href="javascript:;">
+            某段时间内累计充值额 <i class="icon-info tooltips"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12 margin-bottom-10">
+        <div class="dashboard-stat blue-madison">
+            <div class="visual">
+                <i class="fa  fa-pie-chart"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <{$rat}>
+                </div>
+                <div class="desc">
+                    余额支付方式使用率
+                </div>
+            </div>
+            <a class="more" href="javascript:;">
+            某段时间内余额支付使用频率 <i class="icon-info tooltips"></i>
+            </a>
+        </div>
+    </div>
+
+    <div class="col-lg-4 col-md-4 col-sm-6 col-xs-12">
+        <div class="dashboard-stat green-haze">
+            <div class="visual">
+                <i class="fa fa-group  fa-line-chart"></i>
+            </div>
+            <div class="details">
+                <div class="number">
+                    <{$income.amount|number_format:'3'}>
+                </div>
+                <div class="desc">
+                    会员累计收益额
+                </div>
+            </div>
+            <a class="more" href="javascript:;">
+            某段时间内会员累计收益额 <i class="icon-info tooltips"></i>
+            </a>
+        </div>
+    </div>
+</div>
+<script charset="utf-8">
+!function(){
+	var from_input = $('input[name=from]');
+	var to_input = $('input[name=to]');
+
+    $('input[name=from],input[name=to]').on('keydown',function(e){
+            if(e.keyCode == 13){
+                $('.from-to .sub-btn').click();
+            }
+    });
+
+	$('.from-to .sub-btn').on('click',function(){
+		load_page('<{link app=ubalance ctl=admin_record act=count}>',false,'f='+from_input.val()+'&t='+to_input.val());
+
+	});
+	$('.from-to li[data-ftrange]').on('click',function(){
+		var range = $(this).attr('data-ftrange').split('~');
+		load_page('<{link app=ubalance ctl=admin_record act=count}>',false,'f='+range[0]+'&t='+range[1]);
+
+	});
+}();
+
+</script>

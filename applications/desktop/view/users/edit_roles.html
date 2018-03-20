@@ -1,0 +1,129 @@
+<h3 class="page-title"><{if $roles.role_id }>编辑角色和权限<{else}>添加角色和权限<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=desktop&ctl=roles&act=index">角色列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $roles.role_id }>编辑角色和权限<{else}>添加角色和权限<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=desktop&ctl=roles&act=save" method="post" id='role_form' class="form" >
+    <input type="hidden" name="role_id" value="<{$roles.role_id}>" />
+    <div class="form-horizontal">
+        <div class="form-body">
+            <div class="form-group">
+                <label class="col-md-2 control-label">角色名称
+                    <span class="required" aria-required="true">*</span>
+                </label>
+                <div class="col-md-5">
+                    <input type="text" autocomplete="off" name="role_name" value="<{$roles.role_name}>" required=true class="form-control" placeholder="请输入唯一的角色名称">
+                     <span class="help-block">
+                         角色名称全系统唯一，不能有重复 </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-2 control-label">角色权限
+                    <span class="required" aria-required="true">*</span>
+                </label>
+
+                <div class="col-md-10">
+                    <{if $widgets}>
+                    <div class="portlet">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-speedometer"></i>仪表盘
+                            </div>
+                            <div class="tools">
+                                <button type="button" class="btn select-handle btn-xs btn-default">全选/反选</button>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="row">
+                                <{foreach from=$widgets item=item}>
+                                <div class="col-md-3 col-sm-4 col-xs-6">
+                                    <label>
+                                        <input type="checkbox"  name="permissions[]" value="<{$item.addon}>" <{if $item.checked}>checked<{/if}>>
+                                        <{$item.menu_title}>
+                                    </label>
+                                </div>
+                                <{/foreach}>
+                            </div>
+                        </div>
+                    </div>
+                    <{/if}>
+
+                    <{foreach from=$workgrounds item=item}>
+                    <div class="portlet">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="<{$item.icon}>"></i><{$item.menu_title}>
+                            </div>
+                            <div class="tools">
+                                <button type="button" class="btn select-handle btn-xs btn-default">全选/反选</button>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="row">
+                                <{foreach from=$item.permissions item=item1}>
+                                <{if $item1.menu_title}>
+                                <div class="col-md-3 col-sm-4 col-xs-6">
+                                    <label>
+                                        <input type="checkbox"  name="permissions[]" value="<{$item1.permission}>" <{if $item1.checked}>checked<{/if}>>
+                                        <{$item1.menu_title}>
+                                    </label>
+                                </div>
+                                <{/if}>
+                                <{/foreach}>
+                            </div>
+                        </div>
+                    </div>
+                    <{/foreach}>
+                    <{if $adminpanels}>
+                    <div class="portlet">
+                        <div class="portlet-title">
+                            <div class="caption">
+                                <i class="icon-settings"></i>控制面板
+                            </div>
+                            <div class="tools">
+                                <button type="button" class="btn select-handle btn-xs btn-default">全选/反选</button>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div class="row">
+                                <{foreach from=$adminpanels item=item}>
+                                <{if $item.menu_title}>
+                                <div class="col-md-3 col-sm-4 col-xs-6">
+                                    <label>
+                                        <input type="checkbox"  name="permissions[]" value="<{$item.permission}>" <{if $item.checked}>checked<{/if}>>
+                                        <{$item.menu_title}>
+                                    </label>
+                                </div>
+                                <{/if}>
+                                <{/foreach}>
+                            </div>
+                        </div>
+                    </div>
+                    <{/if}>
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <div class="row">
+                <div class="col-md-offset-2 col-md-9">
+                    <button type="submit" class="btn blue">保存</button>
+                </div>
+            </div>
+        </div>
+        <div>
+</form>
+
+<script charset="utf-8">
+    $('.select-handle').on('click',function(){
+        var checkbox = $(this).closest('.portlet').find('input[type=checkbox]');
+        checkbox.attr('checked',!checkbox[0].checked);
+    });
+</script>

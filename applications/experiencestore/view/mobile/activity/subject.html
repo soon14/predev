@@ -1,0 +1,32 @@
+<div class="content">
+    <div class="store-select">
+        <select onchange="location=this.options[this.selectedIndex].value">
+            <{foreach from=$store_list item=store}>
+                <option <{if $select_store.id == $store.id}>selected<{/if}> value="<{link app=experiencestore ctl=mobile_activity act=subject args0=$store.id}>"><{$store.region|regionpart:'city'}>,<{$store.name}></option>
+            <{/foreach}>
+        </select>
+    </div>
+
+    <{if $subjects}>
+    <ul class="table-view">
+        <{foreach from=$subjects item=subject name="subject_fr"}>
+            <li class="table-view-cell">
+                <img width=100% src="<{$subject.default_image_id|storager}>" alt="<{$subject.title}>" />
+                <h3 class="subject-title"><{$subject.title}></h3>
+                <{assign var=keywords value=","|explode:$subject.keywords}>
+                <ul class="list-unstyled keywords">
+                    <{foreach from=$keywords item=kw}>
+                        <li><{$kw}></li>
+                    <{/foreach}>
+                </ul>
+                <a href="<{link app=experiencestore ctl=mobile_activity act=schedule args0=$select_store.id args1=$subject.id}>" class="btn btn-primary pull-right">立即预约</a>
+            </li>
+            <{if !$env.foreach.subject_fr.last}>
+            <li class="table-view-divider"></li>
+            <{/if}>
+        <{/foreach}>
+    </ul>
+    <{else}>
+    <!-- TODO 空-->
+    <{/if}>
+</div>

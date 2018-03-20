@@ -1,0 +1,45 @@
+<div class="content">
+    <form action="<{link app=ubalance ctl=mobile_balancepay act=do_recharge}>" method="post" >
+        <div class="input-group">
+            <div class="input-row">
+                <label>当前余额</label>
+                <input type="text" value="<{$balance_account.ubalance|number_format:'3'}>" readonly="true">
+            </div>
+            <div class="input-row">
+                <label>充值金额</label>
+                <input type="text"  autocomplete="off" placeholder="<{$setting.recharge_limit.limit_minimum}> ~ <{$setting.recharge_limit.limit_maximum}>"  required="true" name="money" id="recharge_money" >
+            </div>
+            <div class="input-row">
+                <label>获得额度</label>
+                <input type="text" id="bean_num" value="" placeholder="" readonly="true">
+            </div>
+            <div class="checkout-container" style="margin:0;">
+                <ul class="table-view">
+                    <li class="table-view-divider">选择支付方式</li>
+                    <{foreach from=$payapps key=k item=papp}>
+                        <li  class="table-view-cell tvc-payapps">
+                            <input class='i-radio' id="rd_payapp_id_<{$papp.app_id}>" type="radio"  name="payapp_id" value="<{$papp.app_id}>">
+                            <label for="rd_payapp_id_<{$papp.app_id}>" class="fa"></label>
+                            <span class="payapp-name"><{$papp.display_name|default:$papp.name}></span>
+                        </li>
+                    <{/foreach}>
+                </ul>
+            </div>
+        </div>
+        <div class="content-padded">
+            <button type="submit" class="btn btn-positive btn-block">立即支付</button>
+        </div>
+    </form>
+</div>
+
+<script>
+    $(function(){
+        var exchange = <{$setting.exchange_ratio}>;
+        $("#recharge_money").keyup(function(event) {
+            $("#bean_num").val($("#recharge_money").val() * exchange);
+        });
+        $('.tvc-payapps').on('click',function(e){
+            $(this).find('input:radio').prop('checked',true);
+        });
+    })
+</script>

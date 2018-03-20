@@ -1,0 +1,19 @@
+<!-- 文字导航 -->
+<template id="widget-textnav">
+    <div class="page-view" :class="{onSetting: widget.onSetting }" :id="widget.name + '_design_' + index">
+        <design-action :widget="widget" :index="index" :key="index"></design-action>
+        <widget-child-setting-textnav :widget="widget" :index="index" :key="index"></widget-child-setting-textnav>
+        <widget-child-textnav :widget="widget" :index="index" :key="index"></widget-child-textnav>
+    </div>
+</template>
+<script type="text/javascript">
+var widget_textnav = Vue.extend({
+    props: ['widget', 'index'],
+    template: '#widget-textnav',
+    components: {
+        'design-action': design_action,
+        'widget-child-setting-textnav': widget_child_setting_textnav,
+        'widget-child-textnav': widget_child_textnav
+    }
+});
+</script>

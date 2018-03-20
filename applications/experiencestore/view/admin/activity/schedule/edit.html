@@ -1,0 +1,356 @@
+<!-- 此页面是后台管理界面 页面的class及元素定义依赖 bootstrap UI框架 -->
+<h3 class="page-title"><{if $schedule.id }><{if $env.get.p.1}>复制<{else}>编辑<{/if}>活动场次<{else}>新活动场次<{/if}></h3>
+<div class="page-bar">
+    <ul class="page-breadcrumb">
+        <li>
+            <a href="index.php?app=experiencestore&ctl=admin_activity&act=schedule">活动场次列表</a>
+            <i class="fa fa-angle-right"></i>
+        </li>
+        <li>
+            <a href="javascript:;"><{if $schedule.id }><{if $env.get.p.1}>复制<{else}>编辑<{/if}>活动场次<{else}>新活动场次<{/if}></a>
+        </li>
+    </ul>
+</div>
+<form action="index.php?app=experiencestore&ctl=admin_activity&act=save_schedule" method="post" id='activity_schedule_form' class="form" >
+    <{if $schedule.id && !$env.get.p.1 }>
+        <input type="hidden" name="schedule[id]" value="<{$schedule.id}>">
+    <{/if}>
+    <div class="form form-horizontal">
+        <ul class="nav nav-tabs">
+				<li class="active">
+					<a href="#tab_edit_basic" data-toggle="tab">基本信息</a>
+				</li>
+                <li>
+					<a href="#tab_edit_ticket" data-toggle="tab">票券</a>
+				</li>
+		</ul>
+		<div  class="tab-content">
+				<div id="tab_edit_basic" class="tab-pane active  form-body">
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                场次编码
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-3">
+                                <input type="text" name="schedule[code]" value="<{$schedule.code}>" class="form-control" required="true">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-2 control-label">
+                                活动主题
+                                <span class="required" aria-required="true">*</span>
+                            </label>
+                            <div class="col-md-5">
+                                 <{input type="object" object="activity_subject" callback_func="subject_select_callback_func"}>
+                                 <div id="subject_data_panel">
+
+                                 </div>
+                            </div>
+                        </div>
+
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 活动地点
+                                 <span class="required" aria-required="true">*</span>
+                             </label>
+                             <div class="col-md-5">
+                                 <{input type="object" object="store" callback_func="store_select_callback_func"}>
+                                 <div id="store_data_panel">
+
+                                 </div>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 预约开始时间
+                                 <span class="required" aria-required="true">*</span>
+                             </label>
+                             <div class="col-md-3">
+                                 <{input type="time" name="schedule[begin_time]" value=$schedule.begin_time}>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 预约结束时间
+                                 <span class="required" aria-required="true">*</span>
+                             </label>
+                             <div class="col-md-3">
+                                 <{input type="time" name="schedule[end_time]" value=$schedule.end_time}>
+                             </div>
+                         </div>
+
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 活动开始时间
+                                 <span class="required" aria-required="true">*</span>
+                             </label>
+                             <div class="col-md-3">
+                                  <{input type="time" name="schedule[from_time]" value=$schedule.from_time required="true"}>
+                             </div>
+                         </div>
+                         <div class="form-group">
+                             <label class="col-md-2 control-label">
+                                 活动结束时间
+                                 <span class="required" aria-required="true">*</span>
+                             </label>
+                             <div class="col-md-3">
+                                  <{input type="time" name="schedule[to_time]" value=$schedule.to_time required="true"}>
+                             </div>
+                         </div>
+
+                    <div class="form-group">
+                        <label class="col-md-2 control-label">
+                            人数限定
+                        </label>
+                        <div class="col-md-2">
+                             <{input type="text" name="schedule[limit]" value=$schedule.limit }>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                         <label class="col-md-2 control-label">
+                             是否发布
+                         </label>
+                         <div class="col-md-7">
+                                <{input type="bool"  name="schedule[is_pub]" value=$schedule.is_pub}>
+                                <div class="help-block">
+                                    未发布,前台将无法预约
+                                </div>
+                         </div>
+                     </div>
+
+				</div>
+
+                <div id="tab_edit_ticket" class="tab-pane  form-body">
+                        <div class="form-group">
+                            <label class="col-md-1 control-label">
+                                需要票券
+                            </label>
+                            <div class="col-md-3">
+                                <{input type="bool" name="schedule[need_ticket]" value=$schedule.need_ticket}>
+                            </div>
+                        </div>
+                        <div class="form-group ticket-setting-block">
+                            <div class="col-md-12">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-striped  table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>
+                                                    票券名称
+                                                </th>
+                                                <th width="150">
+                                                    票券批号
+                                                </th>
+                                                <th>
+                                                    票券价格
+                                                </th>
+                                                <th>
+                                                    发行量
+                                                </th>
+                                                <th>
+                                                    票券说明
+                                                </th>
+                                                <th>
+                                                    操作
+                                                </th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ticket_tbody">
+                                            <tr class="template hidden">
+                                                <td>
+                                                    <{input type="text" disabled="disabled" name="ticket[new_$][name]" required="true"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="text" disabled="disabled" name="ticket[new_$][batch_no]" readonly="true"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="text" disabled="disabled" name="ticket[new_$][price]"  class="price-check"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="text" disabled="disabled" name="ticket[new_$][max]" required="true"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="textarea" disabled="disabled" name="ticket[new_$][intro]"}>
+                                                </td>
+                                                <td>
+                                                    <button type="button" onclick="if(confirm('确认？'))$(this).closest('tr').remove();" class="btn btn-xs btn-default"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <{if $env.get.p.1}>
+                                            <{foreach from=$tickets item=ticket}>
+                                            <tr>
+                                                <td>
+                                                    <{input type="text" name="ticket[new_{$ticket.id}][name]" value=$ticket.name required="true"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="text" name="ticket[new_{$ticket.id}][batch_no]" value=$ticket.batch_no readonly="true"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="text" name="ticket[new_{$ticket.id}][price]" value=$ticket.price class="price-check"}>
+                                                </td>
+
+                                                <td>
+                                                    <{input type="text" name="ticket[new_{$ticket.id}][max]" value=$ticket.max required="true"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="textarea" name="ticket[new_{$ticket.id}][intro]" value=$ticket.intro}>
+                                                </td>
+                                                <td>
+                                                    <button type="button" onclick="if(confirm('确认？'))$(this).closest('tr').remove();" class="btn btn-xs btn-default"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <{/foreach}>
+                                            <{else}>
+                                            <{foreach from=$tickets item=ticket}>
+                                            <tr>
+                                                <td>
+                                                    <{input type="text" name="ticket[{$ticket.id}][name]" value=$ticket.name required="true"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="text" name="ticket[{$ticket.id}][batch_no]" value=$ticket.batch_no readonly="true"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="text" name="ticket[{$ticket.id}][price]" value=$ticket.price class="price-check"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="text" name="ticket[{$ticket.id}][max]" value=$ticket.max required="true"}>
+                                                </td>
+                                                <td>
+                                                    <{input type="textarea" name="ticket[{$ticket.id}][intro]" value=$ticket.intro}>
+                                                </td>
+                                                <td>
+                                                    <button type="button" onclick="if(confirm('确认？'))$(this).closest('tr').remove();" class="btn btn-xs btn-default"><i class="fa fa-trash"></i></button>
+                                                </td>
+                                            </tr>
+                                            <{/foreach}>
+                                            <{/if}>
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <td colspan=9>
+                                                    <button type="button" class="btn btn-new-ticket btn-block btn-link btn-xs"><i class="fa fa-plus"></i> 新增票券</button>
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+				</div>
+
+
+        </div><!-- tab content end -->
+
+        <div class="form-actions">
+            <div class="row">
+                    <div class="col-md-offset-2 col-md-9">
+                        <button type="submit" class="btn blue" onclick="form_check()">保存</button>
+                    </div>
+            </div>
+        </div>
+    <div>
+</form>
+<textarea id="subject_tpl" class="hidden">
+    <div class="well well-sm">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{image}" class="img-thumbnail" height="70" />
+            </div>
+            <div class="col-md-8">
+                <input type="hidden" name="schedule[subject_id]" value="{id}">
+                <h4>{title}</h4>
+                <p>
+                    {intro}
+                </p>
+            </div>
+        </div>
+    </div>
+</textarea>
+<textarea id="store_tpl" class="hidden">
+    <div class="well well-sm">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{image}" class="img-thumbnail" height="80" />
+            </div>
+            <div class="col-md-8">
+                <input type="hidden" name="schedule[store_id]" value="{id}">
+                <h4>{name}</h4>
+                <p>
+                    地址：{region},{address}
+                </p>
+                <p>
+                    电话：{phone}
+                </p>
+            </div>
+        </div>
+    </div>
+</textarea>
+<script type="text/javascript">
+    var subject_select_callback_func = function(data){
+        $.getJSON('<{link app=experiencestore ctl=admin_activity act=load_subject}>&p[0]='+data[0].value,function(re){
+                $('#subject_data_panel').html(substitute($('#subject_tpl').val(),re.subject));
+        });
+    };
+    <{if $schedule.subject_id }>
+        subject_select_callback_func([{"value":<{$schedule.subject_id}>}]);
+    <{/if}>
+    var store_select_callback_func = function(data){
+        $.getJSON('<{link app=experiencestore ctl=admin_store act=load}>&p[0]='+data[0].value,function(re){
+                $('#store_data_panel').html(substitute($('#store_tpl').val(),re.store));
+        });
+    };
+    <{if $schedule.store_id }>
+        store_select_callback_func([{"value":<{$schedule.store_id}>}]);
+    <{/if}>
+    $(function(){
+        $('#activity_schedule_form .btn-new-ticket').on('click',function(e){
+            var new_id_pad = (''+new Date().getTime()).slice(-6);
+            var tpl = $('#ticket_tbody').find('.template');
+            var new_row = tpl.clone();
+            new_row.find('input,textarea ,select').each(function(idx,item){
+                console.info(item);
+                $(item).removeAttr('disabled');
+                $(item).attr('name',$(item).attr('name').replace('$',new_id_pad));
+            });
+            new_row.removeAttr('class');
+            $('#ticket_tbody').append(new_row);
+        });
+        $('.form').on('input propertychange','.price-check',function(){
+            if( $(this).val()<0 || isNaN($(this).val()) ){
+                $(this).val(0)
+            }
+        });
+    });
+
+</script>
+<script>
+    $(function(){
+        var ticket_setting_block = $('.ticket-setting-block');
+        if($('input[name="schedule[need_ticket]"]:checked').val() =='false'){
+            ticket_setting_block.hide();
+        }
+        $('input[name="schedule[need_ticket]"]').on('change' ,function(){
+            $(this).val() == 'true' ?ticket_setting_block.show() :ticket_setting_block.hide();
+        });
+    });
+    function form_check(){
+        var need_ticket = $('input[name="schedule[need_ticket]"]:checked').val();
+        if(need_ticket =='true'){
+            $('#ticket_tbody').find('tr').each(function(){
+                if(!$(this).hasClass('template')){
+                    var name = $(this).find('td').eq(0).children('input').val();
+                    var per_max = $(this).find('td').eq(3).children('input').val();
+                    var max = $(this).find('td').eq(4).children('input').val();
+                    if(per_max-max>0){
+                        if(!confirm('票券['+name+']单次可购买数量超出可预约总数，确定保存？')){
+                            window.event.preventDefault();
+                            window.event.stopPropagation();
+                            return false;
+                        }
+                    }
+                }
+            });
+        }
+
+    }
+</script>

@@ -1,0 +1,15 @@
+<app>
+    <name>模板文件及挂件管理</name>
+    <description>模板文件及挂件管理</description>
+    <author>
+        <name>辰商软件</name>
+        <email>dev@vmcshop.com</email>
+        <url>http://www.vmcshop.com</url>
+    </author>
+    <version>1.6</version>
+    <license>http://www.vmcshop.com/license</license>
+    <parent_model_class>dbeav_model</parent_model_class>
+    <depends>
+        <app>site</app>
+    </depends>
+</app>

@@ -1,0 +1,7 @@
+<site>
+    <module id="commission" controller='site_member'>
+        <name>commission</name>
+        <title>我的分佣</title>
+        <disable>false</disable>
+    </module>
+</site> 

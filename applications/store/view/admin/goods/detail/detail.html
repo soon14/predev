@@ -1,0 +1,70 @@
+<ul class="list-group promotion-list" id="promotion_list_<{$env.get.id}>">
+
+</ul>
+<script type="text/javascript">
+    $.getJSON('<{$gpromotion_openapi}>',function(recv){
+        var phtml = '';
+        if(recv.result == 'success' && recv.data && recv.data.plist){
+            $.each(recv.data.plist,function(idx,p){
+                phtml+='<li class="list-group-item" data-ruleid="'+p.rule_id+'" data-remaining="'+(p.to_time-p.now)+'"><span class="label label-danger">'+p.tag+'</span>&nbsp;<a target="_blank" href="javascript:;">'+p.description+'</a>&nbsp;&nbsp;&nbsp;&nbsp;<small class="text-muted">'+new Date(p.to_time*1000).toLocaleString()+'后失效</small></li>';
+            });
+            $('#promotion_list_<{$env.get.id}>').append(phtml);
+        }
+    });
+</script>
+
+<div class="table-scrollable">
+    <table class="table">
+        <thead>
+        <tr>
+            <th></th>
+            <th>规格</th>
+            <th>货号</th>
+            <th>条码</th>
+            <th>库存</th>
+            <th>销售价</th>
+            <th>上架状态</th>
+        </tr>
+        </thead>
+        <tbody>
+        <{foreach from=$products key=key item=product}>
+        <{assign var=stock value=$stock_list.{$product.bn}}>
+        <tr <{if $product.marketable!='true'}>class="text-muted"<{/if}>>
+        <td>
+            <img class="img-thumbnail" src="<{$product.image_id|storager:'xs'}>" width=30 />
+        </td>
+        <td>
+            <{$product.spec_info}>
+        </td>
+        <td>
+            <{$product.bn}>
+        </td>
+        <td>
+            <{$product.barcode}>
+        </td>
+        <td>
+            <{$stock.quantity-$stock.freez_quantity}><{$product.unit}>可售,
+            <small class="text-muted"><{$stock.freez_quantity}><{$product.unit}>被冻结</small>
+            <br>
+            <!--<a target="_blank" class="btn btn-xs btn-default" href="index.php?app=b2c&ctl=admin_stock&act=index&p[0]=0&p[1]=<{$product.product_id}>">编辑</a>-->
+        </td>
+        <td>
+            <small>￥</small><{$product.price|cur}>
+        </td>
+        <td>
+            <!--<{if $data_detail.marketable=='true' && $product.marketable=='true'}>-->
+            <!--电商上架-->
+            <!--<{else}>-->
+            <!--电商下架-->
+            <!--<{/if}>-->
+            <{if $store_goods.store_enable =='1'}>
+            门店上架
+            <{else}>
+            门店下架
+            <{/if}>
+        </td>
+        </tr>
+        <{/foreach}>
+        </tbody>
+    </table>
+</div>
